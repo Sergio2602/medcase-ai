@@ -15,7 +15,8 @@ const CASE_TOOL: Anthropic.Tool = {
     properties: {
       patientName: {
         type: "string",
-        description: "A realistic first name for the patient.",
+        description:
+          "A realistic German first name for the patient (e.g. Anna, Lukas, Ingrid, Mehmet).",
       },
       age: { type: "integer", description: "Patient age in years." },
       gender: {
@@ -26,31 +27,32 @@ const CASE_TOOL: Anthropic.Tool = {
       chiefComplaint: {
         type: "string",
         description:
-          "The patient's chief complaint in their own words, first person, 1-2 sentences. Conversational, like a real person describing what's wrong.",
+          "The patient's chief complaint IN GERMAN, in their own words, first person, 1-2 sentences. Conversational, like a real person describing what's wrong.",
       },
       history: {
         type: "string",
         description:
-          "History of present illness plus relevant past medical, social, and family history. 3-5 sentences, clinical but readable.",
+          "History of present illness plus relevant past medical, social, and family history, IN GERMAN. 3-5 sentences, clinical but readable. Use German medical terminology (Anamnese-Stil).",
       },
       examination: {
         type: "string",
         description:
-          "Physical examination findings including vital signs and pertinent positive/negative findings. Use realistic specific values.",
+          "Physical examination findings IN GERMAN including vital signs and pertinent positive/negative findings. Use realistic specific values and German clinical terminology.",
       },
       labs: {
         type: "string",
         description:
-          "Laboratory and/or imaging results with specific realistic values. Include the relevant abnormal findings.",
+          "Laboratory and/or imaging results IN GERMAN with specific realistic values. Include the relevant abnormal findings. Use German lab nomenclature and SI units where appropriate.",
       },
       correctDiagnosis: {
         type: "string",
-        description: "The single correct diagnosis for this case.",
+        description:
+          "The single correct diagnosis for this case, IN GERMAN (German medical term, Latin term acceptable where standard).",
       },
       diagnosisOptions: {
         type: "array",
         description:
-          "Exactly 4 plausible diagnosis options as multiple-choice answers. MUST include the correct diagnosis verbatim plus 3 clinically plausible distractors. Order randomly.",
+          "Exactly 4 plausible diagnosis options as multiple-choice answers, IN GERMAN. MUST include the correct diagnosis verbatim plus 3 clinically plausible distractors. Order randomly.",
         items: { type: "string" },
         minItems: 4,
         maxItems: 4,
@@ -58,7 +60,7 @@ const CASE_TOOL: Anthropic.Tool = {
       explanation: {
         type: "string",
         description:
-          "A 2-3 sentence teaching explanation of why the correct diagnosis fits, revealed after the player answers.",
+          "A 2-3 sentence teaching explanation IN GERMAN of why the correct diagnosis fits, revealed after the player answers. Suitable for Physikum/Staatsexamen preparation.",
       },
     },
     required: [
@@ -97,6 +99,9 @@ export async function POST(request: Request) {
     ? `Generate a realistic, educational clinical case based on the medical topic: "${topic}".`
     : `Generate a realistic, educational clinical case on a randomly chosen common or interesting medical condition. Vary the patient demographics and the body system involved.`;
 
+  // All patient-facing and clinical content must be in German for the target audience.
+  const germanInstruction = `Schreibe ALLE Inhalte des Falls auf Deutsch (Hauptbeschwerde, Anamnese, Untersuchung, Labor, Diagnosen und Erklärung). Verwende deutsche medizinische Fachterminologie auf dem Niveau, das deutsche Medizinstudierende in der Vorbereitung auf Physikum und Staatsexamen erwarten.`;
+
   const anthropic = new Anthropic({ apiKey });
 
   try {
@@ -110,7 +115,7 @@ export async function POST(request: Request) {
           role: "user",
           content: `${prompt}
 
-This is for a medical diagnosis game played by medical students. Make the case engaging and solvable from the provided information. The chief complaint should sound like a real person talking. Present findings as they would appear during a workup. Call the present_case tool with the structured result.`,
+This is for a medical diagnosis game played by German medical students preparing for the Physikum and Staatsexamen. Make the case engaging and solvable from the provided information. The chief complaint should sound like a real person talking. Present findings as they would appear during a workup. ${germanInstruction} Call the present_case tool with the structured result.`,
         },
       ],
     });

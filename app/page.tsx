@@ -43,12 +43,19 @@ function PatientFace({ expression }: { expression: Expression }) {
     sad: "M44 84 Q60 72 76 84", // frown
   };
 
+  const expressionLabel: Record<Expression, string> = {
+    neutral: "neutral",
+    pain: "schmerzverzerrt",
+    happy: "erleichtert",
+    sad: "traurig",
+  };
+
   return (
     <svg
       viewBox="0 0 120 120"
       className="h-28 w-28 drop-shadow-lg sm:h-32 sm:w-32"
       role="img"
-      aria-label={`Patient looking ${expression}`}
+      aria-label={`Patient wirkt ${expressionLabel[expression]}`}
     >
       <circle cx="60" cy="60" r="52" fill={skin} stroke="#0f172a" strokeWidth="3" />
       {/* eyes */}
@@ -120,13 +127,13 @@ export default function Home() {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error ?? "Something went wrong.");
+        throw new Error(data.error ?? "Etwas ist schiefgelaufen.");
       }
 
       setMedCase(data as MedCase);
       setPhase("playing");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(err instanceof Error ? err.message : "Etwas ist schiefgelaufen.");
       setPhase("start");
     }
   }
@@ -177,13 +184,13 @@ export default function Home() {
               <div className="font-mono text-lg font-bold text-emerald-400">
                 {totalScore}
               </div>
-              <div className="text-slate-500">SCORE</div>
+              <div className="text-slate-500">PUNKTE</div>
             </div>
             <div>
               <div className="font-mono text-lg font-bold text-sky-400">
                 {solved}/{played}
               </div>
-              <div className="text-slate-500">SOLVED</div>
+              <div className="text-slate-500">GELÖST</div>
             </div>
           </div>
         </header>
@@ -195,11 +202,14 @@ export default function Home() {
               <PatientFace expression="neutral" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold">Think you can diagnose it?</h2>
+              <h2 className="text-2xl font-bold">
+                Trauen Sie sich die Diagnose zu?
+              </h2>
               <p className="mt-2 max-w-md text-sm text-slate-400">
-                A new patient walks in. Question them, examine them, run labs —
-                then make the call. The fewer clues you need, the higher your
-                score.
+                Ein neuer Patient kommt herein. Befragen Sie ihn, untersuchen
+                Sie ihn, fordern Sie Labor an – und stellen Sie dann die
+                Diagnose. Je weniger Hinweise Sie brauchen, desto höher Ihre
+                Punktzahl.
               </p>
             </div>
             {error && (
@@ -212,7 +222,7 @@ export default function Home() {
               onClick={newPatient}
               className="rounded-xl bg-emerald-500 px-8 py-3 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950"
             >
-              See First Patient
+              Ersten Patienten ansehen
             </button>
           </div>
         )}
@@ -221,7 +231,7 @@ export default function Home() {
         {phase === "loading" && (
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
-            <p className="text-sm text-slate-400">A patient is checking in…</p>
+            <p className="text-sm text-slate-400">Ein Patient meldet sich an…</p>
           </div>
         )}
 
@@ -235,8 +245,8 @@ export default function Home() {
               </div>
               <div className="flex-1">
                 <div className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
-                  {medCase.patientName}, {medCase.age},{" "}
-                  {medCase.gender === "male" ? "M" : "F"}
+                  {medCase.patientName}, {medCase.age} Jahre,{" "}
+                  {medCase.gender === "male" ? "m" : "w"}
                 </div>
                 <div className="relative rounded-2xl rounded-tl-sm bg-slate-800 p-4 text-sm leading-relaxed text-slate-100 ring-1 ring-slate-700">
                   <span
@@ -251,17 +261,21 @@ export default function Home() {
             {/* Revealed investigation findings */}
             <div className="flex flex-col gap-3">
               {revealed.history && (
-                <Finding label="History" tone="sky" text={medCase.history} />
+                <Finding label="Anamnese" tone="sky" text={medCase.history} />
               )}
               {revealed.examination && (
                 <Finding
-                  label="Examination"
+                  label="Untersuchung"
                   tone="violet"
                   text={medCase.examination}
                 />
               )}
               {revealed.labs && (
-                <Finding label="Labs & Imaging" tone="amber" text={medCase.labs} />
+                <Finding
+                  label="Labor & Bildgebung"
+                  tone="amber"
+                  text={medCase.labs}
+                />
               )}
             </div>
 
@@ -272,26 +286,26 @@ export default function Home() {
                   done={revealed.history}
                   onClick={() => reveal("history")}
                 >
-                  💬 Ask History
+                  💬 Anamnese erheben
                 </ActionButton>
                 <ActionButton
                   done={revealed.examination}
                   onClick={() => reveal("examination")}
                 >
-                  🔍 Examine Patient
+                  🔍 Patient untersuchen
                 </ActionButton>
                 <ActionButton
                   done={revealed.labs}
                   onClick={() => reveal("labs")}
                 >
-                  🧪 Order Labs
+                  🧪 Labor anfordern
                 </ActionButton>
                 <button
                   type="button"
                   onClick={() => setShowDiagnosisPicker(true)}
                   className="rounded-xl bg-emerald-500 px-4 py-4 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 >
-                  🎯 Make Diagnosis
+                  🎯 Diagnose stellen
                 </button>
               </div>
             )}
@@ -301,14 +315,14 @@ export default function Home() {
               <div className="mt-auto flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold text-slate-300">
-                    What&apos;s your diagnosis?
+                    Wie lautet Ihre Diagnose?
                   </p>
                   <button
                     type="button"
                     onClick={() => setShowDiagnosisPicker(false)}
                     className="text-xs text-slate-500 hover:text-slate-300"
                   >
-                    ← back to workup
+                    ← zurück zur Abklärung
                   </button>
                 </div>
                 {medCase.diagnosisOptions.map((option) => (
@@ -340,7 +354,7 @@ export default function Home() {
                         isCorrect ? "text-emerald-400" : "text-red-400"
                       }`}
                     >
-                      {isCorrect ? "✓ Correct!" : "✗ Not quite"}
+                      {isCorrect ? "✓ Richtig!" : "✗ Leider falsch"}
                     </span>
                     <span className="font-mono text-2xl font-bold">
                       +{caseScore}
@@ -348,7 +362,7 @@ export default function Home() {
                   </div>
                   {!isCorrect && (
                     <p className="mt-2 text-sm text-slate-300">
-                      You said{" "}
+                      Sie sagten{" "}
                       <span className="font-semibold text-red-300">
                         {selected}
                       </span>
@@ -356,7 +370,7 @@ export default function Home() {
                     </p>
                   )}
                   <p className="mt-2 text-sm text-slate-200">
-                    The diagnosis was{" "}
+                    Die richtige Diagnose war{" "}
                     <span className="font-semibold text-emerald-300">
                       {medCase.correctDiagnosis}
                     </span>
@@ -371,7 +385,7 @@ export default function Home() {
                   onClick={newPatient}
                   className="rounded-xl bg-emerald-500 px-8 py-3 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 >
-                  Next Patient →
+                  Nächster Patient →
                 </button>
               </div>
             )}
@@ -428,7 +442,7 @@ function ActionButton({
           : "bg-slate-800 text-slate-100 ring-slate-700 hover:bg-slate-700"
       }`}
     >
-      {done ? "✓ Done" : children}
+      {done ? "✓ Erledigt" : children}
     </button>
   );
 }

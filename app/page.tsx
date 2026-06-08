@@ -168,10 +168,10 @@ export default function Home() {
     phase === "result" ? (isCorrect ? "happy" : "sad") : "pain";
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <main className="mx-auto flex min-h-screen max-w-2xl flex-col px-5 py-10 sm:py-14">
+    <div className="min-h-dvh bg-slate-950 text-slate-100">
+      <main className="mx-auto flex min-h-dvh max-w-2xl flex-col px-4 py-8 sm:px-5 sm:py-14">
         {/* Header / scoreboard */}
-        <header className="mb-8 flex items-center justify-between">
+        <header className="mb-6 flex items-center justify-between gap-3 sm:mb-8">
           <div className="flex items-center gap-2">
             <span className="text-2xl">🩺</span>
             <h1 className="text-xl font-bold tracking-tight">
@@ -220,7 +220,7 @@ export default function Home() {
             <button
               type="button"
               onClick={newPatient}
-              className="rounded-xl bg-emerald-500 px-8 py-3 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+              className="w-full max-w-xs rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950 active:bg-emerald-400"
             >
               Ersten Patienten aufrufen
             </button>
@@ -240,19 +240,20 @@ export default function Home() {
         {/* PLAYING + RESULT share the patient layout */}
         {(phase === "playing" || phase === "result") && medCase && (
           <div className="flex flex-1 flex-col gap-6">
-            {/* Patient + speech bubble */}
-            <div className="flex items-start gap-4">
+            {/* Patient + speech bubble — stacks vertically on mobile */}
+            <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-start sm:gap-4">
               <div className="shrink-0 rounded-full bg-slate-900 p-3 ring-1 ring-slate-800">
                 <PatientFace expression={expression} />
               </div>
-              <div className="flex-1">
+              <div className="w-full text-center sm:flex-1 sm:text-left">
                 <div className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                   {medCase.patientName}, {medCase.age} Jahre,{" "}
                   {medCase.gender === "male" ? "m" : "w"}
                 </div>
-                <div className="relative rounded-2xl rounded-tl-sm bg-slate-800 p-4 text-sm leading-relaxed text-slate-100 ring-1 ring-slate-700">
+                <div className="relative rounded-2xl rounded-t-sm bg-slate-800 p-4 text-sm leading-relaxed text-slate-100 ring-1 ring-slate-700 sm:rounded-t-2xl sm:rounded-tl-sm">
+                  {/* tail: points up on mobile (avatar above), left on desktop (avatar beside) */}
                   <span
-                    className="absolute -left-1.5 top-4 h-3 w-3 rotate-45 bg-slate-800"
+                    className="absolute left-1/2 -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 bg-slate-800 sm:left-auto sm:top-4 sm:translate-x-0 sm:-left-1.5"
                     aria-hidden
                   />
                   &ldquo;{medCase.chiefComplaint}&rdquo;
@@ -283,7 +284,7 @@ export default function Home() {
 
             {/* PLAYING controls */}
             {phase === "playing" && !showDiagnosisPicker && (
-              <div className="mt-auto grid grid-cols-2 gap-3">
+              <div className="mt-auto grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <ActionButton
                   done={revealed.history}
                   onClick={() => reveal("history")}
@@ -322,9 +323,9 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setShowDiagnosisPicker(false)}
-                    className="text-xs text-slate-500 hover:text-slate-300"
+                    className="-mr-1 shrink-0 rounded-lg px-2 py-1 text-xs text-slate-500 hover:text-slate-300"
                   >
-                    ← zurück zur Abklärung
+                    ← zurück
                   </button>
                 </div>
                 {medCase.diagnosisOptions.map((option) => (
@@ -332,7 +333,7 @@ export default function Home() {
                     key={option}
                     type="button"
                     onClick={() => submitDiagnosis(option)}
-                    className="rounded-xl bg-slate-800 px-4 py-3 text-left text-sm font-medium text-slate-100 ring-1 ring-slate-700 transition hover:bg-slate-700 hover:ring-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    className="min-h-[56px] rounded-xl bg-slate-800 px-4 py-4 text-left text-sm font-medium text-slate-100 ring-1 ring-slate-700 transition hover:bg-slate-700 hover:ring-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-400 active:bg-slate-700"
                   >
                     {option}
                   </button>
@@ -385,7 +386,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={newPatient}
-                  className="rounded-xl bg-emerald-500 px-8 py-3 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                  className="w-full rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 active:bg-emerald-400"
                 >
                   Nächster Patient →
                 </button>
@@ -438,10 +439,10 @@ function ActionButton({
       type="button"
       onClick={onClick}
       disabled={done}
-      className={`rounded-xl px-4 py-4 text-sm font-semibold ring-1 transition focus:outline-none focus:ring-2 focus:ring-emerald-400 ${
+      className={`min-h-[56px] rounded-xl px-4 py-4 text-sm font-semibold ring-1 transition focus:outline-none focus:ring-2 focus:ring-emerald-400 ${
         done
           ? "cursor-not-allowed bg-slate-900 text-slate-600 ring-slate-800"
-          : "bg-slate-800 text-slate-100 ring-slate-700 hover:bg-slate-700"
+          : "bg-slate-800 text-slate-100 ring-slate-700 hover:bg-slate-700 active:bg-slate-700"
       }`}
     >
       {done ? "✓ Erledigt" : children}

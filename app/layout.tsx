@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +16,13 @@ export const metadata: Metadata = {
   title: "MedCase.AI – Diagnosespiel für Medizinstudierende",
   description:
     "Übe klinische Fallbeispiele für Physikum und Staatsexamen. Befrage, untersuche und diagnostiziere Patienten – auf Deutsch.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Match the dark UI so the iOS status bar / browser chrome blends in.
+  themeColor: "#020617",
 };
 
 export default function RootLayout({

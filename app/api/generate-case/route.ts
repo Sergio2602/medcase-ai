@@ -27,32 +27,32 @@ const CASE_TOOL: Anthropic.Tool = {
       chiefComplaint: {
         type: "string",
         description:
-          "The patient's chief complaint IN GERMAN, in their own words, first person, 1-2 sentences. Conversational, like a real person describing what's wrong.",
+          "Vorstellungsgrund in der ALLTAGSSPRACHE des Patienten (Ich-Form, 1-2 Sätze), so wie ihn ein echter deutscher Patient der Ärztin/dem Arzt schildern würde – KEINE Fachsprache, ruhig umgangssprachlich (z. B. 'Mir ist seit heute Morgen ständig schlecht und mein Herz rast.'). Authentisches gesprochenes Deutsch, keine Übersetzung aus dem Englischen.",
       },
       history: {
         type: "string",
         description:
-          "History of present illness plus relevant past medical, social, and family history, IN GERMAN. 3-5 sentences, clinical but readable. Use German medical terminology (Anamnese-Stil).",
+          "Anamnese (jetzige Anamnese, relevante Vor-, Sozial- und Familienanamnese, Medikation, Noxen) im Dokumentationsstil einer deutschen Uniklinik. Verwende übliche Abkürzungen wie 'Z. n.' (Zustand nach), 'V. a.', 'a. e.', 'bei Aufnahme'. Nüchterner, präziser klinischer Stil, 3-5 Sätze.",
       },
       examination: {
         type: "string",
         description:
-          "Physical examination findings IN GERMAN including vital signs and pertinent positive/negative findings. Use realistic specific values and German clinical terminology.",
+          "Körperlicher Untersuchungsbefund im Uniklinik-Stil mit Vitalparametern in deutscher Notation (z. B. 'RR 90/60 mmHg, HF 110/min, AF 22/min, Temp. 38,7 °C, SpO2 94 % unter Raumluft') sowie relevanten positiven und negativen Befunden nach Organsystemen. Authentische deutsche Befundsprache (z. B. 'Abdomen weich, Druckschmerz im rechten Unterbauch, lebhafte Darmgeräusche').",
       },
       labs: {
         type: "string",
         description:
-          "Laboratory and/or imaging results IN GERMAN with specific realistic values. Include the relevant abnormal findings. Use German lab nomenclature and SI units where appropriate.",
+          "Labor- und ggf. Bildgebungsbefunde mit deutschen Bezeichnungen und in Deutschland üblichen Einheiten (Leukozyten in /nl, CRP in mg/l, Kreatinin in mg/dl, Troponin in ng/l etc.). Pathologische Werte kennzeichnen (↑/↓). Bildgebung im Befundstil (z. B. 'CT-Abdomen: ...'). Realistische, zum Fall passende Werte.",
       },
       correctDiagnosis: {
         type: "string",
         description:
-          "The single correct diagnosis for this case, IN GERMAN (German medical term, Latin term acceptable where standard).",
+          "Die eine korrekte Diagnose als deutscher Fachbegriff, wie er in der Uniklinik dokumentiert würde (lateinische Termini wo üblich, z. B. 'Appendizitis', 'Lungenarterienembolie').",
       },
       diagnosisOptions: {
         type: "array",
         description:
-          "Exactly 4 plausible diagnosis options as multiple-choice answers, IN GERMAN. MUST include the correct diagnosis verbatim plus 3 clinically plausible distractors. Order randomly.",
+          "Genau 4 plausible Diagnose-Optionen als Multiple-Choice-Antworten in deutscher Fachsprache. MUSS die korrekte Diagnose wortgleich enthalten plus 3 klinisch sinnvolle Differenzialdiagnosen (echte Verwechslungskandidaten, kein Strohmann). Zufällige Reihenfolge.",
         items: { type: "string" },
         minItems: 4,
         maxItems: 4,
@@ -60,7 +60,7 @@ const CASE_TOOL: Anthropic.Tool = {
       explanation: {
         type: "string",
         description:
-          "A 2-3 sentence teaching explanation IN GERMAN of why the correct diagnosis fits, revealed after the player answers. Suitable for Physikum/Staatsexamen preparation.",
+          "Kurze Lernerklärung (2-3 Sätze) auf Deutsch, warum die Diagnose passt und welche Befunde wegweisend sind – im Ton einer prägnanten Erläuterung für die Vorbereitung auf Physikum und Staatsexamen.",
       },
     },
     required: [
@@ -99,8 +99,8 @@ export async function POST(request: Request) {
     ? `Generate a realistic, educational clinical case based on the medical topic: "${topic}".`
     : `Generate a realistic, educational clinical case on a randomly chosen common or interesting medical condition. Vary the patient demographics and the body system involved.`;
 
-  // All patient-facing and clinical content must be in German for the target audience.
-  const germanInstruction = `Schreibe ALLE Inhalte des Falls auf Deutsch (Hauptbeschwerde, Anamnese, Untersuchung, Labor, Diagnosen und Erklärung). Verwende deutsche medizinische Fachterminologie auf dem Niveau, das deutsche Medizinstudierende in der Vorbereitung auf Physikum und Staatsexamen erwarten.`;
+  // All patient-facing and clinical content must be in authentic German for the target audience.
+  const germanInstruction = `Schreibe ALLE Inhalte des Falls auf Deutsch im Stil der klinischen Dokumentation einer deutschen Universitätsklinik (Uniklinik-Stil). Verwende authentische deutsche Fachterminologie und gebräuchliche Abkürzungen (RR, HF, AF, Temp., SpO2, Z. n., V. a., a. e., DD) sowie in Deutschland übliche Laboreinheiten. Formuliere genau so, wie deutsche Ärztinnen, Ärzte und Medizinstudierende im klinischen Alltag tatsächlich dokumentieren und sprechen – auf keinen Fall wörtliche Übersetzungen aus dem Englischen. Lediglich der Vorstellungsgrund (chiefComplaint) ist in der Alltagssprache des Patienten zu formulieren, nicht in Fachsprache. Niveau: Vorbereitung auf Physikum und Staatsexamen.`;
 
   const anthropic = new Anthropic({ apiKey });
 

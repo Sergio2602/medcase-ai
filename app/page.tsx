@@ -203,13 +203,13 @@ export default function Home() {
             </div>
             <div>
               <h2 className="text-2xl font-bold">
-                Trauen Sie sich die Diagnose zu?
+                Kriegst du die Diagnose raus?
               </h2>
               <p className="mt-2 max-w-md text-sm text-slate-400">
-                Ein neuer Patient kommt herein. Befragen Sie ihn, untersuchen
-                Sie ihn, fordern Sie Labor an – und stellen Sie dann die
-                Diagnose. Je weniger Hinweise Sie brauchen, desto höher Ihre
-                Punktzahl.
+                Gleich stellt sich ein Patient vor. Erhebe die Anamnese,
+                untersuche ihn, fordere Labor an – und leg dich auf eine
+                Diagnose fest. Je weniger Hinweise du brauchst, desto mehr
+                Punkte gibt&apos;s.
               </p>
             </div>
             {error && (
@@ -222,7 +222,7 @@ export default function Home() {
               onClick={newPatient}
               className="rounded-xl bg-emerald-500 px-8 py-3 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950"
             >
-              Ersten Patienten ansehen
+              Ersten Patienten aufrufen
             </button>
           </div>
         )}
@@ -231,7 +231,9 @@ export default function Home() {
         {phase === "loading" && (
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
-            <p className="text-sm text-slate-400">Ein Patient meldet sich an…</p>
+            <p className="text-sm text-slate-400">
+              Nächster Patient wird aufgerufen…
+            </p>
           </div>
         )}
 
@@ -265,7 +267,7 @@ export default function Home() {
               )}
               {revealed.examination && (
                 <Finding
-                  label="Untersuchung"
+                  label="Körperliche Untersuchung"
                   tone="violet"
                   text={medCase.examination}
                 />
@@ -315,7 +317,7 @@ export default function Home() {
               <div className="mt-auto flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold text-slate-300">
-                    Wie lautet Ihre Diagnose?
+                    Deine Verdachtsdiagnose?
                   </p>
                   <button
                     type="button"
@@ -362,15 +364,15 @@ export default function Home() {
                   </div>
                   {!isCorrect && (
                     <p className="mt-2 text-sm text-slate-300">
-                      Sie sagten{" "}
+                      Du hattest{" "}
                       <span className="font-semibold text-red-300">
                         {selected}
-                      </span>
-                      .
+                      </span>{" "}
+                      getippt.
                     </p>
                   )}
                   <p className="mt-2 text-sm text-slate-200">
-                    Die richtige Diagnose war{" "}
+                    Die richtige Diagnose lautet{" "}
                     <span className="font-semibold text-emerald-300">
                       {medCase.correctDiagnosis}
                     </span>

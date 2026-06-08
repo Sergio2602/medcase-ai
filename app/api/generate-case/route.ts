@@ -4,6 +4,78 @@ import { NextResponse } from "next/server";
 // claude-sonnet-4-20250514 was deprecated; claude-sonnet-4-6 is the current Sonnet 4 successor.
 const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
 
+// Force the model to emit a structured case via a tool, so the game UI can
+// render each section into its own slot instead of parsing freeform prose.
+const CASE_TOOL: Anthropic.Tool = {
+  name: "present_case",
+  description:
+    "Return a single structured clinical case for the diagnosis game.",
+  input_schema: {
+    type: "object",
+    properties: {
+      patientName: {
+        type: "string",
+        description: "A realistic first name for the patient.",
+      },
+      age: { type: "integer", description: "Patient age in years." },
+      gender: {
+        type: "string",
+        enum: ["male", "female"],
+        description: "Patient gender.",
+      },
+      chiefComplaint: {
+        type: "string",
+        description:
+          "The patient's chief complaint in their own words, first person, 1-2 sentences. Conversational, like a real person describing what's wrong.",
+      },
+      history: {
+        type: "string",
+        description:
+          "History of present illness plus relevant past medical, social, and family history. 3-5 sentences, clinical but readable.",
+      },
+      examination: {
+        type: "string",
+        description:
+          "Physical examination findings including vital signs and pertinent positive/negative findings. Use realistic specific values.",
+      },
+      labs: {
+        type: "string",
+        description:
+          "Laboratory and/or imaging results with specific realistic values. Include the relevant abnormal findings.",
+      },
+      correctDiagnosis: {
+        type: "string",
+        description: "The single correct diagnosis for this case.",
+      },
+      diagnosisOptions: {
+        type: "array",
+        description:
+          "Exactly 4 plausible diagnosis options as multiple-choice answers. MUST include the correct diagnosis verbatim plus 3 clinically plausible distractors. Order randomly.",
+        items: { type: "string" },
+        minItems: 4,
+        maxItems: 4,
+      },
+      explanation: {
+        type: "string",
+        description:
+          "A 2-3 sentence teaching explanation of why the correct diagnosis fits, revealed after the player answers.",
+      },
+    },
+    required: [
+      "patientName",
+      "age",
+      "gender",
+      "chiefComplaint",
+      "history",
+      "examination",
+      "labs",
+      "correctDiagnosis",
+      "diagnosisOptions",
+      "explanation",
+    ],
+  },
+};
+
 export async function POST(request: Request) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -13,20 +85,17 @@ export async function POST(request: Request) {
     );
   }
 
-  let topic: string;
+  let topic = "";
   try {
     const body = await request.json();
     topic = typeof body.topic === "string" ? body.topic.trim() : "";
   } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+    // No body / invalid body is fine — we'll generate a random case.
   }
 
-  if (!topic) {
-    return NextResponse.json(
-      { error: "Medical topic is required." },
-      { status: 400 }
-    );
-  }
+  const prompt = topic
+    ? `Generate a realistic, educational clinical case based on the medical topic: "${topic}".`
+    : `Generate a realistic, educational clinical case on a randomly chosen common or interesting medical condition. Vary the patient demographics and the body system involved.`;
 
   const anthropic = new Anthropic({ apiKey });
 
@@ -34,33 +103,30 @@ export async function POST(request: Request) {
     const message = await anthropic.messages.create({
       model: MODEL,
       max_tokens: 2048,
+      tools: [CASE_TOOL],
+      tool_choice: { type: "tool", name: "present_case" },
       messages: [
         {
           role: "user",
-          content: `Generate a realistic, educational clinical case based on the following medical topic: "${topic}".
+          content: `${prompt}
 
-The case must include all of the following sections with clear headings:
-1. Patient Demographics (age and gender)
-2. Chief Complaint
-3. History of Present Illness
-4. Past Medical History
-5. Physical Examination Findings
-6. Laboratory Results
-
-Write in a clinical tone suitable for medical students. Use specific, realistic values (vitals, labs, exam findings). Do not include the diagnosis or management plan — present the case as it would appear before workup is complete.`,
+This is for a medical diagnosis game played by medical students. Make the case engaging and solvable from the provided information. The chief complaint should sound like a real person talking. Present findings as they would appear during a workup. Call the present_case tool with the structured result.`,
         },
       ],
     });
 
-    const textBlock = message.content.find((block) => block.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
+    const toolBlock = message.content.find(
+      (block) => block.type === "tool_use" && block.name === "present_case"
+    );
+
+    if (!toolBlock || toolBlock.type !== "tool_use") {
       return NextResponse.json(
-        { error: "No text response from the model." },
+        { error: "No structured case returned from the model." },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ case: textBlock.text });
+    return NextResponse.json(toolBlock.input);
   } catch (error) {
     console.error("Anthropic API error:", error);
 

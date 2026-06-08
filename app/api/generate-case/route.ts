@@ -4,6 +4,32 @@ import { NextResponse } from "next/server";
 // claude-sonnet-4-20250514 was deprecated; claude-sonnet-4-6 is the current Sonnet 4 successor.
 const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
 
+// Never cache this route — every request must produce a fresh case.
+export const dynamic = "force-dynamic";
+
+// Rotating a random clinical focus per request stops the model from
+// collapsing to the same "random" case (e.g. always appendicitis) every time.
+const FOCUS_AREAS = [
+  "Kardiologie",
+  "Pneumologie / Atemwege",
+  "Gastroenterologie / Abdomen",
+  "Nephrologie / Urologie",
+  "Neurologie",
+  "Endokrinologie / Stoffwechsel",
+  "Infektiologie",
+  "Hämatologie / Onkologie",
+  "Rheumatologie / Immunologie",
+  "Gynäkologie / Geburtshilfe",
+  "Dermatologie",
+  "Pädiatrie",
+  "Notfall- / Intensivmedizin",
+  "Allgemein- / Viszeralchirurgie",
+  "Hals-Nasen-Ohren-Heilkunde",
+  "Psychiatrie / Psychosomatik",
+  "Muskuloskelettal / Orthopädie",
+  "Augenheilkunde",
+];
+
 // Force the model to emit a structured case via a tool, so the game UI can
 // render each section into its own slot instead of parsing freeform prose.
 const CASE_TOOL: Anthropic.Tool = {
@@ -112,9 +138,14 @@ export async function POST(request: Request) {
     // No body / invalid body is fine — we'll generate a random case at the default level.
   }
 
+  // Pick a fresh focus + seed each call so consecutive "Nächster Patient"
+  // requests don't return the same condition.
+  const focus = FOCUS_AREAS[Math.floor(Math.random() * FOCUS_AREAS.length)];
+  const variationSeed = Math.floor(Math.random() * 1_000_000);
+
   const prompt = topic
     ? `Generate a realistic, educational clinical case based on the medical topic: "${topic}".`
-    : `Generate a realistic, educational clinical case on a randomly chosen common or interesting medical condition. Vary the patient demographics and the body system involved.`;
+    : `Generate a realistic, educational clinical case from the field of ${focus}. Pick a DIFFERENT condition than the most obvious textbook example, and vary the patient's age, gender, and presentation. Variation seed: ${variationSeed} (use it to ensure this case differs from previous ones).`;
 
   // All patient-facing and clinical content must be in authentic German for the target audience.
   const germanInstruction = `Schreibe ALLE Inhalte des Falls auf Deutsch im Stil der klinischen Dokumentation einer deutschen Universitätsklinik (Uniklinik-Stil). Verwende authentische deutsche Fachterminologie und gebräuchliche Abkürzungen (RR, HF, AF, Temp., SpO2, Z. n., V. a., a. e., DD) sowie in Deutschland übliche Laboreinheiten. Formuliere genau so, wie deutsche Ärztinnen, Ärzte und Medizinstudierende im klinischen Alltag tatsächlich dokumentieren und sprechen – auf keinen Fall wörtliche Übersetzungen aus dem Englischen. Lediglich der Vorstellungsgrund (chiefComplaint) ist in der Alltagssprache des Patienten zu formulieren, nicht in Fachsprache. Niveau: Vorbereitung auf Physikum und Staatsexamen.`;
@@ -125,6 +156,7 @@ export async function POST(request: Request) {
     const message = await anthropic.messages.create({
       model: MODEL,
       max_tokens: 2048,
+      temperature: 1,
       system: DIFFICULTY_INSTRUCTIONS[difficulty],
       tools: [CASE_TOOL],
       tool_choice: { type: "tool", name: "present_case" },

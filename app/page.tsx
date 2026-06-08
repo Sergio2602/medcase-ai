@@ -181,6 +181,7 @@ export default function Home() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(level ? { difficulty: level } : {}),
+        cache: "no-store",
       });
 
       const data = await response.json();

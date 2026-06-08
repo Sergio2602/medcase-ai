@@ -78,6 +78,15 @@ const CASE_TOOL: Anthropic.Tool = {
   },
 };
 
+type Difficulty = "vorklinik" | "klinik" | "examen";
+
+// Per-level instruction passed as the system prompt to steer case complexity.
+const DIFFICULTY_INSTRUCTIONS: Record<Difficulty, string> = {
+  vorklinik: `SCHWIERIGKEITSGRAD: Vorklinik (Semester 1-4). Verwende einfache, klare deutsche Sprache. Wähle eine häufige Erkrankung mit klassischen Leitsymptomen (z. B. Appendizitis, Harnwegsinfekt, ambulant erworbene Pneumonie, Gastroenteritis). Keine Komplikationen, keine relevanten Komorbiditäten. Die Befunde sind eindeutig und lehrbuchhaft, die richtige Diagnose gut erkennbar. Die Differenzialdiagnosen (Distraktoren) sind klar abgrenzbar.`,
+  klinik: `SCHWIERIGKEITSGRAD: Klinik (Semester 5-8, Famulatur). Verwende durchgehend medizinische Fachterminologie. Der Patient präsentiert mehrere Symptome; eine echte differenzialdiagnostische Überlegung ist erforderlich. Atypische Verläufe sind möglich. Labor und körperliche Untersuchung sind für die Diagnosestellung entscheidend. Eine gewisse diagnostische Mehrdeutigkeit ist ausdrücklich erwünscht.`,
+  examen: `SCHWIERIGKEITSGRAD: PJ / Staatsexamen. Nutze die volle Uniklinik-Dokumentation. Konstruiere einen komplexen Fall mit Komorbiditäten und ggf. Polypharmazie. Die Präsentation ist atypisch oder maskiert, die Diagnose darf selten sein. Die Informationen sind teils unvollständig; erzwinge echtes differenzialdiagnostisches Denken. Die Distraktoren müssen anspruchsvolle, hochplausible Differenzialdiagnosen sein, die nur durch genaue Befundinterpretation auszuschließen sind.`,
+};
+
 export async function POST(request: Request) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -88,11 +97,19 @@ export async function POST(request: Request) {
   }
 
   let topic = "";
+  let difficulty: Difficulty = "klinik";
   try {
     const body = await request.json();
     topic = typeof body.topic === "string" ? body.topic.trim() : "";
+    if (
+      body.difficulty === "vorklinik" ||
+      body.difficulty === "klinik" ||
+      body.difficulty === "examen"
+    ) {
+      difficulty = body.difficulty;
+    }
   } catch {
-    // No body / invalid body is fine — we'll generate a random case.
+    // No body / invalid body is fine — we'll generate a random case at the default level.
   }
 
   const prompt = topic
@@ -108,6 +125,7 @@ export async function POST(request: Request) {
     const message = await anthropic.messages.create({
       model: MODEL,
       max_tokens: 2048,
+      system: DIFFICULTY_INSTRUCTIONS[difficulty],
       tools: [CASE_TOOL],
       tool_choice: { type: "tool", name: "present_case" },
       messages: [

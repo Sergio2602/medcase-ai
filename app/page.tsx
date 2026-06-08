@@ -17,9 +17,59 @@ type MedCase = {
   explanation: string;
 };
 
-type Phase = "start" | "loading" | "playing" | "result";
+type Phase = "start" | "difficulty" | "loading" | "playing" | "result";
 
 type InvestigationKey = "history" | "examination" | "labs";
+
+type Difficulty = "vorklinik" | "klinik" | "examen";
+
+type DifficultyLevel = {
+  id: Difficulty;
+  icon: string;
+  title: string;
+  short: string;
+  audience: string;
+  bullets: string[];
+};
+
+const DIFFICULTIES: DifficultyLevel[] = [
+  {
+    id: "vorklinik",
+    icon: "🩺",
+    title: "Vorklinik",
+    short: "Vorklinik",
+    audience: "Semester 1–4",
+    bullets: [
+      "Klassische Leitsymptome, keine Komplikationen",
+      "Häufige Erkrankungen (Appendizitis, HWI, Pneumonie)",
+      "Einfache Sprache, eindeutige Befunde",
+    ],
+  },
+  {
+    id: "klinik",
+    icon: "🏥",
+    title: "Klinik",
+    short: "Klinik",
+    audience: "Semester 5–8, Famulatur",
+    bullets: [
+      "Mehrere Symptome, Differentialdiagnosen erforderlich",
+      "Atypische Verläufe möglich",
+      "Labor und Untersuchung entscheidend",
+    ],
+  },
+  {
+    id: "examen",
+    icon: "🎓",
+    title: "PJ / Staatsexamen",
+    short: "Examen",
+    audience: "PJ, Examensvorbereitung",
+    bullets: [
+      "Komplexe Fälle mit Komorbiditäten",
+      "Seltene und maskierte Diagnosen",
+      "Zeitdruck, unvollständige Informationen",
+    ],
+  },
+];
 
 const INVESTIGATION_COST = 10;
 const BASE_SCORE = 100;
@@ -107,9 +157,17 @@ export default function Home() {
   const [solved, setSolved] = useState(0);
   const [played, setPlayed] = useState(0);
 
+  const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
+  // Card highlighted on the selection screen before the player confirms.
+  const [pendingDifficulty, setPendingDifficulty] = useState<Difficulty | null>(
+    null
+  );
+
+  const difficultyMeta = DIFFICULTIES.find((d) => d.id === difficulty) ?? null;
+
   const isCorrect = selected !== null && selected === medCase?.correctDiagnosis;
 
-  async function newPatient() {
+  async function newPatient(level: Difficulty | null = difficulty) {
     setPhase("loading");
     setError(null);
     setMedCase(null);
@@ -122,7 +180,7 @@ export default function Home() {
       const response = await fetch("/api/generate-case", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify(level ? { difficulty: level } : {}),
       });
 
       const data = await response.json();
@@ -134,7 +192,12 @@ export default function Home() {
       setPhase("playing");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Etwas ist schiefgelaufen.");
-      setPhase("start");
+      if (level) {
+        setPendingDifficulty(level);
+        setPhase("difficulty");
+      } else {
+        setPhase("start");
+      }
     }
   }
 
@@ -179,18 +242,29 @@ export default function Home() {
               <span className="text-emerald-400">.AI</span>
             </h1>
           </div>
-          <div className="flex gap-4 text-right text-xs">
-            <div>
-              <div className="font-mono text-lg font-bold text-emerald-400">
-                {totalScore}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {difficultyMeta &&
+              (phase === "playing" ||
+                phase === "result" ||
+                phase === "loading") && (
+                <span className="flex items-center gap-1 rounded-full bg-slate-800 px-2.5 py-1 text-xs font-medium text-slate-300 ring-1 ring-slate-700">
+                  <span aria-hidden>{difficultyMeta.icon}</span>
+                  <span>{difficultyMeta.short}</span>
+                </span>
+              )}
+            <div className="flex gap-4 text-right text-xs">
+              <div>
+                <div className="font-mono text-lg font-bold text-emerald-400">
+                  {totalScore}
+                </div>
+                <div className="text-slate-500">PUNKTE</div>
               </div>
-              <div className="text-slate-500">PUNKTE</div>
-            </div>
-            <div>
-              <div className="font-mono text-lg font-bold text-sky-400">
-                {solved}/{played}
+              <div>
+                <div className="font-mono text-lg font-bold text-sky-400">
+                  {solved}/{played}
+                </div>
+                <div className="text-slate-500">GELÖST</div>
               </div>
-              <div className="text-slate-500">GELÖST</div>
             </div>
           </div>
         </header>
@@ -219,11 +293,94 @@ export default function Home() {
             )}
             <button
               type="button"
-              onClick={newPatient}
+              onClick={() => {
+                setError(null);
+                setPendingDifficulty(difficulty);
+                setPhase("difficulty");
+              }}
               className="w-full max-w-xs rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950 active:bg-emerald-400"
             >
               Ersten Patienten aufrufen
             </button>
+          </div>
+        )}
+
+        {/* DIFFICULTY SELECTION */}
+        {phase === "difficulty" && (
+          <div className="flex flex-1 flex-col">
+            <div className="mb-6 text-center">
+              <h2 className="text-2xl font-bold">
+                Wähle deinen Schwierigkeitsgrad
+              </h2>
+              <p className="mt-2 text-sm text-slate-400">
+                Die Fälle passen sich deinem Ausbildungsstand an.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {DIFFICULTIES.map((level) => {
+                const active = pendingDifficulty === level.id;
+                return (
+                  <button
+                    key={level.id}
+                    type="button"
+                    onClick={() => setPendingDifficulty(level.id)}
+                    aria-pressed={active}
+                    className={`flex flex-col rounded-2xl border-2 p-5 text-left transition focus:outline-none focus:ring-2 focus:ring-emerald-400 ${
+                      active
+                        ? "border-emerald-500 bg-emerald-500/10"
+                        : "border-slate-800 bg-slate-900 hover:border-slate-700"
+                    }`}
+                  >
+                    <span className="text-4xl" aria-hidden>
+                      {level.icon}
+                    </span>
+                    <span className="mt-3 text-lg font-bold">
+                      {level.title}
+                    </span>
+                    <span className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+                      Für wen: {level.audience}
+                    </span>
+                    <ul className="mt-4 flex flex-col gap-2 text-sm text-slate-300">
+                      {level.bullets.map((bullet) => (
+                        <li key={bullet} className="flex gap-2">
+                          <span
+                            className={
+                              active ? "text-emerald-400" : "text-slate-500"
+                            }
+                            aria-hidden
+                          >
+                            ›
+                          </span>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </button>
+                );
+              })}
+            </div>
+
+            {error && (
+              <p className="mt-4 text-center text-sm text-red-400" role="alert">
+                {error}
+              </p>
+            )}
+
+            {pendingDifficulty && (
+              <div className="mt-6 flex justify-center sm:mt-8">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDifficulty(pendingDifficulty);
+                    newPatient(pendingDifficulty);
+                  }}
+                  className="w-full max-w-xs rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 active:bg-emerald-400"
+                >
+                  Weiter →
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -385,7 +542,7 @@ export default function Home() {
                 </div>
                 <button
                   type="button"
-                  onClick={newPatient}
+                  onClick={() => newPatient()}
                   className="w-full rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 active:bg-emerald-400"
                 >
                   Nächster Patient →

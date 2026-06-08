@@ -17,7 +17,7 @@ type MedCase = {
   explanation: string;
 };
 
-type Phase = "start" | "difficulty" | "loading" | "playing" | "result";
+type Phase = "start" | "loading" | "playing" | "result";
 
 type InvestigationKey = "history" | "examination" | "labs";
 
@@ -192,12 +192,10 @@ export default function Home() {
       setPhase("playing");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Etwas ist schiefgelaufen.");
-      if (level) {
-        setPendingDifficulty(level);
-        setPhase("difficulty");
-      } else {
-        setPhase("start");
-      }
+      // Return to the start screen with the chosen level still highlighted so
+      // the player can retry.
+      if (level) setPendingDifficulty(level);
+      setPhase("start");
     }
   }
 
@@ -269,53 +267,24 @@ export default function Home() {
           </div>
         </header>
 
-        {/* START */}
+        {/* START — intro + difficulty selection, then the start button */}
         {phase === "start" && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-            <div className="rounded-full bg-slate-900 p-6 ring-1 ring-slate-800">
-              <PatientFace expression="neutral" />
-            </div>
-            <div>
+          <div className="flex flex-1 flex-col">
+            <div className="mb-6 text-center">
               <h2 className="text-2xl font-bold">
                 Kriegst du die Diagnose raus?
               </h2>
-              <p className="mt-2 max-w-md text-sm text-slate-400">
+              <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
                 Gleich stellt sich ein Patient vor. Erhebe die Anamnese,
                 untersuche ihn, fordere Labor an – und leg dich auf eine
                 Diagnose fest. Je weniger Hinweise du brauchst, desto mehr
                 Punkte gibt&apos;s.
               </p>
             </div>
-            {error && (
-              <p className="text-sm text-red-400" role="alert">
-                {error}
-              </p>
-            )}
-            <button
-              type="button"
-              onClick={() => {
-                setError(null);
-                setPendingDifficulty(difficulty);
-                setPhase("difficulty");
-              }}
-              className="w-full max-w-xs rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950 active:bg-emerald-400"
-            >
-              Ersten Patienten aufrufen
-            </button>
-          </div>
-        )}
 
-        {/* DIFFICULTY SELECTION */}
-        {phase === "difficulty" && (
-          <div className="flex flex-1 flex-col">
-            <div className="mb-6 text-center">
-              <h2 className="text-2xl font-bold">
-                Wähle deinen Schwierigkeitsgrad
-              </h2>
-              <p className="mt-2 text-sm text-slate-400">
-                Die Fälle passen sich deinem Ausbildungsstand an.
-              </p>
-            </div>
+            <p className="mb-3 text-center text-sm font-semibold text-slate-300">
+              Wähle deinen Schwierigkeitsgrad
+            </p>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               {DIFFICULTIES.map((level) => {
@@ -375,9 +344,9 @@ export default function Home() {
                     setDifficulty(pendingDifficulty);
                     newPatient(pendingDifficulty);
                   }}
-                  className="w-full max-w-xs rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 active:bg-emerald-400"
+                  className="w-full max-w-xs rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950 active:bg-emerald-400"
                 >
-                  Weiter →
+                  Ersten Patienten aufrufen
                 </button>
               </div>
             )}

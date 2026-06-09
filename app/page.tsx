@@ -4,6 +4,21 @@ import { useState } from "react";
 
 type Expression = "neutral" | "pain" | "happy" | "sad";
 
+type LabFlag = "high" | "low" | "normal";
+
+type LabValue = {
+  name: string;
+  value: string;
+  unit: string;
+  reference: string;
+  flag: LabFlag;
+};
+
+type LabCategory = {
+  category: string;
+  values: LabValue[];
+};
+
 type MedCase = {
   patientName: string;
   age: number;
@@ -11,7 +26,8 @@ type MedCase = {
   chiefComplaint: string;
   history: string;
   examination: string;
-  labs: string;
+  labs: LabCategory[];
+  imaging: string;
   correctDiagnosis: string;
   diagnosisOptions: string[];
   explanation: string;
@@ -401,11 +417,12 @@ export default function Home() {
                 />
               )}
               {revealed.labs && (
-                <Finding
-                  label="Labor & Bildgebung"
-                  tone="amber"
-                  text={medCase.labs}
-                />
+                <>
+                  <LabResults labs={medCase.labs} />
+                  {medCase.imaging?.trim() && (
+                    <Imaging text={medCase.imaging} />
+                  )}
+                </>
               )}
             </div>
 
@@ -533,12 +550,11 @@ function Finding({
 }: {
   label: string;
   text: string;
-  tone: "sky" | "violet" | "amber";
+  tone: "sky" | "violet";
 }) {
   const tones = {
     sky: "text-sky-400",
     violet: "text-violet-400",
-    amber: "text-amber-400",
   };
   return (
     <div className="rounded-xl bg-slate-900 p-4 ring-1 ring-slate-800">
@@ -548,6 +564,93 @@ function Finding({
         {label}
       </div>
       <p className="text-sm leading-relaxed text-slate-300">{text}</p>
+    </div>
+  );
+}
+
+// Structured laboratory results rendered as a grouped table with reference
+// ranges and ↑/↓ flags for out-of-range values.
+function LabResults({ labs }: { labs: LabCategory[] }) {
+  const flagStyles: Record<LabFlag, string> = {
+    high: "text-rose-400",
+    low: "text-sky-400",
+    normal: "text-slate-200",
+  };
+  const arrows: Record<LabFlag, string> = {
+    high: "↑",
+    low: "↓",
+    normal: "",
+  };
+
+  return (
+    <div className="rounded-xl bg-slate-900 p-4 ring-1 ring-slate-800">
+      <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-teal-400">
+        <span aria-hidden>🧪</span>
+        <span>Laborwerte</span>
+      </div>
+
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="text-[10px] uppercase tracking-wide text-slate-500">
+            <th className="pb-1 text-left font-medium">Parameter</th>
+            <th className="pb-1 pl-3 text-right font-medium">Wert</th>
+            <th className="pb-1 pl-3 text-right font-medium">Referenz</th>
+          </tr>
+        </thead>
+        {labs.map((group) => (
+          <tbody key={group.category}>
+            <tr>
+              <td
+                colSpan={3}
+                className="pt-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-teal-300/80"
+              >
+                {group.category}
+              </td>
+            </tr>
+            {group.values.map((v) => (
+              <tr
+                key={v.name}
+                className="border-t border-slate-800/70 align-baseline"
+              >
+                <td className="py-1.5 pr-2 text-slate-300">{v.name}</td>
+                <td
+                  className={`whitespace-nowrap py-1.5 pl-3 text-right font-mono tabular-nums ${flagStyles[v.flag]}`}
+                >
+                  <span className="font-medium">{v.value}</span>
+                  <span className="ml-1 text-xs text-slate-500">{v.unit}</span>
+                  {arrows[v.flag] && (
+                    <span className="ml-1 font-semibold">{arrows[v.flag]}</span>
+                  )}
+                </td>
+                <td className="whitespace-nowrap py-1.5 pl-3 text-right font-mono text-xs tabular-nums text-slate-500">
+                  {v.reference}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        ))}
+      </table>
+    </div>
+  );
+}
+
+// Imaging findings — narrative radiology report shown beneath the lab table.
+function Imaging({ text }: { text: string }) {
+  return (
+    <div className="rounded-xl bg-slate-900 p-4 ring-1 ring-slate-800">
+      <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-teal-400">
+        <span aria-hidden>🩻</span>
+        <span>Bildgebung</span>
+      </div>
+      <div className="flex gap-3">
+        <div
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-teal-500/10 text-lg ring-1 ring-teal-500/20"
+          aria-hidden
+        >
+          🩻
+        </div>
+        <p className="text-sm leading-relaxed text-slate-300">{text}</p>
+      </div>
     </div>
   );
 }

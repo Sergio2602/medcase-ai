@@ -66,9 +66,61 @@ const CASE_TOOL: Anthropic.Tool = {
           "Körperlicher Untersuchungsbefund im Uniklinik-Stil mit Vitalparametern in deutscher Notation (z. B. 'RR 90/60 mmHg, HF 110/min, AF 22/min, Temp. 38,7 °C, SpO2 94 % unter Raumluft') sowie relevanten positiven und negativen Befunden nach Organsystemen. Authentische deutsche Befundsprache (z. B. 'Abdomen weich, Druckschmerz im rechten Unterbauch, lebhafte Darmgeräusche').",
       },
       labs: {
+        type: "array",
+        description:
+          "Strukturierte Laborwerte, die zur Diagnose passen und für den Fall relevant sind. Nach klinischen Kategorien gruppiert (z. B. Hämatologie, Klinische Chemie, Herzmarker, Gerinnung, Entzündung, Blutgasanalyse, Urin). Nur diagnostisch relevante Parameter aufnehmen (typischerweise 2-5 Kategorien mit je 2-6 Werten), keine erschöpfende Routineliste. Pathologische, zur Diagnose passende Werte gezielt einbauen und über das Feld 'flag' kennzeichnen.",
+        items: {
+          type: "object",
+          properties: {
+            category: {
+              type: "string",
+              description:
+                "Name der Laborkategorie auf Deutsch (z. B. 'Hämatologie', 'Klinische Chemie', 'Herzmarker', 'Gerinnung', 'Blutgasanalyse', 'Urin').",
+            },
+            values: {
+              type: "array",
+              description: "Die einzelnen Laborparameter dieser Kategorie.",
+              items: {
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    description:
+                      "Deutscher Parametername (z. B. 'Leukozyten', 'CRP', 'Kreatinin', 'Troponin T (hs)').",
+                  },
+                  value: {
+                    type: "string",
+                    description:
+                      "Der Messwert als Zahl mit Dezimalkomma in deutscher Schreibweise (z. B. '14,2', '8,9', '0,9'). Ohne Einheit.",
+                  },
+                  unit: {
+                    type: "string",
+                    description:
+                      "In Deutschland übliche Einheit (z. B. '/nl', 'mg/l', 'mg/dl', 'ng/l', 'mmol/l', 'g/dl').",
+                  },
+                  reference: {
+                    type: "string",
+                    description:
+                      "Referenzbereich in deutscher Schreibweise (z. B. '4,0–10,0', '< 5', '0,7–1,2'). Ohne Einheit.",
+                  },
+                  flag: {
+                    type: "string",
+                    enum: ["high", "low", "normal"],
+                    description:
+                      "'high' wenn der Wert über dem Referenzbereich liegt, 'low' wenn darunter, sonst 'normal'.",
+                  },
+                },
+                required: ["name", "value", "unit", "reference", "flag"],
+              },
+            },
+          },
+          required: ["category", "values"],
+        },
+      },
+      imaging: {
         type: "string",
         description:
-          "Labor- und ggf. Bildgebungsbefunde mit deutschen Bezeichnungen und in Deutschland üblichen Einheiten (Leukozyten in /nl, CRP in mg/l, Kreatinin in mg/dl, Troponin in ng/l etc.). Pathologische Werte kennzeichnen (↑/↓). Bildgebung im Befundstil (z. B. 'CT-Abdomen: ...'). Realistische, zum Fall passende Werte.",
+          "Bildgebungsbefund im deutschen Befundstil (z. B. 'CT-Abdomen mit KM: Wandverdickung des Colon sigmoideum ...'). Falls für den Fall keine Bildgebung sinnvoll oder erforderlich ist, ein leerer String.",
       },
       correctDiagnosis: {
         type: "string",
@@ -97,6 +149,7 @@ const CASE_TOOL: Anthropic.Tool = {
       "history",
       "examination",
       "labs",
+      "imaging",
       "correctDiagnosis",
       "diagnosisOptions",
       "explanation",
@@ -165,7 +218,7 @@ export async function POST(request: Request) {
           role: "user",
           content: `${prompt}
 
-This is for a medical diagnosis game played by German medical students preparing for the Physikum and Staatsexamen. Make the case engaging and solvable from the provided information. The chief complaint should sound like a real person talking. Present findings as they would appear during a workup. ${germanInstruction} Call the present_case tool with the structured result.`,
+This is for a medical diagnosis game played by German medical students preparing for the Physikum and Staatsexamen. Make the case engaging and solvable from the provided information. The chief complaint should sound like a real person talking. Present findings as they would appear during a workup. Liefere die Laborwerte (labs) als strukturierte, nach Kategorien gruppierte Einzelparameter mit Wert, Einheit, Referenzbereich und flag – KEIN Fließtext. Die pathologischen Werte müssen zur korrekten Diagnose passen und wegweisend sein. ${germanInstruction} Call the present_case tool with the structured result.`,
         },
       ],
     });

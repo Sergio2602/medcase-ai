@@ -214,13 +214,13 @@ export default function Home() {
   return (
     <div className="flex min-h-dvh flex-col bg-background text-foreground">
       {/* Header / scoreboard — dark teal bar */}
-      <header className="bg-brand-dark">
+      <header className="border-b border-white/5 bg-card">
         <div className="mx-auto flex w-full max-w-2xl items-center justify-between gap-3 px-4 py-3 sm:px-5">
           <div className="flex items-center gap-2">
-            <Icon name="heartbeat" className="text-2xl text-teal-300" />
-            <h1 className="text-xl font-bold tracking-tight text-white">
+            <Icon name="heartbeat" className="text-2xl text-logo" />
+            <h1 className="text-xl font-bold tracking-tight text-foreground">
               MedCase
-              <span className="text-teal-300">.AI</span>
+              <span className="text-logo">.AI</span>
             </h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
@@ -228,23 +228,23 @@ export default function Home() {
               (phase === "playing" ||
                 phase === "result" ||
                 phase === "loading") && (
-                <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-white ring-1 ring-white/20">
-                  <Icon name="school" className="text-sm text-teal-200" />
+                <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-foreground ring-1 ring-white/20">
+                  <Icon name="school" className="text-sm text-brand" />
                   <span>{difficultyMeta.short}</span>
                 </span>
               )}
             <div className="flex gap-4 text-right text-xs">
               <div>
-                <div className="font-mono text-lg font-bold text-teal-300">
+                <div className="font-mono text-lg font-bold text-brand">
                   {totalScore}
                 </div>
-                <div className="text-teal-100/60">PUNKTE</div>
+                <div className="text-slate-500">PUNKTE</div>
               </div>
               <div>
-                <div className="font-mono text-lg font-bold text-white">
+                <div className="font-mono text-lg font-bold text-foreground">
                   {solved}/{played}
                 </div>
-                <div className="text-teal-100/60">GELÖST</div>
+                <div className="text-slate-500">GELÖST</div>
               </div>
             </div>
           </div>
@@ -256,10 +256,10 @@ export default function Home() {
         {phase === "start" && (
           <div className="flex flex-1 flex-col">
             <div className="mb-6 text-center">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold text-foreground">
                 Kriegst du die Diagnose raus?
               </h2>
-              <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
+              <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
                 Gleich stellt sich ein Patient vor. Erhebe die Anamnese,
                 untersuche ihn, fordere Labor an – und leg dich auf eine
                 Diagnose fest. Je weniger Hinweise du brauchst, desto mehr
@@ -267,7 +267,7 @@ export default function Home() {
               </p>
             </div>
 
-            <p className="mb-3 text-center text-sm font-semibold text-slate-200">
+            <p className="mb-3 text-center text-sm font-semibold text-foreground">
               Wähle deinen Schwierigkeitsgrad
             </p>
 
@@ -292,13 +292,13 @@ export default function Home() {
                         active ? "text-brand" : "text-slate-500"
                       }`}
                     />
-                    <span className="mt-3 text-lg font-bold text-white">
+                    <span className="mt-3 text-lg font-bold text-foreground">
                       {level.title}
                     </span>
                     <span className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                       Für wen: {level.audience}
                     </span>
-                    <ul className="mt-4 flex flex-col gap-2 text-sm text-slate-300">
+                    <ul className="mt-4 flex flex-col gap-2 text-sm text-slate-500">
                       {level.bullets.map((bullet) => (
                         <li key={bullet} className="flex items-start gap-2">
                           <Icon
@@ -330,7 +330,7 @@ export default function Home() {
                     setDifficulty(pendingDifficulty);
                     newPatient(pendingDifficulty);
                   }}
-                  className="w-full max-w-xs rounded-xl bg-brand px-8 py-4 font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
+                  className="w-full max-w-xs rounded-xl bg-primary px-8 py-4 font-semibold text-foreground shadow-lg shadow-primary/30 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
                 >
                   Ersten Patienten aufrufen
                 </button>
@@ -343,7 +343,7 @@ export default function Home() {
         {phase === "loading" && (
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand border-t-transparent" />
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               Nächster Patient wird aufgerufen…
             </p>
           </div>
@@ -362,7 +362,7 @@ export default function Home() {
                   {medCase.patientName}, {medCase.age} Jahre,{" "}
                   {medCase.gender === "male" ? "m" : "w"}
                 </div>
-                <div className="relative rounded-2xl rounded-t-sm bg-brand/15 p-4 text-sm leading-relaxed text-slate-100 ring-1 ring-brand/30 sm:rounded-t-2xl sm:rounded-tl-sm">
+                <div className="relative rounded-2xl rounded-t-sm bg-brand/15 p-4 text-sm leading-relaxed text-foreground ring-1 ring-brand/30 sm:rounded-t-2xl sm:rounded-tl-sm">
                   {/* tail: points up on mobile (avatar above), left on desktop (avatar beside) */}
                   <span
                     className="absolute left-1/2 -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 bg-brand/15 sm:top-4 sm:translate-x-0 sm:-left-1.5"
@@ -398,7 +398,7 @@ export default function Home() {
             {/* PLAYING controls */}
             {phase === "playing" && !showDiagnosisPicker && (
               <div className="mt-auto">
-                <p className="mb-3 text-center text-xs text-slate-400">
+                <p className="mb-3 text-center text-xs text-slate-500">
                   Untersuche den Patienten schrittweise — jeder Hinweis kostet
                   −10 Punkte
                 </p>
@@ -424,7 +424,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setShowDiagnosisPicker(true)}
-                    className="flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand px-4 py-4 text-sm font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background"
+                    className="flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-primary px-4 py-4 text-sm font-semibold text-foreground shadow-lg shadow-primary/30 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background"
                   >
                     <Icon name="brain" className="text-lg" />
                     Diagnose stellen
@@ -437,13 +437,13 @@ export default function Home() {
             {phase === "playing" && showDiagnosisPicker && (
               <div className="mt-auto flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-slate-200">
+                  <p className="text-sm font-semibold text-foreground">
                     Deine Verdachtsdiagnose?
                   </p>
                   <button
                     type="button"
                     onClick={() => setShowDiagnosisPicker(false)}
-                    className="-mr-1 flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-400 hover:text-slate-200"
+                    className="-mr-1 flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-500 hover:text-foreground"
                   >
                     <Icon name="arrow-left" className="text-sm" />
                     zurück
@@ -454,7 +454,7 @@ export default function Home() {
                     key={option}
                     type="button"
                     onClick={() => submitDiagnosis(option)}
-                    className="min-h-[56px] rounded-xl bg-card px-4 py-4 text-left text-sm font-medium text-slate-100 ring-1 ring-white/10 transition hover:bg-brand/10 hover:ring-brand/50 focus:outline-none focus:ring-2 focus:ring-brand active:bg-brand/20"
+                    className="min-h-[56px] rounded-xl bg-card px-4 py-4 text-left text-sm font-medium text-foreground ring-1 ring-white/10 transition hover:bg-brand/10 hover:ring-brand/50 focus:outline-none focus:ring-2 focus:ring-brand active:bg-brand/20"
                   >
                     {option}
                   </button>
@@ -475,7 +475,7 @@ export default function Home() {
                   <div className="flex items-center justify-between">
                     <span
                       className={`flex items-center gap-2 text-lg font-bold ${
-                        isCorrect ? "text-teal-300" : "text-rose-400"
+                        isCorrect ? "text-brand" : "text-rose-400"
                       }`}
                     >
                       <Icon
@@ -484,12 +484,12 @@ export default function Home() {
                       />
                       {isCorrect ? "Richtig!" : "Leider falsch"}
                     </span>
-                    <span className="font-mono text-2xl font-bold text-white">
+                    <span className="font-mono text-2xl font-bold text-foreground">
                       +{caseScore}
                     </span>
                   </div>
                   {!isCorrect && (
-                    <p className="mt-2 text-sm text-slate-300">
+                    <p className="mt-2 text-sm text-slate-500">
                       Du hattest{" "}
                       <span className="font-semibold text-rose-400">
                         {selected}
@@ -497,21 +497,21 @@ export default function Home() {
                       getippt.
                     </p>
                   )}
-                  <p className="mt-2 text-sm text-slate-200">
+                  <p className="mt-2 text-sm text-foreground">
                     Die richtige Diagnose lautet{" "}
-                    <span className="font-semibold text-teal-300">
+                    <span className="font-semibold text-brand">
                       {medCase.correctDiagnosis}
                     </span>
                     .
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                  <p className="mt-2 text-sm leading-relaxed text-slate-500">
                     {medCase.explanation}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => newPatient()}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 font-semibold text-foreground shadow-lg shadow-primary/30 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
                 >
                   Nächster Patient
                   <Icon name="arrow-right" className="text-lg" />
@@ -540,15 +540,15 @@ function WelcomeModal({ onDismiss }: { onDismiss: () => void }) {
       <div
         className="animate-welcome-card w-full max-w-md p-7 text-left shadow-2xl sm:p-8"
         style={{
-          background: "#0A1628",
-          border: "1px solid rgba(14,165,138,0.3)",
+          background: "#111C30",
+          border: "1px solid rgba(34,211,238,0.3)",
           borderRadius: 20,
         }}
       >
-        <h2 id="welcome-heading" className="text-2xl font-bold text-white">
+        <h2 id="welcome-heading" className="text-2xl font-bold text-foreground">
           Hey :)
         </h2>
-        <p className="mt-1 text-sm text-white/60">
+        <p className="mt-1 text-sm text-slate-500">
           Kurz bevor du startest...
         </p>
 
@@ -580,7 +580,7 @@ function WelcomeModal({ onDismiss }: { onDismiss: () => void }) {
         <button
           type="button"
           onClick={onDismiss}
-          className="mt-7 w-full rounded-xl bg-[#0EA58A] px-8 py-4 font-semibold text-white transition hover:bg-[#0c8f78] focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-[#0A1628]"
+          className="mt-7 w-full rounded-xl bg-primary px-8 py-4 font-semibold text-foreground transition hover:bg-[#0a5a70] focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-[#0B1222]"
         >
           Los geht&apos;s
         </button>
@@ -600,7 +600,7 @@ function Finding({
 }) {
   const tones = {
     primary: "text-brand",
-    secondary: "text-cyan-400",
+    secondary: "text-brand",
   };
   return (
     <div className="rounded-xl bg-card p-4 ring-1 ring-white/10">
@@ -609,7 +609,7 @@ function Finding({
       >
         {label}
       </div>
-      <p className="text-sm leading-relaxed text-slate-300">{text}</p>
+      <p className="text-sm leading-relaxed text-slate-500">{text}</p>
     </div>
   );
 }
@@ -620,7 +620,7 @@ function LabResults({ labs }: { labs: LabCategory[] }) {
   const flagStyles: Record<LabFlag, string> = {
     high: "text-rose-400",
     low: "text-sky-400",
-    normal: "text-slate-200",
+    normal: "text-foreground",
   };
   const arrows: Record<LabFlag, string> = {
     high: "↑",
@@ -658,7 +658,7 @@ function LabResults({ labs }: { labs: LabCategory[] }) {
                 key={v.name}
                 className="border-t border-white/10 align-baseline"
               >
-                <td className="py-1.5 pr-2 text-slate-300">{v.name}</td>
+                <td className="py-1.5 pr-2 text-slate-500">{v.name}</td>
                 <td
                   className={`whitespace-nowrap py-1.5 pl-3 text-right font-mono tabular-nums ${flagStyles[v.flag]}`}
                 >
@@ -692,7 +692,7 @@ function Imaging({ text }: { text: string }) {
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-lg text-brand ring-1 ring-brand/20">
           <Icon name="scan" />
         </div>
-        <p className="text-sm leading-relaxed text-slate-300">{text}</p>
+        <p className="text-sm leading-relaxed text-slate-500">{text}</p>
       </div>
     </div>
   );
@@ -717,7 +717,7 @@ function ActionButton({
       className={`flex min-h-[56px] items-center justify-center gap-2 rounded-xl px-4 py-4 text-sm font-semibold ring-1 transition focus:outline-none focus:ring-2 focus:ring-brand ${
         done
           ? "cursor-not-allowed bg-white/5 text-slate-500 ring-white/10"
-          : "bg-card text-slate-100 ring-white/10 hover:bg-brand/10 hover:ring-brand/40 active:bg-brand/20"
+          : "bg-card text-foreground ring-white/10 hover:bg-brand/10 hover:ring-brand/40 active:bg-brand/20"
       }`}
     >
       {done ? (

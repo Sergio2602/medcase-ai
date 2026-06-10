@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,8 +22,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  // Match the dark UI so the iOS status bar / browser chrome blends in.
-  themeColor: "#020617",
+  // Match the dark teal header so the iOS status bar / browser chrome blends in.
+  themeColor: "#074F42",
 };
 
 export default function RootLayout({

@@ -396,7 +396,7 @@ export default function Home() {
                 <div className="relative rounded-2xl rounded-t-sm bg-slate-800 p-4 text-sm leading-relaxed text-slate-100 ring-1 ring-slate-700 sm:rounded-t-2xl sm:rounded-tl-sm">
                   {/* tail: points up on mobile (avatar above), left on desktop (avatar beside) */}
                   <span
-                    className="absolute left-1/2 -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 bg-slate-800 sm:left-auto sm:top-4 sm:translate-x-0 sm:-left-1.5"
+                    className="absolute left-1/2 -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 bg-slate-800 sm:top-4 sm:translate-x-0 sm:-left-1.5"
                     aria-hidden
                   />
                   &ldquo;{medCase.chiefComplaint}&rdquo;

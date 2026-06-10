@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const WELCOME_STORAGE_KEY = "medcase-welcome-dismissed";
 
 type Expression = "neutral" | "pain" | "happy" | "sad";
 
@@ -118,6 +120,19 @@ export default function Home() {
   const [phase, setPhase] = useState<Phase>("start");
   const [medCase, setMedCase] = useState<MedCase | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // One-time welcome modal — shown only until the visitor dismisses it once.
+  const [showWelcome, setShowWelcome] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem(WELCOME_STORAGE_KEY) !== "1") {
+      setShowWelcome(true);
+    }
+  }, []);
+
+  function dismissWelcome() {
+    localStorage.setItem(WELCOME_STORAGE_KEY, "1");
+    setShowWelcome(false);
+  }
 
   const [revealed, setRevealed] = useState<Record<InvestigationKey, boolean>>({
     history: false,
@@ -514,6 +529,70 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      {showWelcome && <WelcomeModal onDismiss={dismissWelcome} />}
+    </div>
+  );
+}
+
+// One-time intro shown over a blurred start screen on the visitor's first
+// visit. Dismissal is persisted in localStorage, so it never reappears.
+function WelcomeModal({ onDismiss }: { onDismiss: () => void }) {
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="welcome-heading"
+      className="animate-welcome-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 px-4 backdrop-blur-sm"
+    >
+      <div
+        className="animate-welcome-card w-full max-w-md p-7 text-left shadow-2xl sm:p-8"
+        style={{
+          background: "#0A1628",
+          border: "1px solid rgba(14,165,138,0.3)",
+          borderRadius: 20,
+        }}
+      >
+        <h2 id="welcome-heading" className="text-2xl font-bold text-white">
+          Hey :)
+        </h2>
+        <p className="mt-1 text-sm text-white/60">
+          Kurz bevor du startest...
+        </p>
+
+        <div className="my-5 h-px w-full bg-brand/30" />
+
+        <ul className="flex flex-col gap-4 text-sm leading-relaxed text-brand">
+          <li className="flex items-start gap-2.5">
+            <Icon name="point" className="mt-0.5 shrink-0 text-base" />
+            <span>
+              Ich bin Sergio, Medizinstudent im 7. Semester und hab dieses
+              Tool alleine gebaut.
+            </span>
+          </li>
+          <li className="flex items-start gap-2.5">
+            <Icon name="point" className="mt-0.5 shrink-0 text-base" />
+            <span>
+              Das hier ist die erste Version, ich würde sie gerne mit deinem{" "}
+              <span className="font-semibold text-brand">Feedback</span> ausbauen.
+            </span>
+          </li>
+          <li className="flex items-start gap-2.5">
+            <Icon name="point" className="mt-0.5 shrink-0 text-base" />
+            <span>
+              Probier es aus und sag mir gerne deine ehrliche Meinung.
+            </span>
+          </li>
+        </ul>
+
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="mt-7 w-full rounded-xl bg-brand px-8 py-4 font-semibold text-white transition hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-[#0A1628]"
+        >
+          Los geht&apos;s
+        </button>
+      </div>
     </div>
   );
 }

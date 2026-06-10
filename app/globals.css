@@ -22,3 +22,39 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+
+/* Welcome modal: backdrop fades in, card slides up while fading in. */
+@keyframes welcome-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes welcome-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-welcome-overlay {
+  animation: welcome-overlay-in 0.3s ease-out both;
+}
+
+.animate-welcome-card {
+  animation: welcome-card-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-welcome-overlay,
+  .animate-welcome-card {
+    animation-duration: 0.01ms;
+  }
+}

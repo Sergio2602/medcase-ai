@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-const WELCOME_STORAGE_KEY = "medcase-welcome-dismissed";
+import { useState } from "react";
 
 type Expression = "neutral" | "pain" | "happy" | "sad";
 
@@ -109,7 +107,7 @@ function PatientAvatar({ expression }: { expression: Expression }) {
         : "text-brand";
 
   return (
-    <div className="flex h-28 w-28 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200 sm:h-32 sm:w-32">
+    <div className="flex h-28 w-28 items-center justify-center rounded-full bg-card shadow-sm ring-1 ring-white/10 sm:h-32 sm:w-32">
       <Icon name="user" className={`text-6xl sm:text-7xl ${tone}`} />
       <span className="sr-only">Patient</span>
     </div>
@@ -121,16 +119,10 @@ export default function Home() {
   const [medCase, setMedCase] = useState<MedCase | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // One-time welcome modal — shown only until the visitor dismisses it once.
-  const [showWelcome, setShowWelcome] = useState(false);
-  useEffect(() => {
-    if (localStorage.getItem(WELCOME_STORAGE_KEY) !== "1") {
-      setShowWelcome(true);
-    }
-  }, []);
+  // Welcome modal — shown on every page load until dismissed for the session.
+  const [showWelcome, setShowWelcome] = useState(true);
 
   function dismissWelcome() {
-    localStorage.setItem(WELCOME_STORAGE_KEY, "1");
     setShowWelcome(false);
   }
 
@@ -264,10 +256,10 @@ export default function Home() {
         {phase === "start" && (
           <div className="flex flex-1 flex-col">
             <div className="mb-6 text-center">
-              <h2 className="text-2xl font-bold text-slate-900">
+              <h2 className="text-2xl font-bold text-white">
                 Kriegst du die Diagnose raus?
               </h2>
-              <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+              <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
                 Gleich stellt sich ein Patient vor. Erhebe die Anamnese,
                 untersuche ihn, fordere Labor an – und leg dich auf eine
                 Diagnose fest. Je weniger Hinweise du brauchst, desto mehr
@@ -275,7 +267,7 @@ export default function Home() {
               </p>
             </div>
 
-            <p className="mb-3 text-center text-sm font-semibold text-slate-700">
+            <p className="mb-3 text-center text-sm font-semibold text-slate-200">
               Wähle deinen Schwierigkeitsgrad
             </p>
 
@@ -290,29 +282,29 @@ export default function Home() {
                     aria-pressed={active}
                     className={`flex flex-col rounded-2xl border-2 p-5 text-left transition focus:outline-none focus:ring-2 focus:ring-brand ${
                       active
-                        ? "border-brand bg-brand/5"
-                        : "border-slate-200 bg-white hover:border-slate-300"
+                        ? "border-brand bg-brand/10"
+                        : "border-white/10 bg-card hover:border-white/20"
                     }`}
                   >
                     <Icon
                       name={level.icon}
                       className={`text-4xl ${
-                        active ? "text-brand" : "text-slate-400"
+                        active ? "text-brand" : "text-slate-500"
                       }`}
                     />
-                    <span className="mt-3 text-lg font-bold text-slate-900">
+                    <span className="mt-3 text-lg font-bold text-white">
                       {level.title}
                     </span>
-                    <span className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-400">
+                    <span className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                       Für wen: {level.audience}
                     </span>
-                    <ul className="mt-4 flex flex-col gap-2 text-sm text-slate-600">
+                    <ul className="mt-4 flex flex-col gap-2 text-sm text-slate-300">
                       {level.bullets.map((bullet) => (
                         <li key={bullet} className="flex items-start gap-2">
                           <Icon
                             name="chevron-right"
                             className={`mt-0.5 text-sm ${
-                              active ? "text-brand" : "text-slate-400"
+                              active ? "text-brand" : "text-slate-500"
                             }`}
                           />
                           <span>{bullet}</span>
@@ -325,7 +317,7 @@ export default function Home() {
             </div>
 
             {error && (
-              <p className="mt-4 text-center text-sm text-rose-600" role="alert">
+              <p className="mt-4 text-center text-sm text-rose-400" role="alert">
                 {error}
               </p>
             )}
@@ -338,7 +330,7 @@ export default function Home() {
                     setDifficulty(pendingDifficulty);
                     newPatient(pendingDifficulty);
                   }}
-                  className="w-full max-w-xs rounded-xl bg-brand px-8 py-4 font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-white active:opacity-90"
+                  className="w-full max-w-xs rounded-xl bg-brand px-8 py-4 font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
                 >
                   Ersten Patienten aufrufen
                 </button>
@@ -351,7 +343,7 @@ export default function Home() {
         {phase === "loading" && (
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand border-t-transparent" />
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-400">
               Nächster Patient wird aufgerufen…
             </p>
           </div>
@@ -366,14 +358,14 @@ export default function Home() {
                 <PatientAvatar expression={expression} />
               </div>
               <div className="w-full text-center sm:flex-1 sm:text-left">
-                <div className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-400">
+                <div className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                   {medCase.patientName}, {medCase.age} Jahre,{" "}
                   {medCase.gender === "male" ? "m" : "w"}
                 </div>
-                <div className="relative rounded-2xl rounded-t-sm bg-[#e6f7f2] p-4 text-sm leading-relaxed text-slate-800 ring-1 ring-brand/25 sm:rounded-t-2xl sm:rounded-tl-sm">
+                <div className="relative rounded-2xl rounded-t-sm bg-brand/15 p-4 text-sm leading-relaxed text-slate-100 ring-1 ring-brand/30 sm:rounded-t-2xl sm:rounded-tl-sm">
                   {/* tail: points up on mobile (avatar above), left on desktop (avatar beside) */}
                   <span
-                    className="absolute left-1/2 -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 bg-[#e6f7f2] sm:top-4 sm:translate-x-0 sm:-left-1.5"
+                    className="absolute left-1/2 -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 bg-brand/15 sm:top-4 sm:translate-x-0 sm:-left-1.5"
                     aria-hidden
                   />
                   &ldquo;{medCase.chiefComplaint}&rdquo;
@@ -406,7 +398,7 @@ export default function Home() {
             {/* PLAYING controls */}
             {phase === "playing" && !showDiagnosisPicker && (
               <div className="mt-auto">
-                <p className="mb-3 text-center text-xs text-slate-500">
+                <p className="mb-3 text-center text-xs text-slate-400">
                   Untersuche den Patienten schrittweise — jeder Hinweis kostet
                   −10 Punkte
                 </p>
@@ -432,7 +424,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setShowDiagnosisPicker(true)}
-                    className="flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-dark px-4 py-4 text-sm font-semibold text-white shadow-lg shadow-brand-dark/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-white"
+                    className="flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand px-4 py-4 text-sm font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background"
                   >
                     <Icon name="brain" className="text-lg" />
                     Diagnose stellen
@@ -445,13 +437,13 @@ export default function Home() {
             {phase === "playing" && showDiagnosisPicker && (
               <div className="mt-auto flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-slate-700">
+                  <p className="text-sm font-semibold text-slate-200">
                     Deine Verdachtsdiagnose?
                   </p>
                   <button
                     type="button"
                     onClick={() => setShowDiagnosisPicker(false)}
-                    className="-mr-1 flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-400 hover:text-slate-600"
+                    className="-mr-1 flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-400 hover:text-slate-200"
                   >
                     <Icon name="arrow-left" className="text-sm" />
                     zurück
@@ -462,7 +454,7 @@ export default function Home() {
                     key={option}
                     type="button"
                     onClick={() => submitDiagnosis(option)}
-                    className="min-h-[56px] rounded-xl bg-white px-4 py-4 text-left text-sm font-medium text-slate-800 ring-1 ring-slate-200 transition hover:bg-brand/5 hover:ring-brand/50 focus:outline-none focus:ring-2 focus:ring-brand active:bg-brand/10"
+                    className="min-h-[56px] rounded-xl bg-card px-4 py-4 text-left text-sm font-medium text-slate-100 ring-1 ring-white/10 transition hover:bg-brand/10 hover:ring-brand/50 focus:outline-none focus:ring-2 focus:ring-brand active:bg-brand/20"
                   >
                     {option}
                   </button>
@@ -477,13 +469,13 @@ export default function Home() {
                   className={`rounded-2xl p-5 ring-1 ${
                     isCorrect
                       ? "bg-brand/10 ring-brand/30"
-                      : "bg-rose-50 ring-rose-200"
+                      : "bg-rose-500/10 ring-rose-500/30"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <span
                       className={`flex items-center gap-2 text-lg font-bold ${
-                        isCorrect ? "text-brand-dark" : "text-rose-600"
+                        isCorrect ? "text-teal-300" : "text-rose-400"
                       }`}
                     >
                       <Icon
@@ -492,34 +484,34 @@ export default function Home() {
                       />
                       {isCorrect ? "Richtig!" : "Leider falsch"}
                     </span>
-                    <span className="font-mono text-2xl font-bold text-slate-900">
+                    <span className="font-mono text-2xl font-bold text-white">
                       +{caseScore}
                     </span>
                   </div>
                   {!isCorrect && (
-                    <p className="mt-2 text-sm text-slate-600">
+                    <p className="mt-2 text-sm text-slate-300">
                       Du hattest{" "}
-                      <span className="font-semibold text-rose-600">
+                      <span className="font-semibold text-rose-400">
                         {selected}
                       </span>{" "}
                       getippt.
                     </p>
                   )}
-                  <p className="mt-2 text-sm text-slate-700">
+                  <p className="mt-2 text-sm text-slate-200">
                     Die richtige Diagnose lautet{" "}
-                    <span className="font-semibold text-brand-dark">
+                    <span className="font-semibold text-teal-300">
                       {medCase.correctDiagnosis}
                     </span>
                     .
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
                     {medCase.explanation}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => newPatient()}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-white active:opacity-90"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-8 py-4 font-semibold text-white shadow-lg shadow-brand/20 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
                 >
                   Nächster Patient
                   <Icon name="arrow-right" className="text-lg" />
@@ -535,8 +527,8 @@ export default function Home() {
   );
 }
 
-// One-time intro shown over a blurred start screen on the visitor's first
-// visit. Dismissal is persisted in localStorage, so it never reappears.
+// Intro shown over a blurred start screen on every page load until the
+// visitor dismisses it for the session.
 function WelcomeModal({ onDismiss }: { onDismiss: () => void }) {
   return (
     <div
@@ -588,7 +580,7 @@ function WelcomeModal({ onDismiss }: { onDismiss: () => void }) {
         <button
           type="button"
           onClick={onDismiss}
-          className="mt-7 w-full rounded-xl bg-brand px-8 py-4 font-semibold text-white transition hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-[#0A1628]"
+          className="mt-7 w-full rounded-xl bg-[#0EA58A] px-8 py-4 font-semibold text-white transition hover:bg-[#0c8f78] focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-[#0A1628]"
         >
           Los geht&apos;s
         </button>
@@ -608,16 +600,16 @@ function Finding({
 }) {
   const tones = {
     primary: "text-brand",
-    secondary: "text-[#0e7490]",
+    secondary: "text-cyan-400",
   };
   return (
-    <div className="rounded-xl bg-white p-4 ring-1 ring-slate-200">
+    <div className="rounded-xl bg-card p-4 ring-1 ring-white/10">
       <div
         className={`mb-1 text-xs font-semibold uppercase tracking-wide ${tones[tone]}`}
       >
         {label}
       </div>
-      <p className="text-sm leading-relaxed text-slate-600">{text}</p>
+      <p className="text-sm leading-relaxed text-slate-300">{text}</p>
     </div>
   );
 }
@@ -626,9 +618,9 @@ function Finding({
 // ranges and ↑/↓ flags for out-of-range values.
 function LabResults({ labs }: { labs: LabCategory[] }) {
   const flagStyles: Record<LabFlag, string> = {
-    high: "text-rose-600",
-    low: "text-sky-600",
-    normal: "text-slate-700",
+    high: "text-rose-400",
+    low: "text-sky-400",
+    normal: "text-slate-200",
   };
   const arrows: Record<LabFlag, string> = {
     high: "↑",
@@ -637,7 +629,7 @@ function LabResults({ labs }: { labs: LabCategory[] }) {
   };
 
   return (
-    <div className="rounded-xl bg-white p-4 ring-1 ring-slate-200">
+    <div className="rounded-xl bg-card p-4 ring-1 ring-white/10">
       <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-brand">
         <Icon name="flask" className="text-sm" />
         <span>Laborwerte</span>
@@ -645,7 +637,7 @@ function LabResults({ labs }: { labs: LabCategory[] }) {
 
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="text-[10px] uppercase tracking-wide text-slate-400">
+          <tr className="text-[10px] uppercase tracking-wide text-slate-500">
             <th className="pb-1 text-left font-medium">Parameter</th>
             <th className="pb-1 pl-3 text-right font-medium">Wert</th>
             <th className="pb-1 pl-3 text-right font-medium">Referenz</th>
@@ -664,19 +656,19 @@ function LabResults({ labs }: { labs: LabCategory[] }) {
             {group.values.map((v) => (
               <tr
                 key={v.name}
-                className="border-t border-slate-200 align-baseline"
+                className="border-t border-white/10 align-baseline"
               >
-                <td className="py-1.5 pr-2 text-slate-600">{v.name}</td>
+                <td className="py-1.5 pr-2 text-slate-300">{v.name}</td>
                 <td
                   className={`whitespace-nowrap py-1.5 pl-3 text-right font-mono tabular-nums ${flagStyles[v.flag]}`}
                 >
                   <span className="font-medium">{v.value}</span>
-                  <span className="ml-1 text-xs text-slate-400">{v.unit}</span>
+                  <span className="ml-1 text-xs text-slate-500">{v.unit}</span>
                   {arrows[v.flag] && (
                     <span className="ml-1 font-semibold">{arrows[v.flag]}</span>
                   )}
                 </td>
-                <td className="whitespace-nowrap py-1.5 pl-3 text-right font-mono text-xs tabular-nums text-slate-400">
+                <td className="whitespace-nowrap py-1.5 pl-3 text-right font-mono text-xs tabular-nums text-slate-500">
                   {v.reference}
                 </td>
               </tr>
@@ -691,7 +683,7 @@ function LabResults({ labs }: { labs: LabCategory[] }) {
 // Imaging findings — narrative radiology report shown beneath the lab table.
 function Imaging({ text }: { text: string }) {
   return (
-    <div className="rounded-xl bg-white p-4 ring-1 ring-slate-200">
+    <div className="rounded-xl bg-card p-4 ring-1 ring-white/10">
       <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-brand">
         <Icon name="scan" className="text-sm" />
         <span>Bildgebung</span>
@@ -700,7 +692,7 @@ function Imaging({ text }: { text: string }) {
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-lg text-brand ring-1 ring-brand/20">
           <Icon name="scan" />
         </div>
-        <p className="text-sm leading-relaxed text-slate-600">{text}</p>
+        <p className="text-sm leading-relaxed text-slate-300">{text}</p>
       </div>
     </div>
   );
@@ -724,13 +716,13 @@ function ActionButton({
       disabled={done}
       className={`flex min-h-[56px] items-center justify-center gap-2 rounded-xl px-4 py-4 text-sm font-semibold ring-1 transition focus:outline-none focus:ring-2 focus:ring-brand ${
         done
-          ? "cursor-not-allowed bg-slate-50 text-slate-400 ring-slate-200"
-          : "bg-white text-slate-800 ring-slate-200 hover:bg-brand/5 hover:ring-brand/40 active:bg-brand/10"
+          ? "cursor-not-allowed bg-white/5 text-slate-500 ring-white/10"
+          : "bg-card text-slate-100 ring-white/10 hover:bg-brand/10 hover:ring-brand/40 active:bg-brand/20"
       }`}
     >
       {done ? (
         <>
-          <Icon name="check" className="text-base text-slate-400" />
+          <Icon name="check" className="text-base text-slate-500" />
           Erledigt
         </>
       ) : (

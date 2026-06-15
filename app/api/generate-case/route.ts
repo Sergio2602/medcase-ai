@@ -157,6 +157,55 @@ const CASE_TOOL: Anthropic.Tool = {
   },
 };
 
+// Only these origins may call this route from a browser.
+const ALLOWED_ORIGINS = new Set([
+  "https://medcase-ai-peach.vercel.app",
+  "http://localhost:3000",
+]);
+
+// Build CORS headers for a request. The origin is only echoed back when it's on
+// the allowlist, so other sites can't read the response cross-origin.
+function corsHeaders(origin: string | null): Record<string, string> {
+  const headers: Record<string, string> = {
+    Vary: "Origin",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+  if (origin && ALLOWED_ORIGINS.has(origin)) {
+    headers["Access-Control-Allow-Origin"] = origin;
+  }
+  return headers;
+}
+
+// Fixed-window in-memory rate limiter: max 10 requests per IP per minute.
+// Per-instance only (no shared store, no new dependencies).
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const rateLimitStore = new Map<string, { count: number; windowStart: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip);
+  if (!entry || now - entry.windowStart >= RATE_LIMIT_WINDOW_MS) {
+    rateLimitStore.set(ip, { count: 1, windowStart: now });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > RATE_LIMIT_MAX;
+}
+
+// Generic, client-safe German error message — never leak internal details.
+const GENERIC_ERROR =
+  "Der klinische Fall konnte nicht generiert werden. Bitte versuche es später erneut.";
+
+// Preflight: answer CORS preflight requests with the allowlist headers.
+export async function OPTIONS(request: Request) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders(request.headers.get("origin")),
+  });
+}
+
 type Difficulty = "vorklinik" | "klinik" | "examen";
 
 // Per-level instruction passed as the system prompt to steer case complexity.
@@ -167,11 +216,24 @@ const DIFFICULTY_INSTRUCTIONS: Record<Difficulty, string> = {
 };
 
 export async function POST(request: Request) {
+  const baseHeaders = corsHeaders(request.headers.get("origin"));
+
+  // Rate limit by client IP (first hop in x-forwarded-for behind the proxy).
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  const ip = forwardedFor?.split(",")[0]?.trim() || "unknown";
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Zu viele Anfragen. Bitte versuche es in einer Minute erneut." },
+      { status: 429, headers: baseHeaders }
+    );
+  }
+
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
+    console.error("ANTHROPIC_API_KEY is not configured.");
     return NextResponse.json(
-      { error: "ANTHROPIC_API_KEY is not configured." },
-      { status: 500 }
+      { error: GENERIC_ERROR },
+      { status: 500, headers: baseHeaders }
     );
   }
 
@@ -179,7 +241,9 @@ export async function POST(request: Request) {
   let difficulty: Difficulty = "klinik";
   try {
     const body = await request.json();
-    topic = typeof body.topic === "string" ? body.topic.trim() : "";
+    // Cap topic length to keep prompt input bounded.
+    topic =
+      typeof body.topic === "string" ? body.topic.trim().slice(0, 100) : "";
     if (
       body.difficulty === "vorklinik" ||
       body.difficulty === "klinik" ||
@@ -228,31 +292,22 @@ This is for a medical diagnosis game played by German medical students preparing
     );
 
     if (!toolBlock || toolBlock.type !== "tool_use") {
+      console.error("No structured case returned from the model.");
       return NextResponse.json(
-        { error: "No structured case returned from the model." },
-        { status: 500 }
+        { error: GENERIC_ERROR },
+        { status: 500, headers: baseHeaders }
       );
     }
 
-    return NextResponse.json(toolBlock.input);
+    return NextResponse.json(toolBlock.input, { headers: baseHeaders });
   } catch (error) {
     console.error("Anthropic API error:", error);
 
-    if (error instanceof APIError) {
-      const message =
-        error.error?.type === "not_found_error"
-          ? `Model "${MODEL}" is unavailable. Set ANTHROPIC_MODEL in .env.local to a current model (e.g. claude-sonnet-4-6).`
-          : (error.message ?? "Anthropic API request failed.");
-
-      return NextResponse.json(
-        { error: message },
-        { status: error.status ?? 500 }
-      );
-    }
-
+    // Never surface internal error details to the client.
+    const status = error instanceof APIError ? (error.status ?? 500) : 500;
     return NextResponse.json(
-      { error: "Failed to generate clinical case. Please try again." },
-      { status: 500 }
+      { error: GENERIC_ERROR },
+      { status, headers: baseHeaders }
     );
   }
 }

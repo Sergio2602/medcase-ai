@@ -28,8 +28,8 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-/* Welcome modal: backdrop fades in, card slides up while fading in. */
-@keyframes welcome-overlay-in {
+/* Overlay backdrop fades in. */
+@keyframes overlay-fade-in {
   from {
     opacity: 0;
   }
@@ -38,10 +38,24 @@ body {
   }
 }
 
-@keyframes welcome-card-in {
+/* Emil Kowalski-style spring: scale 0.95 → 1.0 + opacity 0 → 1 with a soft
+   overshoot. Used by the tutorial overlay and the feedback modal card. */
+@keyframes spring-in {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Gentle fade-up for landing content. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -49,17 +63,41 @@ body {
   }
 }
 
-.animate-welcome-overlay {
-  animation: welcome-overlay-in 0.3s ease-out both;
+/* Subtle breathing pulse on the loading icon. */
+@keyframes loading-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
 }
 
-.animate-welcome-card {
-  animation: welcome-card-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+.animate-overlay {
+  animation: overlay-fade-in 0.25s ease-out both;
+}
+
+.animate-spring {
+  animation: spring-in 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-loading-pulse {
+  animation: loading-pulse 2s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-welcome-overlay,
-  .animate-welcome-card {
+  .animate-overlay,
+  .animate-spring,
+  .animate-fade-up,
+  .animate-loading-pulse {
     animation-duration: 0.01ms;
+    animation-iteration-count: 1;
   }
 }

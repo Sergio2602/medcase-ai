@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Expression = "neutral" | "pain" | "happy" | "sad";
 
@@ -90,6 +90,47 @@ const DIFFICULTIES: DifficultyLevel[] = [
 const INVESTIGATION_COST = 10;
 const BASE_SCORE = 100;
 
+// Landing-page feature highlights.
+const FEATURES: { icon: string; label: string }[] = [
+  { icon: "stethoscope", label: "Untersuchen" },
+  { icon: "brain", label: "Diagnostizieren" },
+  { icon: "trophy", label: "Punkte sammeln" },
+  { icon: "refresh", label: "Immer neue Fälle" },
+];
+
+// Tutorial overlay — shown once per visitor (localStorage flag) before the
+// first generated case.
+const TUTORIAL_STORAGE_KEY = "medcase_tutorial_seen";
+
+const TUTORIAL_STEPS: { icon: string; title: string; text: string }[] = [
+  {
+    icon: "message-2",
+    title: "Hinweise sammeln",
+    text: "Erhebe die Anamnese, untersuche den Patienten und fordere Labor an – Schritt für Schritt.",
+  },
+  {
+    icon: "coin",
+    title: "Punkte clever einsetzen",
+    text: "Jeder aufgedeckte Hinweis kostet 10 Punkte. Je weniger du brauchst, desto höher dein Score.",
+  },
+  {
+    icon: "brain",
+    title: "Diagnose stellen",
+    text: "Leg dich auf eine Verdachtsdiagnose fest und erfahre sofort, ob du richtig lagst – mit Erklärung.",
+  },
+];
+
+// Cycled through on the loading screen, one every 2 seconds.
+const LOADING_MESSAGES = [
+  "Patient betritt die Praxis...",
+  "Anamnese wird vorbereitet...",
+  "Befunde werden zusammengestellt...",
+  "KI analysiert den Fall...",
+  "Fall wird finalisiert...",
+];
+
+const FEEDBACK_INTERVAL = 2;
+
 // Tabler icon (webfont) rendered as an inline element. `name` is the icon
 // slug without the `ti-` prefix, e.g. <Icon name="stethoscope" />.
 function Icon({ name, className = "" }: { name: string; className?: string }) {
@@ -119,12 +160,19 @@ export default function Home() {
   const [medCase, setMedCase] = useState<MedCase | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Welcome modal — shown on every page load until dismissed for the session.
-  const [showWelcome, setShowWelcome] = useState(true);
+  // Tutorial overlay — shown once per visitor before their first case.
+  // Default `true` (assume seen) avoids a flash before localStorage is read.
+  const [tutorialSeen, setTutorialSeen] = useState(true);
+  const [showTutorial, setShowTutorial] = useState(false);
 
-  function dismissWelcome() {
-    setShowWelcome(false);
-  }
+  // Feedback modal — surfaced after every couple of completed cases.
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  useEffect(() => {
+    setTutorialSeen(
+      window.localStorage.getItem(TUTORIAL_STORAGE_KEY) === "1"
+    );
+  }, []);
 
   const [revealed, setRevealed] = useState<Record<InvestigationKey, boolean>>({
     history: false,
@@ -148,6 +196,36 @@ export default function Home() {
   const difficultyMeta = DIFFICULTIES.find((d) => d.id === difficulty) ?? null;
 
   const isCorrect = selected !== null && selected === medCase?.correctDiagnosis;
+
+  // Surface the feedback modal after every couple of completed cases. Watching
+  // `played` keeps the trigger out of the scoring logic in submitDiagnosis.
+  useEffect(() => {
+    if (played > 0 && played % FEEDBACK_INTERVAL === 0) {
+      setShowFeedback(true);
+    }
+  }, [played]);
+
+  // Launch the first case from the landing page. First-time visitors see the
+  // tutorial overlay first; its dismiss button resumes here via finishTutorial.
+  function startCase() {
+    if (!pendingDifficulty) return;
+    if (!tutorialSeen) {
+      setShowTutorial(true);
+      return;
+    }
+    setDifficulty(pendingDifficulty);
+    newPatient(pendingDifficulty);
+  }
+
+  function finishTutorial() {
+    setShowTutorial(false);
+    setTutorialSeen(true);
+    window.localStorage.setItem(TUTORIAL_STORAGE_KEY, "1");
+    if (pendingDifficulty) {
+      setDifficulty(pendingDifficulty);
+      newPatient(pendingDifficulty);
+    }
+  }
 
   async function newPatient(level: Difficulty | null = difficulty) {
     setPhase("loading");
@@ -252,22 +330,39 @@ export default function Home() {
       </header>
 
       <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-8 sm:px-5 sm:py-14">
-        {/* START — intro + difficulty selection, then the start button */}
+        {/* LANDING — hero, feature pills, difficulty selection, CTA */}
         {phase === "start" && (
           <div className="flex flex-1 flex-col">
-            <div className="mb-6 text-center">
-              <h2 className="text-2xl font-bold text-foreground">
-                Kriegst du die Diagnose raus?
+            {/* Hero */}
+            <div className="animate-fade-up text-center">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand ring-1 ring-brand/30">
+                <Icon name="sparkles" className="text-sm" />
+                KI-generierte Fälle
+              </span>
+              <h2 className="mx-auto mt-5 max-w-xl text-balance text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl">
+                Trainiere klinisches Denken mit echten KI-Fällen
               </h2>
-              <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
-                Gleich stellt sich ein Patient vor. Erhebe die Anamnese,
-                untersuche ihn, fordere Labor an – und leg dich auf eine
-                Diagnose fest. Je weniger Hinweise du brauchst, desto mehr
-                Punkte gibt&apos;s.
+              <p className="mx-auto mt-3 max-w-md text-pretty text-sm leading-relaxed text-slate-400 sm:text-base">
+                Befrage, untersuche, diagnostiziere — jeder Fall wird live von KI
+                generiert.
               </p>
             </div>
 
-            <p className="mb-3 text-center text-sm font-semibold text-foreground">
+            {/* Feature pills */}
+            <div className="mx-auto mt-7 flex max-w-lg flex-wrap justify-center gap-2.5">
+              {FEATURES.map((feature) => (
+                <span
+                  key={feature.label}
+                  className="flex items-center gap-2 rounded-full bg-card px-3.5 py-2 text-xs font-medium text-foreground ring-1 ring-white/10"
+                >
+                  <Icon name={feature.icon} className="text-base text-brand" />
+                  {feature.label}
+                </span>
+              ))}
+            </div>
+
+            {/* Difficulty selection */}
+            <p className="mb-3 mt-10 text-center text-sm font-semibold text-foreground">
               Wähle deinen Schwierigkeitsgrad
             </p>
 
@@ -280,31 +375,34 @@ export default function Home() {
                     type="button"
                     onClick={() => setPendingDifficulty(level.id)}
                     aria-pressed={active}
-                    className={`flex flex-col rounded-2xl border-2 p-5 text-left transition focus:outline-none focus:ring-2 focus:ring-brand ${
+                    className={`group flex flex-col rounded-2xl border p-5 text-left transition duration-200 focus:outline-none focus:ring-2 focus:ring-brand ${
                       active
-                        ? "border-brand bg-brand/10"
-                        : "border-white/10 bg-card hover:border-white/20"
+                        ? "border-brand bg-brand/10 shadow-lg shadow-brand/10"
+                        : "border-white/10 bg-card hover:-translate-y-0.5 hover:border-white/25 hover:shadow-lg hover:shadow-black/20"
                     }`}
                   >
-                    <Icon
-                      name={level.icon}
-                      className={`text-4xl ${
-                        active ? "text-brand" : "text-slate-500"
+                    <span
+                      className={`flex h-12 w-12 items-center justify-center rounded-xl text-2xl transition ${
+                        active
+                          ? "bg-brand/20 text-brand"
+                          : "bg-white/5 text-slate-400 group-hover:text-brand"
                       }`}
-                    />
-                    <span className="mt-3 text-lg font-bold text-foreground">
+                    >
+                      <Icon name={level.icon} />
+                    </span>
+                    <span className="mt-4 text-lg font-bold text-foreground">
                       {level.title}
                     </span>
                     <span className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                       Für wen: {level.audience}
                     </span>
-                    <ul className="mt-4 flex flex-col gap-2 text-sm text-slate-500">
+                    <ul className="mt-4 flex flex-col gap-2 text-sm text-slate-400">
                       {level.bullets.map((bullet) => (
                         <li key={bullet} className="flex items-start gap-2">
                           <Icon
                             name="chevron-right"
                             className={`mt-0.5 text-sm ${
-                              active ? "text-brand" : "text-slate-500"
+                              active ? "text-brand" : "text-slate-600"
                             }`}
                           />
                           <span>{bullet}</span>
@@ -326,28 +424,28 @@ export default function Home() {
               <div className="mt-6 flex justify-center sm:mt-8">
                 <button
                   type="button"
-                  onClick={() => {
-                    setDifficulty(pendingDifficulty);
-                    newPatient(pendingDifficulty);
-                  }}
-                  className="w-full max-w-xs rounded-xl bg-primary px-8 py-4 font-semibold text-foreground shadow-lg shadow-primary/30 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
+                  onClick={startCase}
+                  className="flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 font-semibold text-foreground shadow-lg shadow-primary/30 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background active:opacity-90"
                 >
                   Ersten Patienten aufrufen
+                  <Icon name="arrow-right" className="text-lg" />
                 </button>
               </div>
             )}
+
+            {/* Sergio's note */}
+            <figure className="mx-auto mt-12 max-w-md border-l-2 border-brand/40 pl-4 text-left">
+              <blockquote className="text-sm italic leading-relaxed text-slate-400">
+                &ldquo;Ich bin Sergio, Medizinstudent im 7. Semester. Ich hab
+                dieses Tool alleine gebaut — weil ich selbst so was gebraucht
+                hätte.&rdquo;
+              </blockquote>
+            </figure>
           </div>
         )}
 
         {/* LOADING */}
-        {phase === "loading" && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-4">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-brand border-t-transparent" />
-            <p className="text-sm text-slate-500">
-              Nächster Patient wird aufgerufen…
-            </p>
-          </div>
-        )}
+        {phase === "loading" && <LoadingScreen />}
 
         {/* PLAYING + RESULT share the patient layout */}
         {(phase === "playing" || phase === "result") && medCase && (
@@ -522,68 +620,207 @@ export default function Home() {
         )}
       </main>
 
-      {showWelcome && <WelcomeModal onDismiss={dismissWelcome} />}
+      {showTutorial && <TutorialOverlay onDismiss={finishTutorial} />}
+      {showFeedback && (
+        <FeedbackModal onClose={() => setShowFeedback(false)} />
+      )}
     </div>
   );
 }
 
-// Intro shown over a blurred start screen on every page load until the
-// visitor dismisses it for the session.
-function WelcomeModal({ onDismiss }: { onDismiss: () => void }) {
+// Full-screen loading state shown while a case is generated. Cycles through
+// reassuring German status lines and gently pulses the icon.
+function LoadingScreen() {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setStep((prev) => (prev + 1) % LOADING_MESSAGES.length);
+    }, 2000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="flex flex-1 items-center justify-center">
+      <div className="animate-spring flex w-full max-w-sm flex-col items-center gap-6 rounded-2xl bg-card p-10 text-center ring-1 ring-white/10">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand/10 ring-1 ring-brand/30">
+          <Icon
+            name="stethoscope"
+            className="animate-loading-pulse text-4xl text-brand"
+          />
+        </div>
+        <p
+          key={step}
+          className="animate-overlay text-sm font-medium text-foreground"
+          aria-live="polite"
+        >
+          {LOADING_MESSAGES[step]}
+        </p>
+        <div className="flex gap-1.5">
+          {LOADING_MESSAGES.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                i === step ? "bg-brand" : "bg-white/15"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// One-time tutorial — three steps walking a first-time visitor through the
+// game. The final step's button resumes case generation via onDismiss.
+function TutorialOverlay({ onDismiss }: { onDismiss: () => void }) {
+  const [step, setStep] = useState(0);
+  const current = TUTORIAL_STEPS[step];
+  const isLast = step === TUTORIAL_STEPS.length - 1;
+
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-labelledby="welcome-heading"
-      className="animate-welcome-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 px-4 backdrop-blur-sm"
+      aria-labelledby="tutorial-heading"
+      className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm"
     >
-      <div
-        className="animate-welcome-card w-full max-w-md p-7 text-left shadow-2xl sm:p-8"
-        style={{
-          background: "#111C30",
-          border: "1px solid rgba(34,211,238,0.3)",
-          borderRadius: 20,
-        }}
-      >
-        <h2 id="welcome-heading" className="text-2xl font-bold text-foreground">
-          Hey :)
+      <div className="animate-spring w-full max-w-md rounded-2xl bg-card p-7 text-center shadow-2xl ring-1 ring-brand/30 sm:p-8">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-3xl text-brand ring-1 ring-brand/30">
+          <Icon name={current.icon} />
+        </div>
+        <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Schritt {step + 1} von {TUTORIAL_STEPS.length}
+        </p>
+        <h2
+          id="tutorial-heading"
+          className="mt-2 text-2xl font-bold text-foreground"
+        >
+          {current.title}
         </h2>
-        <p className="mt-1 text-sm text-slate-500">
-          Kurz bevor du startest...
+        <p className="mt-3 text-sm leading-relaxed text-slate-400">
+          {current.text}
         </p>
 
-        <div className="my-5 h-px w-full bg-brand/30" />
-
-        <ul className="flex flex-col gap-4 text-sm leading-relaxed text-brand">
-          <li className="flex items-start gap-2.5">
-            <Icon name="point" className="mt-0.5 shrink-0 text-base" />
-            <span>
-              Ich bin Sergio, Medizinstudent im 7. Semester und hab dieses
-              Tool alleine gebaut.
-            </span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <Icon name="point" className="mt-0.5 shrink-0 text-base" />
-            <span>
-              Das hier ist die erste Version, ich würde sie gerne mit deinem{" "}
-              <span className="font-semibold text-brand">Feedback</span> ausbauen.
-            </span>
-          </li>
-          <li className="flex items-start gap-2.5">
-            <Icon name="point" className="mt-0.5 shrink-0 text-base" />
-            <span>
-              Probier es aus und sag mir gerne deine ehrliche Meinung.
-            </span>
-          </li>
-        </ul>
+        {/* Progress dots */}
+        <div className="mt-6 flex justify-center gap-1.5">
+          {TUTORIAL_STEPS.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === step ? "w-6 bg-brand" : "w-1.5 bg-white/15"
+              }`}
+            />
+          ))}
+        </div>
 
         <button
           type="button"
-          onClick={onDismiss}
-          className="mt-7 w-full rounded-xl bg-primary px-8 py-4 font-semibold text-foreground transition hover:bg-[#0a5a70] focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-[#0B1222]"
+          onClick={() => (isLast ? onDismiss() : setStep((s) => s + 1))}
+          className="mt-7 w-full rounded-xl bg-primary px-8 py-4 font-semibold text-foreground transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-card"
         >
-          Los geht&apos;s
+          {isLast ? "Los geht's" : "Weiter"}
         </button>
+        {!isLast && (
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="mt-3 text-xs font-medium text-slate-500 transition hover:text-foreground"
+          >
+            Überspringen
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Lightweight feedback prompt shown after every couple of cases. Collects a
+// star rating and optional note locally, then closes.
+function FeedbackModal({ onClose }: { onClose: () => void }) {
+  const [rating, setRating] = useState(0);
+  const [hovered, setHovered] = useState(0);
+  const [note, setNote] = useState("");
+
+  function submit() {
+    // Feedback is collected client-side for now; wire up to a backend later.
+    onClose();
+  }
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="feedback-heading"
+      className="animate-overlay fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm"
+    >
+      <div className="animate-spring w-full max-w-md rounded-2xl bg-card p-7 text-center shadow-2xl ring-1 ring-brand/30 sm:p-8">
+        <h2
+          id="feedback-heading"
+          className="text-2xl font-bold text-foreground"
+        >
+          Wie läuft&apos;s?
+        </h2>
+        <p className="mt-2 text-sm text-slate-400">
+          Dein Feedback hilft mir, MedCase.AI besser zu machen.
+        </p>
+
+        {/* Star rating */}
+        <div
+          className="mt-5 flex justify-center gap-1.5"
+          role="radiogroup"
+          aria-label="Bewertung"
+        >
+          {[1, 2, 3, 4, 5].map((value) => {
+            const filled = (hovered || rating) >= value;
+            return (
+              <button
+                key={value}
+                type="button"
+                role="radio"
+                aria-checked={rating === value}
+                aria-label={`${value} von 5`}
+                onClick={() => setRating(value)}
+                onMouseEnter={() => setHovered(value)}
+                onMouseLeave={() => setHovered(0)}
+                className="rounded-md p-1 transition focus:outline-none focus:ring-2 focus:ring-brand"
+              >
+                <Icon
+                  name={filled ? "star-filled" : "star"}
+                  className={`text-3xl transition-colors ${
+                    filled ? "text-brand" : "text-white/20"
+                  }`}
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={3}
+          placeholder="Was können wir verbessern? (optional)"
+          className="mt-5 w-full resize-none rounded-xl bg-background px-4 py-3 text-sm text-foreground ring-1 ring-white/10 transition placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand"
+        />
+
+        <div className="mt-5 flex gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 rounded-xl bg-white/5 px-6 py-3.5 text-sm font-semibold text-slate-400 ring-1 ring-white/10 transition hover:text-foreground focus:outline-none focus:ring-2 focus:ring-brand"
+          >
+            Überspringen
+          </button>
+          <button
+            type="button"
+            onClick={submit}
+            disabled={rating === 0}
+            className="flex-1 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-foreground shadow-lg shadow-primary/30 transition hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-card disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+          >
+            Absenden
+          </button>
+        </div>
       </div>
     </div>
   );

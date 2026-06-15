@@ -194,6 +194,26 @@ function isRateLimited(ip: string): boolean {
   return entry.count > RATE_LIMIT_MAX;
 }
 
+// Tool-use occasionally serializes nested array fields (labs, diagnosisOptions)
+// as a JSON *string* instead of a real array. Parse those back so the client
+// always receives the structured shape the game UI expects.
+function normalizeCase(
+  input: Record<string, unknown>
+): Record<string, unknown> {
+  for (const key of ["labs", "diagnosisOptions"]) {
+    const v = input[key];
+    if (typeof v === "string") {
+      try {
+        const parsed = JSON.parse(v);
+        if (Array.isArray(parsed)) input[key] = parsed;
+      } catch {
+        // Leave as-is; downstream rendering will surface the bad shape.
+      }
+    }
+  }
+  return input;
+}
+
 // Generic, client-safe German error message — never leak internal details.
 const GENERIC_ERROR =
   "Der klinische Fall konnte nicht generiert werden. Bitte versuche es später erneut.";
@@ -299,7 +319,10 @@ This is for a medical diagnosis game played by German medical students preparing
       );
     }
 
-    return NextResponse.json(toolBlock.input, { headers: baseHeaders });
+    const normalized = normalizeCase(
+      toolBlock.input as Record<string, unknown>
+    );
+    return NextResponse.json(normalized, { headers: baseHeaders });
   } catch (error) {
     console.error("Anthropic API error:", error);
 

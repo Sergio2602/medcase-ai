@@ -1,3 +1,5 @@
+import { promises as fs } from "fs";
+import path from "path";
 import Anthropic, { APIError } from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 
@@ -235,6 +237,42 @@ const DIFFICULTY_INSTRUCTIONS: Record<Difficulty, string> = {
   examen: `SCHWIERIGKEITSGRAD: PJ / Staatsexamen. Nutze die volle Uniklinik-Dokumentation. Konstruiere einen komplexen Fall mit Komorbiditäten und ggf. Polypharmazie. Die Präsentation ist atypisch oder maskiert, die Diagnose darf selten sein. Die Informationen sind teils unvollständig; erzwinge echtes differenzialdiagnostisches Denken. Die Distraktoren müssen anspruchsvolle, hochplausible Differenzialdiagnosen sein, die nur durch genaue Befundinterpretation auszuschließen sind.`,
 };
 
+// Each difficulty is backed by a pregenerated case bank under public/cases.
+const CASE_FILES: Record<Difficulty, string> = {
+  vorklinik: "vorklinik.json",
+  klinik: "innere.json",
+  examen: "pj.json",
+};
+
+// Case banks are static build assets, so parse them once and cache in memory.
+// A missing/unreadable file is never cached, so it's retried on the next call.
+const caseBankCache = new Map<Difficulty, Record<string, unknown>[]>();
+
+async function loadCaseBank(
+  difficulty: Difficulty
+): Promise<Record<string, unknown>[]> {
+  const cached = caseBankCache.get(difficulty);
+  if (cached) return cached;
+  try {
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "cases",
+      CASE_FILES[difficulty]
+    );
+    const raw = await fs.readFile(filePath, "utf8");
+    const parsed = JSON.parse(raw);
+    const cases = Array.isArray(parsed)
+      ? (parsed as Record<string, unknown>[])
+      : [];
+    caseBankCache.set(difficulty, cases);
+    return cases;
+  } catch {
+    // File missing or invalid JSON — fall back to AI generation.
+    return [];
+  }
+}
+
 export async function POST(request: Request) {
   const baseHeaders = corsHeaders(request.headers.get("origin"));
 
@@ -245,15 +283,6 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: "Zu viele Anfragen. Bitte versuche es in einer Minute erneut." },
       { status: 429, headers: baseHeaders }
-    );
-  }
-
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    console.error("ANTHROPIC_API_KEY is not configured.");
-    return NextResponse.json(
-      { error: GENERIC_ERROR },
-      { status: 500, headers: baseHeaders }
     );
   }
 
@@ -273,6 +302,28 @@ export async function POST(request: Request) {
     }
   } catch {
     // No body / invalid body is fine — we'll generate a random case at the default level.
+  }
+
+  // Primary path: serve a random pregenerated case from the matching bank.
+  // A specific topic request can't be honored from the bank, so it skips
+  // straight to AI generation below.
+  if (!topic) {
+    const bank = await loadCaseBank(difficulty);
+    if (bank.length > 0) {
+      const picked = bank[Math.floor(Math.random() * bank.length)];
+      return NextResponse.json(picked, { headers: baseHeaders });
+    }
+    // Bank empty or missing — fall through to AI generation.
+  }
+
+  // Fallback path: generate a fresh case with the Anthropic API.
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    console.error("ANTHROPIC_API_KEY is not configured.");
+    return NextResponse.json(
+      { error: GENERIC_ERROR },
+      { status: 500, headers: baseHeaders }
+    );
   }
 
   // Pick a fresh focus + seed each call so consecutive "Nächster Patient"

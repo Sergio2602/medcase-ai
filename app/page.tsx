@@ -287,23 +287,29 @@ function DifficultyModal({
                 }}
                 className={`relative flex items-start gap-3 rounded-xl border-[1.5px] p-4 text-left transition-colors ${
                   active
-                    ? "border-accent bg-[#eaf0fc]"
+                    ? "border-accent bg-accent"
                     : "border-card-border/20 hover:border-accent"
                 }`}
               >
                 <i
                   className={`ti ${DIFFICULTY_ICONS[id]} mt-0.5 text-xl ${
-                    active ? "text-accent" : "text-muted"
+                    active ? "text-accent-foreground" : "text-muted"
                   }`}
                 />
                 <div>
-                  <p className="font-bold">{DIFFICULTY_INFO[id].label}</p>
-                  <p className="mt-1 text-sm text-muted">
+                  <p className={`font-bold ${active ? "text-accent-foreground" : ""}`}>
+                    {DIFFICULTY_INFO[id].label}
+                  </p>
+                  <p
+                    className={`mt-1 text-sm ${
+                      active ? "text-accent-foreground/80" : "text-muted"
+                    }`}
+                  >
                     {DIFFICULTY_INFO[id].description}
                   </p>
                 </div>
                 {active && (
-                  <i className="ti ti-check absolute right-4 top-4 text-lg text-accent" />
+                  <i className="ti ti-check absolute right-4 top-4 text-lg text-accent-foreground" />
                 )}
               </button>
             );
@@ -353,7 +359,7 @@ function StartScreen({ onStart }: { onStart: (d: Difficulty) => void }) {
           onClick={() => setShowPicker(true)}
           className="mt-8 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
         >
-          Jetzt starten →
+          Ersten Fall lösen →
         </button>
         <p className="mt-3 text-sm text-muted">
           Kostenlos · Kein Account nötig · 5 Fälle täglich
@@ -373,10 +379,8 @@ function StartScreen({ onStart }: { onStart: (d: Difficulty) => void }) {
 }
 
 const LOADING_STAGES = [
-  { icon: "ti-door-enter", text: "Patient trifft in der Notaufnahme ein …" },
-  { icon: "ti-notes", text: "Anamnese wird erhoben …" },
-  { icon: "ti-flask", text: "Befunde werden vorbereitet …" },
-  { icon: "ti-file-check", text: "Fall wird finalisiert …" },
+  { icon: "ti-door-enter", text: "Patient betritt die Klinik …" },
+  { icon: "ti-file-check", text: "Fall wird vorbereitet …" },
 ];
 
 function LoadingScreen() {
@@ -385,7 +389,7 @@ function LoadingScreen() {
   useEffect(() => {
     const interval = setInterval(() => {
       setStage((s) => (s + 1) % LOADING_STAGES.length);
-    }, 450);
+    }, 900);
     return () => clearInterval(interval);
   }, []);
 
@@ -438,14 +442,17 @@ function RevealButton({
     <button
       onClick={onClick}
       disabled={done}
-      className={`rounded-xl border-[1.5px] px-4 py-2.5 font-medium transition-colors ${
+      className={`flex items-center rounded-xl border-[1.5px] px-4 py-2.5 font-medium transition-colors ${
         done
-          ? "border-[#16a34a]/30 bg-[#16a34a]/10 text-[#16a34a]"
+          ? "border-card-border/20 bg-foreground/5 text-muted"
           : "border-card-border/20 bg-card hover:border-accent"
       }`}
     >
-      {done ? "✓ " : "○ "}
+      {done ? "✕ " : "○ "}
       {label}
+      {done && (
+        <span className="ml-2 text-xs font-bold text-[#dc2626]">−10</span>
+      )}
     </button>
   );
 }
@@ -657,10 +664,11 @@ function GameScreen({
                     disabled={!!selectedDiagnosis}
                     className={`rounded-xl border-[1.5px] px-4 py-3 text-left font-medium transition-colors ${
                       selectedDiagnosis === opt
-                        ? "border-accent bg-accent text-accent-foreground"
+                        ? "border-[#16a34a]/30 bg-[#16a34a]/10 text-[#16a34a]"
                         : "border-card-border/20 bg-card hover:border-accent"
                     }`}
                   >
+                    {selectedDiagnosis === opt ? "✓ " : ""}
                     {opt}
                   </button>
                 ))}

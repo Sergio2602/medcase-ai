@@ -203,28 +203,90 @@ function DifficultyToggle({
   );
 }
 
+function PatientPreviewCard() {
+  return (
+    <div className="card p-5">
+      <div className="mb-3 flex items-center gap-3">
+        <div
+          className="avatar-circle h-9 w-9 text-xs"
+          style={{ backgroundColor: "#90CAF9" }}
+        >
+          KM
+        </div>
+        <div>
+          <p className="text-sm font-bold">Klaus M.</p>
+          <p className="text-xs text-muted">58 J. · männlich</p>
+        </div>
+      </div>
+      <p className="mb-3 border-l-[1.5px] border-card-border/20 pl-3 text-sm italic">
+        „Starke Brustschmerzen seit heute Morgen …"
+      </p>
+      <div className="mb-3 flex flex-col gap-1.5 text-sm font-semibold">
+        <span className="text-accent">▤ Anamnese</span>
+        <span className="text-accent">✓ Untersuchung</span>
+      </div>
+      <div className="flex gap-2">
+        <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
+          90 Punkte
+        </span>
+        <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
+          4/5 gelöst
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function StatsRow() {
+  return (
+    <div className="mt-10 grid grid-cols-3 divide-x divide-card-border/15 border-t border-card-border/15 pt-6">
+      <div className="px-4 text-center first:pl-0">
+        <p className="text-2xl font-extrabold">140+</p>
+        <p className="text-sm text-muted">Klinische Fälle</p>
+      </div>
+      <div className="px-4 text-center">
+        <p className="text-2xl font-extrabold">3</p>
+        <p className="text-sm text-muted">Schwierigkeitsstufen</p>
+      </div>
+      <div className="px-4 text-center opacity-50 last:pr-0">
+        <p className="text-base font-bold">Pro-Preis folgt</p>
+        <p className="text-sm text-muted">nach Validierung</p>
+      </div>
+    </div>
+  );
+}
+
 function StartScreen({ onStart }: { onStart: (d: Difficulty) => void }) {
   const [pending, setPending] = useState<Difficulty>("klinik");
   return (
-    <div className="flex flex-col items-center gap-10 py-20 text-center">
-      <Logo size={36} />
+    <div className="grid gap-10 py-10 md:grid-cols-[1fr_320px] md:items-start">
       <div>
-        <h1 className="text-3xl font-extrabold">
-          Klinisches Denken trainieren
+        <Logo size={26} />
+        <span className="mt-6 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-card-border/20 px-3.5 py-1.5 text-sm font-semibold text-muted">
+          Für Medizinstudierende · Deutschland
+        </span>
+        <h1 className="mt-5 max-w-md text-4xl font-extrabold leading-tight tracking-tight">
+          Patientenfälle lösen. Nicht nur auswendig lernen.
         </h1>
-        <p className="mt-2 text-muted">
-          Wähle einen Bereich, um deinen ersten Fall zu starten.
+        <p className="mt-5 max-w-sm leading-relaxed text-muted">
+          Echte klinische Situationen — Anamnese, Untersuchung, Labor. Du
+          entscheidest was du brauchst. Weniger Untersuchungen, mehr Punkte.
         </p>
+        <div className="mt-7 max-w-sm">
+          <DifficultyToggle value={pending} onChange={setPending} />
+        </div>
+        <button
+          onClick={() => onStart(pending)}
+          className="mt-5 rounded-xl bg-accent px-7 py-3.5 font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
+        >
+          Ersten Fall starten →
+        </button>
+        <p className="mt-3 text-sm text-muted">
+          Kostenlos · Kein Account nötig · 5 Fälle täglich
+        </p>
+        <StatsRow />
       </div>
-      <div className="w-full max-w-sm">
-        <DifficultyToggle value={pending} onChange={setPending} />
-      </div>
-      <button
-        onClick={() => onStart(pending)}
-        className="rounded-xl bg-accent px-8 py-3 font-bold text-accent-foreground transition-transform hover:scale-[1.02]"
-      >
-        Fall starten
-      </button>
+      <PatientPreviewCard />
     </div>
   );
 }

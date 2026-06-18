@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "./components/Logo";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
@@ -100,12 +100,16 @@ export default function Home() {
     setRevealed({ history: false, examination: false, labs: false });
     setSelectedDiagnosis(null);
     try {
-      const res = await fetch("/api/generate-case", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ difficulty: selected }),
-        cache: "no-store",
-      });
+      const minDelay = new Promise((resolve) => setTimeout(resolve, 1800));
+      const [res] = await Promise.all([
+        fetch("/api/generate-case", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ difficulty: selected }),
+          cache: "no-store",
+        }),
+        minDelay,
+      ]);
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data?.error ?? "Etwas ist schiefgelaufen.");
@@ -338,11 +342,32 @@ function StartScreen({ onStart }: { onStart: (d: Difficulty) => void }) {
   );
 }
 
+const LOADING_STAGES = [
+  { icon: "ti-door-enter", text: "Patient trifft in der Notaufnahme ein …" },
+  { icon: "ti-notes", text: "Anamnese wird erhoben …" },
+  { icon: "ti-flask", text: "Befunde werden vorbereitet …" },
+  { icon: "ti-file-check", text: "Fall wird finalisiert …" },
+];
+
 function LoadingScreen() {
+  const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStage((s) => (s + 1) % LOADING_STAGES.length);
+    }, 450);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex flex-col items-center gap-4 py-32 text-center motion-pulse">
+    <div className="flex flex-col items-center gap-5 py-32 text-center">
       <Logo size={32} />
-      <p className="text-muted">Patient wird vorbereitet …</p>
+      <div className="motion-pulse flex flex-col items-center gap-3">
+        <i
+          className={`ti ${LOADING_STAGES[stage].icon} text-3xl text-accent`}
+        />
+        <p className="text-muted">{LOADING_STAGES[stage].text}</p>
+      </div>
     </div>
   );
 }

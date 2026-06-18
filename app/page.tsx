@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Logo } from "./layout";
+import { Logo } from "./components/Logo";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
 type Phase = "start" | "loading" | "playing" | "result";

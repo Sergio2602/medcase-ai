@@ -170,39 +170,6 @@ export default function Home() {
   );
 }
 
-function DifficultyToggle({
-  value,
-  onChange,
-}: {
-  value: Difficulty;
-  onChange: (d: Difficulty) => void;
-}) {
-  const index = DIFFICULTIES.findIndex((d) => d.id === value);
-  return (
-    <div className="relative flex rounded-xl border-[1.5px] border-card-border/20 bg-card p-1">
-      <div
-        className="absolute inset-y-1 left-1 rounded-lg bg-accent transition-transform duration-300"
-        style={{
-          width: `calc((100% - 0.5rem) / 3)`,
-          transform: `translateX(${index * 100}%)`,
-          transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-        }}
-      />
-      {DIFFICULTIES.map((d) => (
-        <button
-          key={d.id}
-          onClick={() => onChange(d.id)}
-          className={`relative z-10 flex-1 rounded-lg px-4 py-2.5 text-center text-sm font-semibold transition-colors ${
-            value === d.id ? "text-accent-foreground" : "text-foreground"
-          }`}
-        >
-          {d.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 function PatientPreviewCard() {
   return (
     <div className="card p-5">
@@ -256,37 +223,117 @@ function StatsRow() {
   );
 }
 
+const DIFFICULTY_INFO: Record<
+  Difficulty,
+  { label: string; description: string }
+> = {
+  vorklinik: {
+    label: "Vorklinik",
+    description: "Grundlagenfächer: Anatomie, Physiologie, Biochemie.",
+  },
+  klinik: {
+    label: "Innere",
+    description: "Internistische Leitsymptome und Differentialdiagnosen.",
+  },
+  examen: {
+    label: "PJ",
+    description: "Komplexere Fälle wie im Praktischen Jahr.",
+  },
+};
+
+function DifficultyModal({
+  onSelect,
+  onClose,
+}: {
+  onSelect: (d: Difficulty) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/30 px-4"
+      onClick={onClose}
+    >
+      <div
+        className="card w-full max-w-md p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="mb-1 text-xl font-extrabold">Bereich wählen</h2>
+        <p className="mb-5 text-sm text-muted">
+          Wähle die Schwierigkeit für deinen ersten Fall.
+        </p>
+        <div className="flex flex-col gap-3">
+          {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => (
+            <button
+              key={id}
+              onClick={() => onSelect(id)}
+              className="rounded-xl border-[1.5px] border-card-border/20 p-4 text-left transition-colors hover:border-accent"
+            >
+              <p className="font-bold">{DIFFICULTY_INFO[id].label}</p>
+              <p className="mt-1 text-sm text-muted">
+                {DIFFICULTY_INFO[id].description}
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WelcomeNote() {
+  return (
+    <div className="card mt-10 flex gap-4 p-5">
+      <div className="avatar-circle h-10 w-10 shrink-0 text-sm" style={{ backgroundColor: "#90CAF9" }}>
+        S
+      </div>
+      <div>
+        <p className="text-sm font-bold">Eine Nachricht von Sergio</p>
+        {/* TODO Sergio: echten Text einsetzen */}
+        <p className="mt-1 text-sm leading-relaxed text-muted">
+          Hi, ich bin Sergio, Medizinstudent im 7. Semester. Ich baue Medcase,
+          weil ich selbst gemerkt habe wie sehr Fall-Denken hilft. Über
+          Feedback freue ich mich jederzeit.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function StartScreen({ onStart }: { onStart: (d: Difficulty) => void }) {
-  const [pending, setPending] = useState<Difficulty>("klinik");
+  const [showPicker, setShowPicker] = useState(false);
   return (
     <div className="grid gap-10 py-10 md:grid-cols-[1fr_320px] md:items-start">
       <div>
-        <Logo size={26} />
-        <span className="mt-6 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-card-border/20 px-3.5 py-1.5 text-sm font-semibold text-muted">
+        <Logo size={36} />
+        <span className="mt-7 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
           Für Medizinstudierende · Deutschland
         </span>
-        <h1 className="mt-5 max-w-md text-4xl font-extrabold leading-tight tracking-tight">
+        <h1 className="mt-6 max-w-xl text-5xl font-extrabold leading-[1.08] tracking-tight md:text-6xl">
           Patientenfälle lösen. Nicht nur auswendig lernen.
         </h1>
-        <p className="mt-5 max-w-sm leading-relaxed text-muted">
+        <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">
           Echte klinische Situationen — Anamnese, Untersuchung, Labor. Du
           entscheidest was du brauchst. Weniger Untersuchungen, mehr Punkte.
         </p>
-        <div className="mt-7 max-w-sm">
-          <DifficultyToggle value={pending} onChange={setPending} />
-        </div>
         <button
-          onClick={() => onStart(pending)}
-          className="mt-5 rounded-xl bg-accent px-7 py-3.5 font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
+          onClick={() => setShowPicker(true)}
+          className="mt-8 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
         >
-          Ersten Fall starten →
+          Jetzt starten →
         </button>
         <p className="mt-3 text-sm text-muted">
           Kostenlos · Kein Account nötig · 5 Fälle täglich
         </p>
         <StatsRow />
+        <WelcomeNote />
       </div>
       <PatientPreviewCard />
+      {showPicker && (
+        <DifficultyModal
+          onSelect={onStart}
+          onClose={() => setShowPicker(false)}
+        />
+      )}
     </div>
   );
 }

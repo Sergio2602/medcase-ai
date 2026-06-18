@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "700", "800"],
 });
 
 const geistMono = Geist_Mono({
@@ -14,27 +15,76 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MedCase.AI – Diagnosespiel für Medizinstudierende",
+  title: "Medcase — Klinisches Denken trainieren",
   description:
-    "Übe klinische Fallbeispiele für Physikum und Staatsexamen. Befrage, untersuche und diagnostiziere Patienten – auf Deutsch.",
+    "Medcase trainiert klinisches Denken anhand realistischer Patientenfälle für Vorklinik, Klinik und PJ.",
 };
 
 export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  // Match the dark teal header so the iOS status bar / browser chrome blends in.
-  themeColor: "#074F42",
+  themeColor: "#f4f3ee",
 };
+
+/**
+ * Medcase logo: patient-file icon with pulse line + blue cross-dot accent.
+ * Reused by page.tsx in the game-screen header (Schritt 3).
+ */
+export function Logo({ size = 28 }: { size?: number }) {
+  return (
+    <div className="flex items-center gap-2">
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 28 28"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <rect
+          x="4"
+          y="3"
+          width="16"
+          height="22"
+          rx="2.5"
+          fill="#ffffff"
+          stroke="#0f0f0f"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M14.5 3v4a1.5 1.5 0 0 0 1.5 1.5h4"
+          stroke="#0f0f0f"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M6.5 17.5h2l1.5-3 2 5 1.5-3.5h3"
+          stroke="#0f0f0f"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="21" cy="6" r="3" fill="#1d4ed8" />
+        <path
+          d="M21 4.6v2.8M19.6 6h2.8"
+          stroke="#ffffff"
+          strokeWidth="0.9"
+          strokeLinecap="round"
+        />
+      </svg>
+      <span className="text-xl font-extrabold tracking-tight">
+        <span style={{ color: "#0f0f0f" }}>Med</span>
+        <span style={{ color: "#1d4ed8" }}>case</span>
+      </span>
+    </div>
+  );
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="de">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>

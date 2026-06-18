@@ -101,19 +101,17 @@ export default function Home() {
     setSelectedDiagnosis(null);
     try {
       const minDelay = new Promise((resolve) => setTimeout(resolve, 1800));
-      const [res] = await Promise.all([
-        fetch("/api/generate-case", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ difficulty: selected }),
-          cache: "no-store",
-        }),
-        minDelay,
-      ]);
+      const res = await fetch("/api/generate-case", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ difficulty: selected }),
+        cache: "no-store",
+      });
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data?.error ?? "Etwas ist schiefgelaufen.");
       }
+      await minDelay;
       setActiveCase(data as Case);
       setDailyUsed((d) => d + 1);
       setPhase("playing");

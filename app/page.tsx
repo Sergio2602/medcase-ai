@@ -143,6 +143,10 @@ export default function Home() {
     startCase(difficulty);
   }
 
+  function goHome() {
+    setPhase("start");
+  }
+
   return (
     <div className="min-h-screen px-4 py-8 md:px-10">
       <div className="mx-auto max-w-5xl">
@@ -163,6 +167,7 @@ export default function Home() {
             lastResultCorrect={lastResultCorrect}
             lastScoreEarned={lastScoreEarned}
             onNext={nextCase}
+            onGoHome={goHome}
             dailyUsed={dailyUsed}
             dailyLimit={dailyLimit}
           />
@@ -243,6 +248,12 @@ const DIFFICULTY_INFO: Record<
   },
 };
 
+const DIFFICULTY_ICONS: Record<Difficulty, string> = {
+  vorklinik: "ti-book-2",
+  klinik: "ti-stethoscope",
+  examen: "ti-building-hospital",
+};
+
 function DifficultyModal({
   onSelect,
   onClose,
@@ -250,6 +261,7 @@ function DifficultyModal({
   onSelect: (d: Difficulty) => void;
   onClose: () => void;
 }) {
+  const [highlighted, setHighlighted] = useState<Difficulty | null>(null);
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/30 px-4"
@@ -264,18 +276,38 @@ function DifficultyModal({
           Wähle die Schwierigkeit für deinen ersten Fall.
         </p>
         <div className="flex flex-col gap-3">
-          {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => (
-            <button
-              key={id}
-              onClick={() => onSelect(id)}
-              className="rounded-xl border-[1.5px] border-card-border/20 p-4 text-left transition-colors hover:border-accent"
-            >
-              <p className="font-bold">{DIFFICULTY_INFO[id].label}</p>
-              <p className="mt-1 text-sm text-muted">
-                {DIFFICULTY_INFO[id].description}
-              </p>
-            </button>
-          ))}
+          {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => {
+            const active = highlighted === id;
+            return (
+              <button
+                key={id}
+                onClick={() => {
+                  setHighlighted(id);
+                  onSelect(id);
+                }}
+                className={`relative flex items-start gap-3 rounded-xl border-[1.5px] p-4 text-left transition-colors ${
+                  active
+                    ? "border-accent bg-[#eaf0fc]"
+                    : "border-card-border/20 hover:border-accent"
+                }`}
+              >
+                <i
+                  className={`ti ${DIFFICULTY_ICONS[id]} mt-0.5 text-xl ${
+                    active ? "text-accent" : "text-muted"
+                  }`}
+                />
+                <div>
+                  <p className="font-bold">{DIFFICULTY_INFO[id].label}</p>
+                  <p className="mt-1 text-sm text-muted">
+                    {DIFFICULTY_INFO[id].description}
+                  </p>
+                </div>
+                {active && (
+                  <i className="ti ti-check absolute right-4 top-4 text-lg text-accent" />
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -503,6 +535,7 @@ function GameScreen({
   lastResultCorrect,
   lastScoreEarned,
   onNext,
+  onGoHome,
   dailyUsed,
   dailyLimit,
 }: {
@@ -519,6 +552,7 @@ function GameScreen({
   lastResultCorrect: boolean;
   lastScoreEarned: number;
   onNext: () => void;
+  onGoHome: () => void;
   dailyUsed: number;
   dailyLimit: number;
 }) {
@@ -528,12 +562,19 @@ function GameScreen({
 
   return (
     <div>
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <Logo />
-        <div className="flex items-center gap-3">
-          <DifficultyPill label={difficultyLabel} />
-          <StatPill label="PUNKTE" value={score} />
-          <StatPill label="GELÖST" value={`${solved}/${played}`} />
+      <header className="sticky top-0 z-30 mb-6 -mt-8 border-b border-card-border/15 bg-background/95 px-1 py-5 backdrop-blur md:-mt-10">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <button
+            onClick={onGoHome}
+            className="transition-opacity hover:opacity-80"
+          >
+            <Logo size={30} />
+          </button>
+          <div className="flex items-center gap-3">
+            <DifficultyPill label={difficultyLabel} />
+            <StatPill label="PUNKTE" value={score} />
+            <StatPill label="GELÖST" value={`${solved}/${played}`} />
+          </div>
         </div>
       </header>
 

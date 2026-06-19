@@ -109,6 +109,7 @@
     ],
     "imaging": "Sonographie Abdomen: Appendix im RUB darstellbar, Durchmesser 9 mm, Wandschichtung aufgehoben, Kompressibilität fehlend, periappendikale Echogenitätsvermehrung des Fettgewebes als Zeichen der lokalen Entzündungsreaktion. Kein Nachweis freier intraabdomineller Flüssigkeit. Keine Konkremente in den Nieren oder ableitenden Harnwegen. Kein Nachweis einer freien Luft.",
     "correctDiagnosis": "Appendizitis klassisch",
+    "keyTakeaway": "Schmerzwanderung periumbilikal → rechter Unterbauch, positives Blumberg-/Rovsing-Zeichen und sonographisch erweiterter Appendix (≥ 6 mm) mit Leukozytose sichern die Appendizitis-Diagnose.",
     "diagnosisOptions": [
       "Appendizitis klassisch",
       "Ureterolithiasis rechts",
@@ -241,6 +242,7 @@
     ],
     "imaging": "Röntgen-Thorax p. a. und seitlich: Homogene, lobäre Verschattung im rechten Unterfeld mit positivem Bronchopneumogramm, Silhouettenphänomen am rechten Zwerchfell. Kein Pleuraerguss. Kein Pneumothorax. Herzschatten nicht verbreitert. Gegenseite unauffällig. Befund vereinbar mit rechtsseitiger Lobärpneumonie (Unterlappen).",
     "correctDiagnosis": "Lobärpneumonie",
+    "keyTakeaway": "Akuter Beginn mit Schüttelfrost, rostbraunem Sputum, Dämpfung, Bronchialatmen und lobärer Konsolidierung im Röntgen sind pathognomonisch für die (Pneumokokken-)Lobärpneumonie.",
     "diagnosisOptions": [
       "Lobärpneumonie",
       "Lungenarterienembolie",
@@ -340,6 +342,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Unkomplizierte HWI",
+    "keyTakeaway": "Dysurie, Pollakisurie und suprapubisches Druckgefühl mit positivem Nitrit und Leukozyturie bei fehlenden Systeminfektionszeichen = unkomplizierte Zystitis.",
     "diagnosisOptions": [
       "Unkomplizierte HWI",
       "Pyelonephritis",
@@ -465,6 +468,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Angina tonsillaris",
+    "keyTakeaway": "Angina tonsillaris: eitrige Tonsillenstippchen + Fieber + zervikale Lymphadenopathie + positiver Streptokokken-Schnelltest bei fehlendem Husten sichern die Diagnose.",
     "diagnosisOptions": [
       "Angina tonsillaris",
       "Infektiöse Mononukleose (EBV)",
@@ -531,6 +535,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Otitis media",
+    "keyTakeaway": "Otitis media beim Kleinkind: gerötetes, vorgewölbtes Trommelfell mit aufgehobenem Lichtreflex und Tragusdruckschmerz nach Atemwegsinfekt sind wegweisend.",
     "diagnosisOptions": [
       "Otitis media",
       "Otitis externa",
@@ -630,6 +635,7 @@
     ],
     "imaging": "Nasennebenhöhlen-Röntgen (NNH a.p. und okzipitofrontal): Verschattung beider Kieferhöhlen mit Spiegelbildung links. Verschattung der Stirnhöhle links. Kein Hinweis auf knöcherne Destruktion. Befund vereinbar mit akuter bakterieller Sinusitis maxillaris et frontalis.",
     "correctDiagnosis": "Sinusitis",
+    "keyTakeaway": "Sinusitis = Klopfschmerz über NNH + eitriges Sekret + Fieber nach Virusinfekt, mit Leukozytose, CRP-Erhöhung und NNH-Verschattung mit Spiegelbildung.",
     "diagnosisOptions": [
       "Sinusitis",
       "Rhinitis allergica",
@@ -769,6 +775,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Gastroenteritis",
+    "keyTakeaway": "Akutes Erbrechen und wässrige Diarrhö nach gemeinsamem Essen (Cluster-Anamnese) mit milder Leukozytose, erhöhtem CRP und Hypokaliämie ist typisch für eine alimentäre Gastroenteritis.",
     "diagnosisOptions": [
       "Appendizitis",
       "Gastroenteritis",
@@ -875,6 +882,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Migräne",
+    "keyTakeaway": "Einseitige pulsierende Kopfschmerzen mit visueller Aura, Übelkeit, Photo-/Phonophobie und positivem Familienanamnese sind klassisch für Migräne nach ICHD-3.",
     "diagnosisOptions": [
       "Migräne",
       "Subarachnoidalblutung",
@@ -981,6 +989,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Spannungskopfschmerz",
+    "keyTakeaway": "Bilateral dumpf-drückender Kopfschmerz ohne Pulsation, Übelkeit oder Foto-/Phonophobie mit perikranialer Druckdolenz ist pathognomonisch für Spannungskopfschmerz.",
     "diagnosisOptions": [
       "Migräne ohne Aura",
       "Spannungskopfschmerz",
@@ -1113,6 +1122,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Anaphylaxie",
+    "keyTakeaway": "Anaphylaxie: Wespenstich + Urtikaria/Angioödem + Bronchospasmus + Hypotension + erhöhte Serum-Tryptase = klassische Typ-I-Reaktion mit Multiorganbeteiligung.",
     "diagnosisOptions": [
       "Anaphylaxie",
       "Vasovagale Synkope",
@@ -1231,6 +1241,7 @@
     ],
     "imaging": "Röntgen-Thorax p.a.: Lunge beidseits belüftet, kein Infiltrat, keine Stauungszeichen. Leichte Überblähungszeichen (tiefstehende, abgeflachte Zwerchfelle). Kein Pneumothorax, kein Pleuraerguss. Herzgröße im Normbereich.",
     "correctDiagnosis": "Asthma Erstmanifestation",
+    "keyTakeaway": "Exspiratorisches Giemen, Belastungsdyspnoe und reversibler Obstruktion (FEV1-Anstieg ≥ 12 % nach Salbutamol) bei atopischer Diathese sichern die Asthma-Diagnose.",
     "diagnosisOptions": [
       "Asthma Erstmanifestation",
       "Vocal Cord Dysfunction (VCD)",
@@ -1391,6 +1402,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Eisenmangelanämie",
+    "keyTakeaway": "Mikrozytäre, hypochrome Anämie mit erniedrigtem Ferritin, niedrigem Serum-Eisen und erhöhtem Transferrin ist pathognomonisch für Eisenmangelanämie.",
     "diagnosisOptions": [
       "Eisenmangelanämie",
       "Anämie bei chronischer Erkrankung",
@@ -1509,6 +1521,7 @@
     ],
     "imaging": "Sonographie Schilddrüse: Beide Lappen vergrößert (Volumen rechts 14 ml, links 13 ml; Gesamtvolumen 27 ml). Echotextur inhomogen, diffus echoarm mit girlandenartiger Binnenstruktur, vereinbar mit lymphozytärer Infiltration. Keine Knoten, keine Verkalkungen. Doppler: unauffällige Vaskularisation. Befund a. e. vereinbar mit Autoimmunthyreoiditis (Hashimoto).",
     "correctDiagnosis": "Hashimoto",
+    "keyTakeaway": "Hashimoto-Thyreoiditis: erhöhte Anti-TPO-AK + TSH↑ bei fT3/fT4↓ plus inhomogen-echoarme Schilddrüse sind die klassische diagnostische Trias.",
     "diagnosisOptions": [
       "Hashimoto",
       "Morbus Basedow",
@@ -1634,6 +1647,7 @@
     ],
     "imaging": "Schilddrüsensonographie: Diffus vergrößerte Schilddrüse (Gesamtvolumen ca. 32 ml, Normwert Frau < 18 ml) mit homogen echoarmem Parenchym und deutlich gesteigerter Vaskularisierung im Farbdoppler (sog. „Thyroid inferno\"). Keine Knoten, keine Zysten. Befund vereinbar mit einer entzündlichen/autoimmunen Genese.",
     "correctDiagnosis": "Graves",
+    "keyTakeaway": "Morbus Basedow: Struma + Exophthalmus + Tachykardie (Merseburg'sche Trias), supprimiertes TSH, erhöhte fT3/fT4, stark positive TRAK und prätibiales Myxödem sind pathognomonisch.",
     "diagnosisOptions": [
       "Hashimoto-Thyreoiditis (hypothyreote Phase)",
       "Graves",
@@ -1785,6 +1799,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Typ-2-Diabetes Erstdiagnose",
+    "keyTakeaway": "Polyurie, Polydipsie und Fatigue bei adipösem Patient mit Nüchternblutzucker ≥ 7,0 mmol/l, HbA1c ≥ 6,5 % und fehlendem Ketonnachweis sichern die Typ-2-Diabetes-Erstdiagnose.",
     "diagnosisOptions": [
       "Typ-2-Diabetes Erstdiagnose",
       "Diabetes insipidus",
@@ -1917,6 +1932,7 @@
     ],
     "imaging": "EKG: Sinusrhythmus, HF 78/min, unauffällige Erregungsausbreitung und -rückbildung, kein Hinweis auf Linksherzhypertrophie (Sokolow-Lyon-Index 3,2 mV, Normgrenze 3,5 mV).\n\nSonographie der Nieren (orientierende Untersuchung): Beide Nieren regelrecht groß und konfiguriert, kein Stau, kein Herdbefund, keine Nierenarterienstenose szintigraphisch aufgefallen.",
     "correctDiagnosis": "Hypertonie Erstdiagnose",
+    "keyTakeaway": "Wiederholt erhöhter RR > 160/100 mmHg bei adipösem Raucher mit Familienanamnese und unauffälligem Ausschluss-Workup sichert die Hypertonie-Erstdiagnose.",
     "diagnosisOptions": [
       "Hypertonie Erstdiagnose",
       "Hyperthyreose",
@@ -2068,6 +2084,7 @@
     ],
     "imaging": "Röntgen-Thorax p.a.: Kardiomegalie (Herzbreite/Thoraxbreite > 0,5), beidseits basale Verschattungen vereinbar mit interstitieller Flüssigkeitseinlagerung, Kerley-B-Linien beidseits nachweisbar, keine Ergüsse, kein Pneumothorax.\nEchokardiographie (transthorakal): Linkes Ventrikel dilatiert (LVEDd 60 mm), Ejektionsfraktion (Simpson biplan) 42 %, diastolische Dysfunktion Grad II, mäßige exzentrische Hypertrophie, keine relevante Klappenvitie, kein Perikarderguss.",
     "correctDiagnosis": "Kompensierte Herzinsuffizienz",
+    "keyTakeaway": "Belastungsdyspnoe, periphere Ödeme und stark erhöhtes NT-proBNP bei reduzierter EF belegen eine kompensierte Herzinsuffizienz – Ruhedyspnoe und Orthopnoe fehlen.",
     "diagnosisOptions": [
       "Kompensierte Herzinsuffizienz",
       "Dekompensierte Herzinsuffizienz",
@@ -2198,6 +2215,7 @@
     ],
     "imaging": "EKG (12-Kanal): Absolut unregelmäßige RR-Abstände, keine eindeutigen P-Wellen erkennbar, stattdessen unregelmäßige Flimmerwellen (f-Wellen) mit wechselnder Amplitude in allen Ableitungen. Mittlere Ventrikelfrequenz ca. 140/min. Kein Hinweis auf ST-Streckenhebung oder -senkung. QRS-Komplex schmal (< 120 ms). — Echokardiografie (transthorakal): Linker Vorhof leicht dilatiert (LA-Diameter 42 mm). Keine signifikante Klappenerkrankung. LV-Funktion grenzwertig normal (EF 52 %), konzentrische LV-Hypertrophie passend zu langjähriger arterieller Hypertonie. Kein Perikarderguss.",
     "correctDiagnosis": "Paroxysmales Vorhofflimmern",
+    "keyTakeaway": "Paroxysmales Vorhofflimmern erkennt man an absolut unregelmäßigen RR-Abständen, fehlenden P-Wellen, typischen f-Wellen und einem dilatierten linken Vorhof als strukturellem Substrat.",
     "diagnosisOptions": [
       "Paroxysmales Vorhofflimmern",
       "AV-Knoten-Reentrytachykardie (AVNRT)",
@@ -2323,6 +2341,7 @@
     ],
     "imaging": "Ruhe-EKG: Sinusrhythmus, HF 72/min, Linkstyp, keine ST-Strecken-Veränderungen in Ruhe, keine pathologischen Q-Zacken, keine Repolarisationsstörungen.\nRöntgen-Thorax (p. a.): Herzgröße im Normbereich (CTR 0,48), keine pulmonale Stauung, keine Infiltrate, keine Ergüsse. Unauffälliges Lungenparenchym.\nBelastungs-EKG (Ergometrie, durchgeführt durch Hausarzt, Befund mitgebracht): Bei 100 Watt horizontale ST-Streckensenkung ≥ 1 mm in Ableitung V4–V6 mit typischer Angina-pectoris-Symptomatik; Abbruch bei Beschwerdemaximum. Vollständige Rückbildung der EKG-Veränderungen und Symptome innerhalb von 5 min nach Belastungsende.",
     "correctDiagnosis": "Stabile Angina pectoris",
+    "keyTakeaway": "Belastungsinduzierte retrosternale Druckschmerzen mit ST-Senkung im Ergometrie-EKG und normalem Troponin sind pathognomonisch für stabile Angina pectoris.",
     "diagnosisOptions": [
       "Stabile Angina pectoris",
       "Akutes Koronarsyndrom (NSTEMI)",
@@ -2448,6 +2467,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Streptokokken-Tonsillitis",
+    "keyTakeaway": "Centor-Score 4 (Exsudate, zervikale LAP, Fieber, kein Husten) plus positivem RADT sichert die Streptokokken-Tonsillitis bakterieller Genese.",
     "diagnosisOptions": [
       "Streptokokken-Tonsillitis",
       "Infektiöse Mononukleose (EBV)",
@@ -2540,6 +2560,7 @@
     ],
     "imaging": "Röntgen-Thorax p.a.: Kein Nachweis pneumonischer Infiltrate. Keine Stauungszeichen. Keine Ergüsse. Zwerchfell bds. regelrecht. Kein Pneumothorax. Hilusstrukturen unauffällig. Herz nicht vergrößert. Befund vereinbar mit akuter Bronchitis ohne Anhalt für Pneumonie.",
     "correctDiagnosis": "Akute Bronchitis",
+    "keyTakeaway": "Akute Bronchitis: produktiver Husten mit subfebrilen Temperaturen, grobblasigen RG, aber unauffälligem Röntgen-Thorax und normalem PCT schließen Pneumonie aus.",
     "diagnosisOptions": [
       "Ambulant erworbene Pneumonie",
       "Akute Bronchitis",
@@ -2670,6 +2691,7 @@
     ],
     "imaging": "Röntgen-Thorax p. a.: Keine pneumonischen Infiltrate, kein Pneumothorax, kein Pleuraerguss nachweisbar. Herzsilhouette normal konfiguriert, Mediastinum schlank. Zwerchfellkonturen beidseits glatt abgrenzbar. Kein Nachweis einer Raumforderung.",
     "correctDiagnosis": "Pleuritis",
+    "keyTakeaway": "Pleuritis erkennt man an der Trias: atemabhängiger Thoraxschmerz, auskultatorisches Pleurareiben und vorangegangenem viralem Infekt bei unauffälligem Röntgenbild.",
     "diagnosisOptions": [
       "Pleuritis",
       "Lungenarterienembolie",
@@ -2795,6 +2817,7 @@
     ],
     "imaging": "Abdomensonographie: Leber sonomorphologisch unauffällig, kein intra- oder extrahepatischer Gallenwegsstau. Gallenblase regelrecht, keine Konkremente darstellbar, Wand nicht verdickt. Pankreas nicht sicher einsehbar (Luftüberlagerung). Kein freies intraabdominelles Fluid. Nieren bds. unauffällig.",
     "correctDiagnosis": "Akute Gastritis",
+    "keyTakeaway": "Epigastrischer Druckschmerz nach NSAID-Einnahme und Alkohol bei normaler Lipase und unauffälliger Sonographie ist typisch für die akute Gastritis.",
     "diagnosisOptions": [
       "Akute Gastritis",
       "Akute Pankreatitis",
@@ -2927,6 +2950,7 @@
     ],
     "imaging": "Ösophagogastroduodenoskopie (ÖGD): Im Antrum der kleinen Kurvatur des Magens findet sich ein ca. 1,5 cm großes, rundliches Ulkus mit sauberem Ulkusgrund und aufgeworfenem Randwall, leichte Sickerblutung (Forrest IIb, flaches Koagel). Biopsien aus Ulkusrand und Antrum entnommen. Helicobacter-pylori-Schnelltest (CLO-Test): positiv. Kein Anhalt für Malignom in der Makromorphologie, histologische Aufarbeitung ausstehend.",
     "correctDiagnosis": "Ulcus ventriculi",
+    "keyTakeaway": "Ulcus ventriculi: postprandialer Oberbauchschmerz + NSAR-Einnahme + H.-pylori-Nachweis + mikrozytäre Anämie als Zeichen chronischer Schleimhautblutung.",
     "diagnosisOptions": [
       "Ulcus ventriculi",
       "Erosive Gastritis",
@@ -3059,6 +3083,7 @@
     ],
     "imaging": "Abdomensonographie: Gallenblase elongiert, Wanddicke 3 mm (normal). Nachweis mehrerer echoreicher Konkremente mit dorsaler Schallauslöschung, größtes Konkrement 12 mm im Durchmesser. Kein Nachweis einer pericholezystitischen Flüssigkeit. Ductus choledochus 5 mm (nicht erweitert). Leber echogleich, keine fokalen Läsionen. Nieren beidseits unauffällig, keine Harnstauung.",
     "correctDiagnosis": "Cholezystolithiasis",
+    "keyTakeaway": "Kolikartige rechtsseitige Oberbauchschmerzen nach fetthaltiger Mahlzeit mit sonographischen Gallensteinen, dorsaler Schallauslöschung und positivem Murphy-Zeichen sind typisch für die Cholezystolithiasis.",
     "diagnosisOptions": [
       "Cholezystolithiasis",
       "Akute Cholezystitis",
@@ -3184,6 +3209,7 @@
     ],
     "imaging": "Sonographie Abdomen/Nieren: Rechte Niere mit Aufstau des Nierenbeckenkelchsystems (Hydronephrose Grad II nach SFU). Harnleiter proximal rechts auf ca. 6 mm dilatiert. Im Bereich des ureteropelvinen Übergangs rechts Nachweis eines hyperechogenen Reflexes mit dorsalem Schallschatten (DD: Konkrementnachweis, ca. 5 mm). Linke Niere und Harnblase sonographisch unauffällig. Kein Nachweis freier intraabdomineller Flüssigkeit.",
     "correctDiagnosis": "Nierenkolik",
+    "keyTakeaway": "Kolikartige Flankenschmerzen mit Ausstrahlung in die Leiste, Mikrohämaturie und sonographischer Harnstau mit Konkrement sind pathognomonisch für die Nierenkolik.",
     "diagnosisOptions": [
       "Nierenkolik",
       "Appendizitis",
@@ -3290,6 +3316,7 @@
     ],
     "imaging": "Röntgen rechter Fuß in 2 Ebenen: Kein Nachweis einer Fraktur. Keine ossären Destruktionen oder Erosionen. Geringe Weichteilschwellung im Bereich MTP I. Kein Gelenkspaltbefall im Sinne einer fortgeschrittenen Arthropathie.",
     "correctDiagnosis": "Akuter Gichtanfall",
+    "keyTakeaway": "Podagra – hochakute nächtliche Monoarthritis am MTP-I-Gelenk mit Rötung, Überwärmung und erhöhter Harnsäure – ist das klassische Bild des akuten Gichtanfalls.",
     "diagnosisOptions": [
       "Akuter Gichtanfall",
       "Septische Arthritis",
@@ -3375,6 +3402,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Kontaktekzem",
+    "keyTakeaway": "Beim Kontaktekzem (Typ-IV-Reaktion) weist die strenge topographische Bindung der Effloreszenzen an die Kontaktzone bei negativem IgE auf den Auslöser hin.",
     "diagnosisOptions": [
       "Kontaktekzem",
       "Atopisches Ekzem",
@@ -3493,6 +3521,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Urtikaria",
+    "keyTakeaway": "Flüchtige, juckende Quaddeln an wechselnden Lokalisationen nach NSAID-Einnahme mit positivem Dermographismus und erhöhtem IgE sind typisch für Urtikaria.",
     "diagnosisOptions": [
       "Urtikaria",
       "Erythema multiforme",
@@ -3625,6 +3654,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Herpes Zoster",
+    "keyTakeaway": "Herpes Zoster erkennt man am streng einseitig-dermatombegrenzten Vesikelexanthem mit brennendem Schmerz, das nie die Mittellinie überschreitet.",
     "diagnosisOptions": [
       "Herpes Zoster",
       "Kontaktdermatitis (allergisch)",
@@ -3724,6 +3754,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Erysipel",
+    "keyTakeaway": "Scharf begrenztes, flammenförmiges Erythem mit Überwärmung, Fieber, Leukozytose und erhöhtem CRP sind wegweisend für ein Erysipel durch β-hämolysierende Streptokokken.",
     "diagnosisOptions": [
       "Erysipel",
       "Tiefe Beinvenenthrombose",
@@ -3849,6 +3880,7 @@
     ],
     "imaging": "Duplex-Sonographie der Bein- und Beckenvenen links: Echoarme, nicht komprimierbare Struktur entlang eines V. saphena parva-Seitenastes am Unterschenkel, vereinbar mit einem thrombotischen Verschluss der oberflächlichen Vene. Perivaskuläres Ödem. Tiefe Leitvenen (V. poplitea, V. femoralis communis et superficialis, V. iliaca) vollständig komprimierbar, kein Anhalt für tiefe Venenthrombose. Kein Übergang des Thrombus in das tiefe Venensystem nachweisbar.",
     "correctDiagnosis": "Thrombophlebitis",
+    "keyTakeaway": "Thrombophlebitis erkennt man am strangförmig verhärteten, geröteten Venenverlauf ohne Beinödem bei sonographisch freiem tiefen Venensystem.",
     "diagnosisOptions": [
       "Thrombophlebitis",
       "Tiefe Beinvenenthrombose (TVT)",
@@ -3967,6 +3999,7 @@
     ],
     "imaging": "Duplex-Sonographie der Beinvenen beidseits:\n– V. saphena magna links: Mündungsinsuffizienz am Crosse, Stamminsuffizienz über den gesamten Verlauf nachweisbar, max. Lumendurchmesser 9 mm. Reflux unter Valsalva-Manöver deutlich positiv.\n– V. saphena magna rechts: Inkomplette Stamminsuffizienz im Unterschenkelanteil, max. Lumendurchmesser 6 mm.\n– Tiefes Venensystem: Regelrechte Komprimierbarkeit beider tiefer Beinvenen (V. femoralis communis, V. femoralis superficialis, V. poplitea, Unterschenkeleitervenen). Kein Nachweis einer tiefen Beinvenenthrombose.\n– Perforansvenen: Insuffiziente Cockett-Perforansvenen links (2 Stück).\n– Kein Anhalt für postthrombotisches Syndrom.",
     "correctDiagnosis": "Varikosis",
+    "keyTakeaway": "Varikosis erkennt man an geschlängelten Stammvenen, Reflux in der Duplexsonographie und typischer Klinik mit Schweregefühl und abendlichen Ödemen.",
     "diagnosisOptions": [
       "Chronisch-venöse Insuffizienz (CVI)",
       "Tiefe Beinvenenthrombose (TVT)",
@@ -4033,6 +4066,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Konjunktivitis",
+    "keyTakeaway": "Beidseitige konjunktivale Injektion mit mukopurulentem Sekret, Morgenverklebung und Juckreiz bei klarer Kornea und normalem Visus ist klassisch für eine bakterielle Konjunktivitis.",
     "diagnosisOptions": [
       "Konjunktivitis",
       "Keratitis",
@@ -4158,6 +4192,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Schwere Epistaxis",
+    "keyTakeaway": "Posteriore Epistaxis beim älteren Patienten: Kombination aus hypertensiver Entgleisung und Phenprocoumon-Übertherapie (INR 4,8) ist die klassische wegweisende Befundkonstellation.",
     "diagnosisOptions": [
       "Schwere Epistaxis",
       "Hämorrhagische Diathese bei Thrombozytopenie",
@@ -4276,6 +4311,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Vasovagale Synkope",
+    "keyTakeaway": "Vasovagale Synkope: Auslöser + Prodrom (Schwindel, Übelkeit, Kaltschweißigkeit) + rasche Erholung ohne Residuen sind das klassische Erkennungsmuster.",
     "diagnosisOptions": [
       "Vasovagale Synkope",
       "Epileptischer Anfall",
@@ -4408,6 +4444,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Typ-1-Hypoglykämie",
+    "keyTakeaway": "Typ-1-DM + relative Insulinüberdosierung + BG 2,1 mmol/l + adrenerge Warnsymptome + niedriges C-Peptid = klassische Typ-1-Hypoglykämie.",
     "diagnosisOptions": [
       "Typ-1-Hypoglykämie",
       "Diabetische Ketoazidose",
@@ -4547,6 +4584,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Panikattacke",
+    "keyTakeaway": "Akute Panikattacke mit Hyperventilation zeigt respiratorische Alkalose bei vollständig unauffälligem organischem Befund (Troponin, TSH, Glukose, SpO2 normwertig).",
     "diagnosisOptions": [
       "Panikattacke",
       "Lungenarterienembolie",
@@ -4705,6 +4743,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Depression Erstmanifestation",
+    "keyTakeaway": "Gedrückte Stimmung, Anhedonie und Antriebslosigkeit >2 Wochen plus PHQ-9 von 18 sichern die Depressionsdiagnose nach Ausschluss organischer Ursachen (TSH, Labor normal).",
     "diagnosisOptions": [
       "Hypothyreose",
       "Depression Erstmanifestation",
@@ -4842,6 +4881,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Akute Alkoholintoxikation",
+    "keyTakeaway": "Foetor alcoholicus, Somnolenz, Dysarthrie, Nystagmus und BAK 2,8 ‰ sind bei negativem Meningismus und unauffälligen Entzündungsparametern pathognomonisch für eine akute Alkoholintoxikation.",
     "diagnosisOptions": [
       "Akute Alkoholintoxikation",
       "Hypoglykämischer Schock",
@@ -4953,6 +4993,7 @@
     ],
     "imaging": "cCT (Schädel nativ): Kein Nachweis einer intrakraniellen Blutung (weder epidural noch subdural oder subarachnoidal). Kein Hirnödem. Keine Frakturlinien im Schädelknochen. Mittellinienstrukturen nicht verlagert. Unauffällige Darstellung des Hirnparenchyms beidseits.",
     "correctDiagnosis": "Leichtes SHT",
+    "keyTakeaway": "Leichtes SHT (Grad I): kurze Bewusstlosigkeit ≤ 30 min, GCS 13–15, retrograde Amnesie und unauffälliges cCT ohne Blutung oder Fraktur.",
     "diagnosisOptions": [
       "Commotio cerebri",
       "Leichtes SHT",
@@ -5031,6 +5072,7 @@
     ],
     "imaging": "Röntgen rechtes OSG in 2 Ebenen (a.p. und seitlich): Kein Nachweis einer frischen knöchernen Läsion. Keine Frakturlinie, kein Stufenbildung im Gelenkspalt. Ossäre Strukturen regelrecht konfiguriert. Weichteilschwellung lateral erkennbar. Befund vereinbar mit ligamentärer Verletzung ohne knöcherne Beteiligung.",
     "correctDiagnosis": "Sprunggelenksdistorsion",
+    "keyTakeaway": "Lateraler Druckschmerz (LFTA/LFC), positiver vorderer Schubladentest und negative Ottawa Ankle Rules bei unauffälligem Röntgenbefund sind wegweisend für die Sprunggelenksdistorsion.",
     "diagnosisOptions": [
       "Sprunggelenksdistorsion",
       "Fibulafraktur (Weber A)",
@@ -5135,6 +5177,7 @@
     ],
     "imaging": "Röntgen rechtes Handgelenk in 2 Ebenen (p.a. und lateral): Komplette, nicht dislozierte Fraktur des distalen Radius mit dorsaler Angulation (Colles-Typ). Radiusgelenkfläche nach dorsal verkippt, kein freies Gelenk. Kein Begleitbruch der Ulna. Kein Gelenkflächeneinbruch. Weichteilschwellung dorsal über dem distalen Unterarm bildmorphologisch bestätigt.",
     "correctDiagnosis": "Radiusfraktur",
+    "keyTakeaway": "Sturz auf ausgestreckte Hand (FOOSH) + Bajonettdeformität + dorsale Angulation im Röntgen = klassische distale Radiusfraktur (Colles-Typ).",
     "diagnosisOptions": [
       "Radiusfraktur",
       "Kahnbeinfraktur (Skaphoidfraktur)",
@@ -5260,6 +5303,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Verbrennung Grad II",
+    "keyTakeaway": "Verbrennung Grad II erkennt man an Blasenbildung, feuchter rosig-livider Wunde und erhaltener Schmerzempfindung bei partieller Dermisschädigung.",
     "diagnosisOptions": [
       "Verbrennung Grad II",
       "Verbrennung Grad I",
@@ -5432,6 +5476,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Hitzschlag",
+    "keyTakeaway": "Hitzschlag = Hyperthermie ≥ 40 °C + ZNS-Dysfunction + anhidrotische heiße Haut mit beginnender Multiorgandysfunktion (CK ↑, DIC, Laktatazidose).",
     "diagnosisOptions": [
       "Hitzschlag",
       "Ischämischer Schlaganfall",
@@ -5571,6 +5616,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Hyperventilationssyndrom",
+    "keyTakeaway": "Hyperventilationssyndrom: Hypokapnie-bedingte respiratorische Alkalose verschiebt ionisiertes Kalzium und verursacht funktionelle Tetanie mit positivem Chvostek- und Trousseau-Zeichen.",
     "diagnosisOptions": [
       "Lungenarterienembolie",
       "Hyperventilationssyndrom",
@@ -5717,6 +5763,7 @@
     ],
     "imaging": "Abdomensonographie: Milz vergrößert mit einem Längsdurchmesser von 17,5 cm (Norm < 12 cm), homogenes Parenchym, kein Hinweis auf Einblutung oder Ruptur. Leber im oberen Normbereich (Längsdurchmesser 15 cm in der MCL), homogenes Echomuster. Kein Aszites. Zervikale Sonographie: multiple echoarme, ovaläre Lymphknoten beidseits zervikal und nuchale, max. 2,1 cm, mit erhaltenem Fetthilus – reaktive Morphologie.",
     "correctDiagnosis": "EBV-Mononukleose",
+    "keyTakeaway": "EBV-Mononukleose: Fieber + exsudative Tonsillitis + Lymphadenopathie + atypische Lymphozyten + positiver Monospot und VCA-IgM ohne EBNA-IgG sind diagnostisch wegweisend.",
     "diagnosisOptions": [
       "Streptokokken-Tonsillitis",
       "EBV-Mononukleose",
@@ -5835,6 +5882,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Masern Erwachsener",
+    "keyTakeaway": "Koplik-Flecken, die Trias der „3 K\" im Prodromalstadium und kephalokaudales Exanthem mit positivem Masern-IgM bei fehlendem IgG sichern die Diagnose.",
     "diagnosisOptions": [
       "Masern Erwachsener",
       "Röteln",
@@ -5960,6 +6008,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Windpocken Erwachsener",
+    "keyTakeaway": "Varizellen im Erwachsenenalter erkennt man am Sternenhimmelphänomen, Schleimhautbefall, Leukopenie/Lymphopenie und positivem VZV-IgM ohne IgG nach Kontakt mit erkranktem Kind.",
     "diagnosisOptions": [
       "Windpocken Erwachsener",
       "Herpes zoster disseminatus",
@@ -6099,6 +6148,7 @@
     ],
     "imaging": "",
     "correctDiagnosis": "Frühe Borreliose",
+    "keyTakeaway": "Zentrifugal wachsendes Erythem mit zentraler Abblassung nach Zeckenstich plus positivem IgM bei negativem IgG ist pathognomonisch für frühe Borreliose.",
     "diagnosisOptions": [
       "Frühe Borreliose",
       "Erysipel",

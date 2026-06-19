@@ -170,6 +170,7 @@
     ],
     "imaging": "EKG (s. Untersuchungsbefund): ST-Hebungen V1–V4 bis 4 mm, Pardee-Q V1–V2, ST-Senkungen II/III/aVF als Spiegelbild vereinbar mit anteriorem STEMI.\n\nRöntgen-Thorax (a.p., Notaufnahme): Vergrößertes Herzsilhouette (Kardiothorakalindex > 0,55). Beidseits perihiläre alveoläre Verschattungen und Kerley-B-Linien vereinbar mit kardiogenem Lungenödem. Keine Pneumothorax-Zeichen, keine Ergusskonfiguration.\n\nEchokardiographie (Bettkanten-Echo, transthorakal): Globale LV-Dysfunktion, ausgeprägte anteriore und septale Akinesie (Wandbewegungsstörung V1–V4-Territorium), geschätzte LVEF 20–25 %. Kein Perikarderguss. Mitralklappe strukturell unauffällig, leichte funktionelle Mitralinsuffizienz Grad I–II. RV gering dilatiert.",
     "correctDiagnosis": "STEMI kardiogener Schock",
+    "keyTakeaway": "Anteriore ST-Hebungen V1–V4 mit Pardee-Q, LVEF 20–25 %, Schockzeichen und Laktatazidose sind klassische Konstellation des STEMI-assoziierten kardiogenen Schocks.",
     "diagnosisOptions": [
       "STEMI kardiogener Schock",
       "Lungenarterienembolie mit obstruktivem Schock",
@@ -340,6 +341,7 @@
     ],
     "imaging": "EKG: Absolut arrhythmischer Rhythmus ohne erkennbare P-Wellen, unregelmäßige RR-Abstände, mittlere Herzfrequenz ca. 112/min, schmale QRS-Komplexe, keine ST-Streckenveränderungen, keine Q-Zacken in aktueller Ableitung. Befund vereinbar mit Vorhofflimmern (VHF), keine sicheren Ischämiezeichen.\nTransthorakale Echokardiographie (TTE): Deutlich dilatierter linker Ventrikel (LVEDD 63 mm), schwer reduzierte systolische LV-Funktion (EF 28 % nach Simpson), diffuse Wandbewegungsstörungen, V. a. apikaler Thrombus. Linker Vorhof dilatiert (LA-Diameter 50 mm). Mäßige Mitralklappeninsuffizienz (Grad II). Kein sicherer Perikarderguss. Rechter Ventrikel grenzwertig dilatiert, TAPSE 17 mm.\nRöntgen-Thorax: Kardiomegalie (Herzbreite > 1/2 Thoraxbreite), beidseitige basale Verschattungen (Pleuraergüsse), perihiläre Gefäßzeichnung verstärkt (Zeichen der venösen Stauung), Kerley-B-Linien beidseits.",
     "correctDiagnosis": "Herzinsuffizienz Vorhofflimmern Antikoagulation",
+    "keyTakeaway": "Akut dekompensierte Herzinsuffizienz mit EF 28 %, VHF und V. a. LV-Thrombus erzwingen sofortige therapeutische Antikoagulation zur Embolieprävention.",
     "diagnosisOptions": [
       "Herzinsuffizienz Vorhofflimmern Antikoagulation",
       "Hypertensive Herzerkrankung mit diastolischer Dysfunktion",
@@ -533,6 +535,7 @@
     ],
     "imaging": "Röntgen-Thorax p.a. (bei Aufnahme): Überblähte Lungen beidseits mit Tiefstand der Zwerchfelle und verbreitertem Retrosternalraum, vereinbar mit bekannter Lungenüberblähung bei COPD. Neu im Vergleich zur Voraufnahme (2022): fleckig-streifige, perihiläre Infiltrate links > rechts, keine lobäre Konsolidierung, kein Pleuraerguss, kein Pneumothorax. Keine Raumforderung. Herzsilhouette mittelständig, gering vergrößert.\n\nCT-Thorax mit KM (Low-Dose, am Folgetag): Beidseits peribronchiale Infiltrate mit Milchglasverschattungen, bevorzugt in den Unterlappen und perihilär, kein lobäres Konsolidierungsmuster. Keine Zeichen einer Lungenarterienembolie (zentrale Pulmonalarterien regelrecht durchblutet). Emphysematöse Lungenveränderungen diffus, centrilobulär betont, vereinbar mit bekannter COPD. Kein Pleuraerguss beidseits. Keine mediastinalen Raumforderungen oder Lymphadenopathien > 1 cm.",
     "correctDiagnosis": "COPD atypische Pneumonie",
+    "keyTakeaway": "Trockener Husten, Subfebrile, protrahierter Verlauf und positives Mykoplasmen-IgM bei COPD-Patient weisen auf atypische Pneumonie hin.",
     "diagnosisOptions": [
       "COPD atypische Pneumonie",
       "COPD-Exazerbation durch virale Infektion",
@@ -740,6 +743,7 @@
     ],
     "imaging": "Röntgen-Thorax a. p. (Liegendaufnahme): Basale Transparenzminderung rechts, vereinbar mit Minderbelüftung/beginnendem Erguss. Kein Pneumothorax. Herz gering vergrößert (Kardiomegalie Grad I). Keine floriden pulmonalen Infiltrate.\nSono-Abdomen: Harnblase mit echoinhomogenem Inhalt, Nierenbeckenkelch-Erweiterung rechts (Grad II), inhomogenes Nierenbecken rechts, vereinbar mit aufsteigendem Harnwegsinfekt/Pyelonephritis. Leber echoreich, grenzwertig vergrößert (Fettleber). Keine Raumforderungen. Geringe Mengen freier Flüssigkeit perihepatisch.",
     "correctDiagnosis": "Sepsis DIC",
+    "keyTakeaway": "Septisches Bild mit Infektionsfokus plus Thrombozytopenie, INR↑, aPTT↑, Fibrinogen↓, D-Dimere↑ und AT-III↓ ist pathognomonisch für eine Sepsis-assoziierte DIC.",
     "diagnosisOptions": [
       "Thrombotisch-thrombozytopenische Purpura (TTP)",
       "Sepsis DIC",
@@ -952,6 +956,7 @@
     ],
     "imaging": "Abdomen-Röntgen (Übersicht im Stehen): Mehrere Luft-Flüssigkeitsspiegel im Dünndarmbereich, deutlich dilatierte Dünndarmschlingen (Kaliber > 3 cm), kein freies subdiaphragmales Gas. Kein Nachweis von Aerobilie.\n\nCT-Abdomen mit KM (portalvenöse Phase): Ausgeprägte Dilatation der Jejunum- und Ileumschlingen (max. Kaliber 4,8 cm) mit multiplen Luft-Flüssigkeitsspiegeln. Übergangszone im distalen Ileum mit abruptem Kaliberwechsel auf Höhe einer narbigen Adhäsionsstruktur (a. e. Adhäsionsstrang, vereinbar mit postoperativer Genese). Kein freies intraabdominelles Gas, keine Ischämiezeichen der Darmwand (KM-Anreicherung erhalten). Kein Nachweis einer Hernie. Appendix nicht darstellbar (Z. n. Appendektomie). Mesenteriale Lymphknoten bis 9 mm, nicht suspekt. Keine Raumforderung im Colon.",
     "correctDiagnosis": "Akutes Abdomen Differentialdiagnose",
+    "keyTakeaway": "Kolikartige Schmerzen, fehlende Stuhlpassage, metallische Darmgeräusche und Luft-Flüssigkeitsspiegel im Röntgen sind klassische Zeichen des mechanischen Dünndarmileus – Strangulation ausschließen!",
     "diagnosisOptions": [
       "Akutes Abdomen Differentialdiagnose",
       "Mesenterialischämie",
@@ -1157,6 +1162,7 @@
     ],
     "imaging": "Sonographie Abdomen: Leber verkleinert, echoinhomogen mit knotiger Oberfläche, vereinbar mit Leberzirrhose. Mäßiggradiger Aszites (ca. 1,5 l geschätzt). Splenomegalie (Längsachse 16 cm). Keine freie intraabdominelle Luft. Keine Zeichen einer akuten Cholezystitis. Keine Raumforderung abgrenzbar. Pfortaderfluss regelrecht, kein Anhalt für frische Thrombose. – cCT (Schädel, nativ): Kein Nachweis von Blutung, Ischämie, Raumforderung oder Hirnödem; kein Mittellinienshifting; kortikale Atrophie beidseits, vereinbar mit bekanntem Alkoholabusus.",
     "correctDiagnosis": "Hepatische Enzephalopathie",
+    "keyTakeaway": "Leberzirrhose + Ammoniak ↑↑ + Asterixis + Desorientiertheit bei unauffälligem cCT = hepatische Enzephalopathie, oft durch GI-Blutung oder Lactulose-Stopp getriggert.",
     "diagnosisOptions": [
       "Hepatische Enzephalopathie",
       "Wernicke-Enzephalopathie",
@@ -1350,6 +1356,7 @@
     ],
     "imaging": "cCT nativ (Notfallindikation, DD Apoplex / intrakranielle Blutung): Kein Nachweis von Ischämiefrühzeichen, frischer Blutung oder raumforderndem Prozess. Bekannte Marklagergliosen als Korrelat der Kleingefäßerkrankung. Keine Mittellinienverlagerung. Normkalibrige Ventrikel.",
     "correctDiagnosis": "Hyperosmolares Koma",
+    "keyTakeaway": "Extreme Hyperglykämie mit Hyperosmolalität und schwerer Exsikkose, aber ohne Ketonurie/Ketoazidose, ist das klassische Muster des hyperosmolaren Komas beim älteren Typ-2-Diabetiker.",
     "diagnosisOptions": [
       "Hyperosmolares Koma",
       "Diabetische Ketoazidose",
@@ -1541,6 +1548,7 @@
     ],
     "imaging": "Sonographie Abdomen: Leber, Gallenblase, Pankreas und Milz unauffällig. Nieren beidseits regelrecht groß und echostrukturiert, keine Harnstauung. Nebennieren sonographisch nicht sicher beurteilbar. CT Abdomen/Becken mit KM (Nebennieren-Protokoll): Beide Nebennieren deutlich verschmälert und atrophisch, kein Nachweis von Raumforderungen, Einblutungen oder Verkalkungen. Kein Hinweis auf Metastasen oder Lymphadenopathie.",
     "correctDiagnosis": "Addison Hyponatriämie",
+    "keyTakeaway": "Hyponatriämie + Hyperkaliämie + hohes ACTH bei niedrigem Kortisol und Hyperpigmentierung sind pathognomonisch für den Morbus Addison.",
     "diagnosisOptions": [
       "Addison Hyponatriämie",
       "SIADH (Syndrom der inadäquaten ADH-Sekretion)",
@@ -1699,6 +1707,7 @@
     ],
     "imaging": "CT-Pulmonalisangiographie (CTPA) mit KM: Ausgedehnte bilaterale Füllungsdefekte in den Pulmonalarterien beidseits, zentral beginnend im Truncus pulmonalis mit Ausdehnung in beide Hauptäste sowie segmentale und subsegmentale Äste beidseits (Satteldurchthrombus). Deutliche Rechtsherzbelastung mit Dilatation des rechten Ventrikels (RV/LV-Quotient > 1,0), Deviation des interventrikulären Septums nach links (D-Zeichen). Kleines Pleuraerguss rechts basal. Kein Nachweis eines Pneumothorax. Kein Hinweis auf Aortendissektion.\n\nEchokardiographie (transthorakal, Notfallechokardiographie): Dilatierter rechter Ventrikel mit eingeschränkter systolischer Funktion (TAPSE 13 mm), paradoxe Septumbewegung, McConnell-Zeichen positiv. Keine linksventrikuläre Wandbewegungsstörung, EF LV ca. 55 %. Schwere Trikuspidalinsuffizienz, geschätzter RVSP 58 mmHg. Kein Perikarderguss.",
     "correctDiagnosis": "Massive Lungenembolie",
+    "keyTakeaway": "Plötzliche Dyspnoe, obstruktiver Schock und akute Rechtsherzbelastung (McConnell-Zeichen, Troponin, NT-proBNP) bei postoperativer Immobilisation und Malignom sind klassisch für eine massive Lungenembolie.",
     "diagnosisOptions": [
       "Massive Lungenembolie",
       "Akutes Koronarsyndrom (STEMI)",
@@ -1918,6 +1927,7 @@
     ],
     "imaging": "CT-Schädel nativ (vor LP, zum Ausschluss Kontraindikation): Kein Hinweis auf erhöhten intrakraniellen Druck, keine Raumforderung, keine Herniation, keine intrakranielle Blutung. Keine Mittellinienverschiebung.\nRöntgen-Thorax: Diskrete Verschattung rechts basal, vereinbar mit reaktivem Pleuraerguss oder beginnender Pneumonie als Begleitbefund. Herzsilhouette nicht verbreitert.",
     "correctDiagnosis": "Waterhouse-Friderichsen-Syndrom",
+    "keyTakeaway": "Purpura fulminans + therapierefraktärer septischer Schock + DIC + Elektrolytmuster der Nebenniereninsuffizienz = klassisches Waterhouse-Friderichsen-Syndrom bei Meningokokken-Sepsis.",
     "diagnosisOptions": [
       "Waterhouse-Friderichsen-Syndrom",
       "Purpura Schönlein-Henoch",
@@ -2083,6 +2093,7 @@
     ],
     "imaging": "CCT nativ (Notfall-Screening): Hypodense Läsion frontoparietale links, ca. 18 × 12 mm, vereinbar mit akut-subakutem ischämischen Infarkt; kein Anhalt für Blutung. Keine Mittellinienverlagerung.\n\nMRT Schädel mit DWI (Folgeuntersuchung, 2 h später): Diffusionsrestriktion frontoparietal links bestätigt; zusätzlich 2 weitere kleine kortikale DWI-Läsionen (< 5 mm) okzipital links und zerebellär rechts – Bild vereinbar mit multiplen kardioembolischen Ischämien unterschiedlicher Größe und Lokalisation.\n\nTransthorakale Echokardiographie (TTE): Bikuspide Aortenklappe mit echokardiographisch darstellbaren irregulären Auflagerungen (Länge ca. 12 mm, hypermobil) auf der ventrikulären Seite der Aortenklappe. Mittel- bis hochgradige Aortenklappeninsuffizienz (AI III°). Kein Perikarderguss. LV-Funktion global leicht eingeschränkt (EF ca. 45 %).\n\nTransösophageale Echokardiographie (TEE, noch ausstehend, angemeldet): Zur besseren Darstellung der Vegetation und Abszessausschluss geplant.\n\nCT-Abdomen mit KM: Keilförmige, hypodense Läsion Milz (ca. 30 mm) sowie eine kortikal gelegene hypodense Läsion Niere li. (ca. 15 mm) – beides vereinbar mit septisch-embolischen Infarkten.",
     "correctDiagnosis": "Endokarditis Embolie",
+    "keyTakeaway": "Vegetation auf vorgeschädigter Klappe plus multiple embolische Infarkte in verschiedenen Territorien und klassische Hautzeichen (Janeway, Osler) erfüllen die Duke-Kriterien für eine definitive Endokarditis mit septischer Embolie.",
     "diagnosisOptions": [
       "Endokarditis Embolie",
       "Kardiale Embolie bei Vorhofflimmern",
@@ -2288,6 +2299,7 @@
     ],
     "imaging": "12-Kanal-EKG bei Aufnahme: Sinustachykardie mit vereinzelten VES, HF 102/min. ST-Strecken-Hebungen in II, III, aVF von 1,5–2 mm, reziproke ST-Senkungen in I und aVL. Kein Schenkelblock. QTc 498 ms (verlängert, a. e. bei Hyperkaliämie und Ischämie).\n\nRöntgen-Thorax (p.a., liegend): Kardiomegalie (Herzbreite > 50 % des Thoraxdurchmessers). Verstärkte Hiluszeichnung beidseits, perihiläre Verschattung im Sinne eines interstitiellen Lungenödems. Keine Pneumothorax, kein Pleuraerguss eindeutig nachweisbar.\n\nEchokardiographie (transthorakal, orientierend, notfallmäßig): Hypokinese der Hinterwand und des inferioren Septums. Linksventrikuläre Ejektionsfraktion (LVEF) ca. 35 % (hochgradig eingeschränkt). Keine Perikarderguss. Keine signifikante Mitralinsuffizienz.",
     "correctDiagnosis": "ACS Diabetes Niereninsuffizienz",
+    "keyTakeaway": "Diabetiker mit stummer Ischämie zeigen statt Angina pectoris oft nur Epigastralgie – Troponin, ST-Hebungen inferior und Nierenwerte sichern die Diagnose.",
     "diagnosisOptions": [
       "ACS Diabetes Niereninsuffizienz",
       "Hypertensive Entgleisung mit akuter Linksherzinsuffizienz",
@@ -2488,6 +2500,7 @@
     ],
     "imaging": "CT-Angiographie Thorax/Abdomen mit KM (Notfall-CTA):\nAorta ascendens und descendens: Nachweis eines intimalen Flaps mit Ausdehnung von der Aortenwurzel (Abgang ca. 1 cm oberhalb der Aortenklappe) bis in die Aorta abdominalis, Ausdehnung bis auf Höhe der Nierenarterien beidseits. Wahres Lumen partiell komprimiert, falsches Lumen mit Kontrastmittelenhancement. Abgangsbereich Truncus brachiocephalicus und A. subclavia dextra durch das falsche Lumen einbezogen (V. a. Mitbeteiligung → erklärt RR-Seitendifferenz und abgeschwächten Radialispuls rechts). Aortenwurzel: Durchmesser 47 mm. Keine Zeichen einer Perikarderguss-Tamponade, kein Hämothorax, kein Hämoperitoneum. Mitralklappe unauffällig. Aortenklappe bikuspid konfiguriert.\nBeurteilung: Typ-A-Aortendissektion nach Stanford (DeBakey Typ I) mit Beteiligung von Aorta ascendens, Arcus aortae und Aorta descendens bis abdominell; Mitbeteiligung supraaortaler Äste rechts; kein akutes hämorrhagisches Leck nachweisbar.",
     "correctDiagnosis": "Aortendissektion",
+    "keyTakeaway": "Reißender Thorako-Abdominalschmerz + Blutdruckseitendifferenz + intimaler Flap in der CTA = Stanford-A-Dissektion; ein leicht erhöhtes Troponin darf nicht zum Fehlschluss „ACS\" verleiten.",
     "diagnosisOptions": [
       "Aortendissektion",
       "Akutes Koronarsyndrom (NSTEMI)",
@@ -2679,6 +2692,7 @@
     ],
     "imaging": "cCT nativ (Notfallbildgebung): Kein Nachweis einer intrakraniellen Blutung, kein ischämischer Frühinfarkt, keine Raumforderung. Subkortikale und periventrikuläre Hypodensitäten beidseits, vereinbar mit hypertensiver Leukenzephalopathie. Keine Mittellinienverlagerung. Keine Liquorzirkulationsstörung.\n\nMRT Schädel (DWI/FLAIR, ergänzend): Bilateral symmetrische FLAIR-Hyperintensitäten temporo-okzipital und parietookzipital bds., keine Diffusionsrestriktion – Befund vereinbar mit posteriorem reversiblem Enzephalopathiesyndrom (PRES) im Rahmen einer hypertensiven Enzephalopathie.",
     "correctDiagnosis": "Hypertensive Enzephalopathie",
+    "keyTakeaway": "Schwere Hypertonie + Verwirrtheit/Sehstörungen + reversible temporo-okzipitale FLAIR-Hyperintensitäten ohne Diffusionsrestriktion (PRES) = hypertensive Enzephalopathie.",
     "diagnosisOptions": [
       "Hypertensive Enzephalopathie",
       "Ischämischer Schlaganfall (A. cerebri posterior)",
@@ -2837,6 +2851,7 @@
     ],
     "imaging": "EKG (12-Kanal, bei Aufnahme): Sinusbradykardie mit HF 48/min. Zeltförmige, hochamplitudige T-Wellen in V2–V5 (peaked T-waves). QRS-Dauer 120 ms (Verbreiterung). PQ-Intervall 220 ms (AV-Block I°). In Ableitungen II und V1 keine sicher abgrenzbaren P-Wellen. Kein ST-Strecken-Hebungsmuster im Sinne eines STEMI.\n\nRöntgen-Thorax (a.-p., Liegendaufnahme): Herz grenzwertig groß (Herzbreite/Thoraxbreite ≈ 0,52). Keine Stauungszeichen. Kein Pneumothorax, kein Erguss.",
     "correctDiagnosis": "Hyperkaliämie EKG",
+    "keyTakeaway": "Zeltförmige T-Wellen, QRS-Verbreiterung und fehlende P-Wellen bei Niereninsuffizienz und Kalium >7 mmol/l sind pathognomonisch für eine lebensbedrohliche Hyperkaliämie.",
     "diagnosisOptions": [
       "Hyperkaliämie EKG",
       "AV-Block III° (kompletter AV-Block)",
@@ -3035,6 +3050,7 @@
     ],
     "imaging": "Sonographie Abdomen: Hepatosplenomegalie (Leber craniocaudal 18 cm, Milz 16 cm), echoreiches parenchymatöses Muster der Leber vereinbar mit lymphomatöser Infiltration. Nieren beidseits leicht vergrößert (re. 12,5 cm, li. 12,2 cm), echoreich, kein Harnstau, kein Nierenstein sonographisch nachweisbar. Kein Aszites.\nEKG: Sinustachykardie 108/min, spitze, hochamplitudige T-Wellen in V2–V5 (Ausdruck der Hyperkaliämie), verlängertes QTc-Intervall (490 ms), keine ST-Veränderungen.",
     "correctDiagnosis": "Tumorlysesyndrom",
+    "keyTakeaway": "Das Tumorlysesyndrom zeigt 18–24 h nach Chemotherapie die Tetrade Hyperkaliämie, Hyperphosphatämie, Hypokalzämie und Hyperurikämie mit akutem Nierenversagen.",
     "diagnosisOptions": [
       "Tumorlysesyndrom",
       "Akute Harnleiterobstruktion mit postrenalem Nierenversagen",
@@ -3226,6 +3242,7 @@
     ],
     "imaging": "Röntgen-Thorax: Verschattungen beidseits basal, a. e. Infiltrat rechts > links, vereinbar mit Pneumonie; leichte Stauungszeichen; Herzsilhouette im Normbereich.\nEKG: Tachykardes absolutes Vorhofflimmern, HF ca. 145–155/min, keine ST-Strecken-Veränderungen, kein Schenkelblock.\nSchilddrüsen-Sonographie: Struma nodosa, Volumen 38 ml, inhomogenes Parenchym, echoarmer Knoten rechter Lappen 2,3 × 1,8 cm ohne Kalzifikation, kein Hinweis auf Einblutung.",
     "correctDiagnosis": "Schilddrüsensturm",
+    "keyTakeaway": "Ein Schilddrüsensturm zeigt die Trias aus massiv erhöhten fT3/fT4 bei supprimiertem TSH, Hyperthermie und ZNS-Beteiligung – oft durch akuten Stress getriggert.",
     "diagnosisOptions": [
       "Schilddrüsensturm",
       "Septischer Schock bei Pneumonie",
@@ -3410,6 +3427,7 @@
     ],
     "imaging": "MRT Abdomen mit KM (3-Tesla): Im Bereich der linken Nebenniere demarkiert sich eine 4,3 × 3,8 cm große, scharf begrenzte, inhomogen kontrastmittelaufnehmende Raumforderung mit zentralen Nekrosearealen; Signal-Charakteristik im T2 hyperintens (sog. „Leuchtturmzeichen\"). Rechte Nebenniere und beide Nieren morphologisch unauffällig. Kein Hinweis auf Lymphadenopathie oder Fernmetastasen im Untersuchungsfeld. Befund vereinbar mit einem Phäochromozytom der linken Nebenniere.",
     "correctDiagnosis": "Phäochromozytom-Krise",
+    "keyTakeaway": "Die Trias aus Hypertonie, Palpitationen und Diaphorese plus erhöhte Plasma-Metanephrine und T2-hyperintense Nebennierenraumforderung sichern das Phäochromozytom.",
     "diagnosisOptions": [
       "Phäochromozytom-Krise",
       "Hypertensive Notfallsituation bei therapieresistenter essentieller Hypertonie",
@@ -3589,6 +3607,7 @@
     ],
     "imaging": "cMRT nativ: Vereinzelte kortikal-subkortikale Diffusionsstörungen (DWI-Restriktion) frontal und parietal beidseits, passend zu ischämischen Mikroläsionen im Rahmen einer thrombotischen Mikroangiopathie; kein Nachweis einer raumfordernden Läsion oder Blutung.",
     "correctDiagnosis": "TTP",
+    "keyTakeaway": "TTP erkennt man an der Trias aus Schistozyten, Thrombozytopenie und Neurologie bei normaler Gerinnung und ADAMTS13-Aktivität unter 10 %.",
     "diagnosisOptions": [
       "TTP",
       "HUS (hämolytisch-urämisches Syndrom)",
@@ -3728,6 +3747,7 @@
     ],
     "imaging": "Duplexsonographie der tiefen Beinvenen links: Akute, nicht komprimierbare tiefe Beinvenenthrombose (TVT) mit Nachweis echoarmer Thrombusmassen in V. femoralis communis, V. femoralis superficialis und V. poplitea links. Kein Anhalt für freischwebende Thromben.\n\nCT-Angiographie Thorax (zum Ausschluss LAE): Kein Nachweis einer Lungenarterienembolie. Regelrechte Darstellung der Pulmonalarterien bis in subsegmentale Äste.",
     "correctDiagnosis": "HIT",
+    "keyTakeaway": "HIT II erkennt man am Thrombozytenabfall ≥ 50 % nach 5–10 Tagen Heparin plus paradoxer Thrombose trotz laufender Antikoagulation – sofortiger Heparin-Stopp obligat.",
     "diagnosisOptions": [
       "HIT",
       "Verbrauchskoagulopathie (DIC)",
@@ -3926,6 +3946,7 @@
     ],
     "imaging": "Röntgen-Thorax p.a.: Beidseits ausgedehnte, perihilär betonte, schmetterlingsförmige interstitielle Infiltrate mit milchglasartiger Trübung, betonter Hili bds. Kein Pleuraerguss. Kein Pneumothorax.\n\nHR-CT Thorax ohne KM: Ausgedehnte, bilaterale Milchglastrübungen (»ground-glass opacities«) mit diffuser, perihilärer Betonung und begleitender interlobulärer Septumverdickung (»crazy paving«-Muster). Kein Nachweis kavitärer Läsionen. Keine Lymphadenopathie mediastinal. Befund vereinbar mit einer Pneumocystis-jirovecii-Pneumonie (PCP).",
     "correctDiagnosis": "PCP HIV",
+    "keyTakeaway": "PCP bei HIV typischerweise: CD4+ unter 200/µl, subakuter trockener Husten, schwere Hypoxämie, stark erhöhte LDH und „crazy paving\" im HR-CT.",
     "diagnosisOptions": [
       "PCP HIV",
       "Miliare Tuberkulose",
@@ -4077,6 +4098,7 @@
     ],
     "imaging": "Sonographie Abdomen: Wandverdickung des Colon descendens und sigmoideum (Wanddicke bis 8 mm), geringe Kokardenkonfiguration. Kein freier Verhalt, keine Splenomegalie. Transplantatniere im rechten Unterbauch sonomorphologisch unauffällig, regelhafte Perfusion im Doppler. – Koloskopie (Vorbefund endoskopisch): ausgedehnte, konfluierende, flache Ulzera mit geographischem Muster sowie hämorrhagische Erosionen im Colon descendens und sigmoideum; diskrete Hyperämie der Mukosa; Biopsien entnommen (multiple; rechtes Hemikolon, Sigma, Rektum). Histologie (vorläufig): mukosale Ulzerationen; in der HE-Färbung Nachweis von intranukleären Einschlusskörperchen („Eulenaugen\") in Endothelzellen und Stromazellen der Kolonmukosa, vereinbar mit CMV-Infektion; immunhistochemische CMV-Antigen-Färbung positiv.",
     "correctDiagnosis": "CMV-Kolitis",
+    "keyTakeaway": "CMV-Kolitis bei Transplantationspatienten erkennt man an hoher CMV-Viruslast, geographischen Ulzera und histologischen „Eulenaugen\"-Einschlusskörperchen.",
     "diagnosisOptions": [
       "CMV-Kolitis",
       "Akute Abstoßungsreaktion des Nierentransplantats mit intestinaler Beteiligung",
@@ -4261,6 +4283,7 @@
     ],
     "imaging": "Röntgen-Thorax (a.p., Aufnahme bei Aufnahme): Verschattung rechts basal, diskret nodulär konfluierend, kein sicherer Pleuraerguss. DD pulmonales Infiltrat vs. Atelektase.\n\nHRCT-Thorax (mit KM, 48 h nach Aufnahme): Multiple noduläre Infiltrate beidseits, rechts betont. Typisches „Halo-Zeichen\" (Rundherd mit umgebendem Milchglassaum) rechtsoberlappig 2,3 cm, sowie 3 weitere kleinere Herde links (< 1 cm). Keine Kavernenbildung. Kein Pleuraerguss. Befund hochgradig vereinbar mit invasiver pulmonaler Aspergillose (IPA) bei Immunsuppression.",
     "correctDiagnosis": "Neutropenisches Fieber Pilz",
+    "keyTakeaway": "Halo-Zeichen im HRCT + erhöhter Galactomannan + Antibiotikaversagen bei schwerer Neutropenie = invasive pulmonale Aspergillose.",
     "diagnosisOptions": [
       "Neutropenisches Fieber Pilz",
       "Katheter-assoziierte Bakteriämie (CRBSI)",
@@ -4506,6 +4529,7 @@
     ],
     "imaging": "Sonographie Abdomen/Nieren: Nieren bds. vergrößert (re. 13,2 cm, li. 13,0 cm), Parenchym bds. echoarm und geschwollen, kein Harnstau, kein Nierenstein. Harnblase gering gefüllt. Leber und Gallenblase unauffällig. Kein freier Bauchraum.\n\nRöntgen-Thorax: Herz nicht vergrößert, keine pulmonalvenöse Stauung, keine Infiltrate, kein Erguss.",
     "correctDiagnosis": "Rhabdomyolyse ANV",
+    "keyTakeaway": "Massiv erhöhte CK, Myoglobinurie (Cola-Urin, Dipstick-positiv ohne Erythrozyten) und Liegetrauma sind pathognomonisch für Rhabdomyolyse mit akutem Nierenversagen.",
     "diagnosisOptions": [
       "Rhabdomyolyse ANV",
       "Akute Tubulusnekrose bei septischem Schock",
@@ -4741,6 +4765,7 @@
     ],
     "imaging": "Röntgen-Thorax (Aufnahme im Liegen): Bilaterale, diffuse alveoläre Verschattungen beidseits, betontes interstitielles Muster, keine eindeutige kardiale Verbreiterung (Herzsilhouette nicht sicher beurteilbar). Keine Pneumothorax. Geringe beidseits basale Pleuraergüsse.\n\nCT-Abdomen mit KM (Pankreas-Protokoll): Deutlich ödematös aufgetriebenes Pankreas mit peripankreatischer Flüssigkeit und Fettgewebsnekrosen (Balthazar E, CT Severity Index 8/10). Keine KM-Aussparungen im Pankreasparenchym (kein Anhalt für Nekrose bisher). Choledochus nicht dilatiert, kein Gallensteinnachweis. Beidseitige Pleuraergüsse, partielle Atelektasen der basalen Lungenabschnitte. Kein Nachweis freier intraabdomineller Luft.",
     "correctDiagnosis": "Pankreatitis ARDS",
+    "keyTakeaway": "Schwere Pankreatitis mit Zytokin-Sturm → alveolokapilläre Permeabilitätsstörung → ARDS: Horovitz-Ratio < 100 mmHg, bilaterale Infiltrate, nicht-kardiogen.",
     "diagnosisOptions": [
       "Pankreatitis ARDS",
       "Bilaterale Aspirationspneumonie",
@@ -4927,6 +4952,7 @@
     ],
     "imaging": "Notfall-Sonographie Abdomen: Echoinhomogenes, verhärtetes Leberparenchym mit knotiger Oberfläche, Lobus caudatus vergrößert – Befund vereinbar mit Leberzirrhose. Aszites mittelgradig (Saum in Morrison, Douglas, links lateral). Splenomegalie (Längsachse 17 cm). Keine freie intraabdominelle Luft. Kein Hinweis auf intrahepatisches Cholangio- oder HCC in dieser Notfallsonographie.\n\nÖsophagogastroduodenoskopie (Notfall-ÖGD, 1 h nach Aufnahme): Im distalen Ösophagus Nachweis von 3 Säulen großkalibriger Varizen (Grad III nach Paquet), zwei davon mit sichtbaren Stigmata der Stattgehabten Blutung (Fibrinauflagerung, roter Fleck-Zeichen). Aktiv spritzende Blutung aus einer Varize im distalen Ösophagus (ca. 36 cm ab Zahnreihe). Ligatur von 4 Gummibandligaturen, Hämostase erreicht. Kein Ulkus im Magen oder Duodenum. Keine Fundusvarizen. Antrum-/Korpusschleimhaut hyperämisch, kein Barrett.",
     "correctDiagnosis": "Ösophagusvarizenblutung",
+    "keyTakeaway": "Massive Hämatemesis mit Melena bei bekannter Leberzirrhose, Splenomegalie, Aszites und Koagulopathie ist bis zum Beweis des Gegenteils eine Ösophagusvarizenblutung.",
     "diagnosisOptions": [
       "Ösophagusvarizenblutung",
       "Mallory-Weiss-Syndrom",
@@ -5099,6 +5125,7 @@
     ],
     "imaging": "Abdomensonographie: Deutlicher Aszites, diffus echogenitätsvermehrtes, verkleinertes Leberparenchym vereinbar mit Zirrhosemorphologie. Keine fokalen Leberläsionen abgrenzbar. Splenomegalie (Milzlänge 17 cm). Keine sonographischen Zeichen einer freien intraperitonealen Luft. Geringe bilaterale Pleuraergüsse.\nRöntgen-Thorax: Beidseits basale Transparenzminderung, a. e. Pleuraergüsse. Kein Pneumothorax, keine Verschattung als Pneumoniekorrelat.",
     "correctDiagnosis": "SBP",
+    "keyTakeaway": "SBP bei Zirrhose-Aszites erkennt man an ≥ 250 neutrophilen Granulozyten/µl im Punktat plus Fieber, Bauchschmerz und hepatischer Enzephalopathie.",
     "diagnosisOptions": [
       "SBP",
       "Hepatische Enzephalopathie (primär dekompensiert)",
@@ -5311,6 +5338,7 @@
     ],
     "imaging": "Sonographie Abdomen: Leber verkleinert, inhomogen echogen, irreguläres Parenchymmuster, kein fokaler Herd. Massiver Aszites. Milz vergrößert (14,5 cm Länge). Nieren beidseits normal groß (je ca. 10 cm), normale Parenchymbreite, kein Harnstau, keine Konkremente, keine Raumforderung. Doppler-Sonographie: Aa. renales: erhöhter Widerstandsindex (RI rechts 0,82, links 0,84; Norm < 0,70), vereinbar mit erhöhtem renovaskulärem Widerstand. Kein Anhalt für Nierenvenenthrombose.",
     "correctDiagnosis": "Hepatorenales Syndrom",
+    "keyTakeaway": "Beim HRS zeigt sich bei Child-C-Zirrhose ein Kreatininanstieg mit FENa < 1 %, fehlender Proteinurie und ausbleibender Besserung nach Volumenexpansion – ohne strukturelle Nierenläsion.",
     "diagnosisOptions": [
       "Hepatorenales Syndrom",
       "Spontane bakterielle Peritonitis mit Sepsis-assoziierter Nephropathie",
@@ -5483,6 +5511,7 @@
     ],
     "imaging": "Röntgen-Thorax a.p. (Aufnahme im Liegen): Deutliche kardiale Verbreiterung (Herz-Thorax-Quotient > 0,55), beidseitige alveoläre Verschattungen mit Betonung der Hili (Schmetterlingsmuster), Kerley-B-Linien beidseits basal, Pleuraergüsse beidseits. Kein Pneumothorax. Kein Nachweis eines Infiltrats.\n\nEchokardiographie (transthorakal, Notfallecho): Hochgradig verkalkte Aortenklappe, AVA echokardiographisch 0,7 cm² (Progression gegenüber Vorbefund), mittlerer Gradient 45 mmHg, maximale Flussgeschwindigkeit 4,3 m/s – V. a. hochgradige Aortenstenose. LVEF 35 % (vormals 55 % laut Fremdunterlagen), konzentrische LV-Hypertrophie, global reduzierte Kontraktilität. Linker Vorhof deutlich dilatiert (LA-Volumenindex 52 ml/m²). Kein Perikarderguss. Geringe Mitralregurgitation (funktionell).",
     "correctDiagnosis": "Akute Herzinsuffizienz Klappenvitium",
+    "keyTakeaway": "Hochgradige Aortenstenose (AVA ≤ 0,8 cm²) mit rauem Karotis-fortgeleitetem Systolikum, NT-proBNP-Anstieg und LVEF-Abfall auf 35 % signalisiert die akute kardiale Dekompensation.",
     "diagnosisOptions": [
       "Akute Herzinsuffizienz Klappenvitium",
       "Hypertensive Entgleisung mit Lungenödem",
@@ -5672,6 +5701,7 @@
     ],
     "imaging": "EKG: Absolute Arrhythmie bei Vorhofflimmern, bradykarde Überleitung mit HF 38–46/min, mulitfokale ventrikuläre Extrasystolen (Bigeminus-Phasen), saggingförmige ST-Mulde in V4–V6 (sog. „Muldenform\", Digitalis-Effekt-typisch), QTc 410 ms. Keine ST-Hebungen oder -Senkungen im Sinne einer akuten Ischämie. Röntgen-Thorax (ap, Liegendaufnahme): Kardiomegalie, verstärkte hiläre Gefäßzeichnung, beginnende interstitielle Stauungszeichen beidseits; kein Pneumothorax, kein Pleuraerguss.",
     "correctDiagnosis": "Digitalis-Intoxikation",
+    "keyTakeaway": "Übelkeit, Xanthopsie und Bradykardie/Rhythmusstörungen unter Digoxin mit erhöhtem Serumspiegel, Hypokaliämie und Niereninsuffizienz sind klassische Digitalis-Intoxikation.",
     "diagnosisOptions": [
       "AV-Block III° bei hyperkalämischer Kardiomyopathie",
       "Digitalis-Intoxikation",
@@ -5828,6 +5858,7 @@
     ],
     "imaging": "cCT (nativ, ohne KM): Kein Nachweis einer intrazerebralen Blutung, kein frischer ischämischer Infarkt, keine Raumforderung. Altersentsprechende kortikale Atrophie. Keine Herniation. Ventrikelkonfiguration regelrecht.",
     "correctDiagnosis": "Lithium-Intoxikation",
+    "keyTakeaway": "NSAID + ACE-Hemmer senken die renale Lithium-Clearance und lösen bei Langzeittherapie klassisch eine Intoxikation mit neurologischer Trias (Tremor, Ataxie, Bewusstseinseintrübung) aus.",
     "diagnosisOptions": [
       "Lithium-Intoxikation",
       "Hypertensive Enzephalopathie",
@@ -6038,6 +6069,7 @@
     ],
     "imaging": "Abdomensonographie: Leber vergrößert (Längsausdehnung 14,5 cm in der MCL), echoarm, Parenchym homogen vergröbert, V. a. beginnendes Leberödem. Keine intrahepatischen Raumforderungen. Gallenblase und Gallenwege unauffällig. Pfortader normales Kaliber. Nieren beidseits unauffällig. Kein freier Aszites, kein freies Abdomen.",
     "correctDiagnosis": "Paracetamol-Intoxikation",
+    "keyTakeaway": "Massiv erhöhte Transaminasen (> 2000 U/l), positiver Paracetamol-Serumspiegel, metabolische Azidose und Koagulopathie nach Überdosierung sind pathognomonisch für die hepatotoxische Phase der Paracetamol-Intoxikation.",
     "diagnosisOptions": [
       "Paracetamol-Intoxikation",
       "Akute Virushepatitis (HAV)",
@@ -6250,6 +6282,7 @@
     ],
     "imaging": "Röntgen-Thorax a.p. (Aufnahme im Liegen): Deutlich verbreitertes Herzsilhouette (Cardiothoracaler Quotient > 0,60), beidseits basale Verschattungen vereinbar mit Pleuraergüssen, interstitielle Zeichnungsvermehrung (Kerley-B-Linien) als Zeichen einer Lungenstauung. Keine pneumonischen Infiltrate.\n\nEchokardiographie (transthorakal, im Akutsetting): Linksventrikuläre Dilatation (LVEDD 72 mm, Norm < 57 mm), global schwer reduzierte LV-Funktion (EF 20–25 % nach Simpson-Biplaner), diffuse Hypokinesie sämtlicher Wandabschnitte ohne regionale Wandbewegungsstörung. Rechtsventrikuläre Dilatation mit mäßig eingeschränkter RV-Funktion (TAPSE 14 mm). Mitralinsuffizienz Grad II (funktionell, a. e. bei Annulusdilatation). Kein Perikarderguss. Keine Klappenstenose. Kein Hinweis auf LVOT-Obstruktion.",
     "correctDiagnosis": "Alkohol-Kardiomyopathie",
+    "keyTakeaway": "Alkohol-KMP: global dilatierter LV mit diffuser Hypokinesie (keine regionale Wandbewegungsstörung!), erhöhte Alkohol-Marker (CDT, GGT, MCV) und eindeutige Expositionsanamnese sichern die Diagnose.",
     "diagnosisOptions": [
       "Alkohol-Kardiomyopathie",
       "Dilatative Kardiomyopathie (idiopathisch)",
@@ -6401,6 +6434,7 @@
     ],
     "imaging": "EKG (12-Kanal, bei Aufnahme): Sinusrhythmus mit kompletter AV-Blockierung Grad III (AV-Block III°); Vorhoffrequenz 78/min, Kammerfrequenz 38/min mit breitem Ersatzrhythmus (QRS-Breite 148 ms, LSB-Morphologie); keine ST-Strecken-Hebungen, keine frischen ischämischen Veränderungen. – Echokardiographie (Notfallecho, transthorakal): Mittelgradig eingeschränkte systolische LV-Funktion (EF ca. 35 %), konzentrische LVH, kein Perikarderguss, keine regionale Wandbewegungsstörung akut nachweisbar, Aortenklappe morphologisch unauffällig, leichtgradige Mitralinsuffizienz. – Röntgen Thorax a.p.: mäßig vergrößertes Herz (Kardiothorakalindex 0,55), keine pulmonalvenöse Stauung, kein Pneumothorax, kein Erguss.",
     "correctDiagnosis": "Kardiale Synkope",
+    "keyTakeaway": "AV-Block III° mit Bradykardie verursacht abrupten, prodromalfreien Bewusstseinsverlust in Ruhe – typisches Bild der kardialen Synkope (Morgagni-Adams-Stokes).",
     "diagnosisOptions": [
       "Kardiale Synkope",
       "Reflexsynkope (vasovagale Synkope)",
@@ -6606,6 +6640,7 @@
     ],
     "imaging": "Röntgen-Thorax a. p. (Aufnahme im Liegen): Erhebliche Verbreiterung des zentralen Pulmonalgefäßschattens beidseits. Prominenter rechter Herzrand, Rechtsherzverbreiterung. Kein Pneumothorax. Diskrete interstitielle Zeichnungsvermehrung basal beidseits, kein ausgeprägtes alveoläres Infiltrat. Kein relevanter Pleuraerguss.\n\nEchokardiographie (Notfallecho, transthorakal): Hochgradig dilatierter rechter Ventrikel (RVEDD 52 mm), abgeflachtes interventrikuläres Septum mit paradoxer Septumbewegung (D-Shape). Systolischer PAP echokardiographisch geschätzt 85 mmHg (via TI-Jet). Schwere Trikuspidalinsuffizienz (Grad III). Linksventrikulärer Durchmesser und systolische LV-Funktion grenzwertig reduziert (LVEF 48 %) als Zeichen der interventrikulären Abhängigkeit. Kein Perikarderguss. IVC dilatiert (25 mm), kein Atemkollaps (V. a. erhöhter ZVD).",
     "correctDiagnosis": "Dekompensierte pulmonale Hypertonie",
+    "keyTakeaway": "Bei iPAH-Patient mit dilatiertem RV, D-Shape, sPAP 85 mmHg, massiv erhöhtem NT-proBNP und sekundär reduzierter LVEF denke an dekompensierte pulmonale Hypertonie durch interventrikuläre Abhängigkeit.",
     "diagnosisOptions": [
       "Dekompensierte pulmonale Hypertonie",
       "Akute Lungenarterienembolie mit Rechtsherzbelastung",
@@ -6785,6 +6820,7 @@
     ],
     "imaging": "Sonographie der Nieren: Rechte Niere 10,8 cm, linke Niere 10,4 cm, beidseits echoverdichtetes Parenchym, Parenchymsaum bds. verschmälert (ca. 13 mm), kein Harnstau, keine Steine. Doppler: mäßig erhöhte Resistance-Indizes bds. (RI 0,72–0,75). – Röntgen-Thorax a.p. (Liegendaufnahme): Leichte perihiläre Gefäßzeichnungsvermehrung, angedeutete Kerley-B-Linien basodorsal bds., kein Pleuraerguss. Herzsilhouette grenzwertig groß (Herz-Thorax-Quotient ca. 0,52).",
     "correctDiagnosis": "Contrast-Nephropathie",
+    "keyTakeaway": "Kreatininanstieg >25 % innerhalb 48–72 h nach KM-Gabe bei vorbestehender diabetischer Niereninsuffizienz und niedriger FENa (<1 %) ist pathognomonisch für Contrast-Nephropathie.",
     "diagnosisOptions": [
       "Akute interstitielle Nephritis",
       "Contrast-Nephropathie",
@@ -6950,6 +6986,7 @@
     ],
     "imaging": "Röntgen-Thorax a.p. bei Aufnahme: Raumforderung im linken Lungenoberfeld, ca. 4,5 cm im Durchmesser, unregelmäßig begrenzt, V. a. malignes Geschehen. Linksseitiger Pleuraerguss. Hili beidseits verbreitert. — CT-Thorax/Abdomen mit KM (Folgetag): Zentrale Raumforderung links hilär, ca. 4,7 × 3,9 cm, mit Einengung des linken Hauptbronchus und Atelektase des linken Unterlappens. Mediastinale Lymphadenopathie (paratracheal und subkarinal). Pleuraerguss links ca. 300 ml. Kein sicherer Fernmetastasennachweis in der Oberbauchübersicht. Befund vereinbar mit bronchialem Karzinom links, DD kleinzelliges Lungenkarzinom. CT-Schädel: Kein Nachweis zerebraler Metastasen, kein Hirnödem.",
     "correctDiagnosis": "SIADH paraneoplastisch",
+    "keyTakeaway": "Paraneoplastisches SIADH beim SCLC: Hyponatriämie + unangemessen hohe Urinosmolalität + renale Na⁺-Ausscheidung trotz euvolämer Klinik.",
     "diagnosisOptions": [
       "SIADH paraneoplastisch",
       "Hyponatriämie bei Hypothyreose",
@@ -7122,6 +7159,7 @@
     ],
     "imaging": "MRT Schädel mit KM (3 T, aktuelle Untersuchung): Hypophyse verkleinert, Hypophysenvolumen deutlich reduziert (Leersellazeichen, „empty sella\"). Kein Residualtumor. Supra- und paraselläre Region unauffällig. Optische Chiasma nicht komprimiert. Postoperative Veränderungen frontoparietal links nach Z. n. intrazerebraler Aneurysmaclip-Anlage, kein Anhalt für Ischämie oder Rezidivblutung. Kein Hydrozephalus. Befund vereinbar mit hypophysärer Atrophie nach hämodynamischem Insult.",
     "correctDiagnosis": "Hypophysenvorderlappeninsuffizienz",
+    "keyTakeaway": "HVL-Insuffizienz erkennt man am Ausfall mehrerer Achsen: niedriges fT4 bei unauffälligem TSH, erniedrigtes ACTH/Kortisol ohne Hyperpigmentierung, plus niedrige Gonadotropine – oft nach SAB/Empty Sella.",
     "diagnosisOptions": [
       "Hypophysenvorderlappeninsuffizienz",
       "Primäre Nebennierenrindeninsuffizienz (Morbus Addison)",
@@ -7322,6 +7360,7 @@
     ],
     "imaging": "MRT Hypophyse mit KM (3 Tesla): Im Bereich des linken Hypophysenvorderlappens demarkiert sich eine 6 mm große, KM-arme Raumforderung mit leicht hypointensem Signal in der T1-Wichtung, vereinbar mit einem Mikroadenom. Hypophysenstiel mittelständig. Kein Hinweis auf Makroadenom, keine supraselläre Ausdehnung, Sehnervenkreuzung unauffällig. Nebennieren-CT mit KM (ergänzend): Beide Nebennieren symmetrisch vergrößert, diffuse bilaterale Hypertrophie, kein fokaler Tumor. Befund vereinbar mit sekundärer (ACTH-abhängiger) Nebennierenrindenhyperplasie.",
     "correctDiagnosis": "Cushing-Syndrom",
+    "keyTakeaway": "Beim Cushing-Syndrom beweist fehlende Kortisol-Suppression im Dexamethason-Kurztest plus erhöhtes ACTH die ACTH-abhängige Hyperkortisolämie – klassisch bei Hypophysen-Adenom (Morbus Cushing).",
     "diagnosisOptions": [
       "Cushing-Syndrom",
       "Polyzystisches Ovarsyndrom (PCOS)",
@@ -7506,6 +7545,7 @@
     ],
     "imaging": "CT-Abdomen mit KM (adrenaler Protokoll, Dünnschicht): Rechte Nebenniere: 18 × 14 mm messendes, glatt begrenztes, hypodens-rundes Adenom (HE nativ: 8 HU), Kontrastmittelauswaschung > 50 % nach 10 min (absolute Auswaschung 62 %). Linke Nebenniere: normal konfiguriert, keine Raumforderung. Nieren: beidseits regelrecht, keine Nierenarterienstenose bildmorphologisch erkennbar. Nebenbefund: geringe Steatosis hepatis.",
     "correctDiagnosis": "Conn-Syndrom",
+    "keyTakeaway": "Conn-Syndrom: therapierefraktäre Hypertonie + Hypokaliämie + supprimiertes Renin bei erhöhtem Aldosteron mit massiv erhöhtem Aldosteron-Renin-Quotienten sind pathognomonisch.",
     "diagnosisOptions": [
       "Conn-Syndrom",
       "Renovaskuläre Hypertonie (Nierenarterienstenose)",

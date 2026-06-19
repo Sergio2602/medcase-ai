@@ -6,6 +6,14 @@ import { Logo } from "./components/Logo";
 type Difficulty = "vorklinik" | "klinik" | "examen";
 type Phase = "start" | "loading" | "playing" | "result";
 type Flag = "high" | "low" | "normal";
+type Discipline =
+  | "zufaellig"
+  | "innere"
+  | "allgemeinmedizin"
+  | "neurologie"
+  | "hno"
+  | "augenheilkunde"
+  | "anaesthesiologie";
 
 type LabValue = {
   name: string;
@@ -33,10 +41,16 @@ type Case = {
   imaging: string;
   correctDiagnosis: string;
   diagnosisOptions: string[];
+  keyTakeaway?: string;
   explanation: string;
 };
 
-type Revealed = { history: boolean; examination: boolean; labs: boolean };
+type Revealed = {
+  history: boolean;
+  examination: boolean;
+  imaging: boolean;
+  labs: boolean;
+};
 
 const BASE_SCORE = 100;
 const INVESTIGATION_COST = 10;
@@ -77,10 +91,12 @@ const DIFFICULTIES: { id: Difficulty; label: string }[] = [
 export default function Home() {
   const [phase, setPhase] = useState<Phase>("start");
   const [difficulty, setDifficulty] = useState<Difficulty>("klinik");
+  const [discipline, setDiscipline] = useState<Discipline>("zufaellig");
   const [activeCase, setActiveCase] = useState<Case | null>(null);
   const [revealed, setRevealed] = useState<Revealed>({
     history: false,
     examination: false,
+    imaging: false,
     labs: false,
   });
   const [selectedDiagnosis, setSelectedDiagnosis] = useState<string | null>(
@@ -94,10 +110,16 @@ export default function Home() {
   const [dailyUsed, setDailyUsed] = useState(0);
   const dailyLimit = 5;
 
-  async function startCase(selected: Difficulty) {
+  async function startCase(selected: Difficulty, selectedDiscipline?: Discipline) {
     setDifficulty(selected);
+    if (selectedDiscipline) setDiscipline(selectedDiscipline);
     setPhase("loading");
-    setRevealed({ history: false, examination: false, labs: false });
+    setRevealed({
+      history: false,
+      examination: false,
+      imaging: false,
+      labs: false,
+    });
     setSelectedDiagnosis(null);
     try {
       const minDelay = new Promise((resolve) => setTimeout(resolve, 1800));
@@ -129,7 +151,10 @@ export default function Home() {
     setSelectedDiagnosis(option);
     const correct = option === activeCase.correctDiagnosis;
     const earned = correct
-      ? Math.max(BASE_SCORE - revealCount(revealed) * INVESTIGATION_COST, MIN_SCORE)
+      ? Math.max(
+          BASE_SCORE - revealCount(revealed) * INVESTIGATION_COST,
+          MIN_SCORE
+        )
       : 0;
     setLastResultCorrect(correct);
     setLastScoreEarned(earned);
@@ -156,6 +181,7 @@ export default function Home() {
           <GameScreen
             caseData={activeCase}
             difficulty={difficulty}
+            discipline={discipline}
             score={score}
             solved={solved}
             played={played}
@@ -177,34 +203,90 @@ export default function Home() {
   );
 }
 
-function PatientPreviewCard() {
+const PATIENT_PREVIEWS = [
+  {
+    initials: "KM",
+    color: "#90caf9",
+    name: "Klaus M.",
+    meta: "58 J. · männlich",
+    quote: "Starke Brustschmerzen seit heute Morgen …",
+    revealed: ["Anamnese", "Untersuchung"],
+    score: 90,
+    solved: "4/5",
+  },
+  {
+    initials: "SF",
+    color: "#a5d6a7",
+    name: "Sabine F.",
+    meta: "34 J. · weiblich",
+    quote: "Seit drei Tagen Fieber und Husten, jetzt auch Atemnot …",
+    revealed: ["Anamnese", "Labor"],
+    score: 80,
+    solved: "3/5",
+  },
+  {
+    initials: "TR",
+    color: "#ffd54f",
+    name: "Thomas R.",
+    meta: "45 J. · männlich",
+    quote: "Plötzlich einseitige Schwäche im Arm, Sprache verwaschen …",
+    revealed: ["Anamnese"],
+    score: 90,
+    solved: "5/5",
+  },
+];
+
+function RotatingPatientPreview() {
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIndex((i) => (i + 1) % PATIENT_PREVIEWS.length);
+        setVisible(true);
+      }, 300);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
+  const p = PATIENT_PREVIEWS[index];
+
   return (
-    <div className="card p-5">
+    <div
+      className="card p-5 transition-opacity duration-300"
+      style={{ opacity: visible ? 1 : 0 }}
+    >
       <div className="mb-3 flex items-center gap-3">
         <div
           className="avatar-circle h-9 w-9 text-xs"
-          style={{ backgroundColor: "#90CAF9" }}
+          style={{ backgroundColor: p.color }}
         >
-          KM
+          {p.initials}
         </div>
         <div>
-          <p className="text-sm font-bold">Klaus M.</p>
-          <p className="text-xs text-muted">58 J. · männlich</p>
+          <p className="text-sm font-bold">{p.name}</p>
+          <p className="text-xs text-muted">{p.meta}</p>
         </div>
       </div>
       <p className="mb-3 border-l-[1.5px] border-card-border/20 pl-3 text-sm italic">
-        „Starke Brustschmerzen seit heute Morgen …"
+        „{p.quote}“
       </p>
       <div className="mb-3 flex flex-col gap-1.5 text-sm font-semibold">
-        <span className="text-accent">▤ Anamnese</span>
-        <span className="text-accent">✓ Untersuchung</span>
+        {p.revealed.map((f) => (
+          <span key={f} className="flex items-center gap-1.5 text-accent">
+            <i className="ti ti-check" />
+            {f}
+          </span>
+        ))}
       </div>
       <div className="flex gap-2">
         <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
-          90 Punkte
+          {p.score} Punkte
         </span>
         <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
-          4/5 gelöst
+          {p.solved} gelöst
         </span>
       </div>
     </div>
@@ -213,7 +295,7 @@ function PatientPreviewCard() {
 
 function StatsRow() {
   return (
-    <div className="mt-10 grid grid-cols-3 divide-x divide-card-border/15 border-t border-card-border/15 pt-6">
+    <div className="mt-6 grid grid-cols-3 divide-x divide-card-border/15 border-t border-card-border/15 pt-5">
       <div className="px-4 text-center first:pl-0">
         <p className="text-2xl font-extrabold">140+</p>
         <p className="text-sm text-muted">Klinische Fälle</p>
@@ -254,110 +336,248 @@ const DIFFICULTY_ICONS: Record<Difficulty, string> = {
   examen: "ti-building-hospital",
 };
 
+const DISCIPLINES: { id: Discipline; label: string; locked: boolean }[] = [
+  { id: "zufaellig", label: "Zufällig", locked: false },
+  { id: "innere", label: "Innere", locked: false },
+  { id: "allgemeinmedizin", label: "Allgemeinmedizin", locked: true },
+  { id: "neurologie", label: "Neurologie", locked: true },
+  { id: "hno", label: "HNO", locked: true },
+  { id: "augenheilkunde", label: "Augenheilkunde", locked: true },
+  { id: "anaesthesiologie", label: "Anästhesiologie", locked: true },
+];
+
+function BereichCard({
+  id,
+  icon,
+  title,
+  badge,
+  description,
+  selected,
+  collapsed,
+  onSelect,
+}: {
+  id: Difficulty;
+  icon: string;
+  title: string;
+  badge?: string;
+  description: string;
+  selected: boolean;
+  collapsed: boolean;
+  onSelect: (id: Difficulty) => void;
+}) {
+  if (collapsed) {
+    return (
+      <button
+        onClick={() => onSelect(id)}
+        className="flex w-full items-center gap-3 rounded-xl border-[1.5px] border-card-border/20 px-4 py-2.5 text-left transition-colors hover:border-accent"
+      >
+        <i className={`${icon} text-muted`} />
+        <span className="font-semibold">{title}</span>
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => onSelect(id)}
+      className={`relative w-full rounded-xl border-[1.5px] px-5 py-4 text-left transition-colors ${
+        selected
+          ? "border-accent bg-accent"
+          : "border-card-border/20 hover:border-accent"
+      }`}
+    >
+      <div className="mb-1 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <i className={`${icon} ${selected ? "text-accent-foreground" : ""}`} />
+          <span
+            className={`font-bold ${selected ? "text-accent-foreground" : ""}`}
+          >
+            {title}
+          </span>
+          {badge && (
+            <span
+              className={`rounded-md px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide ${
+                selected ? "bg-white text-accent" : "bg-accent/10 text-accent"
+              }`}
+            >
+              {badge}
+            </span>
+          )}
+        </div>
+        {selected && (
+          <i className="ti ti-check text-lg text-accent-foreground" />
+        )}
+      </div>
+      <p
+        className={`text-sm ${
+          selected ? "text-accent-foreground/80" : "text-muted"
+        }`}
+      >
+        {description}
+      </p>
+    </button>
+  );
+}
+
 function DifficultyModal({
   onSelect,
   onClose,
 }: {
-  onSelect: (d: Difficulty) => void;
+  onSelect: (d: Difficulty, disc: Discipline) => void;
   onClose: () => void;
 }) {
   const [highlighted, setHighlighted] = useState<Difficulty | null>(null);
+  const [discipline, setDiscipline] = useState<Discipline>("zufaellig");
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/30 px-4"
       onClick={onClose}
     >
       <div
-        className="card w-full max-w-md p-6"
+        className="card max-h-[88vh] w-full max-w-md overflow-y-auto p-6"
         onClick={(e) => e.stopPropagation()}
       >
+        <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent">
+          Schritt 1 von 1
+        </span>
         <h2 className="mb-1 text-xl font-extrabold">Bereich wählen</h2>
         <p className="mb-5 text-sm text-muted">
           Wähle die Schwierigkeit für deinen ersten Fall.
         </p>
-        <div className="flex flex-col gap-3">
-          {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => {
-            const active = highlighted === id;
-            return (
-              <button
-                key={id}
-                onClick={() => {
-                  setHighlighted(id);
-                  onSelect(id);
-                }}
-                className={`relative flex items-start gap-3 rounded-xl border-[1.5px] p-4 text-left transition-colors ${
-                  active
-                    ? "border-accent bg-accent"
-                    : "border-card-border/20 hover:border-accent"
-                }`}
-              >
-                <i
-                  className={`ti ${DIFFICULTY_ICONS[id]} mt-0.5 text-xl ${
-                    active ? "text-accent-foreground" : "text-muted"
-                  }`}
-                />
-                <div>
-                  <p className={`font-bold ${active ? "text-accent-foreground" : ""}`}>
-                    {DIFFICULTY_INFO[id].label}
-                  </p>
-                  <p
-                    className={`mt-1 text-sm ${
-                      active ? "text-accent-foreground/80" : "text-muted"
+        <div className="flex flex-col gap-2">
+          {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => (
+            <BereichCard
+              key={id}
+              id={id}
+              icon={`ti ${DIFFICULTY_ICONS[id]} text-xl`}
+              title={DIFFICULTY_INFO[id].label}
+              badge={id === "klinik" ? "Neu: Disziplinen" : undefined}
+              description={DIFFICULTY_INFO[id].description}
+              selected={highlighted === id}
+              collapsed={!!highlighted && highlighted !== id}
+              onSelect={setHighlighted}
+            />
+          ))}
+        </div>
+
+        {highlighted === "klinik" && (
+          <div className="mt-4 border-t border-dashed border-card-border/20 pt-4">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-muted">
+                Disziplin wählen
+              </span>
+              <span className="text-[11px] italic text-muted/70">
+                für deine Famulatur-Vorbereitung
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {DISCIPLINES.map((d) => {
+                const selected = discipline === d.id;
+                if (d.locked) {
+                  return (
+                    <div
+                      key={d.id}
+                      className="flex cursor-not-allowed items-center justify-center gap-1 rounded-lg border-[1.5px] border-card-border/15 bg-foreground/[0.02] px-2 py-2.5 text-center text-xs font-semibold text-muted/60"
+                    >
+                      {d.label}
+                      <i className="ti ti-lock text-[11px] opacity-60" />
+                    </div>
+                  );
+                }
+                return (
+                  <button
+                    key={d.id}
+                    onClick={() => setDiscipline(d.id)}
+                    className={`rounded-lg border-[1.5px] px-2 py-2.5 text-center text-xs font-semibold transition-colors ${
+                      selected
+                        ? "border-accent bg-accent text-accent-foreground"
+                        : "border-card-border/20 bg-card hover:border-accent"
                     }`}
                   >
-                    {DIFFICULTY_INFO[id].description}
-                  </p>
-                </div>
-                {active && (
-                  <i className="ti ti-check absolute right-4 top-4 text-lg text-accent-foreground" />
-                )}
-              </button>
-            );
-          })}
-        </div>
+                    {d.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-3 flex items-start gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs leading-relaxed text-accent">
+              <i className="ti ti-info-circle mt-0.5 text-sm" />
+              Validierungsversion: aktuell nur Innere bespielbar. Weitere
+              Disziplinen folgen nach dieser Testphase.
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={() => highlighted && onSelect(highlighted, discipline)}
+          disabled={!highlighted}
+          className="mt-5 w-full rounded-xl bg-accent py-3.5 font-bold text-accent-foreground transition-opacity disabled:cursor-not-allowed disabled:bg-card-border/20 disabled:text-muted"
+        >
+          Fall starten →
+        </button>
       </div>
     </div>
   );
 }
 
 function WelcomeNote() {
+  const [expanded, setExpanded] = useState(false);
   return (
-    <div className="card mt-10 flex gap-4 p-5">
-      <div className="avatar-circle h-10 w-10 shrink-0 text-sm" style={{ backgroundColor: "#90CAF9" }}>
+    <div className="card mt-6 flex gap-4 p-5">
+      <div
+        className="avatar-circle h-10 w-10 shrink-0 text-sm"
+        style={{ backgroundColor: "#90caf9" }}
+      >
         S
       </div>
       <div>
         <p className="text-sm font-bold">Eine Nachricht von Sergio</p>
         {/* TODO Sergio: echten Text einsetzen */}
-        <p className="mt-1 text-sm leading-relaxed text-muted">
+        <p
+          className={`mt-1 text-sm leading-relaxed text-muted ${
+            expanded ? "" : "line-clamp-2"
+          }`}
+        >
           Hi, ich bin Sergio, Medizinstudent im 7. Semester. Ich baue Medcase,
           weil ich selbst gemerkt habe wie sehr Fall-Denken hilft. Über
           Feedback freue ich mich jederzeit.
         </p>
+        {!expanded && (
+          <button
+            onClick={() => setExpanded(true)}
+            className="mt-1 text-sm font-semibold text-accent"
+          >
+            mehr lesen
+          </button>
+        )}
       </div>
     </div>
   );
 }
 
-function StartScreen({ onStart }: { onStart: (d: Difficulty) => void }) {
+function StartScreen({
+  onStart,
+}: {
+  onStart: (d: Difficulty, disc: Discipline) => void;
+}) {
   const [showPicker, setShowPicker] = useState(false);
   return (
-    <div className="grid gap-10 py-10 md:grid-cols-[1fr_320px] md:items-start">
+    <div className="grid gap-8 py-6 md:grid-cols-[1fr_320px] md:items-start">
       <div>
         <Logo size={36} />
-        <span className="mt-7 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
+        <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
           Für Medizinstudierende · Deutschland
         </span>
-        <h1 className="mt-6 max-w-xl text-5xl font-extrabold leading-[1.08] tracking-tight md:text-6xl">
+        <h1 className="mt-4 max-w-xl text-4xl font-extrabold leading-[1.08] tracking-tight md:text-5xl">
           Patientenfälle lösen. Nicht nur auswendig lernen.
         </h1>
-        <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">
+        <p className="mt-4 max-w-md text-lg leading-relaxed text-muted">
           Echte klinische Situationen — Anamnese, Untersuchung, Labor. Du
           entscheidest was du brauchst. Weniger Untersuchungen, mehr Punkte.
         </p>
         <button
           onClick={() => setShowPicker(true)}
-          className="mt-8 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
+          className="mt-6 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
         >
           Ersten Fall lösen →
         </button>
@@ -367,7 +587,7 @@ function StartScreen({ onStart }: { onStart: (d: Difficulty) => void }) {
         <StatsRow />
         <WelcomeNote />
       </div>
-      <PatientPreviewCard />
+      <RotatingPatientPreview />
       {showPicker && (
         <DifficultyModal
           onSelect={onStart}
@@ -406,14 +626,6 @@ function LoadingScreen() {
   );
 }
 
-function DifficultyPill({ label }: { label: string }) {
-  return (
-    <span className="rounded-lg border-[1.5px] border-card-border/20 bg-card px-3 py-1.5 text-sm font-semibold">
-      {label}
-    </span>
-  );
-}
-
 function StatPill({
   label,
   value,
@@ -432,26 +644,30 @@ function StatPill({
 function RevealButton({
   label,
   done,
+  locked,
   onClick,
 }: {
   label: string;
   done: boolean;
+  locked?: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       onClick={onClick}
-      disabled={done}
+      disabled={done || locked}
       className={`flex items-center rounded-xl border-[1.5px] px-4 py-2.5 font-medium transition-colors ${
         done
           ? "border-card-border/20 bg-foreground/5 text-muted"
+          : locked
+          ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/50"
           : "border-card-border/20 bg-card hover:border-accent"
       }`}
     >
       {done ? "✕ " : "○ "}
       {label}
       {done && (
-        <span className="ml-2 text-xs font-bold text-[#dc2626]">−10</span>
+        <span className="ml-2 text-xs font-bold text-[#dc2626]">−10P</span>
       )}
     </button>
   );
@@ -468,13 +684,19 @@ function FindingCard({ title, text }: { title: string; text: string }) {
   );
 }
 
-function LabCard({
-  labs,
-  imaging,
-}: {
-  labs: LabCategory[];
-  imaging: string;
-}) {
+function ImagingCard({ imaging }: { imaging: string }) {
+  if (!imaging) return null;
+  return (
+    <div className="card p-5">
+      <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">
+        Bildgebung
+      </p>
+      <p className="leading-relaxed">{imaging}</p>
+    </div>
+  );
+}
+
+function LabCard({ labs }: { labs: LabCategory[] }) {
   return (
     <div className="card p-5">
       <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted">
@@ -493,44 +715,324 @@ function LabCard({
               </tr>
             </thead>
             <tbody>
-              {cat.values.map((v) => (
-                <tr
-                  key={v.name}
-                  className="border-b border-card-border/10 last:border-0"
-                >
-                  <td className="py-1.5 pr-4">{v.name}</td>
-                  <td
-                    className={`py-1.5 pr-4 font-semibold ${
-                      v.flag === "high"
-                        ? "text-[#dc2626]"
-                        : v.flag === "low"
-                        ? "text-[#2563eb]"
-                        : ""
+              {cat.values.map((v) => {
+                const flagged = v.flag === "high" || v.flag === "low";
+                return (
+                  <tr
+                    key={v.name}
+                    className={`border-b border-card-border/10 last:border-0 ${
+                      flagged ? "bg-[#dc2626]/[0.04]" : ""
                     }`}
                   >
-                    {v.value}
-                  </td>
-                  <td className="py-1.5 pr-4 text-muted">{v.unit}</td>
-                  <td className="py-1.5 text-muted">{v.reference}</td>
-                </tr>
-              ))}
+                    <td className="py-1.5 pr-4">{v.name}</td>
+                    <td
+                      className={`py-1.5 pr-4 font-semibold ${
+                        v.flag === "high"
+                          ? "text-[#dc2626]"
+                          : v.flag === "low"
+                          ? "text-[#2563eb]"
+                          : ""
+                      }`}
+                    >
+                      {v.value}
+                      {v.flag === "high" && (
+                        <span className="ml-1 font-extrabold">↑</span>
+                      )}
+                      {v.flag === "low" && (
+                        <span className="ml-1 font-extrabold">↓</span>
+                      )}
+                    </td>
+                    <td className="py-1.5 pr-4 text-muted">{v.unit}</td>
+                    <td
+                      className={`py-1.5 ${
+                        flagged ? "font-medium text-foreground/70" : "text-muted"
+                      }`}
+                    >
+                      {v.reference}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       ))}
-      {imaging && (
-        <div className="mt-2">
-          <p className="mb-1 text-sm font-semibold">Bildgebung</p>
-          <p className="leading-relaxed">{imaging}</p>
-        </div>
-      )}
     </div>
+  );
+}
+
+function DiagnosisIsland({
+  phase,
+  caseData,
+  options,
+  selectedDiagnosis,
+  onSubmit,
+  possiblePoints,
+  lastResultCorrect,
+  lastScoreEarned,
+  onNext,
+}: {
+  phase: Phase;
+  caseData: Case;
+  options: string[];
+  selectedDiagnosis: string | null;
+  onSubmit: (option: string) => void;
+  possiblePoints: number;
+  lastResultCorrect: boolean;
+  lastScoreEarned: number;
+  onNext: () => void;
+}) {
+  if (phase === "result") {
+    return (
+      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
+        <div
+          className={`pointer-events-auto max-h-[70vh] w-full max-w-[700px] overflow-y-auto rounded-2xl border-2 p-5 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] md:mr-[314px] ${
+            lastResultCorrect
+              ? "border-[#bbdab2] bg-[#eef7ed]"
+              : "border-[#e7c2bd] bg-[#fbeeed]"
+          }`}
+        >
+          <div className="mb-1 flex items-center gap-3">
+            <div
+              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white ${
+                lastResultCorrect ? "bg-[#15803d]" : "bg-[#c0362c]"
+              }`}
+            >
+              <i
+                className={`ti ${
+                  lastResultCorrect ? "ti-check" : "ti-x"
+                } text-base`}
+              />
+            </div>
+            <p
+              className={`text-lg font-extrabold ${
+                lastResultCorrect ? "text-[#15803d]" : "text-[#c0362c]"
+              }`}
+            >
+              {lastResultCorrect ? "Richtig erkannt" : "Leider falsch"}
+            </p>
+          </div>
+          <p className="mb-4 mt-1 text-sm font-medium text-foreground/70">
+            {lastResultCorrect ? (
+              <>
+                Du hast{" "}
+                <span className="font-mono font-bold text-foreground">
+                  +{lastScoreEarned}
+                </span>{" "}
+                Punkte erzielt.
+              </>
+            ) : (
+              <>
+                Du hast{" "}
+                <span className="font-bold text-foreground">
+                  {selectedDiagnosis}
+                </span>{" "}
+                gewählt — richtig war{" "}
+                <span className="font-bold text-foreground">
+                  {caseData.correctDiagnosis}
+                </span>
+                .
+              </>
+            )}
+          </p>
+
+          <div className="mb-4 grid grid-cols-2 gap-2">
+            {caseData.diagnosisOptions.map((opt) => {
+              const isCorrectAnswer = opt === caseData.correctDiagnosis;
+              const isWrongPick =
+                opt === selectedDiagnosis &&
+                opt !== caseData.correctDiagnosis;
+              return (
+                <div
+                  key={opt}
+                  className={`flex items-center justify-between gap-2 rounded-lg border-[1.5px] px-3 py-2.5 text-[13.5px] font-semibold ${
+                    isCorrectAnswer
+                      ? "border-[#15803d]/40 bg-[#f1f9ef] text-[#14532d]"
+                      : isWrongPick
+                      ? "border-[#c0362c]/40 bg-[#fdf1f0] text-[#7f1d1d]"
+                      : "border-card-border/15 bg-card text-foreground/80"
+                  }`}
+                >
+                  {opt}
+                  {isCorrectAnswer && (
+                    <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white">
+                      <i className="ti ti-check text-[10px]" />
+                    </span>
+                  )}
+                  {isWrongPick && (
+                    <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#c0362c] text-white">
+                      <i className="ti ti-x text-[10px]" />
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mb-4 rounded-xl bg-white/60 p-4">
+            {caseData.keyTakeaway && (
+              <>
+                <p className="mb-2 text-sm font-bold leading-relaxed text-foreground">
+                  <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
+                    {lastResultCorrect
+                      ? "Warum es richtig ist"
+                      : "Worauf es ankam"}
+                  </span>
+                  {caseData.keyTakeaway}
+                </p>
+                <div className="my-3 h-px bg-foreground/[0.08]" />
+              </>
+            )}
+            <p className="text-[13.5px] leading-relaxed text-foreground/75">
+              <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
+                Vollständige Begründung
+              </span>
+              {caseData.explanation}
+            </p>
+          </div>
+
+          <button
+            onClick={onNext}
+            className="w-full rounded-xl bg-foreground py-3 font-bold text-white transition-opacity hover:opacity-90"
+          >
+            Nächster Patient →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="pointer-events-none fixed inset-x-0 bottom-8 z-40 flex justify-center px-4">
+      <div className="pointer-events-auto w-full max-w-[700px] rounded-2xl border-[1.5px] border-card-border/15 bg-card p-5 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] md:mr-[314px]">
+        <div className="mb-3 flex items-center justify-between px-0.5">
+          <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-muted">
+            <i className="ti ti-help-circle text-accent" />
+            Diagnose stellen
+          </span>
+          <span className="text-xs font-medium text-muted">
+            Noch{" "}
+            <span className="font-mono font-bold text-accent">
+              {possiblePoints}
+            </span>{" "}
+            Punkte möglich
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-2.5">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => onSubmit(opt)}
+              disabled={!!selectedDiagnosis}
+              className="rounded-xl border-[1.5px] border-card-border/20 bg-foreground/[0.015] px-4 py-3.5 text-center text-sm font-semibold leading-snug transition-colors hover:border-accent hover:bg-accent/5 disabled:cursor-not-allowed"
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatusPanel({
+  dailyUsed,
+  dailyLimit,
+  possiblePoints,
+  revealed,
+}: {
+  dailyUsed: number;
+  dailyLimit: number;
+  possiblePoints: number;
+  revealed: Revealed;
+}) {
+  const checklist: { key: keyof Revealed; label: string }[] = [
+    { key: "history", label: "Anamnese" },
+    { key: "examination", label: "Untersuchung" },
+    { key: "imaging", label: "Bildgebung" },
+    { key: "labs", label: "Labor" },
+  ];
+
+  return (
+    <>
+      <div className="card p-4">
+        <p className="text-xs font-bold uppercase tracking-wide text-muted">
+          Fortschritt heute
+        </p>
+        <p className="mt-3 text-2xl font-extrabold">
+          {dailyUsed}
+          <span className="text-base font-semibold text-muted">
+            {" "}
+            / {dailyLimit} Fällen
+          </span>
+        </p>
+        <div className="mt-2.5 h-1.5 rounded-full bg-foreground/10">
+          <div
+            className="h-1.5 rounded-full bg-accent transition-all"
+            style={{
+              width: `${Math.min((dailyUsed / dailyLimit) * 100, 100)}%`,
+            }}
+          />
+        </div>
+        <p className="mt-2 text-xs text-muted">
+          Free Tier · läuft täglich neu an
+        </p>
+      </div>
+
+      <div className="card p-4 text-center">
+        <p className="text-xs font-bold uppercase tracking-wide text-muted">
+          Mögliche Punkte
+        </p>
+        <p className="clinical-data mt-2 text-4xl font-extrabold text-accent">
+          {possiblePoints}
+        </p>
+        <p className="mt-1 text-xs font-semibold text-muted">
+          von {BASE_SCORE} möglich
+        </p>
+      </div>
+
+      <div className="card p-4">
+        <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted">
+          Befundstatus
+        </p>
+        <div className="flex flex-col gap-2.5">
+          {checklist.map((item) => {
+            const done = revealed[item.key];
+            return (
+              <div
+                key={item.key}
+                className={`flex items-center gap-2.5 text-sm font-semibold ${
+                  done ? "text-foreground" : "text-muted"
+                }`}
+              >
+                <span
+                  className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border-[1.5px] ${
+                    done
+                      ? "border-foreground bg-foreground text-white"
+                      : "border-card-border/25"
+                  }`}
+                >
+                  {done && <i className="ti ti-x text-[10px]" />}
+                </span>
+                {item.label}
+                {done && (
+                  <span className="clinical-data ml-auto text-xs font-bold text-[#dc2626]">
+                    −10
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
 
 function GameScreen({
   caseData,
   difficulty,
+  discipline,
   score,
   solved,
   played,
@@ -548,6 +1050,7 @@ function GameScreen({
 }: {
   caseData: Case;
   difficulty: Difficulty;
+  discipline: Discipline;
   score: number;
   solved: number;
   played: number;
@@ -565,7 +1068,15 @@ function GameScreen({
 }) {
   const difficultyLabel =
     DIFFICULTIES.find((d) => d.id === difficulty)?.label ?? difficulty;
+  const disciplineLabel =
+    DISCIPLINES.find((d) => d.id === discipline)?.label ?? "Zufällig";
   const color = avatarColorForCase(caseData.id);
+  const revealCount = Object.values(revealed).filter(Boolean).length;
+  const possiblePoints = Math.max(
+    BASE_SCORE - revealCount * INVESTIGATION_COST,
+    MIN_SCORE
+  );
+  const isResult = phase === "result";
 
   return (
     <div>
@@ -578,14 +1089,27 @@ function GameScreen({
             <Logo size={30} />
           </button>
           <div className="flex items-center gap-3">
-            <DifficultyPill label={difficultyLabel} />
+            <div className="flex items-center gap-2 rounded-full border-[1.5px] border-card-border/20 bg-card px-4 py-2 text-sm">
+              <button
+                onClick={onGoHome}
+                className="flex items-center gap-1 font-semibold text-muted transition-opacity hover:opacity-80"
+              >
+                <i className="ti ti-arrow-left" /> Start
+              </button>
+              <span className="text-card-border/30">·</span>
+              <span className="font-semibold">{difficultyLabel}</span>
+              <i className="ti ti-arrow-right text-xs text-muted" />
+              <span className="font-semibold text-accent">
+                {disciplineLabel}
+              </span>
+            </div>
             <StatPill label="PUNKTE" value={score} />
             <StatPill label="GELÖST" value={`${solved}/${played}`} />
           </div>
         </div>
       </header>
 
-      <div className="grid gap-6 md:grid-cols-[1fr_280px]">
+      <div className="grid gap-6 pb-[340px] md:grid-cols-[1fr_280px]">
         <div className="flex flex-col gap-6">
           <div className="card flex gap-4 p-5">
             <div
@@ -608,13 +1132,15 @@ function GameScreen({
           </div>
 
           <div>
-            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">
+            <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+              <i className="ti ti-clipboard-check text-accent" />
               Befunde anfordern
             </p>
             <div className="flex flex-wrap gap-3">
               <RevealButton
                 label="Anamnese"
                 done={revealed.history}
+                locked={isResult}
                 onClick={() =>
                   setRevealed((r) => ({ ...r, history: true }))
                 }
@@ -622,19 +1148,38 @@ function GameScreen({
               <RevealButton
                 label="Untersuchung"
                 done={revealed.examination}
+                locked={isResult}
                 onClick={() =>
                   setRevealed((r) => ({ ...r, examination: true }))
                 }
               />
               <RevealButton
+                label="Bildgebung"
+                done={revealed.imaging}
+                locked={isResult}
+                onClick={() =>
+                  setRevealed((r) => ({ ...r, imaging: true }))
+                }
+              />
+              <RevealButton
                 label="Labor"
                 done={revealed.labs}
+                locked={isResult}
                 onClick={() => setRevealed((r) => ({ ...r, labs: true }))}
               />
             </div>
             <p className="mt-2 text-xs text-muted">
-              Jeder Befund kostet{" "}
-              <span className="font-semibold text-accent">−10 Punkte</span>
+              {isResult ? (
+                "Fall abgeschlossen — du kannst die Befunde weiterhin nachlesen."
+              ) : (
+                <>
+                  Jeder Befund kostet{" "}
+                  <span className="font-semibold text-accent">
+                    −10 Punkte
+                  </span>
+                  . Weniger Befunde, mehr Punkte.
+                </>
+              )}
             </p>
           </div>
 
@@ -647,82 +1192,40 @@ function GameScreen({
               text={caseData.examination}
             />
           )}
-          {revealed.labs && (
-            <LabCard labs={caseData.labs} imaging={caseData.imaging} />
-          )}
-
-          {phase === "playing" && (
-            <div className="card p-5">
-              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted">
-                Diagnose stellen
-              </p>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {caseData.diagnosisOptions.map((opt) => (
-                  <button
-                    key={opt}
-                    onClick={() => onSubmitDiagnosis(opt)}
-                    disabled={!!selectedDiagnosis}
-                    className={`rounded-xl border-[1.5px] px-4 py-3 text-left font-medium transition-colors ${
-                      selectedDiagnosis === opt
-                        ? "border-[#16a34a]/30 bg-[#16a34a]/10 text-[#16a34a]"
-                        : "border-card-border/20 bg-card hover:border-accent"
-                    }`}
-                  >
-                    {selectedDiagnosis === opt ? "✓ " : ""}
-                    {opt}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {phase === "result" && (
-            <div className="card p-5">
-              <p
-                className={`text-lg font-bold ${
-                  lastResultCorrect ? "text-[#16a34a]" : "text-[#dc2626]"
-                }`}
-              >
-                {lastResultCorrect
-                  ? `Richtig — +${lastScoreEarned} Punkte`
-                  : "Leider falsch"}
-              </p>
-              <p className="mt-1 text-sm text-muted">
-                Korrekte Diagnose:{" "}
-                <span className="font-semibold text-foreground">
-                  {caseData.correctDiagnosis}
-                </span>
-              </p>
-              <p className="mt-3 leading-relaxed">{caseData.explanation}</p>
-              <button
-                onClick={onNext}
-                className="mt-4 w-full rounded-xl bg-accent py-3 font-bold text-accent-foreground"
-              >
-                Nächster Patient
-              </button>
-            </div>
-          )}
+          {revealed.imaging && <ImagingCard imaging={caseData.imaging} />}
+          {revealed.labs && <LabCard labs={caseData.labs} />}
         </div>
 
-        <aside className="flex flex-col gap-4">
-          <div className="card p-4">
-            <p className="text-xs font-bold uppercase tracking-wide text-muted">
-              Fortschritt heute
-            </p>
-            <div className="mt-3 h-2 rounded-full bg-foreground/10">
-              <div
-                className="h-2 rounded-full bg-accent transition-all"
-                style={{
-                  width: `${Math.min((dailyUsed / dailyLimit) * 100, 100)}%`,
-                }}
-              />
-            </div>
-            <p className="mt-2 text-sm text-muted">
-              {dailyUsed} von {dailyLimit} Fällen · Free Tier
-            </p>
-          </div>
+        <aside className="hidden flex-col gap-4 md:sticky md:top-24 md:flex md:self-start">
+          <StatusPanel
+            dailyUsed={dailyUsed}
+            dailyLimit={dailyLimit}
+            possiblePoints={possiblePoints}
+            revealed={revealed}
+          />
         </aside>
+
+        <div className="flex flex-col gap-4 md:hidden">
+          <StatusPanel
+            dailyUsed={dailyUsed}
+            dailyLimit={dailyLimit}
+            possiblePoints={possiblePoints}
+            revealed={revealed}
+          />
+        </div>
       </div>
+
+      <DiagnosisIsland
+        phase={phase}
+        caseData={caseData}
+        options={caseData.diagnosisOptions}
+        selectedDiagnosis={selectedDiagnosis}
+        onSubmit={onSubmitDiagnosis}
+        possiblePoints={possiblePoints}
+        lastResultCorrect={lastResultCorrect}
+        lastScoreEarned={lastScoreEarned}
+        onNext={onNext}
+      />
     </div>
   );
 }

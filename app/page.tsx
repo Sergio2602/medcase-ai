@@ -782,17 +782,19 @@ function DiagnosisIsland({
   lastScoreEarned: number;
   onNext: () => void;
 }) {
+  const [resultExpanded, setResultExpanded] = useState(true);
+
   if (phase === "result") {
     return (
-      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center px-4">
+      <div className="pointer-events-none fixed inset-x-0 bottom-8 z-40 flex justify-center px-4">
         <div
-          className={`pointer-events-auto max-h-[70vh] w-full max-w-[700px] overflow-y-auto rounded-2xl border-2 p-5 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] md:mr-[314px] ${
+          className={`pointer-events-auto w-full max-w-[700px] rounded-2xl border-2 p-5 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] md:mr-[314px] ${
             lastResultCorrect
               ? "border-[#bbdab2] bg-[#eef7ed]"
               : "border-[#e7c2bd] bg-[#fbeeed]"
           }`}
         >
-          <div className="mb-1 flex items-center gap-3">
+          <div className={`flex items-center gap-3 ${resultExpanded ? "mb-1" : ""}`}>
             <div
               className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white ${
                 lastResultCorrect ? "bg-[#15803d]" : "bg-[#c0362c]"
@@ -811,7 +813,38 @@ function DiagnosisIsland({
             >
               {lastResultCorrect ? "Richtig erkannt" : "Leider falsch"}
             </p>
+            {!resultExpanded && (
+              <span
+                className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                  lastResultCorrect
+                    ? "bg-[#15803d]/10 text-[#15803d]"
+                    : "bg-[#c0362c]/10 text-[#c0362c]"
+                }`}
+              >
+                {lastResultCorrect ? `+${lastScoreEarned} Punkte` : "0 Punkte"}
+              </span>
+            )}
+            <div className="ml-auto flex items-center gap-2">
+              {!resultExpanded && (
+                <button
+                  onClick={onNext}
+                  className="rounded-lg bg-foreground px-3 py-1.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                >
+                  Nächster Patient →
+                </button>
+              )}
+              <button
+                onClick={() => setResultExpanded(!resultExpanded)}
+                className="flex items-center justify-center w-8 h-8 rounded-full"
+                style={{ color: "#6b6a64" }}
+                aria-label={resultExpanded ? "Minimieren" : "Erweitern"}
+              >
+                <i className={resultExpanded ? "ti ti-chevron-down" : "ti ti-chevron-up"} />
+              </button>
+            </div>
           </div>
+          {resultExpanded && (
+            <>
           <p className="mb-4 mt-1 text-sm font-medium text-foreground/70">
             {lastResultCorrect ? (
               <>
@@ -897,6 +930,8 @@ function DiagnosisIsland({
           >
             Nächster Patient →
           </button>
+            </>
+          )}
         </div>
       </div>
     );
@@ -1109,7 +1144,11 @@ function GameScreen({
         </div>
       </header>
 
-      <div className="grid gap-6 pb-[340px] md:grid-cols-[1fr_280px]">
+      <div
+        className={`grid gap-6 md:grid-cols-[1fr_280px] ${
+          isResult ? "pb-[100px]" : "pb-[340px]"
+        }`}
+      >
         <div className="flex flex-col gap-6">
           <div className="card flex gap-4 p-5">
             <div

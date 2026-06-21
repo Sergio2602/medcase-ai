@@ -9,6 +9,8 @@ type Flag = "high" | "low" | "normal";
 type Discipline =
   | "zufaellig"
   | "innere"
+  | "kardiologie"
+  | "chirurgie"
   | "allgemeinmedizin"
   | "neurologie"
   | "hno"
@@ -337,7 +339,7 @@ const DIFFICULTY_INFO: Record<
     description: "Grundlagenfächer: Anatomie, Physiologie, Biochemie.",
   },
   klinik: {
-    label: "Innere",
+    label: "Klinik",
     description: "Internistische Leitsymptome und Differentialdiagnosen.",
   },
   examen: {
@@ -355,6 +357,8 @@ const DIFFICULTY_ICONS: Record<Difficulty, string> = {
 const DISCIPLINES: { id: Discipline; label: string; locked: boolean }[] = [
   { id: "zufaellig", label: "Zufällig", locked: false },
   { id: "innere", label: "Innere", locked: false },
+  { id: "kardiologie", label: "Kardiologie", locked: true },
+  { id: "chirurgie", label: "Chirurgie", locked: true },
   { id: "allgemeinmedizin", label: "Allgemeinmedizin", locked: true },
   { id: "neurologie", label: "Neurologie", locked: true },
   { id: "hno", label: "HNO", locked: true },
@@ -447,90 +451,103 @@ function DifficultyModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/30 px-4"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-foreground/30 sm:items-center sm:px-4"
       onClick={onClose}
     >
       <div
-        className="card max-h-[88vh] w-full max-w-md overflow-y-auto p-6"
+        className="flex max-h-[86vh] w-full flex-col overflow-hidden rounded-t-[20px] border-[1.5px] bg-card sm:max-w-md sm:rounded-xl"
+        style={{ borderColor: "#d8d6cd" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-accent px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-foreground">
-          {"LOS GEHT'S"}
-        </span>
-        <h2 className="mb-1 text-xl font-extrabold">Bereich wählen</h2>
-        <p className="mb-5 text-sm text-muted">
-          Wähle die Schwierigkeit für deinen ersten Fall.
-        </p>
-        <div className="flex flex-col gap-2">
-          {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => (
-            <BereichCard
-              key={id}
-              id={id}
-              icon={`ti ${DIFFICULTY_ICONS[id]} text-xl`}
-              title={DIFFICULTY_INFO[id].label}
-              badge={id === "klinik" ? "Neu: Disziplinen" : undefined}
-              description={DIFFICULTY_INFO[id].description}
-              selected={highlighted === id}
-              collapsed={!!highlighted && highlighted !== id}
-              onSelect={setHighlighted}
-            />
-          ))}
+        {/* Fixed header */}
+        <div className="shrink-0 px-6 pb-4 pt-6">
+          <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-accent px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-foreground">
+            {"LOS GEHT'S"}
+          </span>
+          <h2 className="mb-1 text-xl font-extrabold">Bereich wählen</h2>
+          <p className="text-sm text-muted">
+            Wähle die Schwierigkeit für deinen ersten Fall.
+          </p>
         </div>
 
-        {highlighted === "klinik" && (
-          <div className="mt-4 border-t border-dashed border-card-border/20 pt-4">
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wide text-muted">
-                Disziplin wählen
-              </span>
-              <span className="text-[11px] italic text-muted/70">
-                für deine Famulatur-Vorbereitung
-              </span>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              {DISCIPLINES.map((d) => {
-                const selected = discipline === d.id;
-                if (d.locked) {
+        {/* Scrollable body */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-4">
+          <div className="flex flex-col gap-2">
+            {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => (
+              <BereichCard
+                key={id}
+                id={id}
+                icon={`ti ${DIFFICULTY_ICONS[id]} text-xl`}
+                title={DIFFICULTY_INFO[id].label}
+                badge={id === "klinik" ? "Neu: Disziplinen" : undefined}
+                description={DIFFICULTY_INFO[id].description}
+                selected={highlighted === id}
+                collapsed={!!highlighted && highlighted !== id}
+                onSelect={setHighlighted}
+              />
+            ))}
+          </div>
+
+          {highlighted === "klinik" && (
+            <div className="mt-4 border-t border-dashed border-card-border/20 pt-4">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wide text-muted">
+                  Disziplin wählen
+                </span>
+                <span className="text-[11px] italic text-muted/70">
+                  für deine Famulatur-Vorbereitung
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {DISCIPLINES.map((d) => {
+                  const selected = discipline === d.id;
+                  if (d.locked) {
+                    return (
+                      <div
+                        key={d.id}
+                        className="flex cursor-not-allowed items-center justify-center gap-1 rounded-lg border-[1.5px] border-card-border/15 bg-foreground/[0.02] px-2 py-2.5 text-center text-xs font-semibold text-muted/60"
+                      >
+                        {d.label}
+                        <i className="ti ti-lock text-[11px] opacity-60" />
+                      </div>
+                    );
+                  }
                   return (
-                    <div
+                    <button
                       key={d.id}
-                      className="flex cursor-not-allowed items-center justify-center gap-1 rounded-lg border-[1.5px] border-card-border/15 bg-foreground/[0.02] px-2 py-2.5 text-center text-xs font-semibold text-muted/60"
+                      onClick={() => setDiscipline(d.id)}
+                      className={`rounded-lg border-[1.5px] px-2 py-2.5 text-center text-xs font-semibold transition-colors ${
+                        selected
+                          ? "border-accent bg-accent text-accent-foreground"
+                          : "border-card-border/20 bg-card hover:border-accent"
+                      }`}
                     >
                       {d.label}
-                      <i className="ti ti-lock text-[11px] opacity-60" />
-                    </div>
+                    </button>
                   );
-                }
-                return (
-                  <button
-                    key={d.id}
-                    onClick={() => setDiscipline(d.id)}
-                    className={`rounded-lg border-[1.5px] px-2 py-2.5 text-center text-xs font-semibold transition-colors ${
-                      selected
-                        ? "border-accent bg-accent text-accent-foreground"
-                        : "border-card-border/20 bg-card hover:border-accent"
-                    }`}
-                  >
-                    {d.label}
-                  </button>
-                );
-              })}
+                })}
+              </div>
+              <div className="mt-3 flex items-start gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs leading-relaxed text-accent">
+                <i className="ti ti-info-circle mt-0.5 text-sm" />
+                Aktuell nur Innere spielbar. Weitere Fächer sind in Vorbereitung — kein festes Datum.
+              </div>
             </div>
-            <div className="mt-3 flex items-start gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs leading-relaxed text-accent">
-              <i className="ti ti-info-circle mt-0.5 text-sm" />
-              Validierungsversion: aktuell nur Innere bespielbar. Weitere
-              Disziplinen folgen nach dieser Testphase.
-            </div>
-          </div>
-        )}
+          )}
+        </div>
 
-        <button
-          onClick={() => highlighted && onSelect(highlighted, discipline)}
-          disabled={!highlighted}
-          className="mt-5 w-full rounded-xl bg-accent py-3.5 font-bold text-accent-foreground transition-opacity disabled:cursor-not-allowed disabled:bg-card-border/20 disabled:text-muted"
+        {/* Sticky footer */}
+        <div
+          className="shrink-0 px-6 pb-6 pt-3"
+          style={{ borderTop: "1.5px solid #d8d6cd" }}
         >
-          Fall starten →
-        </button>
+          <button
+            onClick={() => highlighted && onSelect(highlighted, discipline)}
+            disabled={!highlighted}
+            className="w-full rounded-xl bg-accent py-3.5 font-bold text-accent-foreground transition-opacity disabled:cursor-not-allowed disabled:bg-card-border/20 disabled:text-muted"
+          >
+            Fall starten →
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -651,8 +668,6 @@ function StartScreen({
         <p className="mt-2 text-sm text-muted">
           Kostenlos · Kein Account nötig · 5 Fälle täglich
         </p>
-        <StatsRow />
-        <WelcomeNote />
       </div>
       <div className="flex flex-col">
         <RotatingPatientPreview />
@@ -665,6 +680,8 @@ function StartScreen({
         />
       )}
       </div>
+      <StatsRow />
+      <WelcomeNote />
       <footer
         className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"
         style={{ fontSize: 11, color: "#5f5e5a" }}
@@ -1333,7 +1350,7 @@ function GameScreen({
           <div className="flex min-w-0 items-center gap-3">
             <button
               onClick={onGoHome}
-              className="shrink-0 transition-opacity hover:opacity-80"
+              className="flex min-w-0 items-center overflow-hidden transition-opacity hover:opacity-80"
             >
               <Logo size={30} />
             </button>

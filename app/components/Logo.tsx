@@ -2,7 +2,7 @@ export function Logo({ size = 28 }: { size?: number }) {
   const iconSize = Math.round(size * 0.6);
   const radius = Math.round(size * 0.25);
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex min-w-0 items-center gap-2 overflow-hidden">
       <div
         style={{
           width: size,
@@ -47,7 +47,7 @@ export function Logo({ size = 28 }: { size?: number }) {
           />
         </svg>
       </div>
-      <span className="text-xl font-extrabold tracking-tight">
+      <span className="min-w-0 truncate text-xl font-extrabold tracking-tight">
         <span style={{ color: "#0f0f0f" }}>Med</span>
         <span style={{ color: "#1d4ed8" }}>case</span>
       </span>

@@ -10,7 +10,7 @@
   --accent-foreground: #ffffff;
 
   /* Muted text on warm background */
-  --muted: #6b6a65;
+  --muted: #5f5e5a;
 
   /* Avatar palette — approved pastel set, saturated */
   --avatar-1: #ef9a9a; /* Rosa */
@@ -50,8 +50,8 @@
 
 body {
   background-color: var(--background);
-  background-image: radial-gradient(circle at 1px 1px, rgba(15,15,15,0.025) 1px, transparent 0);
-  background-size: 3px 3px;
+  background-image: radial-gradient(circle, rgba(15, 15, 15, 0.11) 1px, transparent 1px);
+  background-size: 5px 5px;
   color: var(--foreground);
   font-family: var(--font-sans);
 }

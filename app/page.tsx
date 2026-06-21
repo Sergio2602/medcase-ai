@@ -173,8 +173,8 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen px-4 py-8 md:px-10">
-      <div className="mx-auto max-w-5xl">
+    <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
+      <div className="mx-auto max-w-[1140px]">
         {phase === "start" && <StartScreen onStart={startCase} />}
         {phase === "loading" && <LoadingScreen />}
         {(phase === "playing" || phase === "result") && activeCase && (
@@ -254,40 +254,56 @@ function RotatingPatientPreview() {
   const p = PATIENT_PREVIEWS[index];
 
   return (
-    <div
-      className="card p-5 transition-opacity duration-300"
-      style={{ opacity: visible ? 1 : 0 }}
-    >
-      <div className="mb-3 flex items-center gap-3">
-        <div
-          className="avatar-circle h-9 w-9 text-xs"
-          style={{ backgroundColor: p.color }}
-        >
-          {p.initials}
+    <div>
+      <div
+        className="card p-5 transition-opacity duration-300"
+        style={{ opacity: visible ? 1 : 0 }}
+      >
+        <div className="mb-3 flex items-center gap-3">
+          <div
+            className="avatar-circle h-9 w-9 text-xs"
+            style={{ backgroundColor: p.color }}
+          >
+            {p.initials}
+          </div>
+          <div>
+            <p className="text-sm font-bold">{p.name}</p>
+            <p className="text-xs text-muted">{p.meta}</p>
+          </div>
         </div>
-        <div>
-          <p className="text-sm font-bold">{p.name}</p>
-          <p className="text-xs text-muted">{p.meta}</p>
+        <p className="mb-3 border-l-[1.5px] border-card-border/20 pl-3 text-sm italic">
+          „{p.quote}{'"'}
+        </p>
+        <div className="mb-3 flex flex-col gap-1.5 text-sm font-semibold">
+          {p.revealed.map((f) => (
+            <span key={f} className="flex items-center gap-1.5 text-accent">
+              <i className="ti ti-check" />
+              {f}
+            </span>
+          ))}
         </div>
-      </div>
-      <p className="mb-3 border-l-[1.5px] border-card-border/20 pl-3 text-sm italic">
-        „{p.quote}“
-      </p>
-      <div className="mb-3 flex flex-col gap-1.5 text-sm font-semibold">
-        {p.revealed.map((f) => (
-          <span key={f} className="flex items-center gap-1.5 text-accent">
-            <i className="ti ti-check" />
-            {f}
+        <div className="flex gap-2">
+          <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
+            {p.score} Punkte
           </span>
-        ))}
+          <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
+            {p.solved} gelöst
+          </span>
+        </div>
       </div>
-      <div className="flex gap-2">
-        <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
-          {p.score} Punkte
-        </span>
-        <span className="rounded-full bg-[#eef7f0] px-2.5 py-1 text-xs font-bold text-[#15803d]">
-          {p.solved} gelöst
-        </span>
+      <div className="mt-2.5 flex items-center justify-center gap-1.5">
+        {PATIENT_PREVIEWS.map((_, i) => (
+          <div
+            key={i}
+            className="transition-all duration-300"
+            style={{
+              backgroundColor: "#a8a69c",
+              width: i === index ? 18 : 6,
+              height: 6,
+              borderRadius: i === index ? 3 : 9999,
+            }}
+          />
+        ))}
       </div>
     </div>
   );
@@ -295,7 +311,7 @@ function RotatingPatientPreview() {
 
 function StatsRow() {
   return (
-    <div className="mt-6 grid grid-cols-3 divide-x divide-card-border/15 border-t border-card-border/15 pt-5">
+    <div className="mt-3 grid grid-cols-3 divide-x divide-card-border/15 border-t border-card-border/15 pt-3">
       <div className="px-4 text-center first:pl-0">
         <p className="text-2xl font-extrabold">140+</p>
         <p className="text-sm text-muted">Klinische Fälle</p>
@@ -438,8 +454,8 @@ function DifficultyModal({
         className="card max-h-[88vh] w-full max-w-md overflow-y-auto p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-accent/10 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent">
-          Schritt 1 von 1
+        <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-accent px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-foreground">
+          {"LOS GEHT'S"}
         </span>
         <h2 className="mb-1 text-xl font-extrabold">Bereich wählen</h2>
         <p className="mb-5 text-sm text-muted">
@@ -523,7 +539,7 @@ function DifficultyModal({
 function WelcomeNote() {
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className="card mt-6 flex gap-4 p-5">
+    <div className="card mt-3 flex gap-4 p-5">
       <div
         className="avatar-circle h-10 w-10 shrink-0 text-sm"
         style={{ backgroundColor: "#90caf9" }}
@@ -555,6 +571,30 @@ function WelcomeNote() {
   );
 }
 
+function HowItWorksCard() {
+  const steps = ["Anamnese erheben", "Befunde anfordern", "Diagnose stellen"];
+  return (
+    <div className="card mt-3 p-5">
+      <p className="mb-3 text-[11px] font-bold uppercase tracking-wide text-muted">
+        So funktioniert's
+      </p>
+      <div className="flex flex-col gap-3">
+        {steps.map((step, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-extrabold"
+              style={{ backgroundColor: "#E6F1FB", color: "#0C447C" }}
+            >
+              {i + 1}
+            </div>
+            <span className="text-sm font-semibold">{step}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function StartScreen({
   onStart,
 }: {
@@ -562,38 +602,79 @@ function StartScreen({
 }) {
   const [showPicker, setShowPicker] = useState(false);
   return (
-    <div className="grid gap-8 py-6 md:grid-cols-[1fr_320px] md:items-start">
-      <div>
-        <Logo size={36} />
-        <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
+    <div className="pb-4">
+      <div
+        className="mb-3 flex items-center justify-between rounded-xl border-[1.5px] bg-card px-4 py-2.5"
+        style={{ borderColor: "#d8d6cd" }}
+      >
+        <div className="flex items-center gap-2.5">
+          <Logo size={30} />
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-1.5 rounded-lg border-[1.5px] bg-card px-3.5 py-[7px] text-sm font-semibold"
+            style={{ borderColor: "#d8d6cd" }}
+          >
+            <i className="ti ti-home text-sm" />
+            Home
+          </button>
+        </div>
+        <span className="flex items-center gap-1 text-sm text-muted">
+          <span className="font-extrabold text-foreground">140+</span>
+          &nbsp;Fälle
+        </span>
+      </div>
+      <div className="grid gap-4 md:grid-cols-[1fr_320px] md:items-start">
+        <div>
+        <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
           Für Medizinstudierende · Deutschland
         </span>
-        <h1 className="mt-4 max-w-xl text-4xl font-extrabold leading-[1.08] tracking-tight md:text-5xl">
+        <h1 className="mt-3 max-w-xl text-4xl font-extrabold leading-[1.08] tracking-tight md:text-5xl">
           Patientenfälle lösen. Nicht nur auswendig lernen.
         </h1>
-        <p className="mt-4 max-w-md text-lg leading-relaxed text-muted">
+        <p className="mt-2 max-w-md text-lg leading-relaxed text-muted">
           Echte klinische Situationen — Anamnese, Untersuchung, Labor. Du
           entscheidest was du brauchst. Weniger Untersuchungen, mehr Punkte.
         </p>
         <button
           onClick={() => setShowPicker(true)}
-          className="mt-6 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform hover:-translate-y-0.5"
+          className="group relative mt-3 overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground"
         >
-          Ersten Fall lösen →
+          Ersten Fall lösen{" "}
+          <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-2 group-active:translate-x-2">
+            →
+          </span>
+          <span
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-accent to-transparent"
+            aria-hidden="true"
+          />
         </button>
-        <p className="mt-3 text-sm text-muted">
+        <p className="mt-2 text-sm text-muted">
           Kostenlos · Kein Account nötig · 5 Fälle täglich
         </p>
         <StatsRow />
         <WelcomeNote />
       </div>
-      <RotatingPatientPreview />
+      <div className="flex flex-col">
+        <RotatingPatientPreview />
+        <HowItWorksCard />
+      </div>
       {showPicker && (
         <DifficultyModal
           onSelect={onStart}
           onClose={() => setShowPicker(false)}
         />
       )}
+      </div>
+      <footer
+        className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"
+        style={{ fontSize: 11, color: "#5f5e5a" }}
+      >
+        <span>© 2026 Medcase</span>
+        <div className="flex items-center gap-4">
+          <span>Impressum</span>
+          <span>Kontakt</span>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -828,18 +909,19 @@ function DiagnosisIsland({
               {!resultExpanded && (
                 <button
                   onClick={onNext}
-                  className="rounded-lg bg-foreground px-3 py-1.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                  className="rounded-lg bg-accent px-3 py-1.5 text-sm font-bold text-accent-foreground transition-opacity hover:opacity-90"
                 >
                   Nächster Patient →
                 </button>
               )}
               <button
                 onClick={() => setResultExpanded(!resultExpanded)}
-                className="flex items-center justify-center w-8 h-8 rounded-full"
-                style={{ color: "#6b6a64" }}
+                className="flex items-center gap-1 rounded-full border-[1.5px] border-current px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-70"
+                style={{ color: "#5f5e5a" }}
                 aria-label={resultExpanded ? "Minimieren" : "Erweitern"}
               >
-                <i className={resultExpanded ? "ti ti-chevron-down" : "ti ti-chevron-up"} />
+                <span>Details</span>
+                <i className={`text-[11px] ${resultExpanded ? "ti ti-chevron-down" : "ti ti-chevron-up"}`} />
               </button>
             </div>
           </div>
@@ -926,7 +1008,7 @@ function DiagnosisIsland({
 
           <button
             onClick={onNext}
-            className="w-full rounded-xl bg-foreground py-3 font-bold text-white transition-opacity hover:opacity-90"
+            className="w-full rounded-xl bg-accent py-3 font-bold text-accent-foreground transition-opacity hover:opacity-90"
           >
             Nächster Patient →
           </button>
@@ -970,16 +1052,142 @@ function DiagnosisIsland({
   );
 }
 
+type ReportState = "idle" | "open" | "loading" | "success" | "error";
+
+function ReportCaseCard({
+  caseId,
+  difficulty,
+}: {
+  caseId: string;
+  difficulty: Difficulty;
+}) {
+  const [reportState, setReportState] = useState<ReportState>("idle");
+  const [reason, setReason] = useState("");
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  async function handleSubmit() {
+    setReportState("loading");
+    try {
+      const res = await fetch("/api/report-case", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ caseId, difficulty, reason }),
+      });
+      if (!res.ok) throw new Error();
+      setReportState("success");
+      setTimeout(() => {
+        setReportState("idle");
+        setReason("");
+      }, 3000);
+    } catch {
+      setReportState("error");
+    }
+  }
+
+  return (
+    <div className="card p-4">
+      <div className="flex items-center justify-between">
+        <div className="relative flex items-center gap-1.5">
+          <button
+            onClick={() => setTooltipVisible((v) => !v)}
+            onBlur={() => setTooltipVisible(false)}
+            className="flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] border-card-border/25 text-muted transition-colors hover:border-accent hover:text-accent"
+            aria-label="Was bedeutet Fall melden?"
+          >
+            <i className="ti ti-help text-[11px]" />
+          </button>
+          {tooltipVisible && (
+            <div className="absolute bottom-7 left-0 z-10 w-56 rounded-xl border-[1.5px] border-card-border/20 bg-card p-3 text-xs leading-relaxed text-foreground/80 shadow-sm">
+              {/* TODO: Tooltip-Text kann später überarbeitet werden */}
+              Fall wirkt medizinisch unplausibel oder du hast eine Frage dazu?
+              Melde ihn kurz, wir prüfen ihn dann.
+            </div>
+          )}
+          <span className="text-xs font-bold uppercase tracking-wide text-muted">
+            Fall melden
+          </span>
+        </div>
+        {reportState === "idle" && (
+          <button
+            onClick={() => setReportState("open")}
+            className="rounded-lg border-[1.5px] border-card-border/20 bg-card px-2.5 py-1 text-xs font-semibold transition-colors hover:border-accent"
+          >
+            Melden
+          </button>
+        )}
+        {reportState === "open" && (
+          <button
+            onClick={() => {
+              setReportState("idle");
+              setReason("");
+            }}
+            className="text-muted transition-opacity hover:opacity-60"
+            aria-label="Schließen"
+          >
+            <i className="ti ti-x text-sm" />
+          </button>
+        )}
+      </div>
+
+      {reportState === "open" && (
+        <div className="mt-3 flex flex-col gap-2">
+          <textarea
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="Optional: Was stimmt nicht? (kann auch leer bleiben)"
+            rows={5}
+            className="w-full resize-none rounded-lg border-[1.5px] border-card-border/20 bg-background px-3 py-2 text-xs leading-relaxed text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none"
+          />
+          <button
+            onClick={handleSubmit}
+            className="w-full rounded-lg border-[1.5px] border-card-border/20 bg-card py-1.5 text-xs font-semibold transition-colors hover:border-accent"
+          >
+            Absenden
+          </button>
+        </div>
+      )}
+
+      {reportState === "loading" && (
+        <p className="mt-2 text-xs text-muted">Wird gesendet …</p>
+      )}
+
+      {reportState === "success" && (
+        <p className="mt-2 text-xs font-semibold text-[#15803d]">
+          Vielen Dank für deine Meldung – wir schauen uns den Fall an.
+        </p>
+      )}
+
+      {reportState === "error" && (
+        <div className="mt-2 flex items-center justify-between">
+          <p className="text-xs text-[#dc2626]">
+            Etwas ist schiefgelaufen. Bitte nochmal versuchen.
+          </p>
+          <button
+            onClick={() => setReportState("open")}
+            className="ml-2 text-xs font-semibold text-accent underline"
+          >
+            Zurück
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StatusPanel({
   dailyUsed,
   dailyLimit,
   possiblePoints,
   revealed,
+  caseId,
+  difficulty,
 }: {
   dailyUsed: number;
   dailyLimit: number;
   possiblePoints: number;
   revealed: Revealed;
+  caseId: string;
+  difficulty: Difficulty;
 }) {
   const checklist: { key: keyof Revealed; label: string }[] = [
     { key: "history", label: "Anamnese" },
@@ -1060,6 +1268,8 @@ function StatusPanel({
           })}
         </div>
       </div>
+
+      <ReportCaseCard caseId={caseId} difficulty={difficulty} />
     </>
   );
 }
@@ -1115,29 +1325,35 @@ function GameScreen({
 
   return (
     <div>
-      <header className="sticky top-0 z-30 mb-6 -mt-8 border-b border-card-border/15 bg-background/95 px-1 py-5 backdrop-blur md:-mt-10">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <button
-            onClick={onGoHome}
-            className="transition-opacity hover:opacity-80"
-          >
-            <Logo size={30} />
-          </button>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 rounded-full border-[1.5px] border-card-border/20 bg-card px-4 py-2 text-sm">
+      <header className="sticky top-0 z-30 mb-6 -mt-5 bg-background/95 pb-2 pt-4 backdrop-blur">
+        <div
+          className="flex items-center justify-between gap-3 rounded-xl border-[1.5px] bg-card px-[18px] py-3"
+          style={{ borderColor: "#d8d6cd" }}
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            <button
+              onClick={onGoHome}
+              className="shrink-0 transition-opacity hover:opacity-80"
+            >
+              <Logo size={30} />
+            </button>
+            <div className="h-5 w-px shrink-0 bg-foreground/10" />
+            <div className="flex min-w-0 items-center gap-2 text-sm">
               <button
                 onClick={onGoHome}
-                className="flex items-center gap-1 font-semibold text-muted transition-opacity hover:opacity-80"
+                className="flex shrink-0 items-center gap-1 font-semibold text-muted transition-opacity hover:opacity-80"
               >
                 <i className="ti ti-arrow-left" /> Start
               </button>
-              <span className="text-card-border/30">·</span>
-              <span className="font-semibold">{difficultyLabel}</span>
-              <i className="ti ti-arrow-right text-xs text-muted" />
-              <span className="font-semibold text-accent">
+              <span className="shrink-0 text-muted/40">→</span>
+              <span className="shrink-0 font-semibold">{difficultyLabel}</span>
+              <span className="shrink-0 text-muted/40">→</span>
+              <span className="truncate font-semibold text-accent">
                 {disciplineLabel}
               </span>
             </div>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
             <StatPill label="PUNKTE" value={score} />
             <StatPill label="GELÖST" value={`${solved}/${played}`} />
           </div>
@@ -1165,7 +1381,7 @@ function GameScreen({
                 {caseData.gender === "male" ? "Männlich" : "Weiblich"}
               </p>
               <blockquote className="mt-3 border-l-[1.5px] border-accent pl-3 italic">
-                „{caseData.chiefComplaint}“
+                „{caseData.chiefComplaint}{'"'}
               </blockquote>
             </div>
           </div>
@@ -1241,6 +1457,8 @@ function GameScreen({
             dailyLimit={dailyLimit}
             possiblePoints={possiblePoints}
             revealed={revealed}
+            caseId={caseData.id}
+            difficulty={difficulty}
           />
         </aside>
 
@@ -1250,6 +1468,8 @@ function GameScreen({
             dailyLimit={dailyLimit}
             possiblePoints={possiblePoints}
             revealed={revealed}
+            caseId={caseData.id}
+            difficulty={difficulty}
           />
         </div>
       </div>

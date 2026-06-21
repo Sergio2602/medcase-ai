@@ -1,49 +1,52 @@
-/**
- * Medcase logo: patient-file icon with pulse line + blue cross-dot accent.
- * Reused by page.tsx in the game-screen header (Schritt 3).
- */
 export function Logo({ size = 28 }: { size?: number }) {
+  const iconSize = Math.round(size * 0.6);
+  const radius = Math.round(size * 0.25);
   return (
     <div className="flex items-center gap-2">
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 28 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
+      <div
+        style={{
+          width: size,
+          height: size,
+          borderRadius: radius,
+          backgroundColor: "#1d4ed8",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+        }}
       >
-        <rect
-          x="4"
-          y="3"
-          width="16"
-          height="22"
-          rx="2.5"
-          fill="#ffffff"
-          stroke="#0f0f0f"
-          strokeWidth="1.5"
-        />
-        <path
-          d="M14.5 3v4a1.5 1.5 0 0 0 1.5 1.5h4"
-          stroke="#0f0f0f"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M6.5 17.5h2l1.5-3 2 5 1.5-3.5h3"
-          stroke="#0f0f0f"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <circle cx="21" cy="6" r="3" fill="#1d4ed8" />
-        <path
-          d="M21 4.6v2.8M19.6 6h2.8"
-          stroke="#ffffff"
-          strokeWidth="0.9"
-          strokeLinecap="round"
-        />
-      </svg>
+        <svg
+          width={iconSize}
+          height={iconSize}
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"
+            fill="transparent"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <rect
+            x="9.5"
+            y="2.5"
+            width="5"
+            height="4"
+            rx="1.5"
+            fill="transparent"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M12 18.5C12 18.5 8 16 8 13.5C8 11.5 9.5 11 11 11C11.8 11 12 11.8 12 11.8C12 11.8 12.2 11 13 11C14.5 11 16 11.5 16 13.5C16 16 12 18.5 12 18.5Z"
+            fill="#ffffff"
+          />
+        </svg>
+      </div>
       <span className="text-xl font-extrabold tracking-tight">
         <span style={{ color: "#0f0f0f" }}>Med</span>
         <span style={{ color: "#1d4ed8" }}>case</span>

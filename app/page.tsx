@@ -576,7 +576,7 @@ function HowItWorksCard() {
   return (
     <div className="card mt-3 p-5">
       <p className="mb-3 text-[11px] font-bold uppercase tracking-wide text-muted">
-        So funktioniert's
+        So funktioniert’s
       </p>
       <div className="flex flex-col gap-3">
         {steps.map((step, i) => (

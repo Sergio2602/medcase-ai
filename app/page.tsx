@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Logo } from "./components/Logo";
+import { OnboardingTour } from "./components/OnboardingTour";
+import { generateShareCard } from "@/lib/generateShareCard";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
 type Phase = "start" | "loading" | "playing" | "result";
@@ -869,6 +871,8 @@ function DiagnosisIsland({
   lastResultCorrect,
   lastScoreEarned,
   onNext,
+  revealedCount,
+  diagnosisIslandRef,
 }: {
   phase: Phase;
   caseData: Case;
@@ -879,13 +883,51 @@ function DiagnosisIsland({
   lastResultCorrect: boolean;
   lastScoreEarned: number;
   onNext: () => void;
+  revealedCount: number;
+  diagnosisIslandRef?: RefObject<HTMLDivElement | null>;
 }) {
   const [resultExpanded, setResultExpanded] = useState(true);
+  const [isSharing, setIsSharing] = useState(false);
+
+  async function handleShare() {
+    if (isSharing) return;
+    setIsSharing(true);
+    try {
+      const blob = await generateShareCard({
+        score: lastScoreEarned,
+        maxScore: 100,
+        patientName: caseData.patientName,
+        patientAge: caseData.age,
+        diagnosis: caseData.correctDiagnosis,
+        revealedCount,
+        totalCategories: 4,
+        isCorrect: lastResultCorrect,
+      });
+      const file = new File([blob], "medcase-ergebnis.png", { type: "image/png" });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: "Mein Medcase-Ergebnis" });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "medcase-ergebnis.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    } catch {
+      // user cancelled or share failed — silent
+    } finally {
+      setIsSharing(false);
+    }
+  }
 
   if (phase === "result") {
     return (
       <div className="pointer-events-none fixed inset-x-0 bottom-8 z-40 flex justify-center px-4">
         <div
+          ref={diagnosisIslandRef}
           className={`pointer-events-auto w-full max-w-[700px] rounded-2xl border-2 p-5 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] md:mr-[314px] ${
             lastResultCorrect
               ? "border-[#bbdab2] bg-[#eef7ed]"
@@ -1029,6 +1071,14 @@ function DiagnosisIsland({
           >
             Nächster Patient →
           </button>
+          <button
+            onClick={handleShare}
+            disabled={isSharing}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-card-border/20 bg-white/40 py-3 text-sm font-semibold transition-colors hover:border-accent disabled:opacity-60"
+          >
+            <i className="ti ti-share-2" />
+            {isSharing ? "Wird erstellt …" : "Ergebnis teilen"}
+          </button>
             </>
           )}
         </div>
@@ -1038,7 +1088,7 @@ function DiagnosisIsland({
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-8 z-40 flex justify-center px-4">
-      <div className="pointer-events-auto w-full max-w-[700px] rounded-2xl border-[1.5px] border-card-border/15 bg-card p-5 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] md:mr-[314px]">
+      <div ref={diagnosisIslandRef} className="pointer-events-auto w-full max-w-[700px] rounded-2xl border-[1.5px] border-card-border/15 bg-card p-5 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] md:mr-[314px]">
         <div className="mb-3 flex items-center justify-between px-0.5">
           <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-muted">
             <i className="ti ti-help-circle text-accent" />
@@ -1340,6 +1390,10 @@ function GameScreen({
   );
   const isResult = phase === "result";
 
+  const patientCardRef = useRef<HTMLDivElement>(null);
+  const befundeRef = useRef<HTMLDivElement>(null);
+  const diagnosisIslandRef = useRef<HTMLDivElement>(null);
+
   return (
     <div>
       <header className="sticky top-0 z-30 mb-6 -mt-5 bg-background/95 pb-2 pt-4 backdrop-blur">
@@ -1383,7 +1437,7 @@ function GameScreen({
         }`}
       >
         <div className="flex flex-col gap-6">
-          <div className="card flex gap-4 p-5">
+          <div ref={patientCardRef} className="card flex gap-4 p-5">
             <div
               className="avatar-circle h-14 w-14 shrink-0 text-lg"
               style={{ backgroundColor: color }}
@@ -1403,7 +1457,7 @@ function GameScreen({
             </div>
           </div>
 
-          <div>
+          <div ref={befundeRef}>
             <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
               <i className="ti ti-clipboard-check text-accent" />
               Befunde anfordern
@@ -1501,7 +1555,17 @@ function GameScreen({
         lastResultCorrect={lastResultCorrect}
         lastScoreEarned={lastScoreEarned}
         onNext={onNext}
+        revealedCount={revealCount}
+        diagnosisIslandRef={diagnosisIslandRef}
       />
+
+      {phase === "playing" && (
+        <OnboardingTour
+          step1Ref={patientCardRef}
+          step2Ref={befundeRef}
+          step3Ref={diagnosisIslandRef}
+        />
+      )}
     </div>
   );
 }

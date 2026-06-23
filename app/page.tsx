@@ -1741,32 +1741,44 @@ function GameScreen({
           </div>
 
           <div ref={befundeRef}>
-            <div className="mb-2 flex items-center gap-1.5">
-              {findingsHelpOpen && (
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={() => setFindingsHelpOpen(false)}
-                />
-              )}
-              <div className="relative z-20">
-                <button
-                  onClick={() => setFindingsHelpOpen((v) => !v)}
-                  className="flex items-center justify-center text-accent"
-                  aria-label="Hinweis zu Befunden anfordern"
-                >
-                  <i className="ti ti-help-circle" />
-                </button>
+            <div className="mb-2 flex items-center justify-between gap-1.5">
+              <div className="flex items-center gap-1.5">
                 {findingsHelpOpen && (
                   <div
-                    className="absolute left-0 top-6 w-[260px] rounded-[9px] border-[1.5px] bg-white p-3 shadow-sm text-foreground/80"
-                    style={{ borderColor: "#d8d6cd", fontSize: "12.5px", lineHeight: 1.5 }}
-                  >
-                    Hier kannst du zusätzliche Befunde anfordern, um die Diagnose zu stellen. Jeder Befund kostet Punkte — weniger Befunde bedeuten mehr Punkte.
-                  </div>
+                    className="fixed inset-0 z-10"
+                    onClick={() => setFindingsHelpOpen(false)}
+                  />
                 )}
+                <div className="relative z-20">
+                  <button
+                    onClick={() => setFindingsHelpOpen((v) => !v)}
+                    className="flex items-center justify-center text-accent"
+                    aria-label="Hinweis zu Befunden anfordern"
+                  >
+                    <i className="ti ti-help-circle" />
+                  </button>
+                  {findingsHelpOpen && (
+                    <div
+                      className="absolute left-0 top-6 w-[260px] rounded-[9px] border-[1.5px] bg-white p-3 shadow-sm text-foreground/80"
+                      style={{ borderColor: "#d8d6cd", fontSize: "12.5px", lineHeight: 1.5 }}
+                    >
+                      Hier kannst du zusätzliche Befunde anfordern, um die Diagnose zu stellen. Jeder Befund kostet Punkte — weniger Befunde bedeuten mehr Punkte.
+                    </div>
+                  )}
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wide text-muted">
+                  Befunde anfordern
+                </span>
               </div>
-              <span className="text-xs font-bold uppercase tracking-wide text-muted">
-                Befunde anfordern
+              <span className="text-xs text-muted">
+                {isResult ? (
+                  "Befunde weiterhin einsehbar."
+                ) : (
+                  <>
+                    Jeder Befund kostet{" "}
+                    <span className="font-semibold text-accent">−10 Punkte</span>
+                  </>
+                )}
               </span>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -1801,19 +1813,6 @@ function GameScreen({
                 onClick={() => setRevealed((r) => ({ ...r, labs: true }))}
               />
             </div>
-            <p className="mt-2 text-xs text-muted">
-              {isResult ? (
-                "Fall abgeschlossen — du kannst die Befunde weiterhin nachlesen."
-              ) : (
-                <>
-                  Jeder Befund kostet{" "}
-                  <span className="font-semibold text-accent">
-                    −10 Punkte
-                  </span>
-                  . Weniger Befunde, mehr Punkte.
-                </>
-              )}
-            </p>
           </div>
 
           {revealed.history && (

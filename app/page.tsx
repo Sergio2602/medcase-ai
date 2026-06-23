@@ -165,7 +165,7 @@ export default function Home() {
     setScore((s) => s + earned);
     setPlayed((p) => p + 1);
     if (correct) setSolved((s) => s + 1);
-    setTimeout(() => setPhase("result"), 500);
+    setPhase("result");
   }
 
   function nextCase() {
@@ -951,32 +951,22 @@ function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: 
   );
 }
 
-function DiagnosisIsland({
-  phase,
-  caseData,
-  options,
-  selectedDiagnosis,
-  onSubmit,
-  possiblePoints,
+function ResultModal({
   lastResultCorrect,
   lastScoreEarned,
+  selectedDiagnosis,
+  caseData,
   onNext,
   revealedCount,
-  diagnosisIslandRef,
 }: {
-  phase: Phase;
-  caseData: Case;
-  options: string[];
-  selectedDiagnosis: string | null;
-  onSubmit: (option: string) => void;
-  possiblePoints: number;
   lastResultCorrect: boolean;
   lastScoreEarned: number;
+  selectedDiagnosis: string | null;
+  caseData: Case;
   onNext: () => void;
   revealedCount: number;
-  diagnosisIslandRef?: RefObject<HTMLDivElement | null>;
 }) {
-  const [resultExpanded, setResultExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
 
   async function handleShare() {
@@ -1013,194 +1003,204 @@ function DiagnosisIsland({
     }
   }
 
-  if (phase === "result") {
-    return (
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+      style={{ backgroundColor: "rgba(244,243,238,0.82)" }}
+    >
       <div
-        ref={diagnosisIslandRef}
-        className={`w-full rounded-2xl border-2 p-3 shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)] sm:p-5 ${
-          lastResultCorrect
-            ? "border-[#bbdab2] bg-[#eef7ed]"
-            : "border-[#e7c2bd] bg-[#fbeeed]"
+        className={`w-full max-w-lg overflow-y-auto rounded-xl border-[1.5px] p-4 sm:p-5 ${
+          lastResultCorrect ? "bg-[#eef7ed]" : "bg-[#fbeeed]"
         }`}
+        style={{ borderColor: "#d8d6cd", maxHeight: "90dvh" }}
       >
-          <div className={`flex items-center gap-3 ${resultExpanded ? "mb-1" : ""}`}>
-            <div
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white ${
-                lastResultCorrect ? "bg-[#15803d]" : "bg-[#c0362c]"
-              }`}
-            >
-              <i
-                className={`ti ${
-                  lastResultCorrect ? "ti-check" : "ti-x"
-                } text-base`}
-              />
-            </div>
-            <p
-              className={`text-lg font-extrabold ${
-                lastResultCorrect ? "text-[#15803d]" : "text-[#c0362c]"
-              }`}
-            >
-              {lastResultCorrect ? "Richtig erkannt" : "Leider falsch"}
-            </p>
-            {!resultExpanded && (
-              <span
-                className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                  lastResultCorrect
-                    ? "bg-[#15803d]/10 text-[#15803d]"
-                    : "bg-[#c0362c]/10 text-[#c0362c]"
-                }`}
-              >
-                {lastResultCorrect ? `+${lastScoreEarned} Punkte` : "0 Punkte"}
-              </span>
-            )}
-            <div className="ml-auto flex items-center gap-2">
-              {!resultExpanded && (
-                <button
-                  onClick={onNext}
-                  className="rounded-lg bg-accent px-3 py-1.5 text-sm font-bold text-accent-foreground transition-opacity hover:opacity-90"
-                >
-                  Nächster Patient →
-                </button>
-              )}
-              <button
-                onClick={() => setResultExpanded(!resultExpanded)}
-                className="flex items-center gap-1 rounded-full border-[1.5px] border-current px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-70"
-                style={{ color: "#5f5e5a" }}
-                aria-label={resultExpanded ? "Minimieren" : "Erweitern"}
-              >
-                <span>Details</span>
-                <i className={`text-[11px] ${resultExpanded ? "ti ti-chevron-down" : "ti ti-chevron-up"}`} />
-              </button>
-            </div>
+        {/* 1. Status + Details toggle */}
+        <div className={`flex items-center gap-3 ${expanded ? "mb-1" : ""}`}>
+          <div
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white ${
+              lastResultCorrect ? "bg-[#15803d]" : "bg-[#c0362c]"
+            }`}
+          >
+            <i className={`ti ${lastResultCorrect ? "ti-check" : "ti-x"} text-base`} />
           </div>
-          {resultExpanded && (
-            <>
-          <p className="mb-4 mt-1 text-sm font-medium text-foreground/70">
-            {lastResultCorrect ? (
-              <>
-                Du hast{" "}
-                <span className="font-mono font-bold text-foreground">
-                  +{lastScoreEarned}
-                </span>{" "}
-                Punkte erzielt.
-              </>
-            ) : (
-              <>
-                Du hast{" "}
-                <span className="font-bold text-foreground">
-                  {selectedDiagnosis}
-                </span>{" "}
-                gewählt — richtig war{" "}
-                <span className="font-bold text-foreground">
-                  {caseData.correctDiagnosis}
-                </span>
-                .
-              </>
-            )}
+          <p
+            className={`text-lg font-extrabold ${
+              lastResultCorrect ? "text-[#15803d]" : "text-[#c0362c]"
+            }`}
+          >
+            {lastResultCorrect ? "Richtig erkannt" : "Leider falsch"}
           </p>
-
-          <div className="mb-4 grid grid-cols-2 gap-2">
-            {caseData.diagnosisOptions.map((opt) => {
-              const isCorrectAnswer = opt === caseData.correctDiagnosis;
-              const isWrongPick =
-                opt === selectedDiagnosis &&
-                opt !== caseData.correctDiagnosis;
-              return (
-                <div
-                  key={opt}
-                  className={`flex items-center justify-between gap-2 rounded-lg border-[1.5px] px-3 py-2.5 text-[13.5px] font-semibold ${
-                    isCorrectAnswer
-                      ? "border-[#15803d]/40 bg-[#f1f9ef] text-[#14532d]"
-                      : isWrongPick
-                      ? "border-[#c0362c]/40 bg-[#fdf1f0] text-[#7f1d1d]"
-                      : "border-card-border/15 bg-card text-foreground/80"
-                  }`}
-                >
-                  {opt}
-                  {isCorrectAnswer && (
-                    <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white">
-                      <i className="ti ti-check text-[10px]" />
-                    </span>
-                  )}
-                  {isWrongPick && (
-                    <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#c0362c] text-white">
-                      <i className="ti ti-x text-[10px]" />
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mb-4 rounded-xl bg-white/60 p-3 sm:p-4">
-            {caseData.keyTakeaway && (
-              <>
-                <p className="mb-2 text-xs font-bold leading-relaxed text-foreground sm:text-sm">
-                  <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
-                    {lastResultCorrect
-                      ? "Warum es richtig ist"
-                      : "Worauf es ankam"}
-                  </span>
-                  {caseData.keyTakeaway}
-                </p>
-                <div className="my-3 h-px bg-foreground/[0.08]" />
-              </>
-            )}
-            <p className="text-xs leading-relaxed text-foreground/75 sm:text-[13.5px]">
-              <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
-                Vollständige Begründung
-              </span>
-              {caseData.explanation}
-            </p>
-          </div>
-
-          <button
-            onClick={onNext}
-            className="w-full rounded-xl bg-accent py-3 font-bold text-accent-foreground transition-opacity hover:opacity-90"
-          >
-            Nächster Patient →
-          </button>
-          <button
-            onClick={handleShare}
-            disabled={isSharing}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-card-border/20 bg-white/40 py-3 text-sm font-semibold transition-colors hover:border-accent disabled:opacity-60"
-          >
-            <i className="ti ti-share-2" />
-            {isSharing ? "Wird erstellt …" : "Ergebnis teilen"}
-          </button>
-            </>
+          {!expanded && (
+            <span
+              className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                lastResultCorrect
+                  ? "bg-[#15803d]/10 text-[#15803d]"
+                  : "bg-[#c0362c]/10 text-[#c0362c]"
+              }`}
+            >
+              {lastResultCorrect ? `+${lastScoreEarned} Punkte` : "0 Punkte"}
+            </span>
           )}
-      </div>
-    );
-  }
+          <div className="ml-auto flex items-center gap-2">
+            {!expanded && (
+              <button
+                onClick={onNext}
+                className="rounded-lg bg-accent px-3 py-1.5 text-sm font-bold text-accent-foreground transition-opacity hover:opacity-90"
+              >
+                Nächster Patient →
+              </button>
+            )}
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="flex items-center gap-1 rounded-full border-[1.5px] border-current px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-70"
+              style={{ color: "#5f5e5a" }}
+              aria-label={expanded ? "Minimieren" : "Erweitern"}
+            >
+              <span>Details</span>
+              <i className={`text-[11px] ${expanded ? "ti ti-chevron-down" : "ti ti-chevron-up"}`} />
+            </button>
+          </div>
+        </div>
 
+        {expanded && (
+          <>
+            {/* 2. Result line */}
+            <p className="mb-4 mt-1 text-sm font-medium text-foreground/70">
+              {lastResultCorrect ? (
+                <>
+                  Du hast{" "}
+                  <span className="font-mono font-bold text-foreground">+{lastScoreEarned}</span>{" "}
+                  Punkte erzielt.
+                </>
+              ) : (
+                <>
+                  Du hast{" "}
+                  <span className="font-bold text-foreground">{selectedDiagnosis}</span>{" "}
+                  gewählt — richtig war{" "}
+                  <span className="font-bold text-foreground">{caseData.correctDiagnosis}</span>.
+                </>
+              )}
+            </p>
+
+            {/* 3. Diagnosis options color-coded */}
+            <div className="mb-4 grid grid-cols-2 gap-2">
+              {caseData.diagnosisOptions.map((opt) => {
+                const isCorrectAnswer = opt === caseData.correctDiagnosis;
+                const isWrongPick = opt === selectedDiagnosis && opt !== caseData.correctDiagnosis;
+                return (
+                  <div
+                    key={opt}
+                    className={`flex items-center justify-between gap-2 rounded-lg border-[1.5px] px-3 py-2.5 text-[13.5px] font-semibold ${
+                      isCorrectAnswer
+                        ? "border-[#15803d]/40 bg-[#f1f9ef] text-[#14532d]"
+                        : isWrongPick
+                        ? "border-[#c0362c]/40 bg-[#fdf1f0] text-[#7f1d1d]"
+                        : "border-card-border/15 bg-card text-foreground/80"
+                    }`}
+                  >
+                    {opt}
+                    {isCorrectAnswer && (
+                      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white">
+                        <i className="ti ti-check text-[10px]" />
+                      </span>
+                    )}
+                    {isWrongPick && (
+                      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#c0362c] text-white">
+                        <i className="ti ti-x text-[10px]" />
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 4. Explanation block */}
+            <div className="mb-4 rounded-xl bg-white/60 p-3 sm:p-4">
+              {caseData.keyTakeaway && (
+                <>
+                  <p className="mb-2 text-xs font-bold leading-relaxed text-foreground sm:text-sm">
+                    <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
+                      {lastResultCorrect ? "Warum es richtig ist" : "Worauf es ankam"}
+                    </span>
+                    {caseData.keyTakeaway}
+                  </p>
+                  <div className="my-3 h-px bg-foreground/[0.08]" />
+                </>
+              )}
+              <p className="text-xs leading-relaxed text-foreground/75 sm:text-[13.5px]">
+                <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
+                  Vollständige Begründung
+                </span>
+                {caseData.explanation}
+              </p>
+            </div>
+
+            {/* 5. Primary CTA */}
+            <button
+              onClick={onNext}
+              className="w-full rounded-xl bg-accent py-3 font-bold text-accent-foreground transition-opacity hover:opacity-90"
+            >
+              Nächster Patient →
+            </button>
+
+            {/* 6. Share */}
+            <button
+              onClick={handleShare}
+              disabled={isSharing}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-card-border/20 bg-white/40 py-3 text-sm font-semibold transition-colors hover:border-accent disabled:opacity-60"
+            >
+              <i className="ti ti-share-2" />
+              {isSharing ? "Wird erstellt …" : "↑ Ergebnis teilen"}
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function DiagnosisIsland({
+  caseData,
+  options,
+  selectedDiagnosis,
+  onSubmit,
+  possiblePoints,
+  diagnosisIslandRef,
+}: {
+  caseData: Case;
+  options: string[];
+  selectedDiagnosis: string | null;
+  onSubmit: (option: string) => void;
+  possiblePoints: number;
+  diagnosisIslandRef?: RefObject<HTMLDivElement | null>;
+}) {
   return (
     <div ref={diagnosisIslandRef} className="w-full rounded-2xl border-[1.5px] border-card-border/15 bg-card px-4 py-[14px] shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)]">
-        <div className="mb-3 flex items-center justify-between px-0.5">
-          <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-muted">
-            Diagnose stellen
-          </span>
-          <span className="text-xs font-medium text-muted">
-            Noch{" "}
-            <span className="font-mono font-bold text-accent">
-              {possiblePoints}
-            </span>{" "}
-            Punkte möglich
-          </span>
-        </div>
-        <div className="grid grid-cols-2 gap-2.5">
-          {options.map((opt) => (
-            <button
-              key={opt}
-              onClick={() => onSubmit(opt)}
-              disabled={!!selectedDiagnosis}
-              className="rounded-xl border-[1.5px] border-card-border/20 bg-foreground/[0.015] px-3 py-[9px] text-center text-sm font-semibold leading-snug transition-colors hover:border-accent hover:bg-accent/5 disabled:cursor-not-allowed"
-            >
-              {opt}
-            </button>
-          ))}
-        </div>
+      <div className="mb-3 flex items-center justify-between px-0.5">
+        <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-muted">
+          Diagnose stellen
+        </span>
+        <span className="text-xs font-medium text-muted">
+          Noch{" "}
+          <span className="font-mono font-bold text-accent">
+            {possiblePoints}
+          </span>{" "}
+          Punkte möglich
+        </span>
       </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        {options.map((opt) => (
+          <button
+            key={opt}
+            onClick={() => onSubmit(opt)}
+            disabled={!!selectedDiagnosis}
+            className="rounded-xl border-[1.5px] border-card-border/20 bg-foreground/[0.015] px-3 py-[9px] text-center text-sm font-semibold leading-snug transition-colors hover:border-accent hover:bg-accent/5 disabled:cursor-not-allowed"
+          >
+            {opt}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -1847,21 +1847,18 @@ function GameScreen({
           )}
 
           </div>
-          <div className="relative z-10 pt-3">
-            <DiagnosisIsland
-              phase={phase}
-              caseData={caseData}
-              options={caseData.diagnosisOptions}
-              selectedDiagnosis={selectedDiagnosis}
-              onSubmit={onSubmitDiagnosis}
-              possiblePoints={possiblePoints}
-              lastResultCorrect={lastResultCorrect}
-              lastScoreEarned={lastScoreEarned}
-              onNext={onNext}
-              revealedCount={revealCount}
-              diagnosisIslandRef={diagnosisIslandRef}
-            />
-          </div>
+          {phase === "playing" && (
+            <div className="relative z-10 pt-3">
+              <DiagnosisIsland
+                caseData={caseData}
+                options={caseData.diagnosisOptions}
+                selectedDiagnosis={selectedDiagnosis}
+                onSubmit={onSubmitDiagnosis}
+                possiblePoints={possiblePoints}
+                diagnosisIslandRef={diagnosisIslandRef}
+              />
+            </div>
+          )}
         </div>
 
         <aside className="hidden flex-col gap-4 md:sticky md:top-24 md:flex md:self-start">
@@ -1892,6 +1889,17 @@ function GameScreen({
           step1Ref={patientCardRef}
           step2Ref={befundeRef}
           step3Ref={diagnosisIslandRef}
+        />
+      )}
+
+      {phase === "result" && (
+        <ResultModal
+          lastResultCorrect={lastResultCorrect}
+          lastScoreEarned={lastScoreEarned}
+          selectedDiagnosis={selectedDiagnosis}
+          caseData={caseData}
+          onNext={onNext}
+          revealedCount={revealCount}
         />
       )}
     </div>

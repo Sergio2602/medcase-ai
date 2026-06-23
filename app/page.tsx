@@ -856,8 +856,8 @@ function CollapseToggle({ expanded, onToggle }: { expanded: boolean; onToggle: (
 
 function FindingCard({ title, text, expanded, onToggle }: { title: string; text: string; expanded: boolean; onToggle: () => void }) {
   return (
-    <div className="card p-5">
-      <div className="mb-2 flex items-center justify-between">
+    <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
+      <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
         <p className="text-xs font-bold uppercase tracking-wide text-muted">
           {title}
         </p>
@@ -871,8 +871,8 @@ function FindingCard({ title, text, expanded, onToggle }: { title: string; text:
 function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expanded: boolean; onToggle: () => void }) {
   if (!imaging) return null;
   return (
-    <div className="card p-5">
-      <div className="mb-2 flex items-center justify-between">
+    <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
+      <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
         <p className="text-xs font-bold uppercase tracking-wide text-muted">
           Bildgebung
         </p>
@@ -885,8 +885,8 @@ function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expande
 
 function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: boolean; onToggle: () => void }) {
   return (
-    <div className="card p-5">
-      <div className="mb-3 flex items-center justify-between">
+    <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
+      <div className={`flex items-center justify-between ${expanded ? "mb-3" : ""}`}>
         <p className="text-xs font-bold uppercase tracking-wide text-muted">
           Labor
         </p>

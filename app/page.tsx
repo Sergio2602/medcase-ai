@@ -1719,7 +1719,7 @@ function GameScreen({
 
       <div className="grid gap-6 md:grid-cols-[1fr_280px]">
         <div className="flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
-          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 overflow-y-auto">
+          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 overflow-y-auto" style={{ maskImage: "linear-gradient(to bottom, transparent 0px, black 16px)" }}>
           <div ref={patientCardRef} className="card flex gap-4 p-[18px]">
             <div
               className="avatar-circle h-14 w-14 shrink-0 text-lg"

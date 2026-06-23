@@ -1630,7 +1630,7 @@ function GameScreen({
     const content = contentScrollRef.current;
     if (!island || !content) return;
     const ro = new ResizeObserver(() => {
-      content.style.paddingBottom = `${island.offsetHeight + 16}px`;
+      content.style.paddingBottom = `${island.offsetHeight + 8}px`;
     });
     ro.observe(island);
     return () => ro.disconnect();
@@ -1847,7 +1847,7 @@ function GameScreen({
           )}
 
           </div>
-          <div className="relative z-10 pt-4">
+          <div className="relative z-10 pt-3">
             <DiagnosisIsland
               phase={phase}
               caseData={caseData}

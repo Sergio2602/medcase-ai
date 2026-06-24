@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { Logo } from "./components/Logo";
 import { OnboardingTour } from "./components/OnboardingTour";
 import { generateShareCard } from "@/lib/generateShareCard";
@@ -951,13 +951,14 @@ function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: 
   );
 }
 
-function ResultModal({
+function ResultIsland({
   lastResultCorrect,
   lastScoreEarned,
   selectedDiagnosis,
   caseData,
   onNext,
   revealedCount,
+  onCollapsedHeightChange,
 }: {
   lastResultCorrect: boolean;
   lastScoreEarned: number;
@@ -965,9 +966,27 @@ function ResultModal({
   caseData: Case;
   onNext: () => void;
   revealedCount: number;
+  onCollapsedHeightChange?: (h: number) => void;
 }) {
   const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
+  const collapsedPartRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const el = collapsedPartRef.current;
+    if (!el) return;
+    onCollapsedHeightChange?.(el.offsetHeight);
+    const ro = new ResizeObserver(() => {
+      onCollapsedHeightChange?.(el.offsetHeight);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [onCollapsedHeightChange]);
+
+  const isCorrect = lastResultCorrect;
+  const accentColor = isCorrect ? "#15803d" : "#c0362c";
+  const bgColor = isCorrect ? "#eef7ed" : "#fbeeed";
+  const borderColor = isCorrect ? "rgba(21,128,61,0.4)" : "rgba(192,54,44,0.4)";
 
   async function handleShare() {
     if (isSharing) return;
@@ -997,7 +1016,7 @@ function ResultModal({
         URL.revokeObjectURL(url);
       }
     } catch {
-      // user cancelled or share failed — silent
+      // silent
     } finally {
       setIsSharing(false);
     }
@@ -1005,43 +1024,31 @@ function ResultModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4"
-      style={{ backgroundColor: "rgba(244,243,238,0.82)" }}
+      className="w-full overflow-hidden rounded-xl border-[1.5px]"
+      style={{ borderColor, backgroundColor: bgColor }}
     >
-      <div
-        className={`w-full max-w-lg overflow-y-auto rounded-xl border-[1.5px] p-4 sm:p-5 ${
-          lastResultCorrect ? "bg-[#eef7ed]" : "bg-[#fbeeed]"
-        }`}
-        style={{ borderColor: "#d8d6cd", maxHeight: "90dvh" }}
-      >
-        {/* 1. Status + Details toggle */}
-        <div className={`flex items-center gap-3 ${expanded ? "mb-1" : ""}`}>
+      {/* Always-visible collapsed portion — measured for wrapper height */}
+      <div ref={collapsedPartRef}>
+        <div className="flex items-center gap-2 px-4 py-3 sm:gap-3">
           <div
-            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white ${
-              lastResultCorrect ? "bg-[#15803d]" : "bg-[#c0362c]"
-            }`}
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white"
+            style={{ backgroundColor: accentColor }}
           >
-            <i className={`ti ${lastResultCorrect ? "ti-check" : "ti-x"} text-base`} />
+            <i className={`ti ${isCorrect ? "ti-check" : "ti-x"} text-sm`} />
           </div>
-          <p
-            className={`text-lg font-extrabold ${
-              lastResultCorrect ? "text-[#15803d]" : "text-[#c0362c]"
-            }`}
-          >
-            {lastResultCorrect ? "Richtig erkannt" : "Leider falsch"}
+          <p className="shrink-0 text-sm font-extrabold" style={{ color: accentColor }}>
+            {isCorrect ? "Richtig erkannt" : "Leider falsch"}
           </p>
-          {!expanded && (
-            <span
-              className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                lastResultCorrect
-                  ? "bg-[#15803d]/10 text-[#15803d]"
-                  : "bg-[#c0362c]/10 text-[#c0362c]"
-              }`}
-            >
-              {lastResultCorrect ? `+${lastScoreEarned} Punkte` : "0 Punkte"}
-            </span>
-          )}
-          <div className="ml-auto flex items-center gap-2">
+          <span
+            className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold"
+            style={{
+              backgroundColor: isCorrect ? "rgba(21,128,61,0.12)" : "rgba(192,54,44,0.12)",
+              color: accentColor,
+            }}
+          >
+            {isCorrect ? `+${lastScoreEarned}` : "0"} Punkte
+          </span>
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             {!expanded && (
               <button
                 onClick={onNext}
@@ -1051,110 +1058,117 @@ function ResultModal({
               </button>
             )}
             <button
-              onClick={() => setExpanded(!expanded)}
+              onClick={() => setExpanded((v) => !v)}
               className="flex items-center gap-1 rounded-full border-[1.5px] border-current px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-70"
               style={{ color: "#5f5e5a" }}
-              aria-label={expanded ? "Minimieren" : "Erweitern"}
+              aria-expanded={expanded}
             >
               <span>Details</span>
-              <i className={`text-[11px] ${expanded ? "ti ti-chevron-down" : "ti ti-chevron-up"}`} />
+              <i className={`text-[11px] ${expanded ? "ti ti-chevron-up" : "ti ti-chevron-down"}`} />
             </button>
           </div>
         </div>
 
-        {expanded && (
-          <>
-            {/* 2. Result line */}
-            <p className="mb-4 mt-1 text-sm font-medium text-foreground/70">
-              {lastResultCorrect ? (
-                <>
-                  Du hast{" "}
-                  <span className="font-mono font-bold text-foreground">+{lastScoreEarned}</span>{" "}
-                  Punkte erzielt.
-                </>
-              ) : (
-                <>
-                  Du hast{" "}
-                  <span className="font-bold text-foreground">{selectedDiagnosis}</span>{" "}
-                  gewählt — richtig war{" "}
-                  <span className="font-bold text-foreground">{caseData.correctDiagnosis}</span>.
-                </>
-              )}
+        {caseData.keyTakeaway && (
+          <div className="px-4 pb-3">
+            <div className="mb-3 h-px bg-foreground/10" />
+            <p className="text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
+              {isCorrect ? "Warum es richtig ist" : "Worauf es ankam"}
             </p>
-
-            {/* 3. Diagnosis options color-coded */}
-            <div className="mb-4 grid grid-cols-2 gap-2">
-              {caseData.diagnosisOptions.map((opt) => {
-                const isCorrectAnswer = opt === caseData.correctDiagnosis;
-                const isWrongPick = opt === selectedDiagnosis && opt !== caseData.correctDiagnosis;
-                return (
-                  <div
-                    key={opt}
-                    className={`flex items-center justify-between gap-2 rounded-lg border-[1.5px] px-3 py-2.5 text-[13.5px] font-semibold ${
-                      isCorrectAnswer
-                        ? "border-[#15803d]/40 bg-[#f1f9ef] text-[#14532d]"
-                        : isWrongPick
-                        ? "border-[#c0362c]/40 bg-[#fdf1f0] text-[#7f1d1d]"
-                        : "border-card-border/15 bg-card text-foreground/80"
-                    }`}
-                  >
-                    {opt}
-                    {isCorrectAnswer && (
-                      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white">
-                        <i className="ti ti-check text-[10px]" />
-                      </span>
-                    )}
-                    {isWrongPick && (
-                      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#c0362c] text-white">
-                        <i className="ti ti-x text-[10px]" />
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* 4. Explanation block */}
-            <div className="mb-4 rounded-xl bg-white/60 p-3 sm:p-4">
-              {caseData.keyTakeaway && (
-                <>
-                  <p className="mb-2 text-xs font-bold leading-relaxed text-foreground sm:text-sm">
-                    <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
-                      {lastResultCorrect ? "Warum es richtig ist" : "Worauf es ankam"}
-                    </span>
-                    {caseData.keyTakeaway}
-                  </p>
-                  <div className="my-3 h-px bg-foreground/[0.08]" />
-                </>
-              )}
-              <p className="text-xs leading-relaxed text-foreground/75 sm:text-[13.5px]">
-                <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
-                  Vollständige Begründung
-                </span>
-                {caseData.explanation}
-              </p>
-            </div>
-
-            {/* 5. Primary CTA */}
-            <button
-              onClick={onNext}
-              className="w-full rounded-xl bg-accent py-3 font-bold text-accent-foreground transition-opacity hover:opacity-90"
-            >
-              Nächster Patient →
-            </button>
-
-            {/* 6. Share */}
-            <button
-              onClick={handleShare}
-              disabled={isSharing}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-card-border/20 bg-white/40 py-3 text-sm font-semibold transition-colors hover:border-accent disabled:opacity-60"
-            >
-              <i className="ti ti-share-2" />
-              {isSharing ? "Wird erstellt …" : "↑ Ergebnis teilen"}
-            </button>
-          </>
+            <p className="mt-1 text-xs font-bold leading-relaxed text-foreground sm:text-sm">
+              {caseData.keyTakeaway}
+            </p>
+          </div>
         )}
       </div>
+
+      {/* Expanded details — scrollable so long explanations stay on-screen */}
+      {expanded && (
+        <div
+          className="overflow-y-auto px-4 pb-4"
+          style={{ maxHeight: "calc(90dvh - 8rem)" }}
+        >
+          <div className="mb-3 h-px bg-foreground/10" />
+
+          {/* Result line */}
+          <p className="mb-4 text-sm font-medium text-foreground/70">
+            {isCorrect ? (
+              <>
+                Du hast{" "}
+                <span className="font-mono font-bold text-foreground">+{lastScoreEarned}</span>{" "}
+                Punkte erzielt.
+              </>
+            ) : (
+              <>
+                Du hast{" "}
+                <span className="font-bold text-foreground">{selectedDiagnosis}</span>{" "}
+                gewählt — richtig war{" "}
+                <span className="font-bold text-foreground">{caseData.correctDiagnosis}</span>.
+              </>
+            )}
+          </p>
+
+          {/* Diagnosis options color-coded */}
+          <div className="mb-4 grid grid-cols-2 gap-2">
+            {caseData.diagnosisOptions.map((opt) => {
+              const isCorrectAnswer = opt === caseData.correctDiagnosis;
+              const isWrongPick = opt === selectedDiagnosis && opt !== caseData.correctDiagnosis;
+              return (
+                <div
+                  key={opt}
+                  className={`flex items-center justify-between gap-2 rounded-lg border-[1.5px] px-3 py-2.5 text-[13.5px] font-semibold ${
+                    isCorrectAnswer
+                      ? "border-[#15803d]/40 bg-[#f1f9ef] text-[#14532d]"
+                      : isWrongPick
+                      ? "border-[#c0362c]/40 bg-[#fdf1f0] text-[#7f1d1d]"
+                      : "border-card-border/15 bg-card text-foreground/80"
+                  }`}
+                >
+                  {opt}
+                  {isCorrectAnswer && (
+                    <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white">
+                      <i className="ti ti-check text-[10px]" />
+                    </span>
+                  )}
+                  {isWrongPick && (
+                    <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#c0362c] text-white">
+                      <i className="ti ti-x text-[10px]" />
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Vollständige Begründung only — keyTakeaway ist immer sichtbar oben */}
+          <div className="mb-4 rounded-xl bg-white/60 p-3 sm:p-4">
+            <p className="text-xs leading-relaxed text-foreground/75 sm:text-[13.5px]">
+              <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
+                Vollständige Begründung
+              </span>
+              {caseData.explanation}
+            </p>
+          </div>
+
+          {/* Primary CTA */}
+          <button
+            onClick={onNext}
+            className="w-full rounded-xl bg-accent py-3 font-bold text-accent-foreground transition-opacity hover:opacity-90"
+          >
+            Nächster Patient →
+          </button>
+
+          {/* Share */}
+          <button
+            onClick={handleShare}
+            disabled={isSharing}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border-[1.5px] border-card-border/20 bg-white/40 py-3 text-sm font-semibold transition-colors hover:border-accent disabled:opacity-60"
+          >
+            <i className="ti ti-share-2" />
+            {isSharing ? "Wird erstellt …" : "↑ Ergebnis teilen"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -1463,6 +1477,7 @@ function StatusPanel({
   revealed,
   caseId,
   difficulty,
+  fallMeldenRef,
 }: {
   dailyUsed: number;
   dailyLimit: number;
@@ -1470,6 +1485,7 @@ function StatusPanel({
   revealed: Revealed;
   caseId: string;
   difficulty: Difficulty;
+  fallMeldenRef?: RefObject<HTMLDivElement | null>;
 }) {
   const checklist: { key: keyof Revealed; label: string }[] = [
     { key: "history", label: "Anamnese" },
@@ -1550,7 +1566,9 @@ function StatusPanel({
       </div>
 
       {/* Card 4: Fall melden */}
-      <ReportCaseCard caseId={caseId} difficulty={difficulty} />
+      <div ref={fallMeldenRef}>
+        <ReportCaseCard caseId={caseId} difficulty={difficulty} />
+      </div>
     </>
   );
 }
@@ -1615,6 +1633,34 @@ function GameScreen({
   const befundeRef = useRef<HTMLDivElement>(null);
   const diagnosisIslandRef = useRef<HTMLDivElement>(null);
   const contentScrollRef = useRef<HTMLDivElement>(null);
+  const fallMeldenRef = useRef<HTMLDivElement>(null);
+  const [scrollAreaHeight, setScrollAreaHeight] = useState<number | null>(null);
+  const [resultCollapsedHeight, setResultCollapsedHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (phase !== "result") setResultCollapsedHeight(null);
+  }, [phase]);
+
+  useLayoutEffect(() => {
+    function compute() {
+      const fm = fallMeldenRef.current;
+      const sa = contentScrollRef.current;
+      if (!fm || !sa) { setScrollAreaHeight(null); return; }
+      const fmBottom = fm.getBoundingClientRect().bottom;
+      const saTop = sa.getBoundingClientRect().top;
+      if (fmBottom <= 0 || fmBottom <= saTop) { setScrollAreaHeight(null); return; }
+      setScrollAreaHeight(fmBottom - saTop);
+    }
+    compute();
+    const ro = new ResizeObserver(compute);
+    if (fallMeldenRef.current) ro.observe(fallMeldenRef.current);
+    if (contentScrollRef.current) ro.observe(contentScrollRef.current);
+    window.addEventListener("resize", compute);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", compute);
+    };
+  }, [revealed, phase]);
 
   useEffect(() => {
     if (!findingsHelpOpen) return;
@@ -1718,8 +1764,8 @@ function GameScreen({
       </header>
 
       <div className="grid gap-6 md:grid-cols-[1fr_280px]">
-        <div className="flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
-          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 overflow-y-auto" style={{ maskImage: "linear-gradient(to bottom, transparent 0px, black 16px)" }}>
+        <div className="relative flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
+          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 overflow-y-auto" style={{ maskImage: "linear-gradient(to bottom, transparent 0px, black 16px)", maxHeight: scrollAreaHeight !== null ? `${scrollAreaHeight}px` : undefined }}>
           <div ref={patientCardRef} className="card flex gap-4 p-[18px]">
             <div
               className="avatar-circle h-14 w-14 shrink-0 text-lg"
@@ -1848,7 +1894,7 @@ function GameScreen({
 
           </div>
           {phase === "playing" && (
-            <div className="relative z-10 pt-3">
+            <div className="relative z-10">
               <DiagnosisIsland
                 caseData={caseData}
                 options={caseData.diagnosisOptions}
@@ -1857,6 +1903,33 @@ function GameScreen({
                 possiblePoints={possiblePoints}
                 diagnosisIslandRef={diagnosisIslandRef}
               />
+            </div>
+          )}
+          {phase === "result" && (
+            <div
+              className="relative flex-none"
+              style={{
+                height: resultCollapsedHeight !== null ? resultCollapsedHeight : undefined,
+                zIndex: 20,
+              }}
+            >
+              <div
+                style={
+                  resultCollapsedHeight !== null
+                    ? { position: "absolute", bottom: 0, left: 0, right: 0 }
+                    : undefined
+                }
+              >
+                <ResultIsland
+                  lastResultCorrect={lastResultCorrect}
+                  lastScoreEarned={lastScoreEarned}
+                  selectedDiagnosis={selectedDiagnosis}
+                  caseData={caseData}
+                  onNext={onNext}
+                  revealedCount={revealCount}
+                  onCollapsedHeightChange={setResultCollapsedHeight}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -1869,6 +1942,7 @@ function GameScreen({
             revealed={revealed}
             caseId={caseData.id}
             difficulty={difficulty}
+            fallMeldenRef={fallMeldenRef}
           />
         </aside>
 
@@ -1892,16 +1966,6 @@ function GameScreen({
         />
       )}
 
-      {phase === "result" && (
-        <ResultModal
-          lastResultCorrect={lastResultCorrect}
-          lastScoreEarned={lastScoreEarned}
-          selectedDiagnosis={selectedDiagnosis}
-          caseData={caseData}
-          onNext={onNext}
-          revealedCount={revealCount}
-        />
-      )}
     </div>
   );
 }

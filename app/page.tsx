@@ -60,6 +60,10 @@ const BASE_SCORE = 100;
 const INVESTIGATION_COST = 10;
 const MIN_SCORE = BASE_SCORE - 4 * INVESTIGATION_COST;
 
+function hasImaging(c: Case): boolean {
+  return typeof c.imaging === "string" && c.imaging.trim().length > 0;
+}
+
 const AVATAR_COLORS = [
   "#EF9A9A",
   "#90CAF9",
@@ -812,31 +816,50 @@ function RevealButton({
   label,
   done,
   locked,
+  unavailable,
+  tooltip,
   onClick,
 }: {
   label: string;
   done: boolean;
   locked?: boolean;
+  unavailable?: boolean;
+  tooltip?: string;
   onClick: () => void;
 }) {
+  const [tipVisible, setTipVisible] = useState(false);
+
   return (
-    <button
-      onClick={onClick}
-      disabled={done || locked}
-      className={`inline-flex items-center gap-[6px] rounded-[18px] border-[1.5px] px-[14px] py-[7px] text-[13px] font-semibold transition-colors ${
-        done
-          ? "border-card-border/20 bg-[#f4f3ee] text-muted"
-          : locked
-          ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/50"
-          : "border-card-border/20 bg-card hover:border-accent"
-      }`}
+    <div
+      className="relative"
+      onMouseEnter={() => tooltip && setTipVisible(true)}
+      onMouseLeave={() => setTipVisible(false)}
     >
-      {done && <span>×</span>}
-      {label}
-      {done && (
-        <span className="text-[11px] font-bold text-[#dc2626]">−10P</span>
+      <button
+        onClick={onClick}
+        disabled={done || locked || unavailable}
+        className={`inline-flex items-center gap-[6px] rounded-[18px] border-[1.5px] px-[14px] py-[7px] text-[13px] font-semibold transition-colors ${
+          done
+            ? "border-card-border/20 bg-[#f4f3ee] text-muted"
+            : unavailable
+            ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/40"
+            : locked
+            ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/50"
+            : "border-card-border/20 bg-card hover:border-accent"
+        }`}
+      >
+        {done && <span>×</span>}
+        {label}
+        {done && (
+          <span className="text-[11px] font-bold text-[#dc2626]">−10P</span>
+        )}
+      </button>
+      {tipVisible && tooltip && (
+        <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-lg border-[1.5px] border-card-border/20 bg-card px-2.5 py-1.5 text-xs text-foreground/80 shadow-sm">
+          {tooltip}
+        </div>
       )}
-    </button>
+    </div>
   );
 }
 
@@ -1848,9 +1871,12 @@ function GameScreen({
                 label="Bildgebung"
                 done={revealed.imaging}
                 locked={isResult}
-                onClick={() =>
-                  setRevealed((r) => ({ ...r, imaging: true }))
-                }
+                unavailable={!hasImaging(caseData)}
+                tooltip={!hasImaging(caseData) && !isResult ? "Keine Bildgebung für diesen Fall verfügbar" : undefined}
+                onClick={() => {
+                  if (!hasImaging(caseData)) return;
+                  setRevealed((r) => ({ ...r, imaging: true }));
+                }}
               />
               <RevealButton
                 label="Labor"

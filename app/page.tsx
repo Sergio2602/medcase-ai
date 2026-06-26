@@ -1247,10 +1247,12 @@ function ReportCaseCard({
   caseId,
   difficulty,
   embedded,
+  anchorRef,
 }: {
   caseId: string;
   difficulty: Difficulty;
   embedded?: boolean;
+  anchorRef?: RefObject<HTMLDivElement | null>;
 }) {
   const [reportState, setReportState] = useState<ReportState>("idle");
   const [reason, setReason] = useState("");
@@ -1318,6 +1320,9 @@ function ReportCaseCard({
           </button>
         )}
       </div>
+      {/* Zero-height anchor measured by GameScreen — always at the static header bottom,
+          never shifts when the report form expands below it. */}
+      <div ref={anchorRef} aria-hidden="true" />
 
       {reportState === "open" && (
         <div className="mt-3 flex flex-col gap-2">
@@ -1589,9 +1594,7 @@ function StatusPanel({
       </div>
 
       {/* Card 4: Fall melden */}
-      <div ref={fallMeldenRef}>
-        <ReportCaseCard caseId={caseId} difficulty={difficulty} />
-      </div>
+      <ReportCaseCard caseId={caseId} difficulty={difficulty} anchorRef={fallMeldenRef} />
     </>
   );
 }
@@ -1676,7 +1679,8 @@ function GameScreen({
     }
     compute();
     const ro = new ResizeObserver(compute);
-    if (fallMeldenRef.current) ro.observe(fallMeldenRef.current);
+    // Only observe the static scroll container — never the fall-melden card,
+    // because its expandable form would shift the island on every open/close.
     if (contentScrollRef.current) ro.observe(contentScrollRef.current);
     window.addEventListener("resize", compute);
     return () => {

@@ -115,6 +115,12 @@ export default function Home() {
   const [played, setPlayed] = useState(0);
   const [lastResultCorrect, setLastResultCorrect] = useState(false);
   const [lastScoreEarned, setLastScoreEarned] = useState(0);
+  const [revealedAtSubmit, setRevealedAtSubmit] = useState<Revealed>({
+    history: false,
+    examination: false,
+    imaging: false,
+    labs: false,
+  });
   const [dailyUsed, setDailyUsed] = useState(0);
   const dailyLimit = 5;
 
@@ -123,6 +129,12 @@ export default function Home() {
     if (selectedDiscipline) setDiscipline(selectedDiscipline);
     setPhase("loading");
     setRevealed({
+      history: false,
+      examination: false,
+      imaging: false,
+      labs: false,
+    });
+    setRevealedAtSubmit({
       history: false,
       examination: false,
       imaging: false,
@@ -156,6 +168,7 @@ export default function Home() {
 
   function submitDiagnosis(option: string) {
     if (!activeCase || selectedDiagnosis) return;
+    setRevealedAtSubmit(revealed);
     setSelectedDiagnosis(option);
     const correct = option === activeCase.correctDiagnosis;
     const earned = correct
@@ -195,6 +208,7 @@ export default function Home() {
             played={played}
             revealed={revealed}
             setRevealed={setRevealed}
+            revealedAtSubmit={revealedAtSubmit}
             selectedDiagnosis={selectedDiagnosis}
             onSubmitDiagnosis={submitDiagnosis}
             phase={phase}
@@ -800,10 +814,20 @@ function LoadingScreen() {
 function StatPill({
   label,
   value,
+  variant,
 }: {
   label: string;
   value: string | number;
+  variant?: "score";
 }) {
+  if (variant === "score") {
+    return (
+      <span className="flex items-baseline gap-[6px] whitespace-nowrap rounded-lg border-[1.5px] border-card-border/20 bg-card px-[16px] py-[7px]">
+        <span className="text-[11px] font-bold text-muted">{label}</span>
+        <span className="tabular-nums text-[19px] font-extrabold text-accent">{value}</span>
+      </span>
+    );
+  }
   return (
     <span className="rounded-lg border-[1.5px] border-card-border/20 bg-card px-3 py-1.5 text-sm font-semibold">
       <span className="mr-1 text-muted">{label}</span>
@@ -819,6 +843,7 @@ function RevealButton({
   unavailable,
   tooltip,
   onClick,
+  showCost = true,
 }: {
   label: string;
   done: boolean;
@@ -826,6 +851,7 @@ function RevealButton({
   unavailable?: boolean;
   tooltip?: string;
   onClick: () => void;
+  showCost?: boolean;
 }) {
   const [tipVisible, setTipVisible] = useState(false);
 
@@ -850,7 +876,7 @@ function RevealButton({
       >
         {done && <span>×</span>}
         {label}
-        {done && (
+        {done && showCost && (
           <span className="text-[11px] font-bold text-[#dc2626]">−10P</span>
         )}
       </button>
@@ -877,101 +903,419 @@ function CollapseToggle({ expanded, onToggle }: { expanded: boolean; onToggle: (
   );
 }
 
-function FindingCard({ title, text, expanded, onToggle }: { title: string; text: string; expanded: boolean; onToggle: () => void }) {
+function MaximizeButton({ onClick, ariaLabel }: { onClick: () => void; ariaLabel: string }) {
   return (
-    <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
-      <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
-        <p className="text-xs font-bold uppercase tracking-wide text-muted">
-          {title}
-        </p>
-        <CollapseToggle expanded={expanded} onToggle={onToggle} />
+    <button
+      onClick={onClick}
+      aria-label={ariaLabel}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 32,
+        height: 32,
+        border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
+        borderRadius: 8,
+        background: "var(--card)",
+        cursor: "pointer",
+      }}
+    >
+      <i className="ti ti-arrows-maximize" style={{ fontSize: 16 }} />
+    </button>
+  );
+}
+
+function FindingOverlay({
+  open,
+  onClose,
+  title,
+  children,
+  maxWidth = 640,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  maxWidth?: number;
+}) {
+  const [mounted, setMounted] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const reducedMotionRef = useRef(false);
+
+  useEffect(() => {
+    reducedMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      setMounted(true);
+      const rafId = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setVisible(true));
+      });
+      return () => cancelAnimationFrame(rafId);
+    } else {
+      setVisible(false);
+      const delay = reducedMotionRef.current ? 0 : 150;
+      const id = setTimeout(() => setMounted(false), delay);
+      return () => clearTimeout(id);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [open, onClose]);
+
+  if (!mounted) return null;
+
+  const reduced = reducedMotionRef.current;
+
+  return (
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(15,15,15,0.45)",
+        zIndex: 70,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${title} vollständig`}
+        style={{
+          background: "var(--card)",
+          border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
+          borderRadius: 14,
+          padding: 28,
+          maxWidth,
+          width: "100%",
+          maxHeight: "80vh",
+          overflowY: "auto",
+          opacity: reduced ? 1 : visible ? 1 : 0,
+          transform: reduced ? "none" : visible ? "scale(1)" : "scale(0.97)",
+          transition: reduced
+            ? "none"
+            : visible
+            ? "opacity 200ms ease-out, transform 200ms ease-out"
+            : "opacity 150ms ease-in, transform 150ms ease-in",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 20,
+          }}
+        >
+          <p
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              color: "var(--muted)",
+            }}
+          >
+            {title}
+          </p>
+          <button
+            onClick={onClose}
+            aria-label="Overlay schließen"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 32,
+              height: 32,
+              border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
+              borderRadius: 8,
+              background: "var(--card)",
+              cursor: "pointer",
+            }}
+          >
+            <i className="ti ti-x" style={{ fontSize: 16 }} />
+          </button>
+        </div>
+        {children}
       </div>
-      {expanded && <p className="leading-relaxed">{text}</p>}
     </div>
+  );
+}
+
+function FindingCard({ title, text, expanded, onToggle }: { title: string; text: string; expanded: boolean; onToggle: () => void }) {
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  return (
+    <>
+      <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
+        <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted">
+            {title}
+          </p>
+          <div className="flex items-center gap-1.5">
+            <MaximizeButton
+              onClick={() => setOverlayOpen(true)}
+              ariaLabel={`${title} vollständig anzeigen`}
+            />
+            <CollapseToggle expanded={expanded} onToggle={onToggle} />
+          </div>
+        </div>
+        {expanded && <p className="leading-relaxed">{text}</p>}
+      </div>
+      <FindingOverlay open={overlayOpen} onClose={() => setOverlayOpen(false)} title={title}>
+        <p style={{ fontSize: 16, lineHeight: 1.7 }}>{text}</p>
+      </FindingOverlay>
+    </>
   );
 }
 
 function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expanded: boolean; onToggle: () => void }) {
+  const [overlayOpen, setOverlayOpen] = useState(false);
   if (!imaging) return null;
   return (
-    <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
-      <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
-        <p className="text-xs font-bold uppercase tracking-wide text-muted">
-          Bildgebung
-        </p>
-        <CollapseToggle expanded={expanded} onToggle={onToggle} />
+    <>
+      <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
+        <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted">
+            Bildgebung
+          </p>
+          <div className="flex items-center gap-1.5">
+            <MaximizeButton
+              onClick={() => setOverlayOpen(true)}
+              ariaLabel="Bildgebung vollständig anzeigen"
+            />
+            <CollapseToggle expanded={expanded} onToggle={onToggle} />
+          </div>
+        </div>
+        {expanded && <p className="leading-relaxed">{imaging}</p>}
       </div>
-      {expanded && <p className="leading-relaxed">{imaging}</p>}
-    </div>
+      <FindingOverlay open={overlayOpen} onClose={() => setOverlayOpen(false)} title="Bildgebung">
+        <p style={{ fontSize: 16, lineHeight: 1.7 }}>{imaging}</p>
+      </FindingOverlay>
+    </>
+  );
+}
+
+function LaborOverlay({
+  open,
+  onClose,
+  categories,
+}: {
+  open: boolean;
+  onClose: () => void;
+  categories: LabCategory[];
+}) {
+  return (
+    <FindingOverlay open={open} onClose={onClose} title="Labor" maxWidth={820}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+        {categories.map((cat) => (
+          <div key={cat.category}>
+            <p className="mb-2 text-sm font-semibold">{cat.category}</p>
+            <table className="clinical-data w-full" style={{ fontSize: 12 }}>
+              <thead>
+                <tr
+                  className="border-b border-card-border/15 text-left uppercase text-muted"
+                  style={{ fontSize: 10 }}
+                >
+                  <th className="pb-1 pr-3">Parameter</th>
+                  <th className="pb-1 pr-3">Wert</th>
+                  <th className="pb-1 pr-3">Einheit</th>
+                  <th className="pb-1">Referenz</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cat.values.map((v) => {
+                  const flagged = v.flag === "high" || v.flag === "low";
+                  return (
+                    <tr
+                      key={v.name}
+                      className={`border-b border-card-border/10 last:border-0 ${flagged ? "bg-[#dc2626]/[0.04]" : ""}`}
+                    >
+                      <td style={{ paddingTop: 5, paddingBottom: 5, paddingRight: 12 }}>{v.name}</td>
+                      <td
+                        className={`font-semibold ${
+                          v.flag === "high"
+                            ? "text-[#dc2626]"
+                            : v.flag === "low"
+                            ? "text-[#2563eb]"
+                            : ""
+                        }`}
+                        style={{ paddingTop: 5, paddingBottom: 5, paddingRight: 12 }}
+                      >
+                        {v.value}
+                        {v.flag === "high" && <span className="ml-1 font-extrabold">↑</span>}
+                        {v.flag === "low" && <span className="ml-1 font-extrabold">↓</span>}
+                      </td>
+                      <td className="text-muted" style={{ paddingTop: 5, paddingBottom: 5, paddingRight: 12 }}>{v.unit}</td>
+                      <td
+                        className={flagged ? "font-medium text-foreground/70" : "text-muted"}
+                        style={{ paddingTop: 5, paddingBottom: 5, fontSize: 11 }}
+                      >
+                        {v.reference}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+    </FindingOverlay>
   );
 }
 
 function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: boolean; onToggle: () => void }) {
+  const [overlayOpen, setOverlayOpen] = useState(false);
   return (
-    <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
-      <div className={`flex items-center justify-between ${expanded ? "mb-3" : ""}`}>
-        <p className="text-xs font-bold uppercase tracking-wide text-muted">
-          Labor
-        </p>
-        <CollapseToggle expanded={expanded} onToggle={onToggle} />
-      </div>
-      {expanded && labs.map((cat) => (
-        <div key={cat.category} className="mb-4 last:mb-0">
-          <p className="mb-2 text-sm font-semibold">{cat.category}</p>
-          <table className="clinical-data w-full text-sm">
-            <thead>
-              <tr className="border-b border-card-border/15 text-left text-xs uppercase text-muted">
-                <th className="pb-1 pr-4">Parameter</th>
-                <th className="pb-1 pr-4">Wert</th>
-                <th className="pb-1 pr-4">Einheit</th>
-                <th className="pb-1">Referenz</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cat.values.map((v) => {
-                const flagged = v.flag === "high" || v.flag === "low";
-                return (
-                  <tr
-                    key={v.name}
-                    className={`border-b border-card-border/10 last:border-0 ${
-                      flagged ? "bg-[#dc2626]/[0.04]" : ""
-                    }`}
-                  >
-                    <td className="py-1.5 pr-4">{v.name}</td>
-                    <td
-                      className={`py-1.5 pr-4 font-semibold ${
-                        v.flag === "high"
-                          ? "text-[#dc2626]"
-                          : v.flag === "low"
-                          ? "text-[#2563eb]"
-                          : ""
-                      }`}
-                    >
-                      {v.value}
-                      {v.flag === "high" && (
-                        <span className="ml-1 font-extrabold">↑</span>
-                      )}
-                      {v.flag === "low" && (
-                        <span className="ml-1 font-extrabold">↓</span>
-                      )}
-                    </td>
-                    <td className="py-1.5 pr-4 text-muted">{v.unit}</td>
-                    <td
-                      className={`py-1.5 ${
-                        flagged ? "font-medium text-foreground/70" : "text-muted"
-                      }`}
-                    >
-                      {v.reference}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+    <>
+      <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
+        <div className={`flex items-center justify-between ${expanded ? "mb-3" : ""}`}>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted">
+            Labor
+          </p>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setOverlayOpen(true)}
+              aria-label="Labor vollständig anzeigen"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 32,
+                height: 32,
+                border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
+                borderRadius: 8,
+                background: "var(--card)",
+                cursor: "pointer",
+              }}
+            >
+              <i className="ti ti-arrows-maximize" style={{ fontSize: 16 }} />
+            </button>
+            <CollapseToggle expanded={expanded} onToggle={onToggle} />
+          </div>
         </div>
-      ))}
-    </div>
+        {expanded && labs.map((cat) => (
+          <div key={cat.category} className="mb-4 last:mb-0">
+            <p className="mb-2 text-sm font-semibold">{cat.category}</p>
+            <table className="clinical-data w-full text-sm">
+              <thead>
+                <tr className="border-b border-card-border/15 text-left text-xs uppercase text-muted">
+                  <th className="pb-1 pr-4">Parameter</th>
+                  <th className="pb-1 pr-4">Wert</th>
+                  <th className="pb-1 pr-4">Einheit</th>
+                  <th className="pb-1">Referenz</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cat.values.map((v) => {
+                  const flagged = v.flag === "high" || v.flag === "low";
+                  return (
+                    <tr
+                      key={v.name}
+                      className={`border-b border-card-border/10 last:border-0 ${
+                        flagged ? "bg-[#dc2626]/[0.04]" : ""
+                      }`}
+                    >
+                      <td className="py-1.5 pr-4">{v.name}</td>
+                      <td
+                        className={`py-1.5 pr-4 font-semibold ${
+                          v.flag === "high"
+                            ? "text-[#dc2626]"
+                            : v.flag === "low"
+                            ? "text-[#2563eb]"
+                            : ""
+                        }`}
+                      >
+                        {v.value}
+                        {v.flag === "high" && (
+                          <span className="ml-1 font-extrabold">↑</span>
+                        )}
+                        {v.flag === "low" && (
+                          <span className="ml-1 font-extrabold">↓</span>
+                        )}
+                      </td>
+                      <td className="py-1.5 pr-4 text-muted">{v.unit}</td>
+                      <td
+                        className={`py-1.5 ${
+                          flagged ? "font-medium text-foreground/70" : "text-muted"
+                        }`}
+                      >
+                        {v.reference}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+      <LaborOverlay
+        open={overlayOpen}
+        onClose={() => setOverlayOpen(false)}
+        categories={labs}
+      />
+    </>
   );
+}
+
+function useCountUp(target: number, active: boolean, duration = 1300) {
+  const [value, setValue] = useState(0);
+  const [settled, setSettled] = useState(false);
+  const rafRef = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (!active) {
+      setValue(0);
+      setSettled(false);
+      return;
+    }
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      setValue(target);
+      setSettled(true);
+      return;
+    }
+
+    let start: number | null = null;
+    function step(ts: number) {
+      if (start === null) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 5);
+      setValue(Math.round(eased * target));
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        setValue(target);
+        setSettled(true);
+      }
+    }
+    rafRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [active, target, duration]);
+
+  return { value, settled };
 }
 
 function ResultIsland({
@@ -1007,6 +1351,7 @@ function ResultIsland({
   }, [onCollapsedHeightChange]);
 
   const isCorrect = lastResultCorrect;
+  const { value: animatedScore, settled } = useCountUp(lastScoreEarned, isCorrect);
   const accentColor = isCorrect ? "#15803d" : "#c0362c";
   const bgColor = isCorrect ? "#eef7ed" : "#fbeeed";
   const borderColor = isCorrect ? "rgba(21,128,61,0.4)" : "rgba(192,54,44,0.4)";
@@ -1063,13 +1408,14 @@ function ResultIsland({
             {isCorrect ? "Richtig erkannt" : "Leider falsch"}
           </p>
           <span
-            className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold"
+            className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold${settled ? " score-settle" : ""}`}
             style={{
               backgroundColor: isCorrect ? "rgba(21,128,61,0.12)" : "rgba(192,54,44,0.12)",
               color: accentColor,
+              fontVariantNumeric: "tabular-nums",
             }}
           >
-            {isCorrect ? `+${lastScoreEarned}` : "0"} Punkte
+            {isCorrect ? `+${animatedScore}` : "0"} Punkte
           </span>
           <div className="ml-auto flex shrink-0 items-center gap-2">
             {!expanded && (
@@ -1118,7 +1464,7 @@ function ResultIsland({
             {isCorrect ? (
               <>
                 Du hast{" "}
-                <span className="font-mono font-bold text-foreground">+{lastScoreEarned}</span>{" "}
+                <span className="font-mono font-bold text-foreground" style={{ fontVariantNumeric: "tabular-nums" }}>+{animatedScore}</span>{" "}
                 Punkte erzielt.
               </>
             ) : (
@@ -1503,6 +1849,8 @@ function StatusPanel({
   dailyLimit,
   possiblePoints,
   revealed,
+  revealedAtSubmit,
+  phase,
   caseId,
   difficulty,
   fallMeldenRef,
@@ -1511,6 +1859,8 @@ function StatusPanel({
   dailyLimit: number;
   possiblePoints: number;
   revealed: Revealed;
+  revealedAtSubmit: Revealed;
+  phase: Phase;
   caseId: string;
   difficulty: Difficulty;
   fallMeldenRef?: RefObject<HTMLDivElement | null>;
@@ -1547,18 +1897,20 @@ function StatusPanel({
         </p>
       </div>
 
-      {/* Card 2: Mögliche Punkte */}
-      <div className="card p-[18px]">
-        <p className="mb-[10px] text-center text-[11.5px] font-bold uppercase tracking-[0.03em] text-muted">
-          Mögliche Punkte
-        </p>
-        <p className="clinical-data text-center text-[34px] font-extrabold leading-none text-accent">
-          {possiblePoints}
-        </p>
-        <p className="mt-[4px] text-center text-[12px] text-muted">
-          von {BASE_SCORE} möglich
-        </p>
-      </div>
+      {/* Card 2: Mögliche Punkte — only during playing phase */}
+      {phase !== "result" && (
+        <div className="card p-[18px]">
+          <p className="mb-[10px] text-center text-[11.5px] font-bold uppercase tracking-[0.03em] text-muted">
+            Mögliche Punkte
+          </p>
+          <p className="clinical-data text-center text-[34px] font-extrabold leading-none text-accent">
+            {possiblePoints}
+          </p>
+          <p className="mt-[4px] text-center text-[12px] text-muted">
+            von {BASE_SCORE} möglich
+          </p>
+        </div>
+      )}
 
       {/* Card 3: Befundstatus */}
       <div className="card p-[18px]">
@@ -1582,7 +1934,7 @@ function StatusPanel({
                   }
                 />
                 <span className={done ? "text-foreground" : "text-muted"}>{item.label}</span>
-                {done && (
+                {done && revealedAtSubmit[item.key] && (
                   <span className="ml-auto text-[11.5px] font-bold text-[#dc2626]">
                     −10
                   </span>
@@ -1608,6 +1960,7 @@ function GameScreen({
   played,
   revealed,
   setRevealed,
+  revealedAtSubmit,
   selectedDiagnosis,
   onSubmitDiagnosis,
   phase,
@@ -1626,6 +1979,7 @@ function GameScreen({
   played: number;
   revealed: Revealed;
   setRevealed: React.Dispatch<React.SetStateAction<Revealed>>;
+  revealedAtSubmit: Revealed;
   selectedDiagnosis: string | null;
   onSubmitDiagnosis: (option: string) => void;
   phase: Phase;
@@ -1662,6 +2016,7 @@ function GameScreen({
   const fallMeldenRef = useRef<HTMLDivElement>(null);
   const [scrollAreaHeight, setScrollAreaHeight] = useState<number | null>(null);
   const [resultCollapsedHeight, setResultCollapsedHeight] = useState<number | null>(null);
+  const [contentScrolled, setContentScrolled] = useState(false);
 
   useEffect(() => {
     if (phase !== "result") setResultCollapsedHeight(null);
@@ -1708,6 +2063,23 @@ function GameScreen({
     ro.observe(island);
     return () => ro.disconnect();
   }, []);
+
+  useEffect(() => {
+    const el = contentScrollRef.current;
+    if (!el) return;
+    function handleScroll() {
+      setContentScrolled(el!.scrollTop > 2);
+    }
+    handleScroll();
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setContentScrolled(false);
+    const el = contentScrollRef.current;
+    if (el) el.scrollTop = 0;
+  }, [caseData.id]);
 
   return (
     <div>
@@ -1784,7 +2156,7 @@ function GameScreen({
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-2">
-            <StatPill label="PUNKTE" value={score} />
+            <StatPill label="PUNKTE" value={score} variant="score" />
             <StatPill label="GELÖST" value={`${solved}/${played}`} />
           </div>
         </div>
@@ -1792,7 +2164,16 @@ function GameScreen({
 
       <div className="grid gap-6 md:grid-cols-[1fr_280px]">
         <div className="relative flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
-          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 overflow-y-auto" style={{ maskImage: "linear-gradient(to bottom, transparent 0px, black 16px)", maxHeight: scrollAreaHeight !== null ? `${scrollAreaHeight}px` : undefined }}>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-0 right-0 top-0 z-[5] h-4"
+            style={{
+              background: "linear-gradient(to bottom, var(--background), transparent)",
+              opacity: contentScrolled ? 1 : 0,
+              transition: "opacity 200ms ease-out",
+            }}
+          />
+          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 overflow-y-auto" style={{ maxHeight: scrollAreaHeight !== null ? `${scrollAreaHeight}px` : undefined }}>
           <div ref={patientCardRef} className="card flex gap-4 p-[18px]">
             <div
               className="avatar-circle h-14 w-14 shrink-0 text-lg"
@@ -1845,7 +2226,7 @@ function GameScreen({
               </div>
               <span className="text-xs text-muted">
                 {isResult ? (
-                  "Befunde weiterhin einsehbar."
+                  "Befunde jetzt kostenlos einsehbar."
                 ) : (
                   <>
                     Jeder Befund kostet{" "}
@@ -1858,7 +2239,7 @@ function GameScreen({
               <RevealButton
                 label="Anamnese"
                 done={revealed.history}
-                locked={isResult}
+                showCost={!isResult || revealedAtSubmit.history}
                 onClick={() =>
                   setRevealed((r) => ({ ...r, history: true }))
                 }
@@ -1866,7 +2247,7 @@ function GameScreen({
               <RevealButton
                 label="Untersuchung"
                 done={revealed.examination}
-                locked={isResult}
+                showCost={!isResult || revealedAtSubmit.examination}
                 onClick={() =>
                   setRevealed((r) => ({ ...r, examination: true }))
                 }
@@ -1874,8 +2255,8 @@ function GameScreen({
               <RevealButton
                 label="Bildgebung"
                 done={revealed.imaging}
-                locked={isResult}
                 unavailable={!hasImaging(caseData)}
+                showCost={!isResult || revealedAtSubmit.imaging}
                 tooltip={!hasImaging(caseData) && !isResult ? "Keine Bildgebung für diesen Fall verfügbar" : undefined}
                 onClick={() => {
                   if (!hasImaging(caseData)) return;
@@ -1885,7 +2266,7 @@ function GameScreen({
               <RevealButton
                 label="Labor"
                 done={revealed.labs}
-                locked={isResult}
+                showCost={!isResult || revealedAtSubmit.labs}
                 onClick={() => setRevealed((r) => ({ ...r, labs: true }))}
               />
             </div>
@@ -1970,6 +2351,8 @@ function GameScreen({
             dailyLimit={dailyLimit}
             possiblePoints={possiblePoints}
             revealed={revealed}
+            revealedAtSubmit={revealedAtSubmit}
+            phase={phase}
             caseId={caseData.id}
             difficulty={difficulty}
             fallMeldenRef={fallMeldenRef}
@@ -1982,6 +2365,8 @@ function GameScreen({
             dailyLimit={dailyLimit}
             possiblePoints={possiblePoints}
             revealed={revealed}
+            revealedAtSubmit={revealedAtSubmit}
+            phase={phase}
             caseId={caseData.id}
             difficulty={difficulty}
           />

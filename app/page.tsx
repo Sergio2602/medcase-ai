@@ -1338,6 +1338,7 @@ function ResultIsland({
   const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
   const collapsedPartRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const el = collapsedPartRef.current;
@@ -1390,13 +1391,24 @@ function ResultIsland({
     }
   }
 
+  function handleToggleDetails() {
+    const willExpand = !expanded;
+    setExpanded(willExpand);
+    if (willExpand) {
+      requestAnimationFrame(() => {
+        collapsedPartRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    }
+  }
+
   return (
     <div
-      className="w-full overflow-hidden rounded-xl border-[1.5px]"
+      ref={cardRef}
+      className="w-full overflow-hidden rounded-xl border-[1.5px] flex flex-col max-h-[60vh] sm:max-h-[60vh]"
       style={{ borderColor, backgroundColor: bgColor }}
     >
       {/* Always-visible collapsed portion — measured for wrapper height */}
-      <div ref={collapsedPartRef}>
+      <div ref={collapsedPartRef} className="shrink-0 [scroll-margin-top:9rem] sm:[scroll-margin-top:7rem]">
         <div className="flex items-center gap-2 px-4 py-3 sm:gap-3">
           <div
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white"
@@ -1427,7 +1439,7 @@ function ResultIsland({
               </button>
             )}
             <button
-              onClick={() => setExpanded((v) => !v)}
+              onClick={handleToggleDetails}
               className="flex items-center gap-1 rounded-full border-[1.5px] border-current px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-70"
               style={{ color: "#5f5e5a" }}
               aria-expanded={expanded}
@@ -1451,11 +1463,10 @@ function ResultIsland({
         )}
       </div>
 
-      {/* Expanded details — scrollable so long explanations stay on-screen */}
+      {/* Expanded details — fills remaining space below the header, scrolls if content overflows */}
       {expanded && (
         <div
-          className="overflow-y-auto px-4 pb-4"
-          style={{ maxHeight: "calc(90dvh - 8rem)" }}
+          className="min-h-0 flex-1 overflow-y-auto px-4 pb-4"
         >
           <div className="mb-3 h-px bg-foreground/10" />
 
@@ -2318,7 +2329,7 @@ function GameScreen({
           )}
           {phase === "result" && (
             <div
-              className="relative flex-none"
+              className="relative flex-none mt-auto"
               style={{
                 height: resultCollapsedHeight !== null ? resultCollapsedHeight : undefined,
                 zIndex: 20,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Logo } from "./components/Logo";
 import { OnboardingTour } from "./components/OnboardingTour";
 import { generateShareCard } from "@/lib/generateShareCard";
@@ -1325,7 +1325,6 @@ function ResultIsland({
   caseData,
   onNext,
   revealedCount,
-  onCollapsedHeightChange,
 }: {
   lastResultCorrect: boolean;
   lastScoreEarned: number;
@@ -1333,23 +1332,9 @@ function ResultIsland({
   caseData: Case;
   onNext: () => void;
   revealedCount: number;
-  onCollapsedHeightChange?: (h: number) => void;
 }) {
   const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
-  const collapsedPartRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const el = collapsedPartRef.current;
-    if (!el) return;
-    onCollapsedHeightChange?.(el.offsetHeight);
-    const ro = new ResizeObserver(() => {
-      onCollapsedHeightChange?.(el.offsetHeight);
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [onCollapsedHeightChange]);
 
   const isCorrect = lastResultCorrect;
   const { value: animatedScore, settled } = useCountUp(lastScoreEarned, isCorrect);
@@ -1392,23 +1377,16 @@ function ResultIsland({
   }
 
   function handleToggleDetails() {
-    const willExpand = !expanded;
-    setExpanded(willExpand);
-    if (willExpand) {
-      requestAnimationFrame(() => {
-        collapsedPartRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      });
-    }
+    setExpanded((v) => !v);
   }
 
   return (
     <div
-      ref={cardRef}
-      className="w-full overflow-hidden rounded-xl border-[1.5px] flex flex-col max-h-[60vh] sm:max-h-[60vh]"
+      className="w-full overflow-hidden rounded-xl border-[1.5px] flex flex-col max-h-[60vh]"
       style={{ borderColor, backgroundColor: bgColor }}
     >
-      {/* Always-visible collapsed portion — measured for wrapper height */}
-      <div ref={collapsedPartRef} className="shrink-0 [scroll-margin-top:9rem] sm:[scroll-margin-top:7rem]">
+      {/* Always-visible header */}
+      <div className="shrink-0">
         <div className="flex items-center gap-2 px-4 py-3 sm:gap-3">
           <div
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white"
@@ -1864,7 +1842,6 @@ function StatusPanel({
   phase,
   caseId,
   difficulty,
-  fallMeldenRef,
 }: {
   dailyUsed: number;
   dailyLimit: number;
@@ -1874,7 +1851,6 @@ function StatusPanel({
   phase: Phase;
   caseId: string;
   difficulty: Difficulty;
-  fallMeldenRef?: RefObject<HTMLDivElement | null>;
 }) {
   const checklist: { key: keyof Revealed; label: string }[] = [
     { key: "history", label: "Anamnese" },
@@ -1957,7 +1933,7 @@ function StatusPanel({
       </div>
 
       {/* Card 4: Fall melden */}
-      <ReportCaseCard caseId={caseId} difficulty={difficulty} anchorRef={fallMeldenRef} />
+      <ReportCaseCard caseId={caseId} difficulty={difficulty} />
     </>
   );
 }
@@ -2024,36 +2000,7 @@ function GameScreen({
   const befundeRef = useRef<HTMLDivElement>(null);
   const diagnosisIslandRef = useRef<HTMLDivElement>(null);
   const contentScrollRef = useRef<HTMLDivElement>(null);
-  const fallMeldenRef = useRef<HTMLDivElement>(null);
-  const [scrollAreaHeight, setScrollAreaHeight] = useState<number | null>(null);
-  const [resultCollapsedHeight, setResultCollapsedHeight] = useState<number | null>(null);
   const [contentScrolled, setContentScrolled] = useState(false);
-
-  useEffect(() => {
-    if (phase !== "result") setResultCollapsedHeight(null);
-  }, [phase]);
-
-  useLayoutEffect(() => {
-    function compute() {
-      const fm = fallMeldenRef.current;
-      const sa = contentScrollRef.current;
-      if (!fm || !sa) { setScrollAreaHeight(null); return; }
-      const fmBottom = fm.getBoundingClientRect().bottom;
-      const saTop = sa.getBoundingClientRect().top;
-      if (fmBottom <= 0 || fmBottom <= saTop) { setScrollAreaHeight(null); return; }
-      setScrollAreaHeight(fmBottom - saTop);
-    }
-    compute();
-    const ro = new ResizeObserver(compute);
-    // Only observe the static scroll container — never the fall-melden card,
-    // because its expandable form would shift the island on every open/close.
-    if (contentScrollRef.current) ro.observe(contentScrollRef.current);
-    window.addEventListener("resize", compute);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", compute);
-    };
-  }, [revealed, phase]);
 
   useEffect(() => {
     if (!findingsHelpOpen) return;
@@ -2184,7 +2131,7 @@ function GameScreen({
               transition: "opacity 200ms ease-out",
             }}
           />
-          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 overflow-y-auto" style={{ maxHeight: scrollAreaHeight !== null ? `${scrollAreaHeight}px` : undefined }}>
+          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 min-h-0 overflow-y-auto">
           <div ref={patientCardRef} className="card flex gap-4 p-[18px]">
             <div
               className="avatar-circle h-14 w-14 shrink-0 text-lg"
@@ -2328,30 +2275,15 @@ function GameScreen({
             </div>
           )}
           {phase === "result" && (
-            <div
-              className="relative flex-none mt-auto"
-              style={{
-                height: resultCollapsedHeight !== null ? resultCollapsedHeight : undefined,
-                zIndex: 20,
-              }}
-            >
-              <div
-                style={
-                  resultCollapsedHeight !== null
-                    ? { position: "absolute", bottom: 0, left: 0, right: 0 }
-                    : undefined
-                }
-              >
-                <ResultIsland
-                  lastResultCorrect={lastResultCorrect}
-                  lastScoreEarned={lastScoreEarned}
-                  selectedDiagnosis={selectedDiagnosis}
-                  caseData={caseData}
-                  onNext={onNext}
-                  revealedCount={revealCount}
-                  onCollapsedHeightChange={setResultCollapsedHeight}
-                />
-              </div>
+            <div className="flex-none">
+              <ResultIsland
+                lastResultCorrect={lastResultCorrect}
+                lastScoreEarned={lastScoreEarned}
+                selectedDiagnosis={selectedDiagnosis}
+                caseData={caseData}
+                onNext={onNext}
+                revealedCount={revealCount}
+              />
             </div>
           )}
         </div>
@@ -2366,7 +2298,6 @@ function GameScreen({
             phase={phase}
             caseId={caseData.id}
             difficulty={difficulty}
-            fallMeldenRef={fallMeldenRef}
           />
         </aside>
 

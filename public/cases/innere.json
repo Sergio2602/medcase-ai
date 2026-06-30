@@ -8206,5 +8206,1436 @@
       "Kompartmentsyndrom der Oberschenkelmuskulatur"
     ],
     "explanation": "Die Kombination aus massiv erhöhter CK (> 48.000 U/l), exzessiv erhöhtem Serum-Myoglobin, dunkelbraunem Urin mit positivem Hämtest bei fehlenden Erythrozyten im Urinsediment (Myoglobinurie!) sowie beginnender akuter Nierenschädigung (Kreatinin ↑, Hyperkaliämie, Hyperphosphatämie, metabolische Azidose) ist pathognomonisch für eine Rhabdomyolyse. Der auslösende Mechanismus ist die exertionelle Muskelnekrose mit konsekutivem Myoglobin-bedingtem akuten Nierenversagen. Die Differenzierung zur Hämoglobinurie erfolgt durch das fehlende Hämolyse-Muster (Hb, Haptoglobin) sowie den unauffälligen Erythrozytenbefund im Urin."
+  },
+  {
+    "id": "dilatative-kardiomyopathie-1",
+    "difficulty": "klinik",
+    "patientName": "Frank",
+    "age": 52,
+    "gender": "männlich",
+    "chiefComplaint": "Ich komme seit Wochen kaum noch die Treppe hoch, ohne dass mir die Puste wegbleibt, und nachts muss ich mit drei Kissen schlafen.",
+    "history": "52-jähriger Patient mit progredienter Belastungsdyspnoe (NYHA III) seit ca. 3 Monaten, Orthopnoe, nächtliches Aufschrecken mit Luftnot. Vorgeschichte: arterielle Hypertonie, regelmäßiger Alkoholkonsum (ca. 4-5 Bier täglich seit Jahren). Keine KHK bekannt.",
+    "examination": "Halsvenenstauung, beidseitige Knöchelödeme, feinblasige RG basal beidseits, 3. Herzton, Tachykardie 104/min.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "NT-proBNP",
+            "value": "3850",
+            "unit": "pg/ml",
+            "reference": "< 125",
+            "flag": "high"
+          },
+          {
+            "name": "GGT",
+            "value": "98",
+            "unit": "U/l",
+            "reference": "< 60",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "1,1",
+            "unit": "mg/dl",
+            "reference": "0,7-1,2",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Echokardiographie: deutlich dilatierter linker Ventrikel (LVEDD 68mm), global eingeschränkte systolische Funktion mit LVEF 28%, keine relevanten Klappenvitien, kein perikardialer Erguss.",
+    "correctDiagnosis": "Alkoholtoxische dilatative Kardiomyopathie",
+    "diagnosisOptions": [
+      "Alkoholtoxische dilatative Kardiomyopathie",
+      "Akuter Myokardinfarkt",
+      "Konstriktive Perikarditis",
+      "Hypertrophe Kardiomyopathie"
+    ],
+    "explanation": "Die Kombination aus chronischem Alkoholkonsum, progredienter Herzinsuffizienz-Symptomatik und der echokardiographisch nachgewiesenen Dilatation mit schwer eingeschränkter Ejektionsfraktion ohne Klappenvitium ist typisch für eine alkoholtoxische dilatative Kardiomyopathie. Gegen einen Infarkt spricht das Fehlen akuter Thoraxschmerzen und passender Troponin-Dynamik, gegen eine konstriktive Perikarditis der fehlende Perikardbefund.",
+    "keyTakeaway": "Chronischer Alkoholkonsum + dilatierter, schwer eingeschränkter linker Ventrikel ohne Klappenvitium = alkoholtoxische Kardiomyopathie, bis zum Beweis des Gegenteils."
+  },
+  {
+    "id": "akute-myokarditis-2",
+    "difficulty": "klinik",
+    "patientName": "Jonas",
+    "age": 24,
+    "gender": "männlich",
+    "chiefComplaint": "Ich hatte letzte Woche eine fiese Erkältung, und seit gestern habe ich so einen stechenden Brustschmerz und mein Herz rast manchmal total komisch.",
+    "history": "24-jähriger Patient, vor 8 Tagen fieberhafter Infekt der oberen Atemwege, seither Erholung, seit 2 Tagen neu aufgetretener thorakaler Druckschmerz und Palpitationen. Keine Vorerkrankungen, kein Drogenkonsum.",
+    "examination": "Auskultatorisch unauffällig, kein Perikardreiben, RR 118/76 mmHg, HF 102/min unregelmäßig, kein Fieber aktuell.",
+    "labs": [
+      {
+        "category": "Kardiale Marker",
+        "parameters": [
+          {
+            "name": "Troponin T hs",
+            "value": "850",
+            "unit": "ng/l",
+            "reference": "< 14",
+            "flag": "high"
+          },
+          {
+            "name": "CRP",
+            "value": "32",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "CK-MB",
+            "value": "45",
+            "unit": "U/l",
+            "reference": "< 25",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "EKG: diffuse ST-Streckenhebungen ohne Infarktmuster. Kardio-MRT: diffuses subepikardiales Late-Gadolinium-Enhancement, vereinbar mit entzündlicher Genese.",
+    "correctDiagnosis": "Akute virale Myokarditis",
+    "diagnosisOptions": [
+      "Akute virale Myokarditis",
+      "ST-Hebungsinfarkt (STEMI)",
+      "Akute Perikarditis",
+      "Lungenembolie"
+    ],
+    "explanation": "Der zeitliche Zusammenhang mit einem vorausgegangenen viralen Infekt, die diffuse (nicht koronarterritorial gebundene) ST-Hebung sowie das typische subepikardiale Late-Enhancement im MRT sprechen für eine virale Myokarditis. Ein STEMI würde ein umschriebenes Koronarterritorium und entsprechende Koronarpathologie zeigen.",
+    "keyTakeaway": "Junger Patient, Infekt vor wenigen Tagen, Troponin-Anstieg ohne klassisches Infarktmuster — an Myokarditis denken, MRT sichert die Diagnose."
+  },
+  {
+    "id": "aortendissektion-3",
+    "difficulty": "klinik",
+    "patientName": "Rudolf",
+    "age": 64,
+    "gender": "männlich",
+    "chiefComplaint": "Es hat mich plötzlich wie ein Messerstich zwischen den Schulterblättern getroffen, das war der schlimmste Schmerz meines Lebens.",
+    "history": "64-jähriger Patient mit langjähriger, schlecht eingestellter arterieller Hypertonie. Plötzlich einsetzender, vernichtender, reißender Rückenschmerz interskapulär vor 45 Minuten.",
+    "examination": "RR rechts 168/95 mmHg, RR links 122/80 mmHg (Seitendifferenz), abgeschwächter Femoralispuls links, Aorteninsuffizienz-Diastolikum.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "D-Dimere",
+            "value": "4,8",
+            "unit": "mg/l FEU",
+            "reference": "< 0,5",
+            "flag": "high"
+          },
+          {
+            "name": "Troponin T hs",
+            "value": "18",
+            "unit": "ng/l",
+            "reference": "< 14",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "CT-Angiographie Thorax/Abdomen: Dissektionsmembran in der Aorta ascendens und descendens, Entry nahe der Aortenklappe, vereinbar mit Stanford-Typ-A-Dissektion.",
+    "correctDiagnosis": "Akute Aortendissektion Typ A",
+    "diagnosisOptions": [
+      "Akute Aortendissektion Typ A",
+      "ST-Hebungsinfarkt (STEMI)",
+      "Lungenembolie",
+      "Akute Pankreatitis"
+    ],
+    "explanation": "Der schlagartig einsetzende, vernichtende, reißende Schmerz, die Blutdruck- und Pulsseitendifferenz sowie das neue Diastolikum sind klassisch wegweisend für eine Aortendissektion; die CT-Angiographie sichert Lokalisation und Typ. Gegen einen STEMI spricht der untypische Schmerzcharakter und das fehlende infarkttypische EKG.",
+    "keyTakeaway": "Reißender Schmerz + Blutdruckseitendifferenz + abgeschwächter Puls = Aortendissektion, bis das CT es widerlegt."
+  },
+  {
+    "id": "pavk-4",
+    "difficulty": "klinik",
+    "patientName": "Karl-Heinz",
+    "age": 68,
+    "gender": "männlich",
+    "chiefComplaint": "Wenn ich nur ein paar hundert Meter gehe, krampft meine Wade so stark, dass ich stehen bleiben muss — nach einer Pause geht's dann wieder.",
+    "history": "68-jähriger starker Raucher (40 pack years), bekannter Diabetes mellitus Typ 2. Seit Monaten belastungsabhängige Wadenschmerzen rechts, die in Ruhe sistieren (Gehstrecke ca. 150m).",
+    "examination": "Fußpuls rechts nicht tastbar, links abgeschwächt, kühle, blasse Haut am rechten Unterschenkel, verlängerte Kapillarfüllungszeit.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "LDL-Cholesterin",
+            "value": "168",
+            "unit": "mg/dl",
+            "reference": "< 100",
+            "flag": "high"
+          },
+          {
+            "name": "HbA1c",
+            "value": "8,2",
+            "unit": "%",
+            "reference": "< 6,5",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Knöchel-Arm-Index rechts 0,55 (pathologisch erniedrigt). Duplexsonographie: hochgradige Stenose der A. femoralis superficialis rechts.",
+    "correctDiagnosis": "Periphere arterielle Verschlusskrankheit (PAVK) Stadium IIb",
+    "diagnosisOptions": [
+      "Periphere arterielle Verschlusskrankheit (PAVK) Stadium IIb",
+      "Tiefe Beinvenenthrombose",
+      "Lumbale Spinalkanalstenose",
+      "Polyneuropathie"
+    ],
+    "explanation": "Belastungsabhängige, in Ruhe sistierende Wadenschmerzen (Claudicatio intermittens), fehlende Fußpulse und ein pathologischer Knöchel-Arm-Index bei vaskulären Risikofaktoren sind wegweisend für PAVK. Eine Spinalkanalstenose würde eher lagerungsabhängige, nicht streng gehstreckenabhängige Beschwerden zeigen.",
+    "keyTakeaway": "Gehstrecken-limitierter Wadenschmerz, der in Ruhe verschwindet, plus fehlende Fußpulse = Claudicatio intermittens bei PAVK."
+  },
+  {
+    "id": "lungentuberkulose-5",
+    "difficulty": "klinik",
+    "patientName": "Amara",
+    "age": 31,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich huste jetzt schon seit über drei Wochen, manchmal mit Blut, und ich schwitze nachts so, dass ich das Bett wechseln muss.",
+    "history": "31-jährige Patientin, vor 2 Jahren aus einem Hochprävalenzland eingereist. Seit über 3 Wochen produktiver Husten, teils blutig tingiert, Nachtschweiß, Gewichtsverlust von 6 kg in 2 Monaten, subfebrile Temperaturen.",
+    "examination": "Reduzierter Allgemeinzustand, kachektisch wirkend, abgeschwächtes Atemgeräusch rechts apikal, keine relevante Lymphadenopathie tastbar.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "CRP",
+            "value": "48",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "9,1",
+            "unit": "/nl",
+            "reference": "4,0-10,0",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Röntgen-Thorax: kavernöse Verschattung im rechten Oberlappen mit umgebender Konsolidierung, vereinbar mit kavitierender Lungentuberkulose.",
+    "correctDiagnosis": "Pulmonale Tuberkulose",
+    "diagnosisOptions": [
+      "Pulmonale Tuberkulose",
+      "Ambulant erworbene Pneumonie",
+      "Bronchialkarzinom",
+      "Sarkoidose"
+    ],
+    "explanation": "Die Konstellation aus chronischem (>3 Wochen) Husten mit Hämoptyse, B-Symptomatik (Nachtschweiß, Gewichtsverlust), Herkunft aus einem Hochprävalenzland und der kavitierenden Oberlappen-Konsolidierung im Röntgen ist hochgradig verdächtig auf eine Lungentuberkulose. Eine ambulant erworbene Pneumonie würde keinen derart protrahierten, kavitierenden Verlauf zeigen.",
+    "keyTakeaway": "Chronischer Husten über 3 Wochen plus B-Symptomatik plus Risikoherkunft — an Tuberkulose denken und Sputum-Diagnostik einleiten."
+  },
+  {
+    "id": "lungenfibrose-6",
+    "difficulty": "klinik",
+    "patientName": "Heinz-Werner",
+    "age": 71,
+    "gender": "männlich",
+    "chiefComplaint": "Ich bin seit über einem Jahr immer kurzatmiger geworden, schon beim Anziehen muss ich Pausen machen, und ich habe ständig diesen trockenen Husten.",
+    "history": "71-jähriger Patient mit langsam progredienter Belastungsdyspnoe über 18 Monate, trockener Reizhusten, keine relevante Raucheranamnese, keine bekannte Bindegewebserkrankung.",
+    "examination": "Feines, end-inspiratorisches Knisterrasseln basal beidseits ('Velcro rales'), Trommelschlägelfinger, keine periphere Zyanose in Ruhe.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "ANA",
+            "value": "negativ",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "HR-CT Thorax: subpleural und basal betontes retikuläres Muster mit Honigwabenbildung und Traktionsbronchiektasen, vereinbar mit UIP-Muster.",
+    "correctDiagnosis": "Idiopathische Lungenfibrose",
+    "diagnosisOptions": [
+      "Idiopathische Lungenfibrose",
+      "COPD",
+      "Sarkoidose",
+      "Herzinsuffizienz mit Lungenstauung"
+    ],
+    "explanation": "Das klassische 'Velcro'-Knisterrasseln, Trommelschlägelfinger und das im HR-CT typische UIP-Muster mit Honigwabenbildung bei fehlenden Hinweisen auf eine Kollagenose sichern die Diagnose einer idiopathischen Lungenfibrose. Gegen COPD spricht das fehlende obstruktive Atemgeräusch und die fehlende Raucheranamnese.",
+    "keyTakeaway": "Velcro-Rasseln basal + Trommelschlägelfinger + Honigwabenmuster im HR-CT = klassische Trias der idiopathischen Lungenfibrose."
+  },
+  {
+    "id": "obstruktives-schlafapnoe-syndrom-7",
+    "difficulty": "klinik",
+    "patientName": "Bernd",
+    "age": 49,
+    "gender": "männlich",
+    "chiefComplaint": "Meine Frau sagt, ich schnarche wie ein Bär und höre nachts manchmal ganz auf zu atmen — tagsüber bin ich einfach nur noch müde.",
+    "history": "49-jähriger adipöser Patient (BMI 34), fremdanamnestisch lautes Schnarchen mit beobachteten Atempausen. Ausgeprägte Tagesmüdigkeit, Sekundenschlaf-Episoden beim Autofahren berichtet.",
+    "examination": "Adipositas, kurzer Hals (Halsumfang 46cm), RR 152/94 mmHg, Epworth-Sleepiness-Scale 16/24 Punkte.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Nüchternglukose",
+            "value": "118",
+            "unit": "mg/dl",
+            "reference": "70-100",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Polysomnographie: Apnoe-Hypopnoe-Index 38/h, mittlere O2-Sättigung im Schlaf 89%, vereinbar mit schwerem obstruktivem Schlafapnoe-Syndrom.",
+    "correctDiagnosis": "Obstruktives Schlafapnoe-Syndrom",
+    "diagnosisOptions": [
+      "Obstruktives Schlafapnoe-Syndrom",
+      "Narkolepsie",
+      "Chronisch obstruktive Lungenerkrankung",
+      "Hypothyreose"
+    ],
+    "explanation": "Fremdanamnestisch beobachtete Atempausen, lautes Schnarchen, ausgeprägte Tagesmüdigkeit bei Adipositas und ein pathologischer Apnoe-Hypopnoe-Index in der Polysomnographie sichern die Diagnose eines obstruktiven Schlafapnoe-Syndroms. Eine Narkolepsie würde nicht mit nächtlichen Atempausen einhergehen.",
+    "keyTakeaway": "Beobachtete Atempausen + lautes Schnarchen + Tagesmüdigkeit bei Adipositas = klassische Trias des obstruktiven Schlafapnoe-Syndroms, Polysomnographie sichert."
+  },
+  {
+    "id": "colitis-ulcerosa-8",
+    "difficulty": "klinik",
+    "patientName": "Laura",
+    "age": 26,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe seit Wochen blutigen, schleimigen Durchfall, manchmal zehn Mal am Tag, und ständig diesen krampfartigen Bauchschmerz im linken Unterbauch.",
+    "history": "26-jährige Patientin, seit 6 Wochen blutig-schleimige Diarrhoe (bis zu 10x/Tag), linksseitige Unterbauchkrämpfe, Tenesmen. Keine Auslandsreise, keine Antibiotikaeinnahme.",
+    "examination": "Druckschmerz im linken Unterbauch ohne Peritonismus, keine Resistenzen tastbar, subfebril 37,8°C.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "CRP",
+            "value": "38",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Hämoglobin",
+            "value": "10,8",
+            "unit": "g/dl",
+            "reference": "12,0-16,0",
+            "flag": "low"
+          },
+          {
+            "name": "Calprotectin (Stuhl)",
+            "value": "850",
+            "unit": "µg/g",
+            "reference": "< 50",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Koloskopie: kontinuierliche, von rektal aufsteigende Schleimhautentzündung mit Kontaktblutung und Ulzerationen bis zur linken Flexur, keine 'skip lesions'.",
+    "correctDiagnosis": "Colitis ulcerosa",
+    "diagnosisOptions": [
+      "Colitis ulcerosa",
+      "Morbus Crohn",
+      "Infektiöse Kolitis",
+      "Reizdarmsyndrom"
+    ],
+    "explanation": "Die kontinuierliche, von rektal aufsteigende Entzündung ohne 'skip lesions' in der Koloskopie bei blutig-schleimiger Diarrhoe und erhöhtem Calprotectin ist wegweisend für Colitis ulcerosa. Gegen Morbus Crohn spricht das Fehlen diskontinuierlicher Läsionen und transmuraler Entzündungszeichen.",
+    "keyTakeaway": "Kontinuierliche, rektal beginnende Entzündung ohne Skip-Läsionen in der Koloskopie grenzt Colitis ulcerosa vom diskontinuierlichen Morbus Crohn ab."
+  },
+  {
+    "id": "zoeliakie-9",
+    "difficulty": "klinik",
+    "patientName": "Mira",
+    "age": 29,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe seit Monaten Blähbauch, Durchfall nach dem Essen, und bin obwohl ich genug esse einfach immer müder und schwächer geworden.",
+    "history": "29-jährige Patientin mit seit Monaten bestehenden postprandialen Blähungen, Steatorrhoe, ungewolltem Gewichtsverlust von 5kg, zunehmender Erschöpfung. Bekannte Eisenmangelanämie, bisher nicht abgeklärt.",
+    "examination": "Blasses Hautkolorit, geblähtes Abdomen, keine Resistenzen, keine Hepatosplenomegalie.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Ferritin",
+            "value": "8",
+            "unit": "ng/ml",
+            "reference": "30-300",
+            "flag": "low"
+          },
+          {
+            "name": "Anti-Transglutaminase-IgA",
+            "value": "145",
+            "unit": "U/ml",
+            "reference": "< 10",
+            "flag": "high"
+          },
+          {
+            "name": "Gesamt-IgA",
+            "value": "180",
+            "unit": "mg/dl",
+            "reference": "70-400",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Duodenalbiopsie: Zottenatrophie Marsh-Typ IIIb mit Kryptenhyperplasie und intraepithelialer Lymphozytose.",
+    "correctDiagnosis": "Zöliakie",
+    "diagnosisOptions": [
+      "Zöliakie",
+      "Reizdarmsyndrom",
+      "Chronische Pankreatitis",
+      "Laktoseintoleranz"
+    ],
+    "explanation": "Hochpositive Anti-Transglutaminase-IgA-Antikörper bei normalem Gesamt-IgA, begleitende Eisenmangelanämie durch Malabsorption sowie der bioptische Nachweis einer Zottenatrophie sichern die Diagnose Zöliakie. Eine Laktoseintoleranz würde keine Zottenatrophie oder spezifischen Antikörper zeigen.",
+    "keyTakeaway": "Malabsorptionszeichen plus hochpositive Transglutaminase-IgA-Antikörper plus Zottenatrophie in der Biopsie sichern die Zöliakie-Diagnose."
+  },
+  {
+    "id": "refluxkrankheit-10",
+    "difficulty": "klinik",
+    "patientName": "Thorsten",
+    "age": 45,
+    "gender": "männlich",
+    "chiefComplaint": "Seit Monaten habe ich nach dem Essen und vor allem nachts dieses brennende Gefühl hinter dem Brustbein, das bis in den Hals zieht.",
+    "history": "45-jähriger übergewichtiger Patient mit seit 4 Monaten bestehendem postprandialem und nächtlichem retrosternalem Brennen, saurem Aufstoßen, Verschlechterung im Liegen. Keine Dysphagie, keine Alarmsymptome.",
+    "examination": "Abdomen weich, kein Druckschmerz, kein Ikterus, BMI 31.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Hämoglobin",
+            "value": "14,8",
+            "unit": "g/dl",
+            "reference": "13,5-17,5",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Ösophago-Gastro-Duodenoskopie: erosive Ösophagitis Grad B nach Los-Angeles-Klassifikation, kleine axiale Hiatushernie, kein Hinweis auf Barrett-Ösophagus.",
+    "correctDiagnosis": "Gastroösophageale Refluxkrankheit (GERD)",
+    "diagnosisOptions": [
+      "Gastroösophageale Refluxkrankheit (GERD)",
+      "Akutes Koronarsyndrom",
+      "Achalasie",
+      "Ösophaguskarzinom"
+    ],
+    "explanation": "Postprandiales und nächtliches retrosternales Brennen mit Verschlechterung im Liegen, fehlende Alarmsymptome und der endoskopisch gesicherte erosive Reflux-Befund sind typisch für GERD. Ein akutes Koronarsyndrom muss differentialdiagnostisch ausgeschlossen werden, passt hier aber nicht zum chronischen, lageabhängigen Verlauf.",
+    "keyTakeaway": "Retrosternales Brennen, lageabhängig verstärkt, ohne Alarmsymptome — typisches Bild der Refluxkrankheit, Endoskopie sichert Schweregrad."
+  },
+  {
+    "id": "virale-hepatitis-b-11",
+    "difficulty": "klinik",
+    "patientName": "Duc",
+    "age": 33,
+    "gender": "männlich",
+    "chiefComplaint": "Ich bin seit zwei Wochen so erschöpft und appetitlos, und seit gestern sind meine Augen irgendwie gelb geworden.",
+    "history": "33-jähriger Patient, seit 2 Wochen zunehmende Müdigkeit, Appetitlosigkeit, dunkler Urin, seit gestern Ikterus bemerkt. Ungeschützter Geschlechtsverkehr vor ca. 10 Wochen.",
+    "examination": "Sklerenikterus, Druckschmerz im rechten Oberbauch, Leber tastbar 2cm unter dem Rippenbogen, kein Aszites.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "ALT (GPT)",
+            "value": "1450",
+            "unit": "U/l",
+            "reference": "< 45",
+            "flag": "high"
+          },
+          {
+            "name": "AST (GOT)",
+            "value": "1120",
+            "unit": "U/l",
+            "reference": "< 35",
+            "flag": "high"
+          },
+          {
+            "name": "Bilirubin gesamt",
+            "value": "4,8",
+            "unit": "mg/dl",
+            "reference": "< 1,2",
+            "flag": "high"
+          },
+          {
+            "name": "HBsAg",
+            "value": "positiv",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          },
+          {
+            "name": "Anti-HBc IgM",
+            "value": "positiv",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Abdomensonographie: leicht vergrößerte, homogene Leber, keine Raumforderung, normale Gallenwege.",
+    "correctDiagnosis": "Akute Hepatitis B",
+    "diagnosisOptions": [
+      "Akute Hepatitis B",
+      "Alkoholische Hepatitis",
+      "Choledocholithiasis",
+      "Autoimmunhepatitis"
+    ],
+    "explanation": "Deutlich erhöhte Transaminasen mit positivem HBsAg und positivem Anti-HBc-IgM bei passender Risikoanamnese (ungeschützter Verkehr in der Inkubationszeit) sichern die Diagnose einer akuten Hepatitis B. Eine Choledocholithiasis würde eher eine Cholestase mit dilatierten Gallenwegen im Ultraschall zeigen.",
+    "keyTakeaway": "Akuter Ikterus mit massiv erhöhten Transaminasen und positivem Anti-HBc-IgM zeigt eine frische, akute Hepatitis-B-Infektion an."
+  },
+  {
+    "id": "choledocholithiasis-12",
+    "difficulty": "klinik",
+    "patientName": "Renate",
+    "age": 58,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe seit gestern Abend so einen krampfartigen Schmerz im rechten Oberbauch, und heute Morgen war meine Haut gelb.",
+    "history": "58-jährige Patientin mit bekannter Cholezystolithiasis. Seit gestern kolikartiger rechtsseitiger Oberbauchschmerz, seit heute Ikterus bemerkt, dunkler Urin, heller Stuhl.",
+    "examination": "Sklerenikterus, Druckschmerz rechter Oberbauch, kein Fieber, kein Murphy-Zeichen positiv.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Bilirubin gesamt",
+            "value": "5,6",
+            "unit": "mg/dl",
+            "reference": "< 1,2",
+            "flag": "high"
+          },
+          {
+            "name": "Gamma-GT",
+            "value": "320",
+            "unit": "U/l",
+            "reference": "< 60",
+            "flag": "high"
+          },
+          {
+            "name": "Alkalische Phosphatase",
+            "value": "280",
+            "unit": "U/l",
+            "reference": "40-130",
+            "flag": "high"
+          },
+          {
+            "name": "CRP",
+            "value": "8",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Abdomensonographie: erweiterter Ductus choledochus (12mm) mit echoreichem Konkrement im distalen Anteil, Gallenblase mit multiplen Steinen.",
+    "correctDiagnosis": "Choledocholithiasis mit Cholestase",
+    "diagnosisOptions": [
+      "Choledocholithiasis mit Cholestase",
+      "Akute Cholezystitis",
+      "Pankreaskopfkarzinom",
+      "Akute Hepatitis A"
+    ],
+    "explanation": "Schmerzhafte Cholestase mit dilatiertem Ductus choledochus und sonographisch sichtbarem Gangkonkrement bei bekannter Cholezystolithiasis sichert die Diagnose Choledocholithiasis. Gegen eine akute Cholezystitis spricht das fehlende Murphy-Zeichen und Fieber, gegen ein Pankreaskopfkarzinom der akute statt schleichende Beginn.",
+    "keyTakeaway": "Schmerzhafter Ikterus mit dilatiertem Ductus choledochus und sichtbarem Konkrement im Ultraschall = Choledocholithiasis."
+  },
+  {
+    "id": "divertikulitis-13",
+    "difficulty": "klinik",
+    "patientName": "Ingeborg",
+    "age": 67,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe seit zwei Tagen einen Dauerschmerz im linken Unterbauch, der immer schlimmer wird, und mir ist auch ein bisschen schlecht.",
+    "history": "67-jährige Patientin, seit 2 Tagen progredienter linksseitiger Unterbauchschmerz, subfebrile Temperaturen, leichte Übelkeit, veränderte Stuhlgewohnheiten (Obstipation).",
+    "examination": "Druckschmerz im linken Unterbauch mit lokaler Abwehrspannung, palpable walzenförmige Resistenz, 38,1°C.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "CRP",
+            "value": "95",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "13,8",
+            "unit": "/nl",
+            "reference": "4,0-10,0",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "CT Abdomen: segmentale Wandverdickung des Colon sigmoideum mit perikolitischer Fettgewebsimbibierung, multiple Divertikel, kein Nachweis freier Luft oder Abszess.",
+    "correctDiagnosis": "Akute unkomplizierte Sigmadivertikulitis",
+    "diagnosisOptions": [
+      "Akute unkomplizierte Sigmadivertikulitis",
+      "Appendizitis",
+      "Kolorektales Karzinom",
+      "Ischämische Kolitis"
+    ],
+    "explanation": "Linksseitiger Unterbauchschmerz mit lokaler Abwehrspannung, Entzündungszeichen und das CT-typische Bild einer segmentalen Sigmawandverdickung mit perikolitischer Imbibierung ohne Komplikationszeichen sichern eine unkomplizierte Sigmadivertikulitis. Appendizitis ist rechtsseitig lokalisiert und passt damit nicht zur Schmerzlokalisation.",
+    "keyTakeaway": "Linksseitiger Unterbauchschmerz mit Entzündungszeichen ist das 'Linksseiten-Pendant' zur rechtsseitigen Appendizitis — klassisch für Sigmadivertikulitis."
+  },
+  {
+    "id": "glomerulonephritis-14",
+    "difficulty": "klinik",
+    "patientName": "Selin",
+    "age": 19,
+    "gender": "weiblich",
+    "chiefComplaint": "Mein Urin sieht seit ein paar Tagen aus wie Cola, und meine Augen sind morgens richtig geschwollen.",
+    "history": "19-jährige Patientin, vor 2 Wochen Racheninfekt (unbehandelt). Seit 3 Tagen kolafarbener Urin, periorbitale Ödeme am Morgen, leichte Kopfschmerzen.",
+    "examination": "Periorbitale Ödeme, RR 158/96 mmHg, leichte beidseitige Unterschenkelödeme.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Kreatinin",
+            "value": "1,8",
+            "unit": "mg/dl",
+            "reference": "0,5-0,9",
+            "flag": "high"
+          },
+          {
+            "name": "Anti-Streptolysin-Titer (ASL)",
+            "value": "680",
+            "unit": "IU/ml",
+            "reference": "< 200",
+            "flag": "high"
+          },
+          {
+            "name": "Komplement C3",
+            "value": "42",
+            "unit": "mg/dl",
+            "reference": "90-180",
+            "flag": "low"
+          }
+        ]
+      }
+    ],
+    "imaging": "Urinsediment: dysmorphe Erythrozyten, Erythrozytenzylinder, keine Bildgebung weiter erforderlich.",
+    "correctDiagnosis": "Postinfektiöse (poststreptokokken-) Glomerulonephritis",
+    "diagnosisOptions": [
+      "Postinfektiöse (poststreptokokken-) Glomerulonephritis",
+      "Akute Pyelonephritis",
+      "Nephrolithiasis",
+      "Hämorrhagische Zystitis"
+    ],
+    "explanation": "Der zeitliche Abstand von 1-3 Wochen nach Streptokokken-Racheninfekt, makrohämaturischer Urin mit dysmorphen Erythrozyten und Erythrozytenzylindern, erhöhter ASL-Titer und erniedrigtes Komplement C3 sind klassisch für eine postinfektiöse Glomerulonephritis. Eine Pyelonephritis würde mit Fieber und Flankenschmerz, nicht mit Erythrozytenzylindern einhergehen.",
+    "keyTakeaway": "Cola-farbener Urin mit Erythrozytenzylindern 1-3 Wochen nach Streptokokkeninfekt plus erniedrigtem C3 = postinfektiöse Glomerulonephritis."
+  },
+  {
+    "id": "nephrotisches-syndrom-15",
+    "difficulty": "klinik",
+    "patientName": "Paul",
+    "age": 8,
+    "gender": "männlich",
+    "chiefComplaint": "Mein Sohn hat seit ein paar Tagen total geschwollene Augen morgens, und jetzt schwillt auch der Bauch an.",
+    "history": "8-jähriger Junge, seit 5 Tagen progrediente periorbitale Ödeme, mittlerweile auch generalisierte Ödeme mit aufgetriebenem Abdomen. Kein vorausgegangener Infekt erinnerlich.",
+    "examination": "Generalisierte Ödeme, deutlicher Aszites, RR altersgerecht normal, kein Hautausschlag.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Albumin",
+            "value": "1,8",
+            "unit": "g/dl",
+            "reference": "3,5-5,0",
+            "flag": "low"
+          },
+          {
+            "name": "Gesamteiweiß",
+            "value": "4,2",
+            "unit": "g/dl",
+            "reference": "6,4-8,3",
+            "flag": "low"
+          },
+          {
+            "name": "LDL-Cholesterin",
+            "value": "310",
+            "unit": "mg/dl",
+            "reference": "< 130",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Urin",
+        "parameters": [
+          {
+            "name": "Eiweiß im Urin (24h)",
+            "value": "4,2",
+            "unit": "g/24h",
+            "reference": "< 0,15",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Keine Bildgebung erforderlich, klinisch-laborchemische Diagnose.",
+    "correctDiagnosis": "Nephrotisches Syndrom (Minimal-Change-Glomerulonephropathie)",
+    "diagnosisOptions": [
+      "Nephrotisches Syndrom (Minimal-Change-Glomerulonephropathie)",
+      "Akutes nephritisches Syndrom",
+      "Herzinsuffizienz",
+      "Leberzirrhose"
+    ],
+    "explanation": "Die Trias aus massiver Proteinurie, Hypalbuminämie und generalisierten Ödemen bei einem Kind ohne Hämaturie ist klassisch für ein nephrotisches Syndrom, im Kindesalter am häufigsten durch eine Minimal-Change-Glomerulonephropathie verursacht. Ein nephritisches Syndrom würde zusätzlich Hämaturie und Hypertonie zeigen.",
+    "keyTakeaway": "Massive Proteinurie plus Hypalbuminämie plus generalisierte Ödeme ohne Hämaturie = nephrotisches Syndrom, im Kindesalter meist Minimal-Change."
+  },
+  {
+    "id": "chronische-niereninsuffizienz-16",
+    "difficulty": "klinik",
+    "patientName": "Manfred",
+    "age": 70,
+    "gender": "männlich",
+    "chiefComplaint": "Ich bin seit Monaten immer müder und appetitloser, und mir ist oft übel, ohne dass ich weiß warum.",
+    "history": "70-jähriger Patient mit langjährigem Diabetes mellitus Typ 2 und arterieller Hypertonie. Seit Monaten zunehmende Müdigkeit, Appetitlosigkeit, gelegentliche Übelkeit, juckende Haut.",
+    "examination": "Blasses, schmutzig-gelbliches Hautkolorit, Kratzspuren, RR 168/98 mmHg, keine Ödeme.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Kreatinin",
+            "value": "3,4",
+            "unit": "mg/dl",
+            "reference": "0,7-1,2",
+            "flag": "high"
+          },
+          {
+            "name": "eGFR",
+            "value": "18",
+            "unit": "ml/min/1,73m²",
+            "reference": "> 90",
+            "flag": "low"
+          },
+          {
+            "name": "Harnstoff",
+            "value": "145",
+            "unit": "mg/dl",
+            "reference": "10-50",
+            "flag": "high"
+          },
+          {
+            "name": "Hämoglobin",
+            "value": "9,4",
+            "unit": "g/dl",
+            "reference": "13,5-17,5",
+            "flag": "low"
+          }
+        ]
+      }
+    ],
+    "imaging": "Nierensonographie: beidseits verkleinerte Nieren mit verschmälertem Parenchymsaum, vereinbar mit chronischer Schädigung.",
+    "correctDiagnosis": "Chronische Niereninsuffizienz Stadium 4 (diabetische Nephropathie)",
+    "diagnosisOptions": [
+      "Chronische Niereninsuffizienz Stadium 4 (diabetische Nephropathie)",
+      "Akutes Nierenversagen",
+      "Nephrotisches Syndrom",
+      "Harnwegsinfekt"
+    ],
+    "explanation": "Schleichend progrediente, über Monate bestehende Symptomatik bei langjährigem Diabetes und Hypertonie, stark erniedrigte eGFR und sonographisch verkleinerte Nieren sprechen für eine chronische, nicht akute Niereninsuffizienz, am ehesten diabetischer Genese. Ein akutes Nierenversagen würde normal große Nieren und einen abrupten Verlauf zeigen.",
+    "keyTakeaway": "Verkleinerte Nieren im Ultraschall bei chronischem Verlauf grenzen die chronische Niereninsuffizienz vom akuten Nierenversagen ab."
+  },
+  {
+    "id": "cushing-syndrom-17",
+    "difficulty": "klinik",
+    "patientName": "Petra",
+    "age": 41,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe in den letzten Monaten vor allem am Bauch und im Gesicht zugenommen, meine Arme und Beine sind aber dünn geblieben, und ich habe diese komischen lila Streifen am Bauch bekommen.",
+    "history": "41-jährige Patientin mit progredienter stammbetonter Gewichtszunahme über 8 Monate, neu aufgetretener arterieller Hypertonie, Zyklusunregelmäßigkeiten, leichter Blutergussneigung.",
+    "examination": "Stammfettsucht, Vollmondgesicht, Stiernacken, dünne Extremitäten, breite livide Striae am Abdomen, RR 158/96 mmHg.",
+    "labs": [
+      {
+        "category": "Hormonstatus",
+        "parameters": [
+          {
+            "name": "Cortisol im 24h-Sammelurin",
+            "value": "420",
+            "unit": "µg/24h",
+            "reference": "< 100",
+            "flag": "high"
+          },
+          {
+            "name": "Nüchternglukose",
+            "value": "132",
+            "unit": "mg/dl",
+            "reference": "70-100",
+            "flag": "high"
+          },
+          {
+            "name": "ACTH",
+            "value": "62",
+            "unit": "pg/ml",
+            "reference": "10-60",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "MRT Hypophyse: 7mm großes Mikroadenom im Hypophysenvorderlappen.",
+    "correctDiagnosis": "Morbus Cushing (ACTH-produzierendes Hypophysenadenom)",
+    "diagnosisOptions": [
+      "Morbus Cushing (ACTH-produzierendes Hypophysenadenom)",
+      "Primärer Hyperaldosteronismus",
+      "Phäochromozytom",
+      "Polyzystisches Ovarsyndrom"
+    ],
+    "explanation": "Stammbetonte Adipositas mit Vollmondgesicht, livide Striae, Hypertonie und deutlich erhöhtes Cortisol im Sammelurin bei gleichzeitig erhöhtem ACTH weisen auf eine ACTH-abhängige Genese hin; das MRT sichert das hypophysäre Mikroadenom als Ursache. Ein primärer Hyperaldosteronismus würde keine Cushing-typische Habitusveränderung zeigen.",
+    "keyTakeaway": "Stammfettsucht, Vollmondgesicht und livide Striae plus erhöhtes Cortisol im Sammelurin sind die klassische Cushing-Trias."
+  },
+  {
+    "id": "hyperparathyreoidismus-18",
+    "difficulty": "klinik",
+    "patientName": "Elfriede",
+    "age": 63,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich fühle mich seit Monaten schlapp und verstopft, habe ständig Durst, und letzte Woche habe ich plötzlich einen Nierenstein gehabt.",
+    "history": "63-jährige Patientin mit über Monate bestehender Müdigkeit, Obstipation, vermehrtem Durst und Polyurie. Vor einer Woche akute Nierenkolik mit Steinabgang.",
+    "examination": "Leicht reduzierter Allgemeinzustand, kein Anhalt für Struma, unauffälliger abdomineller Tastbefund.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Calcium gesamt",
+            "value": "3,2",
+            "unit": "mmol/l",
+            "reference": "2,20-2,65",
+            "flag": "high"
+          },
+          {
+            "name": "Parathormon (PTH)",
+            "value": "185",
+            "unit": "pg/ml",
+            "reference": "15-65",
+            "flag": "high"
+          },
+          {
+            "name": "Phosphat",
+            "value": "0,6",
+            "unit": "mmol/l",
+            "reference": "0,87-1,45",
+            "flag": "low"
+          }
+        ]
+      }
+    ],
+    "imaging": "Halssonographie: 1,4cm große, echoarme Raumforderung dorsal der rechten Schilddrüse, vereinbar mit Nebenschilddrüsenadenom.",
+    "correctDiagnosis": "Primärer Hyperparathyreoidismus",
+    "diagnosisOptions": [
+      "Primärer Hyperparathyreoidismus",
+      "Tumor-assoziierte Hyperkalzämie",
+      "Vitamin-D-Intoxikation",
+      "Sarkoidose"
+    ],
+    "explanation": "Die Kombination aus erhöhtem Calcium UND erhöhtem (statt supprimiertem) Parathormon bei erniedrigtem Phosphat sowie der sonographische Nachweis eines Nebenschilddrüsenadenoms sichert einen primären Hyperparathyreoidismus. Bei tumorassoziierter Hyperkalzämie wäre das PTH supprimiert, nicht erhöht.",
+    "keyTakeaway": "Erhöhtes Calcium bei gleichzeitig erhöhtem (nicht supprimiertem) PTH ist die Schlüsselkonstellation für primären Hyperparathyreoidismus."
+  },
+  {
+    "id": "diabetes-insipidus-19",
+    "difficulty": "klinik",
+    "patientName": "Felix",
+    "age": 27,
+    "gender": "männlich",
+    "chiefComplaint": "Ich muss seit zwei Wochen ständig riesige Mengen trinken und renne dauernd zur Toilette, auch nachts mehrmals.",
+    "history": "27-jähriger Patient, seit 2 Wochen exzessiver Durst (geschätzt 8-10 Liter/Tag) und entsprechend große Urinmengen, auch nächtliche Miktion 3-4x. Z.n. Schädel-Hirn-Trauma vor 3 Wochen.",
+    "examination": "Klinisch leicht dehydriert wirkend, ansonsten unauffälliger Befund, kein Ödem.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Natrium",
+            "value": "151",
+            "unit": "mmol/l",
+            "reference": "136-145",
+            "flag": "high"
+          },
+          {
+            "name": "Urin-Osmolalität",
+            "value": "95",
+            "unit": "mosmol/kg",
+            "reference": "300-900",
+            "flag": "low"
+          },
+          {
+            "name": "Serum-Osmolalität",
+            "value": "305",
+            "unit": "mosmol/kg",
+            "reference": "280-300",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "MRT Schädel: Z.n. traumatischer Läsion im Bereich des Hypophysenstiels, vereinbar mit posttraumatischer Schädigung der ADH-Sekretion.",
+    "correctDiagnosis": "Zentraler Diabetes insipidus (posttraumatisch)",
+    "diagnosisOptions": [
+      "Zentraler Diabetes insipidus (posttraumatisch)",
+      "Diabetes mellitus Typ 1 Erstmanifestation",
+      "Primäre Polydipsie",
+      "SIADH"
+    ],
+    "explanation": "Massive Polyurie mit stark verdünntem Urin bei gleichzeitig erhöhter Serum-Osmolalität und Hypernatriämie nach Schädel-Hirn-Trauma ist klassisch für einen zentralen Diabetes insipidus durch ADH-Mangel. Ein Diabetes mellitus würde eine erhöhte Blutglukose und Glukosurie zeigen, was hier fehlt.",
+    "keyTakeaway": "Große Mengen verdünnten Urins bei gleichzeitig erhöhter Serum-Osmolalität nach Schädeltrauma — klassisch für zentralen Diabetes insipidus."
+  },
+  {
+    "id": "hyperosmolares-hyperglykaemisches-syndrom-20",
+    "difficulty": "klinik",
+    "patientName": "Gisela",
+    "age": 79,
+    "gender": "weiblich",
+    "chiefComplaint": "Meine Mutter ist seit zwei Tagen immer verwirrter geworden und trinkt kaum noch, jetzt reagiert sie kaum noch auf Ansprache.",
+    "history": "79-jährige Patientin mit bekanntem Diabetes mellitus Typ 2, lebt im Pflegeheim. Fremdanamnestisch seit 2 Tagen zunehmende Verwirrtheit, verminderte Flüssigkeitsaufnahme, aktuell somnolent.",
+    "examination": "Somnolenz (GCS 11), trockene Schleimhäute, stehende Hautfalten, keine Kussmaul-Atmung, keine Ketonkörper im Atem riechbar.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Glukose",
+            "value": "612",
+            "unit": "mg/dl",
+            "reference": "70-100",
+            "flag": "high"
+          },
+          {
+            "name": "Serum-Osmolalität",
+            "value": "352",
+            "unit": "mosmol/kg",
+            "reference": "280-300",
+            "flag": "high"
+          },
+          {
+            "name": "Ketonkörper im Urin",
+            "value": "negativ",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "normal"
+          },
+          {
+            "name": "pH (BGA)",
+            "value": "7,36",
+            "unit": "",
+            "reference": "7,35-7,45",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Keine spezifische Bildgebung erforderlich, klinisch-laborchemische Diagnose.",
+    "correctDiagnosis": "Hyperosmolares hyperglykämisches Syndrom (HHS)",
+    "diagnosisOptions": [
+      "Hyperosmolares hyperglykämisches Syndrom (HHS)",
+      "Diabetische Ketoazidose",
+      "Apoplex",
+      "Urämische Enzephalopathie"
+    ],
+    "explanation": "Extrem hohe Blutglukose mit massiv erhöhter Serum-Osmolalität, fehlender Ketonurie und normwertigem pH bei einem typischerweise älteren Typ-2-Diabetiker sichert ein hyperosmolares hyperglykämisches Syndrom statt einer diabetischen Ketoazidose, die mit Azidose und Ketonkörpern einhergehen würde.",
+    "keyTakeaway": "Massive Hyperglykämie mit hoher Osmolalität aber normalem pH und fehlenden Ketonkörpern grenzt das HHS von der diabetischen Ketoazidose ab."
+  },
+  {
+    "id": "thyreotoxische-krise-21",
+    "difficulty": "klinik",
+    "patientName": "Annegret",
+    "age": 55,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe seit gestern hohes Fieber, mein Herz rast wie verrückt, und ich bin total verwirrt und unruhig.",
+    "history": "55-jährige Patientin mit bekanntem, schlecht eingestelltem Morbus Basedow. Seit gestern hohes Fieber, ausgeprägte Tachykardie, Unruhe, zunehmende Verwirrtheit, Erbrechen. Auslöser: kürzliche Atemwegsinfektion.",
+    "examination": "Hyperthermie 39,8°C, HF 168/min unregelmäßig, RR 145/60 mmHg, ausgeprägter Tremor, psychomotorische Unruhe, Struma diffusa, Exophthalmus.",
+    "labs": [
+      {
+        "category": "Hormonstatus",
+        "parameters": [
+          {
+            "name": "TSH basal",
+            "value": "< 0,01",
+            "unit": "mU/l",
+            "reference": "0,27-4,20",
+            "flag": "low"
+          },
+          {
+            "name": "fT4",
+            "value": "68",
+            "unit": "pmol/l",
+            "reference": "12,0-22,0",
+            "flag": "high"
+          },
+          {
+            "name": "fT3",
+            "value": "28",
+            "unit": "pmol/l",
+            "reference": "3,1-6,8",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Keine akute Bildgebung erforderlich, klinisches Bild mit Burch-Wartofsky-Score eindeutig.",
+    "correctDiagnosis": "Thyreotoxische Krise",
+    "diagnosisOptions": [
+      "Thyreotoxische Krise",
+      "Septischer Schock",
+      "Maligne Hyperthermie",
+      "Phäochromozytom-Krise"
+    ],
+    "explanation": "Die lebensbedrohliche Trias aus Hyperthermie, ausgeprägter Tachyarrhythmie und ZNS-Symptomatik (Unruhe, Verwirrtheit) bei bekanntem, dekompensiertem Morbus Basedow mit massiv erhöhten Schilddrüsenhormonen und einem akuten Auslöser (Infekt) ist klassisch für eine thyreotoxische Krise. Ein septischer Schock würde keine derart massive Schilddrüsenhormon-Erhöhung erklären.",
+    "keyTakeaway": "Fieber, extreme Tachykardie und Verwirrtheit bei bekanntem Morbus Basedow plus akutem Trigger = thyreotoxische Krise, ein Notfall."
+  },
+  {
+    "id": "rheumatoide-arthritis-22",
+    "difficulty": "klinik",
+    "patientName": "Brigitte",
+    "age": 47,
+    "gender": "weiblich",
+    "chiefComplaint": "Meine Finger und Handgelenke sind seit Monaten morgens immer steif und geschwollen, das dauert oft über eine Stunde bis es besser wird.",
+    "history": "47-jährige Patientin mit seit 5 Monaten progredienter, symmetrischer Schwellung der Fingergrund- und Handgelenke beidseits, Morgensteifigkeit über 60 Minuten, zunehmende Erschöpfung.",
+    "examination": "Symmetrische Schwellung und Druckschmerz der MCP- und PIP-Gelenke beidseits, beginnende Ulnardeviation, kein Hautausschlag.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Rheumafaktor",
+            "value": "145",
+            "unit": "IU/ml",
+            "reference": "< 14",
+            "flag": "high"
+          },
+          {
+            "name": "Anti-CCP-Antikörper",
+            "value": "210",
+            "unit": "U/ml",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "CRP",
+            "value": "28",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Röntgen der Hände: gelenknahe Osteoporose und beginnende Erosionen an den MCP-Gelenken beidseits, symmetrisches Befallsmuster.",
+    "correctDiagnosis": "Rheumatoide Arthritis",
+    "diagnosisOptions": [
+      "Rheumatoide Arthritis",
+      "Psoriasis-Arthritis",
+      "Aktivierte Fingerpolyarthrose",
+      "Systemischer Lupus erythematodes"
+    ],
+    "explanation": "Symmetrischer Befall der kleinen Hand- und Fingergelenke mit langer Morgensteifigkeit, hochpositivem Rheumafaktor und Anti-CCP-Antikörpern sowie radiologisch nachweisbaren Erosionen sichern die Diagnose rheumatoide Arthritis. Eine Polyarthrose würde keine derart ausgeprägte Morgensteifigkeit und keine positive Serologie zeigen.",
+    "keyTakeaway": "Symmetrische MCP/PIP-Schwellung mit Morgensteifigkeit über eine Stunde plus positivem Anti-CCP ist hochspezifisch für rheumatoide Arthritis."
+  },
+  {
+    "id": "systemischer-lupus-erythematodes-23",
+    "difficulty": "klinik",
+    "patientName": "Yasmin",
+    "age": 24,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich bin seit Monaten ständig müde und habe Gelenkschmerzen, und seit dem letzten Sommerurlaub habe ich diesen komischen roten Ausschlag im Gesicht, der nach Sonne immer schlimmer wird.",
+    "history": "24-jährige Patientin mit seit 4 Monaten bestehender Erschöpfung, wandernden Gelenkschmerzen ohne Schwellung, photosensitivem Gesichtsausschlag seit dem Sommer, gelegentlichem Fieber.",
+    "examination": "Schmetterlingserythem über Wangen und Nasenrücken, schont die Nasolabialfalten, keine Gelenkschwellungen aktuell, orale Aphthen.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "ANA",
+            "value": "1:1280",
+            "unit": "Titer",
+            "reference": "negativ",
+            "flag": "high"
+          },
+          {
+            "name": "Anti-dsDNA-Antikörper",
+            "value": "210",
+            "unit": "IU/ml",
+            "reference": "< 25",
+            "flag": "high"
+          },
+          {
+            "name": "Komplement C3",
+            "value": "48",
+            "unit": "mg/dl",
+            "reference": "90-180",
+            "flag": "low"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "3,1",
+            "unit": "/nl",
+            "reference": "4,0-10,0",
+            "flag": "low"
+          }
+        ]
+      }
+    ],
+    "imaging": "Keine akute Bildgebung erforderlich, Diagnose primär klinisch-serologisch.",
+    "correctDiagnosis": "Systemischer Lupus erythematodes",
+    "diagnosisOptions": [
+      "Systemischer Lupus erythematodes",
+      "Rosacea",
+      "Dermatomyositis",
+      "Mischkollagenose"
+    ],
+    "explanation": "Schmetterlingserythem mit Photosensitivität, orale Aphthen, Arthralgien, Zytopenie sowie hochpositive ANA und spezifische Anti-dsDNA-Antikörper mit erniedrigtem Komplement erfüllen die klassischen Kriterien für einen systemischen Lupus erythematodes. Rosacea würde nicht mit systemischen Symptomen und positiver Autoantikörperserologie einhergehen.",
+    "keyTakeaway": "Schmetterlingserythem plus Photosensitivität plus positive Anti-dsDNA-Antikörper mit niedrigem Komplement sind hochspezifisch für SLE."
+  },
+  {
+    "id": "riesenzellarteriitis-24",
+    "difficulty": "klinik",
+    "patientName": "Wolfgang",
+    "age": 74,
+    "gender": "männlich",
+    "chiefComplaint": "Ich habe seit zwei Wochen ständig Kopfschmerzen an der Schläfe, und beim Kauen tut mir der Kiefer richtig weh.",
+    "history": "74-jähriger Patient mit seit 2 Wochen neu aufgetretenen, lokalisierten Schläfenkopfschmerzen, Kieferclaudicatio beim Kauen, neu bemerkter Sehverschlechterung links seit gestern.",
+    "examination": "Verdickte, druckschmerzhafte A. temporalis links, abgeschwächter Puls dort tastbar, Visus links deutlich reduziert.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "BSG",
+            "value": "98",
+            "unit": "mm/h",
+            "reference": "< 20",
+            "flag": "high"
+          },
+          {
+            "name": "CRP",
+            "value": "62",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Temporalarterien-Sonographie: echoarmer Halo um die A. temporalis links, vereinbar mit Vaskulitis. Biopsie bestätigend geplant.",
+    "correctDiagnosis": "Riesenzellarteriitis (Arteriitis temporalis)",
+    "diagnosisOptions": [
+      "Riesenzellarteriitis (Arteriitis temporalis)",
+      "Trigeminusneuralgie",
+      "Migräne",
+      "Akutes Glaukom"
+    ],
+    "explanation": "Neu aufgetretener Schläfenkopfschmerz, Kieferclaudicatio, druckschmerzhafte verdickte Temporalarterie, drohender Visusverlust und massiv erhöhte BSG bei einem über-50-jährigen Patienten sind die klassische Konstellation einer Riesenzellarteriitis — ein rheumatologischer Notfall wegen drohender Erblindung. Eine Migräne würde keine Kieferclaudicatio oder Visusbeeinträchtigung zeigen.",
+    "keyTakeaway": "Neuer Schläfenkopfschmerz mit Kieferclaudicatio und massiv erhöhter BSG bei älteren Patienten ist ein Notfall — Riesenzellarteriitis, drohende Erblindung."
+  },
+  {
+    "id": "akuter-gichtanfall-25",
+    "difficulty": "klinik",
+    "patientName": "Olaf",
+    "age": 52,
+    "gender": "männlich",
+    "chiefComplaint": "Mein großer Zeh ist letzte Nacht plötzlich so geschwollen und rot geworden, dass ich noch nicht mal die Bettdecke darauf ertragen konnte.",
+    "history": "52-jähriger Patient, regelmäßiger Biergenuss, gestern Abend üppiges Essen mit viel Fleisch. Heute Nacht akut einsetzender, stärkster Schmerz im rechten Großzehengrundgelenk.",
+    "examination": "Großzehengrundgelenk rechts stark gerötet, überwärmt, geschwollen, massive Berührungsempfindlichkeit, kein Fieber.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Harnsäure",
+            "value": "9,8",
+            "unit": "mg/dl",
+            "reference": "3,4-7,0",
+            "flag": "high"
+          },
+          {
+            "name": "CRP",
+            "value": "22",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "10,8",
+            "unit": "/nl",
+            "reference": "4,0-10,0",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Gelenkpunktat: stark negativ doppelbrechende, nadelförmige Uratkristalle in der Polarisationsmikroskopie.",
+    "correctDiagnosis": "Akuter Gichtanfall (Podagra)",
+    "diagnosisOptions": [
+      "Akuter Gichtanfall (Podagra)",
+      "Septische Arthritis",
+      "Pseudogicht (Chondrokalzinose)",
+      "Erysipel"
+    ],
+    "explanation": "Akut einsetzende, hochschmerzhafte Monoarthritis des Großzehengrundgelenks (Podagra) nach purinreicher Mahlzeit und Alkohol, deutlich erhöhte Harnsäure und der Nachweis nadelförmiger, negativ doppelbrechender Uratkristalle im Gelenkpunktat sichern die Diagnose eines akuten Gichtanfalls. Eine septische Arthritis würde typischerweise mit Fieber und positiver Gelenkkultur einhergehen.",
+    "keyTakeaway": "Akute Podagra nach purinreicher Kost mit nadelförmigen, negativ doppelbrechenden Uratkristallen im Punktat sichert die Gichtdiagnose."
+  },
+  {
+    "id": "b12-mangelanaemie-26",
+    "difficulty": "klinik",
+    "patientName": "Helga",
+    "age": 69,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich bin seit Monaten immer schlapper geworden, und in letzter Zeit kribbeln mir die Füße so komisch, fast wie eingeschlafen.",
+    "history": "69-jährige Patientin mit über Monate progredienter Müdigkeit, Belastungsdyspnoe, seit 4 Wochen zusätzlich Kribbelparästhesien an beiden Füßen, gelegentliche Gangunsicherheit.",
+    "examination": "Blasses Hautkolorit mit leicht zitronengelblichem Unterton, vermindertes Vibrationsempfinden an beiden Füßen, positiver Romberg-Test.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Hämoglobin",
+            "value": "8,9",
+            "unit": "g/dl",
+            "reference": "12,0-16,0",
+            "flag": "low"
+          },
+          {
+            "name": "MCV",
+            "value": "118",
+            "unit": "fl",
+            "reference": "80-96",
+            "flag": "high"
+          },
+          {
+            "name": "Vitamin B12",
+            "value": "98",
+            "unit": "pg/ml",
+            "reference": "200-900",
+            "flag": "low"
+          },
+          {
+            "name": "Intrinsic-Factor-Antikörper",
+            "value": "positiv",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Keine spezifische Bildgebung erforderlich, Diagnose laborchemisch und serologisch gesichert.",
+    "correctDiagnosis": "Perniziöse Anämie (Vitamin-B12-Mangel)",
+    "diagnosisOptions": [
+      "Perniziöse Anämie (Vitamin-B12-Mangel)",
+      "Eisenmangelanämie",
+      "Hämolytische Anämie",
+      "Aplastische Anämie"
+    ],
+    "explanation": "Makrozytäre Anämie mit deutlich erniedrigtem Vitamin B12, neurologischen Ausfällen (funikuläre Myelose mit Vibrationsstörung und positivem Romberg) und positiven Intrinsic-Factor-Antikörpern sichern die Diagnose perniziöse Anämie. Eine Eisenmangelanämie wäre mikrozytär, nicht makrozytär, und würde keine neurologische Symptomatik erklären.",
+    "keyTakeaway": "Makrozytäre Anämie mit neurologischen Ausfällen (Vibrationsstörung) ist verdächtig auf Vitamin-B12-Mangel mit funikulärer Myelose."
+  },
+  {
+    "id": "chronische-lymphatische-leukaemie-27",
+    "difficulty": "klinik",
+    "patientName": "Dieter",
+    "age": 71,
+    "gender": "männlich",
+    "chiefComplaint": "Bei der letzten Routineuntersuchung hat mein Hausarzt geschwollene Lymphknoten am Hals festgestellt, mir selbst ist nichts aufgefallen.",
+    "history": "71-jähriger Patient, asymptomatisch, Zufallsbefund schmerzloser zervikaler Lymphknotenschwellungen bei der hausärztlichen Routinekontrolle. Keine B-Symptomatik.",
+    "examination": "Multiple, schmerzlose, gut verschiebliche zervikale und axilläre Lymphknoten beidseits, milde Splenomegalie tastbar, kein Hautbefall.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Leukozyten",
+            "value": "68",
+            "unit": "/nl",
+            "reference": "4,0-10,0",
+            "flag": "high"
+          },
+          {
+            "name": "Lymphozyten relativ",
+            "value": "88",
+            "unit": "%",
+            "reference": "20-45",
+            "flag": "high"
+          },
+          {
+            "name": "Hämoglobin",
+            "value": "13,2",
+            "unit": "g/dl",
+            "reference": "13,5-17,5",
+            "flag": "low"
+          }
+        ]
+      }
+    ],
+    "imaging": "Durchflusszytometrie peripheres Blut: monoklonale B-Zell-Population mit CD5/CD19/CD23-Koexpression, vereinbar mit CLL.",
+    "correctDiagnosis": "Chronische lymphatische Leukämie (CLL)",
+    "diagnosisOptions": [
+      "Chronische lymphatische Leukämie (CLL)",
+      "Reaktive Lymphadenopathie",
+      "Hodgkin-Lymphom",
+      "Akute lymphatische Leukämie"
+    ],
+    "explanation": "Asymptomatische, langsam progrediente, generalisierte schmerzlose Lymphknotenschwellung bei einem älteren Patienten mit deutlicher Lymphozytose und einem typischen CD5/CD19/CD23-Immunphänotyp in der Durchflusszytometrie sichert die Diagnose CLL. Eine reaktive Lymphadenopathie würde keine derart hohe, klonale Lymphozytose zeigen.",
+    "keyTakeaway": "Zufällig entdeckte, generalisierte, schmerzlose Lymphadenopathie bei älteren Patienten mit hoher Lymphozytose ist klassisch für CLL."
+  },
+  {
+    "id": "multiples-myelom-28",
+    "difficulty": "klinik",
+    "patientName": "Sigrid",
+    "age": 66,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe seit Monaten immer wiederkehrende Rückenschmerzen, und seit Kurzem fühle ich mich auch total erschöpft und durstig.",
+    "history": "66-jährige Patientin mit über Monate progredienten, lokalisierten Rückenschmerzen ohne adäquates Trauma, zunehmender Müdigkeit, vermehrtem Durst, rezidivierenden Infekten in den letzten Wochen.",
+    "examination": "Klopfschmerzhafte Lendenwirbelsäule, blasses Hautkolorit, keine Lymphadenopathie, keine Hepatosplenomegalie.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "parameters": [
+          {
+            "name": "Calcium gesamt",
+            "value": "2,95",
+            "unit": "mmol/l",
+            "reference": "2,20-2,65",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "1,9",
+            "unit": "mg/dl",
+            "reference": "0,5-0,9",
+            "flag": "high"
+          },
+          {
+            "name": "Hämoglobin",
+            "value": "9,1",
+            "unit": "g/dl",
+            "reference": "12,0-16,0",
+            "flag": "low"
+          },
+          {
+            "name": "Gesamteiweiß",
+            "value": "10,2",
+            "unit": "g/dl",
+            "reference": "6,4-8,3",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Röntgen Skelett: multiple, scharf begrenzte osteolytische Herde in Schädelkalotte und Lendenwirbelkörpern ('Schrotschussschädel').",
+    "correctDiagnosis": "Multiples Myelom",
+    "diagnosisOptions": [
+      "Multiples Myelom",
+      "Osteoporotische Wirbelkörperfraktur",
+      "Knochenmetastasen eines Mammakarzinoms",
+      "Primärer Hyperparathyreoidismus"
+    ],
+    "explanation": "Die CRAB-Kriterien (Calcium erhöht, Renal beeinträchtigt, Anämie, Bone-Läsionen) bei deutlich erhöhtem Gesamteiweiß und dem radiologisch typischen 'Schrotschussschädel' sichern die Diagnose eines multiplen Myeloms. Eine osteoporotische Fraktur würde keine derartige Laborkonstellation und keine multiplen Osteolysen zeigen.",
+    "keyTakeaway": "CRAB-Kriterien (Calcium↑, Renal↓, Anämie, Bone-Läsionen) plus 'Schrotschussschädel' im Röntgen sind die klassische Myelom-Konstellation."
+  },
+  {
+    "id": "guillain-barre-syndrom-29",
+    "difficulty": "klinik",
+    "patientName": "Niklas",
+    "age": 33,
+    "gender": "männlich",
+    "chiefComplaint": "Vor zwei Wochen hatte ich eine üble Magen-Darm-Grippe, und seit ein paar Tagen werden meine Beine immer schwächer, jetzt kann ich kaum noch laufen.",
+    "history": "33-jähriger Patient, vor 2 Wochen Gastroenteritis mit Diarrhoe. Seit 4 Tagen progrediente, aufsteigende symmetrische Beinschwäche, mittlerweile auch leichte Armschwäche, keine Sensibilitätsstörungen relevant.",
+    "examination": "Symmetrische, distal betonte Paresen der unteren Extremität (Kraftgrad 3/5), abgeschwächte bis aufgehobene Muskeleigenreflexe, keine Pyramidenbahnzeichen.",
+    "labs": [
+      {
+        "category": "Liquor",
+        "parameters": [
+          {
+            "name": "Liquor-Eiweiß",
+            "value": "180",
+            "unit": "mg/dl",
+            "reference": "15-45",
+            "flag": "high"
+          },
+          {
+            "name": "Liquor-Zellzahl",
+            "value": "3",
+            "unit": "/µl",
+            "reference": "< 5",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Elektroneurographie: deutlich verlangsamte Nervenleitgeschwindigkeit mit Leitungsblöcken, vereinbar mit demyelinisierender Polyneuropathie.",
+    "correctDiagnosis": "Guillain-Barré-Syndrom",
+    "diagnosisOptions": [
+      "Guillain-Barré-Syndrom",
+      "Multiple Sklerose Schub",
+      "Botulismus",
+      "Myasthenia gravis"
+    ],
+    "explanation": "Aufsteigende, symmetrische Schwäche mit abgeschwächten Reflexen nach vorausgegangenem Infekt, die klassische zytoalbuminäre Dissoziation im Liquor (erhöhtes Eiweiß bei normaler Zellzahl) und die elektroneurographisch nachgewiesene Demyelinisierung sichern ein Guillain-Barré-Syndrom. Botulismus würde eher deszendierend statt aufsteigend verlaufen.",
+    "keyTakeaway": "Aufsteigende Schwäche nach Infekt mit zytoalbuminärer Dissoziation im Liquor (Eiweiß↑, Zellzahl normal) ist klassisch für Guillain-Barré."
+  },
+  {
+    "id": "virale-meningoenzephalitis-30",
+    "difficulty": "klinik",
+    "patientName": "Lea",
+    "age": 22,
+    "gender": "weiblich",
+    "chiefComplaint": "Ich habe seit zwei Tagen starke Kopfschmerzen und Fieber, und heute hat mein Freund gesagt, ich hätte komisch geredet und mich seltsam verhalten.",
+    "history": "22-jährige Patientin, seit 2 Tagen Fieber und holozephale Kopfschmerzen, seit heute fremdanamnestisch auffällige Wesensveränderung und kurzzeitige Verwirrtheit. Vor 5 Tagen Lippenherpes-Episode.",
+    "examination": "Fieber 38,9°C, Nackensteifigkeit positiv, fluktuierende Orientierungsstörung, kein fokal-neurologisches Defizit, keine Hautläsionen außer abklingendem Lippenherpes.",
+    "labs": [
+      {
+        "category": "Liquor",
+        "parameters": [
+          {
+            "name": "Liquor-Zellzahl",
+            "value": "85",
+            "unit": "/µl",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Liquor-Eiweiß",
+            "value": "68",
+            "unit": "mg/dl",
+            "reference": "15-45",
+            "flag": "high"
+          },
+          {
+            "name": "Liquor-Glukose",
+            "value": "62",
+            "unit": "mg/dl",
+            "reference": "40-70",
+            "flag": "normal"
+          },
+          {
+            "name": "HSV-PCR Liquor",
+            "value": "positiv",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "MRT Schädel: T2-hyperintense Signalveränderung temporomedial rechts, vereinbar mit herpetischer Enzephalitis.",
+    "correctDiagnosis": "Herpes-simplex-Enzephalitis",
+    "diagnosisOptions": [
+      "Herpes-simplex-Enzephalitis",
+      "Bakterielle Meningitis",
+      "Migräne mit Aura",
+      "Psychogene Dissoziation"
+    ],
+    "explanation": "Fieber, Kopfschmerzen, Nackensteifigkeit und fluktuierende Wesensveränderung bei lymphozytärer Liquorpleozytose mit normaler Glukose, positiver HSV-PCR und dem typischen temporalen MRT-Befund sichern die Diagnose einer Herpes-simplex-Enzephalitis — ein neurologischer Notfall. Eine bakterielle Meningitis würde typischerweise erniedrigte Liquor-Glukose und massiv granulozytäre Pleozytose zeigen.",
+    "keyTakeaway": "Fieber plus Wesensveränderung plus lymphozytäre Liquorpleozytose mit normaler Glukose und temporalem MRT-Befund — an HSV-Enzephalitis denken, Notfall."
   }
 ]

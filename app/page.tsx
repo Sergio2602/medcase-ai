@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { Logo } from "./components/Logo";
 import { OnboardingTour } from "./components/OnboardingTour";
 import { generateShareCard } from "@/lib/generateShareCard";
@@ -1122,8 +1122,8 @@ function LaborOverlay({
   categories: LabCategory[];
 }) {
   return (
-    <FindingOverlay open={open} onClose={onClose} title="Labor" maxWidth={820}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+    <FindingOverlay open={open} onClose={onClose} title="Labor" maxWidth={660}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         {categories.map((cat) => (
           <div key={cat.category}>
             <p className="mb-2 text-sm font-semibold">{cat.category}</p>
@@ -1325,6 +1325,7 @@ function ResultIsland({
   caseData,
   onNext,
   revealedCount,
+  maxHeight,
 }: {
   lastResultCorrect: boolean;
   lastScoreEarned: number;
@@ -1332,6 +1333,7 @@ function ResultIsland({
   caseData: Case;
   onNext: () => void;
   revealedCount: number;
+  maxHeight?: number | null;
 }) {
   const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
@@ -1382,8 +1384,8 @@ function ResultIsland({
 
   return (
     <div
-      className="w-full overflow-hidden rounded-xl border-[1.5px] flex flex-col max-h-[60vh]"
-      style={{ borderColor, backgroundColor: bgColor }}
+      className="w-full overflow-hidden rounded-xl border-[1.5px] flex flex-col"
+      style={{ borderColor, backgroundColor: bgColor, maxHeight: maxHeight != null ? `${maxHeight}px` : "60vh" }}
     >
       {/* Always-visible header */}
       <div className="shrink-0">
@@ -1842,6 +1844,7 @@ function StatusPanel({
   phase,
   caseId,
   difficulty,
+  anchorRef,
 }: {
   dailyUsed: number;
   dailyLimit: number;
@@ -1851,6 +1854,7 @@ function StatusPanel({
   phase: Phase;
   caseId: string;
   difficulty: Difficulty;
+  anchorRef?: RefObject<HTMLDivElement | null>;
 }) {
   const checklist: { key: keyof Revealed; label: string }[] = [
     { key: "history", label: "Anamnese" },
@@ -1933,7 +1937,7 @@ function StatusPanel({
       </div>
 
       {/* Card 4: Fall melden */}
-      <ReportCaseCard caseId={caseId} difficulty={difficulty} />
+      <ReportCaseCard caseId={caseId} difficulty={difficulty} anchorRef={anchorRef} />
     </>
   );
 }
@@ -2002,6 +2006,67 @@ function GameScreen({
   const contentScrollRef = useRef<HTMLDivElement>(null);
   const [contentScrolled, setContentScrolled] = useState(false);
 
+  const reportAnchorRef = useRef<HTMLDivElement>(null);
+  const leftColumnRef = useRef<HTMLDivElement>(null);
+  const [diagnosisTop, setDiagnosisTop] = useState<number | null>(null);
+  const [resultBottom, setResultBottom] = useState<number | null>(null);
+  const [resultMaxHeight, setResultMaxHeight] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    let rafId: number;
+
+    function computeOffsets() {
+      if (window.innerWidth < 768) {
+        setDiagnosisTop(null);
+        setResultBottom(null);
+        setResultMaxHeight(null);
+        return;
+      }
+      const col = leftColumnRef.current;
+      const anchor = reportAnchorRef.current;
+      if (!col || !anchor) return;
+
+      const anchorRect = anchor.getBoundingClientRect();
+      // Guard: anchor not yet laid out (first frame after mount, sidebar still
+      // display:none, etc.) — zero rect means layout isn't settled, retry next frame.
+      if (anchorRect.width === 0 && anchorRect.height === 0) {
+        rafId = requestAnimationFrame(computeOffsets);
+        return;
+      }
+
+      const colRect = col.getBoundingClientRect();
+      const lineY = anchorRect.bottom - colRect.top;
+      setDiagnosisTop(lineY);
+
+      // Pad the scroll container so the last content line can be scrolled above the island.
+      // Needed padding = distance from island-top to column-bottom (not just island height).
+      if (contentScrollRef.current) {
+        const needed = colRect.height - lineY + 16;
+        contentScrollRef.current.style.paddingBottom = `${Math.max(needed, 16)}px`;
+      }
+
+      // Measure DiagnosisIsland's bottom directly — guarantees ResultIsland ends at the
+      // exact same line, with no jump on phase transition. Only runs during "playing"
+      // (diagnosisIslandRef.current is null in "result"), so frozen values carry over.
+      const diagnosisEl = diagnosisIslandRef.current;
+      if (diagnosisEl) {
+        const islandBottomLine = diagnosisEl.getBoundingClientRect().bottom - colRect.top;
+        setResultBottom(colRect.height - islandBottomLine);
+        setResultMaxHeight(islandBottomLine);
+      }
+    }
+
+    // Wait one frame so layout (including sticky sidebar) is fully settled
+    // before measuring. Dependency is caseData.id only (not phase) so the
+    // 4-card-sidebar measurement stays valid through the playing→result transition.
+    rafId = requestAnimationFrame(computeOffsets);
+    window.addEventListener("resize", computeOffsets);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", computeOffsets);
+    };
+  }, [caseData.id]);
+
   useEffect(() => {
     if (!findingsHelpOpen) return;
     function onKey(e: KeyboardEvent) {
@@ -2014,9 +2079,14 @@ function GameScreen({
   useEffect(() => {
     const island = diagnosisIslandRef.current;
     const content = contentScrollRef.current;
-    if (!island || !content) return;
+    const col = leftColumnRef.current;
+    if (!island || !content || !col) return;
     const ro = new ResizeObserver(() => {
-      content.style.paddingBottom = `${island.offsetHeight + 8}px`;
+      const colRect = col.getBoundingClientRect();
+      const islandRect = island.getBoundingClientRect();
+      const islandTopInCol = islandRect.top - colRect.top;
+      const needed = colRect.height - islandTopInCol + 16;
+      content.style.paddingBottom = `${Math.max(needed, 16)}px`;
     });
     ro.observe(island);
     return () => ro.disconnect();
@@ -2121,7 +2191,7 @@ function GameScreen({
       </header>
 
       <div className="grid gap-6 md:grid-cols-[1fr_280px]">
-        <div className="relative flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
+        <div ref={leftColumnRef} className="relative flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute left-0 right-0 top-0 z-[5] h-4"
@@ -2263,7 +2333,10 @@ function GameScreen({
 
           </div>
           {phase === "playing" && (
-            <div className="relative z-10">
+            <div
+              className="relative z-10 md:absolute md:left-0 md:right-0"
+              style={{ top: diagnosisTop != null ? `${diagnosisTop}px` : undefined }}
+            >
               <DiagnosisIsland
                 caseData={caseData}
                 options={caseData.diagnosisOptions}
@@ -2275,7 +2348,10 @@ function GameScreen({
             </div>
           )}
           {phase === "result" && (
-            <div className="flex-none">
+            <div
+              className="flex-none md:absolute md:left-0 md:right-0 z-20"
+              style={{ bottom: resultBottom != null ? `${resultBottom}px` : undefined }}
+            >
               <ResultIsland
                 lastResultCorrect={lastResultCorrect}
                 lastScoreEarned={lastScoreEarned}
@@ -2283,6 +2359,7 @@ function GameScreen({
                 caseData={caseData}
                 onNext={onNext}
                 revealedCount={revealCount}
+                maxHeight={resultMaxHeight}
               />
             </div>
           )}
@@ -2298,6 +2375,7 @@ function GameScreen({
             phase={phase}
             caseId={caseData.id}
             difficulty={difficulty}
+            anchorRef={reportAnchorRef}
           />
         </aside>
 

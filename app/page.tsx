@@ -2351,7 +2351,7 @@ function GameScreen({
           )}
           {phase === "result" && (
             <div
-              className="flex-none md:absolute md:left-0 md:right-0 z-20"
+              className="absolute left-0 right-0 z-20"
               style={{ bottom: resultBottom != null ? `${resultBottom}px` : undefined }}
             >
               <ResultIsland

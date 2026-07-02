@@ -2061,9 +2061,11 @@ function GameScreen({
     // 4-card-sidebar measurement stays valid through the playing→result transition.
     rafId = requestAnimationFrame(computeOffsets);
     window.addEventListener("resize", computeOffsets);
+    window.visualViewport?.addEventListener("resize", computeOffsets);
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", computeOffsets);
+      window.visualViewport?.removeEventListener("resize", computeOffsets);
     };
   }, [caseData.id]);
 

@@ -2352,7 +2352,7 @@ function GameScreen({
           {phase === "result" && (
             <div
               className="absolute left-0 right-0 z-20"
-              style={{ bottom: resultBottom != null ? `${resultBottom}px` : undefined }}
+              style={{ bottom: `${resultBottom ?? 16}px` }}
             >
               <ResultIsland
                 lastResultCorrect={lastResultCorrect}

@@ -40,7 +40,7 @@ const { chromium } = require('playwright');
   const runTest = async (label, width, height) => {
     const page = await browser.newPage();
     await page.setViewportSize({ width, height });
-    await page.goto('http://localhost:3001', { waitUntil: 'networkidle' });
+    await page.goto(process.argv[2] || 'http://localhost:3001', { waitUntil: 'networkidle' });
 
     await page.click('button:has-text("Ersten Fall lösen")');
     await page.waitForSelector('text=Fall starten', { timeout: 8000 });

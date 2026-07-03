@@ -1325,7 +1325,6 @@ function ResultIsland({
   caseData,
   onNext,
   revealedCount,
-  maxHeight,
 }: {
   lastResultCorrect: boolean;
   lastScoreEarned: number;
@@ -1333,7 +1332,6 @@ function ResultIsland({
   caseData: Case;
   onNext: () => void;
   revealedCount: number;
-  maxHeight?: number | null;
 }) {
   const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
@@ -1384,8 +1382,8 @@ function ResultIsland({
 
   return (
     <div
-      className="w-full overflow-hidden rounded-xl border-[1.5px] flex flex-col"
-      style={{ borderColor, backgroundColor: bgColor, maxHeight: maxHeight != null ? `${maxHeight}px` : "60vh" }}
+      className="w-full rounded-xl border-[1.5px] flex flex-col overflow-y-auto"
+      style={{ borderColor, backgroundColor: bgColor, maxHeight: "60vh" }}
     >
       {/* Always-visible header */}
       <div className="shrink-0">
@@ -1445,9 +1443,7 @@ function ResultIsland({
 
       {/* Expanded details — fills remaining space below the header, scrolls if content overflows */}
       {expanded && (
-        <div
-          className="min-h-0 flex-1 overflow-y-auto px-4 pb-4"
-        >
+        <div className="px-4 pb-4">
           <div className="mb-3 h-px bg-foreground/10" />
 
           {/* Result line */}
@@ -2009,8 +2005,6 @@ function GameScreen({
   const reportAnchorRef = useRef<HTMLDivElement>(null);
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const [diagnosisTop, setDiagnosisTop] = useState<number | null>(null);
-  const [resultBottom, setResultBottom] = useState<number | null>(null);
-  const [resultMaxHeight, setResultMaxHeight] = useState<number | null>(null);
 
   useLayoutEffect(() => {
     let rafId: number;
@@ -2045,15 +2039,6 @@ function GameScreen({
         contentScrollRef.current.style.paddingBottom = `${Math.max(needed, 16)}px`;
       }
 
-      // Measure DiagnosisIsland's bottom directly — guarantees ResultIsland ends at the
-      // exact same line, with no jump on phase transition. Only runs during "playing"
-      // (diagnosisIslandRef.current is null in "result"), so frozen values carry over.
-      const diagnosisEl = diagnosisIslandRef.current;
-      if (diagnosisEl) {
-        const islandBottomLine = diagnosisEl.getBoundingClientRect().bottom - colRect.top;
-        setResultBottom(colRect.height - islandBottomLine);
-        setResultMaxHeight(islandBottomLine);
-      }
     }
 
     // Wait one frame so layout (including sticky sidebar) is fully settled
@@ -2350,10 +2335,7 @@ function GameScreen({
             </div>
           )}
           {phase === "result" && (
-            <div
-              className="absolute left-0 right-0 z-20"
-              style={{ bottom: `${resultBottom ?? 16}px` }}
-            >
+            <div className="shrink-0">
               <ResultIsland
                 lastResultCorrect={lastResultCorrect}
                 lastScoreEarned={lastScoreEarned}
@@ -2361,7 +2343,6 @@ function GameScreen({
                 caseData={caseData}
                 onNext={onNext}
                 revealedCount={revealCount}
-                maxHeight={resultMaxHeight}
               />
             </div>
           )}

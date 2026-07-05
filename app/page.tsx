@@ -1325,6 +1325,7 @@ function ResultIsland({
   caseData,
   onNext,
   revealedCount,
+  maxHeight,
 }: {
   lastResultCorrect: boolean;
   lastScoreEarned: number;
@@ -1332,6 +1333,7 @@ function ResultIsland({
   caseData: Case;
   onNext: () => void;
   revealedCount: number;
+  maxHeight?: string;
 }) {
   const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
@@ -1382,8 +1384,8 @@ function ResultIsland({
 
   return (
     <div
-      className="w-full rounded-xl border-[1.5px] flex flex-col overflow-y-auto"
-      style={{ borderColor, backgroundColor: bgColor, maxHeight: "60vh" }}
+      className="absolute bottom-0 left-0 right-0 rounded-xl border-[1.5px] flex flex-col"
+      style={{ borderColor, backgroundColor: bgColor }}
     >
       {/* Always-visible header */}
       <div className="shrink-0">
@@ -1990,6 +1992,8 @@ function GameScreen({
   const isResult = phase === "result";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [findingsHelpOpen, setFindingsHelpOpen] = useState(false);
+  const helpBtnRef = useRef<HTMLButtonElement>(null);
+  const helpTooltipPos = useRef<{ top: number; left: number }>({ top: 0, left: 0 });
   const [cardExpanded, setCardExpanded] = useState({ history: true, examination: true, imaging: true, labs: true });
 
   useEffect(() => {
@@ -2005,21 +2009,26 @@ function GameScreen({
   const reportAnchorRef = useRef<HTMLDivElement>(null);
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const [diagnosisTop, setDiagnosisTop] = useState<number | null>(null);
+  const islandMinHeightRef = useRef<number>(0);
 
   useLayoutEffect(() => {
     let rafId: number;
 
     function computeOffsets() {
-      if (window.innerWidth < 768) {
-        setDiagnosisTop(null);
-        setResultBottom(null);
-        setResultMaxHeight(null);
+      const col = leftColumnRef.current;
+      if (!col) return;
+      const colRect = col.getBoundingClientRect();
+      if (colRect.height === 0) {
+        rafId = requestAnimationFrame(computeOffsets);
         return;
       }
-      const col = leftColumnRef.current;
-      const anchor = reportAnchorRef.current;
-      if (!col || !anchor) return;
+      if (window.innerWidth < 768) {
+        setDiagnosisTop(null);
+        return;
+      }
 
+      const anchor = reportAnchorRef.current;
+      if (!anchor) return;
       const anchorRect = anchor.getBoundingClientRect();
       // Guard: anchor not yet laid out (first frame after mount, sidebar still
       // display:none, etc.) — zero rect means layout isn't settled, retry next frame.
@@ -2028,7 +2037,6 @@ function GameScreen({
         return;
       }
 
-      const colRect = col.getBoundingClientRect();
       const lineY = anchorRect.bottom - colRect.top;
       setDiagnosisTop(lineY);
 
@@ -2038,7 +2046,6 @@ function GameScreen({
         const needed = colRect.height - lineY + 16;
         contentScrollRef.current.style.paddingBottom = `${Math.max(needed, 16)}px`;
       }
-
     }
 
     // Wait one frame so layout (including sticky sidebar) is fully settled
@@ -2069,15 +2076,17 @@ function GameScreen({
     const col = leftColumnRef.current;
     if (!island || !content || !col) return;
     const ro = new ResizeObserver(() => {
+      if (!island.isConnected) return;
       const colRect = col.getBoundingClientRect();
       const islandRect = island.getBoundingClientRect();
+      islandMinHeightRef.current = Math.round(islandRect.height);
       const islandTopInCol = islandRect.top - colRect.top;
       const needed = colRect.height - islandTopInCol + 16;
       content.style.paddingBottom = `${Math.max(needed, 16)}px`;
     });
     ro.observe(island);
     return () => ro.disconnect();
-  }, []);
+  }, [caseData.id]);
 
   useEffect(() => {
     const el = contentScrollRef.current;
@@ -2095,6 +2104,7 @@ function GameScreen({
     const el = contentScrollRef.current;
     if (el) el.scrollTop = 0;
   }, [caseData.id]);
+
 
   return (
     <div>
@@ -2133,12 +2143,13 @@ function GameScreen({
             <StatPill label="Gel." value={`${solved}/${played}`} />
           </div>
         </div>
-        {!isResult && (
-          <div className="mt-1.5 flex items-center justify-between rounded-xl border-[1.5px] border-card-border/20 bg-card px-3 py-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wide text-muted">Mögliche Punkte</span>
-            <span className="clinical-data text-sm font-extrabold text-accent">{possiblePoints} / {BASE_SCORE}</span>
-          </div>
-        )}
+        <div
+          className="mt-1.5 flex items-center justify-between rounded-xl border-[1.5px] border-card-border/20 bg-card px-3 py-1.5"
+          style={{ visibility: isResult ? "hidden" : undefined }}
+        >
+          <span className="text-[11px] font-bold uppercase tracking-wide text-muted">Mögliche Punkte</span>
+          <span className="clinical-data text-sm font-extrabold text-accent">{possiblePoints} / {BASE_SCORE}</span>
+        </div>
       </header>
 
       {/* Desktop header */}
@@ -2178,7 +2189,7 @@ function GameScreen({
       </header>
 
       <div className="grid gap-6 md:grid-cols-[1fr_280px]">
-        <div ref={leftColumnRef} className="relative flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
+        <div ref={leftColumnRef} data-left-column="" className="relative flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute left-0 right-0 top-0 z-[5] h-4"
@@ -2188,7 +2199,7 @@ function GameScreen({
               transition: "opacity 200ms ease-out",
             }}
           />
-          <div ref={contentScrollRef} className="flex flex-col gap-6 flex-1 min-h-0 overflow-y-auto">
+          <div ref={contentScrollRef} data-content-scroll="" className="flex flex-col gap-6 flex-1 min-h-0 overflow-y-auto">
           <div ref={patientCardRef} className="card flex gap-4 p-[18px]">
             <div
               className="avatar-circle h-14 w-14 shrink-0 text-lg"
@@ -2210,31 +2221,36 @@ function GameScreen({
           </div>
 
           <div ref={befundeRef}>
+            {findingsHelpOpen && (
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setFindingsHelpOpen(false)}
+              />
+            )}
+            {findingsHelpOpen && (
+              <div
+                className="fixed z-50 w-[260px] rounded-[9px] border-[1.5px] border-foreground/20 bg-white p-3 shadow-lg text-foreground/80"
+                style={{ top: helpTooltipPos.current.top, left: helpTooltipPos.current.left, fontSize: "12.5px", lineHeight: 1.5 }}
+              >
+                Hier kannst du zusätzliche Befunde anfordern, um die Diagnose zu stellen. Jeder Befund kostet Punkte — weniger Befunde bedeuten mehr Punkte.
+              </div>
+            )}
             <div className="mb-2 flex items-center justify-between gap-1.5">
               <div className="flex items-center gap-1.5">
-                {findingsHelpOpen && (
-                  <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => setFindingsHelpOpen(false)}
-                  />
-                )}
-                <div className="relative z-20">
-                  <button
-                    onClick={() => setFindingsHelpOpen((v) => !v)}
-                    className="flex items-center justify-center text-accent"
-                    aria-label="Hinweis zu Befunden anfordern"
-                  >
-                    <i className="ti ti-help-circle" />
-                  </button>
-                  {findingsHelpOpen && (
-                    <div
-                      className="absolute left-0 top-6 w-[260px] rounded-[9px] border-[1.5px] bg-white p-3 shadow-sm text-foreground/80"
-                      style={{ borderColor: "#d8d6cd", fontSize: "12.5px", lineHeight: 1.5 }}
-                    >
-                      Hier kannst du zusätzliche Befunde anfordern, um die Diagnose zu stellen. Jeder Befund kostet Punkte — weniger Befunde bedeuten mehr Punkte.
-                    </div>
-                  )}
-                </div>
+                <button
+                  ref={helpBtnRef}
+                  onClick={() => {
+                    if (!findingsHelpOpen && helpBtnRef.current) {
+                      const r = helpBtnRef.current.getBoundingClientRect();
+                      helpTooltipPos.current = { top: r.bottom + 6, left: r.left };
+                    }
+                    setFindingsHelpOpen((v) => !v);
+                  }}
+                  className="flex items-center justify-center text-accent"
+                  aria-label="Hinweis zu Befunden anfordern"
+                >
+                  <i className="ti ti-help-circle" />
+                </button>
                 <span className="text-xs font-bold uppercase tracking-wide text-muted">
                   Befunde anfordern
                 </span>
@@ -2319,11 +2335,15 @@ function GameScreen({
           )}
 
           </div>
-          {phase === "playing" && (
-            <div
-              className="relative z-10 md:absolute md:left-0 md:right-0"
-              style={{ top: diagnosisTop != null ? `${diagnosisTop}px` : undefined }}
-            >
+          <div
+            className="relative z-10 md:absolute md:left-0 md:right-0"
+            data-island-wrapper=""
+            style={{
+              top: diagnosisTop != null ? `${diagnosisTop}px` : undefined,
+              minHeight: isResult && islandMinHeightRef.current > 0 ? islandMinHeightRef.current : undefined,
+            }}
+          >
+            {phase !== "result" ? (
               <DiagnosisIsland
                 caseData={caseData}
                 options={caseData.diagnosisOptions}
@@ -2332,10 +2352,7 @@ function GameScreen({
                 possiblePoints={possiblePoints}
                 diagnosisIslandRef={diagnosisIslandRef}
               />
-            </div>
-          )}
-          {phase === "result" && (
-            <div className="shrink-0">
+            ) : (
               <ResultIsland
                 lastResultCorrect={lastResultCorrect}
                 lastScoreEarned={lastScoreEarned}
@@ -2344,8 +2361,8 @@ function GameScreen({
                 onNext={onNext}
                 revealedCount={revealCount}
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <aside className="hidden flex-col gap-4 md:sticky md:top-24 md:flex md:self-start">

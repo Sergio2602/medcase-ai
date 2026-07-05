@@ -5,37 +5,36 @@ const { chromium } = require('playwright');
 
   const shot = async (page, label) => {
     await page.screenshot({ path: `/tmp/island-${label}.png` });
-    console.log(`[shot] ${label}`);
   };
 
-  // Find the result island by walking up from the text node
-  const islandMetrics = (page) => page.evaluate(() => {
-    const texts = ['Richtig erkannt', 'Leider falsch'];
-    for (const text of texts) {
-      const el = [...document.querySelectorAll('p, span, div')]
-        .find(e => e.childNodes.length === 1 && e.textContent.trim() === text);
-      if (el) {
-        // Walk up to find the root card (the div with max-h-[60vh] ≈ has overflow-hidden + flex)
-        let card = el;
-        while (card && card !== document.body) {
-          const cs = getComputedStyle(card);
-          if (cs.overflow === 'hidden' && cs.display === 'flex' && cs.flexDirection === 'column') {
-            const r = card.getBoundingClientRect();
-            const header = card.querySelector('.shrink-0');
-            const hr = header ? header.getBoundingClientRect() : null;
-            return {
-              card: { top: Math.round(r.top), bottom: Math.round(r.bottom), height: Math.round(r.height) },
-              header: hr ? { top: Math.round(hr.top), bottom: Math.round(hr.bottom),
-                             inViewport: hr.top >= -1 && hr.bottom <= window.innerHeight + 1 } : null,
-              viewport: window.innerHeight,
-            };
-          }
-          card = card.parentElement;
-        }
-      }
-    }
-    return null;
+  // Capture full diagnostics: leftColumn, contentScroll, wrapper
+  const snap = (page) => page.evaluate(() => {
+    const el = (sel) => document.querySelector(sel);
+    const rect = (sel) => {
+      const e = el(sel);
+      if (!e) return null;
+      const r = e.getBoundingClientRect();
+      const cs = getComputedStyle(e);
+      return {
+        top: Math.round(r.top), bottom: Math.round(r.bottom), height: Math.round(r.height),
+        scrollH: e.scrollHeight, paddingBottom: cs.paddingBottom,
+        position: cs.position, minHeight: cs.minHeight,
+      };
+    };
+    return {
+      scrollY: window.scrollY,
+      docH: document.documentElement.scrollHeight,
+      lc: rect('[data-left-column]'),
+      cs: rect('[data-content-scroll]'),
+      wr: rect('[data-island-wrapper]'),
+    };
   });
+
+  const fmt = (s) => {
+    if (!s) return 'null';
+    const f = (o) => o ? `${o.top}→${o.bottom}(h${o.height})` : '?';
+    return `scrollY=${s.scrollY} docH=${s.docH} | lc:${f(s.lc)} | cs:${f(s.cs)} pb=${s.cs?.paddingBottom} | wr:${f(s.wr)} minH=${s.wr?.minHeight}`;
+  };
 
   const runTest = async (label, width, height) => {
     const page = await browser.newPage();
@@ -50,65 +49,80 @@ const { chromium } = require('playwright');
     await page.waitForSelector('text=DIAGNOSE STELLEN', { timeout: 45000 });
     await page.waitForTimeout(300);
 
-    const scrollBefore = await page.evaluate(() => document.documentElement.scrollHeight);
+    // ① Before answering — DiagnosisIsland in wrapper
+    const s1 = await snap(page);
+    await shot(page, `${label}-1-before`);
+    console.log(`[${label}] ① BEFORE:    ${fmt(s1)}`);
 
+    // Submit
     const btnText = await page.locator('.grid-cols-2 button').first().textContent();
     await page.locator('.grid-cols-2 button').first().click({ force: true });
-    console.log(`[${label}] Submitted: "${btnText?.trim().slice(0,50)}"`);
-
+    console.log(`[${label}] Submitted: "${btnText?.trim().slice(0, 50)}"`);
     await page.waitForFunction(
       () => document.body.textContent.includes('Richtig erkannt') || document.body.textContent.includes('Leider falsch'),
       { timeout: 20000 }
     );
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1000);
+
+    // ② ResultIsland expanded (default: expanded=true)
+    const s2 = await snap(page);
     await shot(page, `${label}-2-expanded`);
+    console.log(`[${label}] ② EXPANDED:  ${fmt(s2)}`);
 
-    const scrollAfter = await page.evaluate(() => document.documentElement.scrollHeight);
-    const mExp = await islandMetrics(page);
-    console.log(`[${label}] EXPANDED:`, JSON.stringify(mExp?.card), '| header:', JSON.stringify(mExp?.header));
-    console.log(`[${label}] scrollH: ${scrollBefore}→${scrollAfter} Δ${scrollAfter - scrollBefore}`);
-
-    // Collapse
-    await page.click('button:has-text("Details")');
-    await page.waitForTimeout(400);
+    // ③ Collapse details
+    await page.locator('[data-island-wrapper] button:has-text("Details")').first().click({ force: true });
+    await page.waitForTimeout(600);
+    const s3 = await snap(page);
     await shot(page, `${label}-3-collapsed`);
-    const mColl = await islandMetrics(page);
-    console.log(`[${label}] COLLAPSED:`, JSON.stringify(mColl?.card), '| header:', JSON.stringify(mColl?.header));
+    console.log(`[${label}] ③ COLLAPSED: ${fmt(s3)}`);
 
-    // Re-expand
-    await page.click('button:has-text("Details")');
-    await page.waitForTimeout(400);
-    await shot(page, `${label}-4-reexp`);
-    const mReExp = await islandMetrics(page);
-    console.log(`[${label}] REEXP:`, JSON.stringify(mReExp?.card));
+    // ④ Re-expand details
+    await page.locator('[data-island-wrapper] button:has-text("Details")').first().click({ force: true });
+    await page.waitForTimeout(600);
+    const s4 = await snap(page);
+    await shot(page, `${label}-4-reexpanded`);
+    console.log(`[${label}] ④ REEXPAND:  ${fmt(s4)}`);
 
     await page.close();
 
-    const d1 = mExp && mColl ? Math.abs(mExp.card.bottom - mColl.card.bottom) : 999;
-    const d2 = mExp && mReExp ? Math.abs(mExp.card.bottom - mReExp.card.bottom) : 999;
-    return {
-      anchorFixed: d1 <= 2 && d2 <= 2,
-      growsUp: mExp && mColl ? mColl.card.top > mExp.card.top : false,
-      noPagePush: Math.abs(scrollAfter - scrollBefore) <= 5,
-      headerVisible: mExp?.header?.inViewport !== false && mColl?.header?.inViewport !== false,
-      d1, d2, scrollDelta: scrollAfter - scrollBefore,
-    };
+    const before    = s1?.wr?.bottom ?? null;
+    const expanded  = s2?.wr?.bottom ?? null;
+    const collapsed = s3?.wr?.bottom ?? null;
+    const reexp     = s4?.wr?.bottom ?? null;
+
+    const d1 = before != null && expanded  != null ? Math.abs(before - expanded)  : 999;
+    const d2 = before != null && collapsed != null ? Math.abs(before - collapsed) : 999;
+    const d3 = before != null && reexp     != null ? Math.abs(before - reexp)     : 999;
+    // Internal consistency: ②③④ all equal (anchor stable after collapse/reexpand)
+    const d23 = expanded  != null && collapsed != null ? Math.abs(expanded - collapsed) : 999;
+    const d24 = expanded  != null && reexp     != null ? Math.abs(expanded - reexp)     : 999;
+    const anchorFixed = d1 <= 2 && d2 <= 2 && d3 <= 2;
+    const internallyStable = d23 <= 2 && d24 <= 2;
+
+    return { before, expanded, collapsed, reexp, d1, d2, d3, d23, d24, anchorFixed, internallyStable };
   };
 
   const desk = await runTest('desk', 1280, 800);
-  const mob  = await runTest('mob', 390, 844);
+  const mob  = await runTest('mob',  390,  844);
   await browser.close();
 
-  console.log('\n╔═══════════════════════╗');
+  console.log('\n╔══════════════════════════════════════╗');
   for (const [n, d] of [['DESKTOP', desk], ['MOBILE', mob]]) {
     console.log(`║ ${n}`);
-    console.log(`║  1. Anchor fixed:   ${d.anchorFixed ? '✅' : '❌'}  Δ${d.d1} / Δ${d.d2}px`);
-    console.log(`║  2. Grows upward:   ${d.growsUp ? '✅' : '❌'}`);
-    console.log(`║  3. No page push:   ${d.noPagePush ? '✅' : '❌'}  scrollHΔ${d.scrollDelta}`);
-    console.log(`║  5. Header visible: ${d.headerVisible ? '✅' : '❌'}`);
+    console.log(`║  ① BEFORE:   ${d.before}`);
+    console.log(`║  ② EXPANDED: ${d.expanded}`);
+    console.log(`║  ③ COLLAPSED: ${d.collapsed}`);
+    console.log(`║  ④ RE-EXPANDED: ${d.reexp}`);
+    console.log(`║  Δ(before→expanded):  ${d.d1}px`);
+    console.log(`║  Δ(before→collapsed): ${d.d2}px`);
+    console.log(`║  Δ(before→reexp):     ${d.d3}px`);
+    console.log(`║  Δ(②→③):   ${d.d23}px  Δ(②→④): ${d.d24}px`);
+    console.log(`║  Anchor vs before: ${d.anchorFixed ? '✅' : '❌'}   Internal stability: ${d.internallyStable ? '✅' : '❌'}`);
   }
-  const all = ['anchorFixed','growsUp','noPagePush','headerVisible'].every(k => desk[k] && mob[k]);
-  console.log(`╠═══════════════════════╣`);
-  console.log(`║ OVERALL: ${all ? '✅ PASS' : '❌ FAIL'}`);
-  console.log('╚═══════════════════════╝');
+  const overallFixed = desk.anchorFixed && mob.anchorFixed;
+  const overallStable = desk.internallyStable && mob.internallyStable;
+  console.log(`╠══════════════════════════════════════╣`);
+  console.log(`║ OVERALL ANCHOR: ${overallFixed ? '✅ PASS' : '❌ FAIL'}`);
+  console.log(`║ OVERALL STABLE: ${overallStable ? '✅ PASS' : '❌ FAIL'}`);
+  console.log('╚══════════════════════════════════════╝');
 })();

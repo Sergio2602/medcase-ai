@@ -24,7 +24,7 @@ export default function ImpressumPage() {
           </Link>
         </div>
 
-        <div className="card mx-auto max-w-2xl p-8">
+        <div className="card mx-auto max-w-[820px] p-8">
           <h1 className="mb-6 text-3xl font-extrabold tracking-tight">
             Impressum
           </h1>
@@ -74,7 +74,7 @@ export default function ImpressumPage() {
         </div>
 
         <footer
-          className="mx-auto mt-4 max-w-2xl border-t border-card-border/15 pt-3 text-center"
+          className="mx-auto mt-4 max-w-[820px] border-t border-card-border/15 pt-3 text-center"
           style={{ fontSize: 11, color: "#5f5e5a" }}
         >
           © 2026 Medcase ·{" "}

@@ -52,8 +52,8 @@ body {
   background:
     radial-gradient(circle at 12% 8%, rgba(29,78,216,0.05), transparent 45%),
     radial-gradient(circle at 88% 78%, rgba(29,78,216,0.045), transparent 50%),
-    repeating-linear-gradient(0deg, rgba(0,0,0,0.025) 0 1px, transparent 1px 12px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.025) 0 1px, transparent 1px 12px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
     var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);

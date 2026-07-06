@@ -51,10 +51,10 @@ export default function ImpressumPage() {
             <p className="leading-relaxed">
               E-Mail:{" "}
               <a
-                href="mailto:sergio.medbuilds@gmail.com"
+                href="mailto:kontakt.medcase@gmail.com"
                 className="text-accent underline underline-offset-2"
               >
-                sergio.medbuilds@gmail.com
+                kontakt.medcase@gmail.com
               </a>
             </p>
           </section>

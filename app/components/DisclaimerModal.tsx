@@ -82,7 +82,7 @@ export function DisclaimerModal() {
             marginBottom: 24,
           }}
         >
-          Diese Seite verwendet ein technisch notwendiges Cookie, um deinen Fortschritt zu speichern — keine Marketing- oder Tracking-Cookies. Wenn du deine E-Mail für Release-Benachrichtigungen hinterlässt, nutzen wir sie ausschließlich dafür, nicht für Marketing. Mit „Verstanden" bestätigst du, dass du diesen Hinweis gelesen hast. Details:{" "}
+          Diese Seite verwendet ein technisch notwendiges Cookie, um deinen Fortschritt zu speichern — keine Marketing- oder Tracking-Cookies. Wenn du deine E-Mail für Release-Benachrichtigungen hinterlässt, nutzen wir sie ausschließlich dafür, nicht für Marketing. Mit &bdquo;Verstanden&ldquo; bestätigst du, dass du diesen Hinweis gelesen hast. Details:{" "}
           <a href="/datenschutz" style={{ color: "var(--accent)" }}>
             Datenschutzerklärung
           </a>

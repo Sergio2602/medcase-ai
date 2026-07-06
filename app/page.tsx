@@ -776,6 +776,7 @@ function StartScreen({
         <span>© 2026 Medcase</span>
         <div className="flex items-center gap-4">
           <a href="/impressum" className="hover:underline">Impressum</a>
+          <a href="/datenschutz" className="hover:underline">Datenschutz</a>
           <span>Kontakt</span>
         </div>
       </footer>

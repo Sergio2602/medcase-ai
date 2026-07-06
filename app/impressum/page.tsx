@@ -77,7 +77,10 @@ export default function ImpressumPage() {
           className="mx-auto mt-4 max-w-2xl border-t border-card-border/15 pt-3 text-center"
           style={{ fontSize: 11, color: "#5f5e5a" }}
         >
-          © 2026 Medcase
+          © 2026 Medcase ·{" "}
+          <Link href="/datenschutz" className="hover:underline">
+            Datenschutz
+          </Link>
         </footer>
       </div>
     </div>

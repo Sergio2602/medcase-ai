@@ -39,7 +39,7 @@ export function OnboardingTour({
   }, []);
 
   useEffect(() => {
-    if (!getCookie(COOKIE_NAME)) setActive(true);
+    if (!getCookie(COOKIE_NAME) && getCookie("disclaimerSeen")) setActive(true);
   }, []);
 
   const refs = [step1Ref, step2Ref, step3Ref] as const;

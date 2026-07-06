@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from "next/font/google";
 import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 import "./globals.css";
 import { AddToHomescreenBanner } from "./components/AddToHomescreenBanner";
+import { DisclaimerModal } from "./components/DisclaimerModal";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,6 +35,7 @@ export default function RootLayout({
     <html lang="de">
       <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <DisclaimerModal />
         <AddToHomescreenBanner />
       </body>
     </html>

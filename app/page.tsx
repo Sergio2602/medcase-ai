@@ -195,7 +195,7 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen px-4 pt-5 md:px-10 ${phase === "playing" || phase === "result" ? "" : "pb-8"}`}>
-      <div className="mx-auto max-w-[1140px]">
+      <div className="mx-auto max-w-[1320px]">
         {phase === "start" && <StartScreen onStart={startCase} />}
         {phase === "loading" && <LoadingScreen />}
         {(phase === "playing" || phase === "result") && activeCase && (
@@ -1072,7 +1072,7 @@ function FindingCard({ title, icon, text, expanded, onToggle }: { title: string;
         {expanded && (
           <>
             <div className="border-t border-card-border/10" />
-            <p className="px-5 py-4 leading-relaxed">{text}</p>
+            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{text}</p>
           </>
         )}
       </div>
@@ -1107,7 +1107,7 @@ function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expande
         {expanded && (
           <>
             <div className="border-t border-card-border/10" />
-            <p className="px-5 py-4 leading-relaxed">{imaging}</p>
+            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{imaging}</p>
           </>
         )}
       </div>

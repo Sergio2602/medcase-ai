@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 import "./globals.css";
 import { AddToHomescreenBanner } from "./components/AddToHomescreenBanner";
@@ -11,9 +11,10 @@ const inter = Inter({
   weight: ["400", "500", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="de">
-      <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${inter.variable} ${ibmPlexMono.variable} antialiased`}>
         {children}
         <DisclaimerModal />
         <AddToHomescreenBanner />

@@ -227,34 +227,31 @@ export default function Home() {
 
 const PATIENT_PREVIEWS = [
   {
+    caseId: "FALL-0127",
     initials: "KM",
     color: "#90caf9",
     name: "Klaus M.",
     meta: "58 J. · männlich",
     quote: "Starke Brustschmerzen seit heute Morgen …",
     revealed: ["Anamnese", "Untersuchung"],
-    score: 90,
-    solved: "4/5",
   },
   {
+    caseId: "FALL-0084",
     initials: "SF",
     color: "#a5d6a7",
     name: "Sabine F.",
     meta: "34 J. · weiblich",
     quote: "Seit drei Tagen Fieber und Husten, jetzt auch Atemnot …",
     revealed: ["Anamnese", "Labor"],
-    score: 80,
-    solved: "3/5",
   },
   {
+    caseId: "FALL-0211",
     initials: "TR",
     color: "#ffd54f",
     name: "Thomas R.",
     meta: "45 J. · männlich",
     quote: "Plötzlich einseitige Schwäche im Arm, Sprache verwaschen …",
     revealed: ["Anamnese"],
-    score: 90,
-    solved: "5/5",
   },
 ];
 
@@ -267,69 +264,44 @@ const HOW_STEPS: { label: string; state: "done" | "current" | "next" }[] = [
 function RotatingPatientPreview() {
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [animatedScore, setAnimatedScore] = useState(0);
-  const [animationDone, setAnimationDone] = useState(false);
 
-  // Auto-advance — disabled when user prefers reduced motion
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-
     const id = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
         setIndex((i) => (i + 1) % PATIENT_PREVIEWS.length);
         setVisible(true);
       }, 300);
-    }, 4000);
+    }, 4500);
     return () => clearInterval(id);
   }, []);
 
-  // Score count-up on mount — once only, skipped on reduced motion
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setAnimationDone(true);
-      return;
-    }
-
-    const target = PATIENT_PREVIEWS[0].score;
-    let rafId: number | undefined;
-    const delay = setTimeout(() => {
-      let current = 0;
-      function step() {
-        current = Math.min(current + 6, target);
-        setAnimatedScore(current);
-        if (current < target) {
-          rafId = requestAnimationFrame(step);
-        } else {
-          setAnimationDone(true);
-        }
-      }
-      rafId = requestAnimationFrame(step);
-    }, 300);
-
-    return () => {
-      clearTimeout(delay);
-      if (rafId !== undefined) cancelAnimationFrame(rafId);
-    };
-  }, []);
-
   const p = PATIENT_PREVIEWS[index];
-  const scoreDisplay = animationDone ? p.score : animatedScore;
+  const possiblePoints = 100 - p.revealed.length * 10;
 
   return (
     <div className="card p-5">
-      {/* Upper block — fades on carousel transition */}
-      <div
-        className="transition-opacity duration-300"
-        style={{ opacity: visible ? 1 : 0 }}
-      >
+      {/* Card header — always visible */}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block h-2 w-2 rounded-full bg-[#16a34a]"
+            style={{ animation: "pulse-soft 2s ease-in-out infinite" }}
+          />
+          <span className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+            Laufender Fall
+          </span>
+        </div>
+        <span className="font-mono text-[10.5px] text-muted/60">{p.caseId}</span>
+      </div>
+
+      {/* Patient block — fades on carousel transition */}
+      <div className="transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }}>
+        {/* Avatar + name */}
         <div className="mb-3 flex items-center gap-3">
-          <div
-            className="avatar-circle h-9 w-9 text-xs"
-            style={{ backgroundColor: p.color }}
-          >
+          <div className="avatar-circle h-9 w-9 text-xs" style={{ backgroundColor: p.color }}>
             {p.initials}
           </div>
           <div>
@@ -337,29 +309,41 @@ function RotatingPatientPreview() {
             <p className="text-xs text-muted">{p.meta}</p>
           </div>
         </div>
-        <p className="mb-3 border-l-[1.5px] border-card-border/20 pl-3 text-sm italic">
+
+        {/* Quote */}
+        <p className="mb-4 border-l-[1.5px] border-card-border/20 pl-3 text-sm italic text-foreground/80">
           „{p.quote}{'"'}
         </p>
-        <div className="mb-3 flex flex-col gap-1.5 text-sm font-semibold">
+
+        {/* Revealed findings */}
+        <div className="mb-4 flex flex-col gap-2">
           {p.revealed.map((f) => (
-            <span key={f} className="flex items-center gap-1.5 text-accent">
-              <i className="ti ti-check" />
-              {f}
-            </span>
+            <div key={f} className="flex items-center justify-between">
+              <span className="flex items-center gap-2 text-[13px] font-semibold text-accent">
+                <i className="ti ti-check text-[12px]" />
+                {f}
+              </span>
+              <span className="font-mono text-[11px] font-bold text-[#dc2626]">−10</span>
+            </div>
           ))}
         </div>
-        <div className="flex gap-2">
-          <span className="rounded-full bg-[#eaf0fc] px-2.5 py-1 text-xs font-bold text-accent">
-            {scoreDisplay} Punkte
+
+        {/* Divider */}
+        <div className="mb-3 border-t border-card-border/10" />
+
+        {/* Noch möglich */}
+        <div className="mb-2 flex items-baseline justify-between">
+          <span className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+            Noch möglich
           </span>
-          <span className="rounded-full bg-[#eaf0fc] px-2.5 py-1 text-xs font-bold text-accent">
-            {p.solved} gelöst
+          <span className="font-mono text-[26px] font-extrabold leading-none text-accent">
+            {possiblePoints}
           </span>
         </div>
       </div>
 
       {/* Dot indicators */}
-      <div className="mt-2.5 flex items-center justify-center gap-1.5">
+      <div className="mb-3 mt-1 flex items-center justify-center gap-1.5">
         {PATIENT_PREVIEWS.map((_, i) => (
           <div
             key={i}
@@ -374,8 +358,8 @@ function RotatingPatientPreview() {
         ))}
       </div>
 
-      {/* Lower block — how it works steps */}
-      <div className="mt-3 border-t border-card-border/10 pt-3">
+      {/* Progress steps */}
+      <div className="border-t border-card-border/10 pt-3">
         <div className="flex flex-col gap-2">
           {HOW_STEPS.map((step, i) => (
             <div key={i} className="flex items-center gap-2.5">
@@ -422,18 +406,20 @@ function RotatingPatientPreview() {
 
 function StatsRow() {
   return (
-    <div className="mt-5 grid grid-cols-3 divide-x divide-card-border/15 border-t border-card-border/15 pt-5">
-      <div className="px-4 text-center first:pl-0">
+    <div className="mt-5 flex items-center border-y border-card-border/15 py-4">
+      <div className="flex-1 px-4 text-center">
         <p className="text-2xl font-extrabold text-foreground">140+</p>
-        <p className="text-[12.5px] font-medium text-muted">Klinische Fälle</p>
+        <p className="text-[12px] font-medium text-muted">Klinische Fälle</p>
       </div>
-      <div className="px-4 text-center">
+      <div className="h-10 w-px shrink-0 bg-card-border/15" />
+      <div className="flex-1 px-4 text-center">
         <p className="text-2xl font-extrabold text-foreground">3</p>
-        <p className="text-[12.5px] font-medium text-muted">Schwierigkeitsstufen</p>
+        <p className="text-[12px] font-medium text-muted">Schwierigkeitsstufen</p>
       </div>
-      <div className="px-4 text-center opacity-50 last:pr-0">
-        <p className="text-base font-bold">Pro-Preis folgt</p>
-        <p className="text-[12.5px] font-medium text-muted">nach Validierung</p>
+      <div className="h-10 w-px shrink-0 bg-card-border/15" />
+      <div className="flex-1 px-4 text-center opacity-50">
+        <p className="text-2xl font-extrabold text-foreground">—</p>
+        <p className="text-[12px] italic text-muted">Pro-Preis folgt</p>
       </div>
     </div>
   );
@@ -673,7 +659,12 @@ function WelcomeNote() {
         S
       </div>
       <div>
-        <p className="text-sm font-bold">Eine Nachricht von Sergio</p>
+        <p className="flex items-center gap-2 text-sm font-bold">
+          Eine Nachricht von Sergio
+          <span className="rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-accent/10 text-accent">
+            Gründer
+          </span>
+        </p>
         {/* TODO Sergio: echten Text einsetzen */}
         <p
           className={`mt-1 text-sm leading-relaxed text-muted ${
@@ -894,12 +885,10 @@ function CollapseToggle({ expanded, onToggle }: { expanded: boolean; onToggle: (
   return (
     <button
       onClick={onToggle}
-      className="flex items-center gap-1 rounded-full border-[1.5px] border-current px-2.5 py-1 text-xs font-semibold transition-opacity hover:opacity-70"
-      style={{ color: "#5f5e5a" }}
+      className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-foreground/5"
       aria-label={expanded ? "Einklappen" : "Ausklappen"}
     >
-      <span>Details</span>
-      <i className={`text-[11px] ${expanded ? "ti ti-chevron-up" : "ti ti-chevron-down"}`} />
+      <i className={`text-[15px] ${expanded ? "ti ti-chevron-up" : "ti ti-chevron-down"}`} />
     </button>
   );
 }
@@ -1060,16 +1049,19 @@ function FindingOverlay({
   );
 }
 
-function FindingCard({ title, text, expanded, onToggle }: { title: string; text: string; expanded: boolean; onToggle: () => void }) {
+function FindingCard({ title, icon, text, expanded, onToggle }: { title: string; icon: string; text: string; expanded: boolean; onToggle: () => void }) {
   const [overlayOpen, setOverlayOpen] = useState(false);
   return (
     <>
-      <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
-        <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
-          <p className="text-xs font-bold uppercase tracking-wide text-muted">
-            {title}
-          </p>
-          <div className="flex items-center gap-1.5">
+      <div className="card">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2">
+            <i className={`ti ${icon} text-accent text-[13px]`} />
+            <p className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+              {title}
+            </p>
+          </div>
+          <div className="flex items-center gap-1">
             <MaximizeButton
               onClick={() => setOverlayOpen(true)}
               ariaLabel={`${title} vollständig anzeigen`}
@@ -1077,7 +1069,12 @@ function FindingCard({ title, text, expanded, onToggle }: { title: string; text:
             <CollapseToggle expanded={expanded} onToggle={onToggle} />
           </div>
         </div>
-        {expanded && <p className="leading-relaxed">{text}</p>}
+        {expanded && (
+          <>
+            <div className="border-t border-card-border/10" />
+            <p className="px-5 py-4 leading-relaxed">{text}</p>
+          </>
+        )}
       </div>
       <FindingOverlay open={overlayOpen} onClose={() => setOverlayOpen(false)} title={title}>
         <p style={{ fontSize: 16, lineHeight: 1.7 }}>{text}</p>
@@ -1091,12 +1088,15 @@ function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expande
   if (!imaging) return null;
   return (
     <>
-      <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
-        <div className={`flex items-center justify-between ${expanded ? "mb-2" : ""}`}>
-          <p className="text-xs font-bold uppercase tracking-wide text-muted">
-            Bildgebung
-          </p>
-          <div className="flex items-center gap-1.5">
+      <div className="card">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2">
+            <i className="ti ti-scan text-accent text-[13px]" />
+            <p className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+              Bildgebung
+            </p>
+          </div>
+          <div className="flex items-center gap-1">
             <MaximizeButton
               onClick={() => setOverlayOpen(true)}
               ariaLabel="Bildgebung vollständig anzeigen"
@@ -1104,7 +1104,12 @@ function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expande
             <CollapseToggle expanded={expanded} onToggle={onToggle} />
           </div>
         </div>
-        {expanded && <p className="leading-relaxed">{imaging}</p>}
+        {expanded && (
+          <>
+            <div className="border-t border-card-border/10" />
+            <p className="px-5 py-4 leading-relaxed">{imaging}</p>
+          </>
+        )}
       </div>
       <FindingOverlay open={overlayOpen} onClose={() => setOverlayOpen(false)} title="Bildgebung">
         <p style={{ fontSize: 16, lineHeight: 1.7 }}>{imaging}</p>
@@ -1141,7 +1146,7 @@ function LaborOverlay({
                 </tr>
               </thead>
               <tbody>
-                {cat.values.map((v) => {
+                {(cat.values ?? []).map((v) => {
                   const flagged = v.flag === "high" || v.flag === "low";
                   return (
                     <tr
@@ -1186,33 +1191,27 @@ function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: 
   const [overlayOpen, setOverlayOpen] = useState(false);
   return (
     <>
-      <div className={`card ${expanded ? "p-5" : "px-4 py-3"}`}>
-        <div className={`flex items-center justify-between ${expanded ? "mb-3" : ""}`}>
-          <p className="text-xs font-bold uppercase tracking-wide text-muted">
-            Labor
-          </p>
-          <div className="flex items-center gap-1.5">
-            <button
+      <div className="card">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-2">
+            <i className="ti ti-microscope text-accent text-[13px]" />
+            <p className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+              Labor
+            </p>
+          </div>
+          <div className="flex items-center gap-1">
+            <MaximizeButton
               onClick={() => setOverlayOpen(true)}
-              aria-label="Labor vollständig anzeigen"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 32,
-                height: 32,
-                border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
-                borderRadius: 8,
-                background: "var(--card)",
-                cursor: "pointer",
-              }}
-            >
-              <i className="ti ti-arrows-maximize" style={{ fontSize: 16 }} />
-            </button>
+              ariaLabel="Labor vollständig anzeigen"
+            />
             <CollapseToggle expanded={expanded} onToggle={onToggle} />
           </div>
         </div>
-        {expanded && labs.map((cat) => (
+        {expanded && (
+          <>
+            <div className="border-t border-card-border/10" />
+            <div className="px-5 py-4">
+        {labs.map((cat) => (
           <div key={cat.category} className="mb-4 last:mb-0">
             <p className="mb-2 text-sm font-semibold">{cat.category}</p>
             <table className="clinical-data w-full text-sm">
@@ -1225,7 +1224,7 @@ function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: 
                 </tr>
               </thead>
               <tbody>
-                {cat.values.map((v) => {
+                {(cat.values ?? []).map((v) => {
                   const flagged = v.flag === "high" || v.flag === "low";
                   return (
                     <tr
@@ -1267,6 +1266,9 @@ function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: 
             </table>
           </div>
         ))}
+            </div>
+          </>
+        )}
       </div>
       <LaborOverlay
         open={overlayOpen}
@@ -1550,7 +1552,8 @@ function DiagnosisIsland({
   return (
     <div ref={diagnosisIslandRef} className="w-full rounded-2xl border-[1.5px] border-card-border/15 bg-card px-4 py-[14px] shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)]">
       <div className="mb-3 flex items-center justify-between px-0.5">
-        <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-muted">
+        <span className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+          <i className="ti ti-stethoscope text-accent text-[11px]" />
           Diagnose stellen
         </span>
         <span className="text-xs font-medium text-muted">
@@ -1631,7 +1634,8 @@ function ReportCaseCard({
               Melde ihn kurz, wir prüfen ihn dann.
             </div>
           )}
-          <span className="text-xs font-bold uppercase tracking-wide text-muted">
+          <span className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+            <i className="ti ti-flag text-accent text-[11px]" />
             Fall melden
           </span>
         </div>
@@ -1814,7 +1818,10 @@ function MobileSidebar({
             <span className="font-semibold text-accent">{disciplineLabel}</span>
           </div>
           <div className="rounded-xl border-[1.5px] border-card-border/20 bg-card p-4">
-            <p className="text-xs font-bold uppercase tracking-wide text-muted">Fortschritt heute</p>
+            <p className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+            <i className="ti ti-calendar text-accent text-[11px]" />
+            Fortschritt heute
+          </p>
             <p className="mt-2 text-2xl font-extrabold">
               {dailyUsed}
               <span className="text-base font-semibold text-muted"> / {dailyLimit} Fällen</span>
@@ -1864,9 +1871,10 @@ function StatusPanel({
 
   return (
     <>
-      {/* Card 1: Fortschritt heute */}
+      {/* Card: Fortschritt heute */}
       <div className="card p-[18px]">
-        <p className="mb-[10px] text-center text-[11.5px] font-bold uppercase tracking-[0.03em] text-muted">
+        <p className="mb-[10px] flex items-center justify-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+          <i className="ti ti-calendar text-accent text-[11px]" />
           Fortschritt heute
         </p>
         <p className="text-center text-[30px] font-extrabold leading-none">
@@ -1887,55 +1895,58 @@ function StatusPanel({
         </p>
       </div>
 
-      {/* Card 2: Mögliche Punkte — only during playing phase */}
-      {phase !== "result" && (
-        <div className="card p-[18px]">
-          <p className="mb-[10px] text-center text-[11.5px] font-bold uppercase tracking-[0.03em] text-muted">
-            Mögliche Punkte
-          </p>
-          <p className="clinical-data text-center text-[34px] font-extrabold leading-none text-accent">
-            {possiblePoints}
-          </p>
-          <p className="mt-[4px] text-center text-[12px] text-muted">
-            von {BASE_SCORE} möglich
-          </p>
-        </div>
-      )}
-
-      {/* Card 3: Befundstatus */}
+      {/* Card: Punktestand · dieser Fall (merged) */}
       <div className="card p-[18px]">
-        <p className="mb-[10px] text-[11.5px] font-bold uppercase tracking-[0.03em] text-muted">
-          Befundstatus
+        <p className="mb-3 flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+          <i className="ti ti-chart-bar text-accent text-[11px]" />
+          Punktestand · dieser Fall
         </p>
-        <div className="flex flex-col gap-[10px]">
+
+        {/* Basis row */}
+        <div className="flex items-center justify-between text-[13px]">
+          <span className="text-muted">Basis</span>
+          <span className="font-mono font-bold text-foreground">{BASE_SCORE}</span>
+        </div>
+
+        {/* Per-finding rows */}
+        <div className="mt-2 flex flex-col gap-2">
           {checklist.map((item) => {
             const done = revealed[item.key];
+            const costCharged = phase === "result" ? revealedAtSubmit[item.key] : done;
             return (
-              <div
-                key={item.key}
-                className="flex items-center gap-[10px] text-[13.5px]"
-              >
+              <div key={item.key} className="flex items-center gap-2.5 text-[13px]">
                 <span
-                  className="h-[16px] w-[16px] shrink-0 rounded-full border-[1.5px]"
+                  className="h-[14px] w-[14px] shrink-0 rounded-full border-[1.5px]"
                   style={
                     done
                       ? { background: "#dc2626", borderColor: "#dc2626" }
                       : { borderColor: "color-mix(in srgb, var(--card-border) 25%, transparent)" }
                   }
                 />
-                <span className={done ? "text-foreground" : "text-muted"}>{item.label}</span>
-                {done && revealedAtSubmit[item.key] && (
-                  <span className="ml-auto text-[11.5px] font-bold text-[#dc2626]">
-                    −10
-                  </span>
-                )}
+                <span className={`flex-1 ${done ? "text-foreground" : "text-muted"}`}>
+                  {item.label}
+                </span>
+                <span className={`font-mono text-[11.5px] font-bold ${costCharged ? "text-[#dc2626]" : "text-muted/50"}`}>
+                  {costCharged ? "−10" : "—"}
+                </span>
               </div>
             );
           })}
         </div>
+
+        <div className="my-3 border-t border-card-border/10" />
+
+        {/* Möglich sum row */}
+        <div className="flex items-baseline justify-between">
+          <span className="text-[11.5px] font-semibold text-muted">Möglich</span>
+          <span className="font-mono text-[26px] font-extrabold leading-none text-accent">
+            {possiblePoints}
+          </span>
+        </div>
+        <p className="mt-1 text-[11px] text-muted">Minimum bei richtiger Diagnose: 70</p>
       </div>
 
-      {/* Card 4: Fall melden */}
+      {/* Card: Fall melden */}
       <ReportCaseCard caseId={caseId} difficulty={difficulty} anchorRef={anchorRef} />
     </>
   );
@@ -2252,7 +2263,7 @@ function GameScreen({
                 >
                   <i className="ti ti-help-circle" />
                 </button>
-                <span className="text-xs font-bold uppercase tracking-wide text-muted">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
                   Befunde anfordern
                 </span>
               </div>
@@ -2307,6 +2318,7 @@ function GameScreen({
           {revealed.history && (
             <FindingCard
               title="Anamnese"
+              icon="ti-notes"
               text={caseData.history}
               expanded={cardExpanded.history}
               onToggle={() => setCardExpanded((e) => ({ ...e, history: !e.history }))}
@@ -2315,6 +2327,7 @@ function GameScreen({
           {revealed.examination && (
             <FindingCard
               title="Körperliche Untersuchung"
+              icon="ti-stethoscope"
               text={caseData.examination}
               expanded={cardExpanded.examination}
               onToggle={() => setCardExpanded((e) => ({ ...e, examination: !e.examination }))}

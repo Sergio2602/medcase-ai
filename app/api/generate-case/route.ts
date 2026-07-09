@@ -63,33 +63,65 @@ const CASE_FILES: Record<Difficulty, string> = {
   examen: "pj.json",
 };
 
+// Optional "reviewed" case bank per difficulty — source-checked cases authored
+// manually (Claude/Claude Code chat, added to these files by hand). Entries
+// here REPLACE the base-bank entry with the same `id` (so a reviewed case can
+// supersede a known-bad one) and any entry with a new `id` is simply added.
+// Files are intentionally kept separate from the base bank so in-progress
+// review work never mixes with unreviewed content, and so this can be rolled
+// out gradually per difficulty.
+const REVIEWED_CASE_FILES: Partial<Record<Difficulty, string>> = {
+  klinik: "innere-reviewed.json",
+  vorklinik: "vorklinik-reviewed.json",
+};
+
 // Case banks are static build assets, so parse them once and cache in memory.
 // A missing/unreadable file is never cached, so it's retried on the next call.
 const caseBankCache = new Map<Difficulty, Record<string, unknown>[]>();
 
+async function readCaseFile(fileName: string): Promise<Record<string, unknown>[]> {
+  try {
+    const filePath = path.join(process.cwd(), "public", "cases", fileName);
+    const raw = await fs.readFile(filePath, "utf8");
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as Record<string, unknown>[]) : [];
+  } catch {
+    // Missing or invalid JSON — treated as "no cases from this file".
+    return [];
+  }
+}
+
 async function loadCaseBank(
   difficulty: Difficulty
 ): Promise<Record<string, unknown>[]> {
-  const cached = caseBankCache.get(difficulty);
+  // Skip the cache outside production: case JSON files are actively edited
+  // during content work, and public/ is a static asset dir the dev server
+  // doesn't watch for this route's purposes — a stale in-memory cache here
+  // silently serves outdated content until the process restarts. In
+  // production the files are immutable per deploy, so caching is safe there.
+  const cacheEnabled = process.env.NODE_ENV === "production";
+  const cached = cacheEnabled ? caseBankCache.get(difficulty) : undefined;
   if (cached) return cached;
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "cases",
-      CASE_FILES[difficulty]
-    );
-    const raw = await fs.readFile(filePath, "utf8");
-    const parsed = JSON.parse(raw);
-    const cases = Array.isArray(parsed)
-      ? (parsed as Record<string, unknown>[])
-      : [];
-    caseBankCache.set(difficulty, cases);
-    return cases;
-  } catch {
-    // File missing or invalid JSON — caller surfaces a generic error.
-    return [];
+
+  const base = await readCaseFile(CASE_FILES[difficulty]);
+  const reviewedFile = REVIEWED_CASE_FILES[difficulty];
+  const reviewed = reviewedFile ? await readCaseFile(reviewedFile) : [];
+
+  let cases: Record<string, unknown>[];
+  if (reviewed.length > 0) {
+    // Merge by id: reviewed cases override a base case with the same id
+    // (replace), and any reviewed-only id is appended (extend).
+    const byId = new Map(base.map((c) => [c.id as string, c]));
+    for (const c of reviewed) byId.set(c.id as string, c);
+    cases = Array.from(byId.values());
+  } else {
+    cases = base;
   }
+
+  // Only cache once we have at least one usable case — an empty result during
+  // a transient read failure should be retried on the next request, not stuck.
+  if (cacheEnabled && cases.length > 0) caseBankCache.set(difficulty, cases);
+  return cases;
 }
 
 export async function POST(request: Request) {
@@ -105,13 +137,9 @@ export async function POST(request: Request) {
     );
   }
 
-  let topic = "";
   let difficulty: Difficulty = "klinik";
   try {
     const body = await request.json();
-    // Cap topic length to keep prompt input bounded.
-    topic =
-      typeof body.topic === "string" ? body.topic.trim().slice(0, 100) : "";
     if (
       body.difficulty === "vorklinik" ||
       body.difficulty === "klinik" ||
@@ -120,20 +148,19 @@ export async function POST(request: Request) {
       difficulty = body.difficulty;
     }
   } catch {
-    // No body / invalid body is fine — we'll generate a random case at the default level.
+    // No body / invalid body is fine — we'll serve a random case at the default level.
   }
 
-  // Serve a random pregenerated case from the matching bank. A specific topic
-  // request can't be honored from the bank, so it falls through to an error.
-  if (!topic) {
-    const bank = await loadCaseBank(difficulty);
-    if (bank.length > 0) {
-      const picked = bank[Math.floor(Math.random() * bank.length)];
-      return NextResponse.json(picked, { headers: baseHeaders });
-    }
+  // Serve a random case from the matching static bank. There is no live
+  // generation path — content is authored offline (Claude/Claude Code) and
+  // added to public/cases/*.json (and the *-reviewed.json overlays) directly.
+  const bank = await loadCaseBank(difficulty);
+  if (bank.length > 0) {
+    const picked = bank[Math.floor(Math.random() * bank.length)];
+    return NextResponse.json(picked, { headers: baseHeaders });
   }
 
-  // No bank case available (empty bank, or a topic request the bank can't serve).
+  // No case available for this difficulty (empty/missing bank file).
   return NextResponse.json(
     { error: GENERIC_ERROR },
     { status: 500, headers: baseHeaders }

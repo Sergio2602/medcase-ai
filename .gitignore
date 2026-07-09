@@ -46,3 +46,9 @@ next-env.d.ts
 # local debug/test scripts
 screenshot-medcase.js
 verify-diag.js
+check-scroll.js
+landing-check.js
+scripts/generate-reviewed-cases.ts
+
+# local agent config, not part of the project
+.claude/

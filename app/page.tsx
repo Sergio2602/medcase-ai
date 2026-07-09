@@ -47,6 +47,28 @@ type Case = {
   diagnosisOptions: string[];
   keyTakeaway?: string;
   explanation: string;
+  // Optional — only present on newly-curated, source-checked cases. Absent on
+  // the older bank, which must keep rendering exactly as before (no UI change
+  // when this is undefined).
+  differentialNotes?: DifferentialNote[];
+  // Optional — 1-sentence, sourced context on why this diagnosis is in the
+  // bank (common in real hospitals, or rare-but-cannot-miss). Display only,
+  // no scoring effect. Only rendered post-reveal (never during play, to avoid
+  // leaking the answer category before the user commits).
+  caseContext?: CaseContext;
+};
+
+type CaseContext = {
+  category: "haeufig" | "cannot-miss";
+  note: string;
+};
+
+type DifferentialNote = {
+  // Must match one of diagnosisOptions verbatim (not the correct diagnosis).
+  option: string;
+  // 1-2 Sätze: warum diese Diagnose NICHT zutrifft, idealerweise mit dem
+  // konkreten unterscheidenden Befund gegenüber der korrekten Diagnose.
+  whyNot: string;
 };
 
 type Revealed = {
@@ -1329,6 +1351,7 @@ function ResultIsland({
   onNext,
   revealedCount,
   maxHeight,
+  islandRef,
 }: {
   lastResultCorrect: boolean;
   lastScoreEarned: number;
@@ -1337,9 +1360,20 @@ function ResultIsland({
   onNext: () => void;
   revealedCount: number;
   maxHeight?: string;
+  islandRef?: RefObject<HTMLDivElement | null>;
 }) {
   const [expanded, setExpanded] = useState(true);
   const [isSharing, setIsSharing] = useState(false);
+  // Only one differential note shown at a time, in a shared area below the
+  // grid (same treatment as the correct diagnosis's "Vollständige
+  // Begründung") — clicking a wrong option selects it, clicking again (or a
+  // different option) switches/deselects, instead of each box expanding
+  // inline to a different height.
+  const [selectedNoteOption, setSelectedNoteOption] = useState<string | null>(null);
+
+  function toggleNote(option: string) {
+    setSelectedNoteOption((prev) => (prev === option ? null : option));
+  }
 
   const isCorrect = lastResultCorrect;
   const { value: animatedScore, settled } = useCountUp(lastScoreEarned, isCorrect);
@@ -1387,6 +1421,7 @@ function ResultIsland({
 
   return (
     <div
+      ref={islandRef}
       className="absolute bottom-0 left-0 right-0 rounded-xl border-[1.5px] flex flex-col"
       style={{ borderColor, backgroundColor: bgColor }}
     >
@@ -1433,15 +1468,37 @@ function ResultIsland({
           </div>
         </div>
 
-        {caseData.keyTakeaway && (
+        {(caseData.keyTakeaway || caseData.caseContext) && (
           <div className="px-4 pb-3">
             <div className="mb-3 h-px bg-foreground/10" />
-            <p className="text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
-              {isCorrect ? "Warum es richtig ist" : "Worauf es ankam"}
-            </p>
-            <p className="mt-1 text-xs font-bold leading-relaxed text-foreground sm:text-sm">
-              {caseData.keyTakeaway}
-            </p>
+            {caseData.keyTakeaway && (
+              <>
+                <p className="text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
+                  {isCorrect ? "Warum es richtig ist" : "Worauf es ankam"}
+                </p>
+                <p className="mt-1 text-xs font-bold leading-relaxed text-foreground sm:text-sm">
+                  {caseData.keyTakeaway}
+                </p>
+              </>
+            )}
+            {caseData.caseContext &&
+              (caseData.caseContext.category === "cannot-miss" ? (
+                <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#d97706]/40 bg-[#fef3e2] px-2.5 py-1 text-[11px] font-semibold text-[#92400e]">
+                  <span className="flex h-[16px] w-[16px] shrink-0 items-center justify-center rounded-full bg-[#d97706] text-white">
+                    <i className="ti ti-alert-triangle text-[10px]" />
+                  </span>
+                  {caseData.caseContext.note}
+                </span>
+              ) : (
+                <div className="mt-2 flex items-start gap-2 rounded-lg border-2 border-[#fb923c]/50 bg-[#fb923c]/[0.07] px-3 py-2">
+                  <span className="mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#fb923c]/15 text-[#fb923c]">
+                    <i className="ti ti-info-circle text-[11px]" />
+                  </span>
+                  <p className="text-[11.5px] font-semibold leading-snug text-foreground/85">
+                    {caseData.caseContext.note}
+                  </p>
+                </div>
+              ))}
           </div>
         )}
       </div>
@@ -1469,23 +1526,46 @@ function ResultIsland({
             )}
           </p>
 
-          {/* Diagnosis options color-coded */}
-          <div className="mb-4 grid grid-cols-2 gap-2">
+          {/* Diagnosis options color-coded, uniform height. Wrong options with a
+              differential note are clickable — selecting one shows its
+              explanation in the shared box below, same treatment as the
+              correct diagnosis's "Vollständige Begründung". */}
+          <div className="mb-2 grid grid-cols-2 gap-2">
             {caseData.diagnosisOptions.map((opt) => {
               const isCorrectAnswer = opt === caseData.correctDiagnosis;
               const isWrongPick = opt === selectedDiagnosis && opt !== caseData.correctDiagnosis;
+              const note = !isCorrectAnswer
+                ? caseData.differentialNotes?.find((n) => n.option === opt)
+                : undefined;
+              const isSelected = selectedNoteOption === opt;
+              // Correct answer is always clickable too — resets the shared
+              // explanation box back to "Vollständige Begründung", so all
+              // four options behave consistently (click any tile to see its
+              // reasoning) instead of only the wrong ones responding.
+              const isClickable = Boolean(note) || isCorrectAnswer;
+              const Wrapper = isClickable ? "button" : "div";
               return (
-                <div
+                <Wrapper
                   key={opt}
-                  className={`flex items-center justify-between gap-2 rounded-lg border-[1.5px] px-3 py-2.5 text-[13.5px] font-semibold ${
+                  {...(isClickable
+                    ? {
+                        onClick: () =>
+                          isCorrectAnswer ? setSelectedNoteOption(null) : toggleNote(opt),
+                        type: "button" as const,
+                        "aria-pressed": isCorrectAnswer ? selectedNoteOption === null : isSelected,
+                      }
+                    : {})}
+                  className={`flex items-center justify-between gap-2 rounded-lg border-[1.5px] px-3 py-2.5 text-left text-[13.5px] font-semibold transition-colors ${
+                    isClickable ? "cursor-pointer" : ""
+                  } ${
                     isCorrectAnswer
                       ? "border-[#15803d]/40 bg-[#f1f9ef] text-[#14532d]"
-                      : isWrongPick
+                      : isWrongPick || isSelected
                       ? "border-[#c0362c]/40 bg-[#fdf1f0] text-[#7f1d1d]"
                       : "border-card-border/15 bg-card text-foreground/80"
                   }`}
                 >
-                  {opt}
+                  <span>{opt}</span>
                   {isCorrectAnswer && (
                     <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white">
                       <i className="ti ti-check text-[10px]" />
@@ -1496,20 +1576,53 @@ function ResultIsland({
                       <i className="ti ti-x text-[10px]" />
                     </span>
                   )}
-                </div>
+                  {note && !isCorrectAnswer && !isWrongPick && (
+                    <i
+                      className={`ti ti-chevron-down shrink-0 text-[11px] opacity-50 transition-transform ${
+                        isSelected ? "rotate-180" : ""
+                      }`}
+                    />
+                  )}
+                </Wrapper>
               );
             })}
           </div>
 
-          {/* Vollständige Begründung only — keyTakeaway ist immer sichtbar oben */}
-          <div className="mb-4 rounded-xl bg-white/60 p-3 sm:p-4">
-            <p className="text-xs leading-relaxed text-foreground/75 sm:text-[13.5px]">
-              <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-wide text-foreground/60">
-                Vollständige Begründung
-              </span>
-              {caseData.explanation}
-            </p>
-          </div>
+          {/* Single explanation box — content swaps between "Vollständige
+              Begründung" (default) and the selected differential's "Warum
+              nicht X" note, instead of stacking a second box on top. Keeps
+              the island's height constant regardless of interaction. */}
+          {(() => {
+            const selectedNote = caseData.differentialNotes?.find(
+              (n) => n.option === selectedNoteOption
+            );
+            const label = selectedNote
+              ? `Warum nicht ${selectedNote.option}?`
+              : "Vollständige Begründung";
+            const text = selectedNote ? selectedNote.whyNot : caseData.explanation;
+            return (
+              <div
+                className={`mb-4 rounded-xl p-3 sm:p-4 ${
+                  selectedNote ? "bg-[#fdf1f0]" : "bg-white/60"
+                }`}
+              >
+                <p
+                  className={`text-xs leading-relaxed sm:text-[13.5px] ${
+                    selectedNote ? "text-[#7f1d1d]" : "text-foreground/75"
+                  }`}
+                >
+                  <span
+                    className={`mb-1 block text-[10px] font-extrabold uppercase tracking-wide ${
+                      selectedNote ? "text-[#c0362c]" : "text-foreground/60"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                  {text}
+                </p>
+              </div>
+            );
+          })()}
 
           {/* Primary CTA */}
           <button
@@ -2083,6 +2196,13 @@ function GameScreen({
   }, [findingsHelpOpen]);
 
   useEffect(() => {
+    // Re-runs on phase change too: DiagnosisIsland and ResultIsland are two
+    // different DOM nodes sharing this ref (only one mounted at a time), so
+    // switching phase swaps which node is observed. Without this, the
+    // observer stayed attached to the (now-unmounted) DiagnosisIsland after
+    // submitting, freezing the scroll padding at its height — if the result
+    // island (with explanation, diagnosis grid, notes) rendered taller, its
+    // bottom content got clipped and was unreachable by scrolling.
     const island = diagnosisIslandRef.current;
     const content = contentScrollRef.current;
     const col = leftColumnRef.current;
@@ -2098,7 +2218,7 @@ function GameScreen({
     });
     ro.observe(island);
     return () => ro.disconnect();
-  }, [caseData.id]);
+  }, [caseData.id, phase]);
 
   useEffect(() => {
     const el = contentScrollRef.current;
@@ -2368,6 +2488,7 @@ function GameScreen({
               />
             ) : (
               <ResultIsland
+                islandRef={diagnosisIslandRef}
                 lastResultCorrect={lastResultCorrect}
                 lastScoreEarned={lastScoreEarned}
                 selectedDiagnosis={selectedDiagnosis}

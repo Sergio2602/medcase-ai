@@ -95,6 +95,15 @@ const AVATAR_COLORS = [
   "#FFAB73",
 ];
 
+function shuffle<T>(items: T[]): T[] {
+  const result = [...items];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 function avatarColorForCase(caseId: string) {
   let hash = 0;
   for (let i = 0; i < caseId.length; i++) {
@@ -176,7 +185,11 @@ export default function Home() {
         throw new Error(data?.error ?? "Etwas ist schiefgelaufen.");
       }
       await minDelay;
-      setActiveCase(data as Case);
+      const loadedCase = data as Case;
+      setActiveCase({
+        ...loadedCase,
+        diagnosisOptions: shuffle(loadedCase.diagnosisOptions),
+      });
       setDailyUsed((d) => d + 1);
       setPhase("playing");
     } catch {

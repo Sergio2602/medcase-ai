@@ -2341,7 +2341,8 @@ function GameScreen({
             </div>
             <div>
               <h2 className="text-lg font-bold">
-                {caseData.patientName}, {caseData.age} Jahre
+                {caseData.patientName},{" "}
+                {caseData.age === 0 ? "Neugeboren" : `${caseData.age} Jahre`}
               </h2>
               <p className="text-sm text-muted">
                 {caseData.gender === "male" ? "Männlich" : "Weiblich"}

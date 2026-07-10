@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { Logo } from "@/app/components/Logo";
 import { KontaktPopover } from "@/app/components/KontaktPopover";
+import { AppHeader } from "@/app/components/AppHeader";
 
 export const metadata = {
   title: "Impressum & Datenschutz — Medcase",
@@ -32,31 +31,26 @@ export default function ImpressumPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
       <div className="mx-auto max-w-[1320px]">
-        {/* Nav bar — matches Home/StartScreen width */}
-        <div
-          className="mb-4 flex items-center justify-between rounded-xl border-[1.5px] bg-card px-4 py-2.5"
-          style={{ borderColor: "#d8d6cd" }}
-        >
-          <div className="flex items-center gap-2.5">
-            <Logo size={30} />
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 rounded-lg border-[1.5px] bg-card px-3.5 py-[7px] text-sm font-semibold"
-              style={{ borderColor: "#d8d6cd" }}
-            >
-              <i className="ti ti-arrow-left text-sm" />
-              Zurück
-            </Link>
-          </div>
-          <div className="hidden items-center gap-3 text-sm font-semibold sm:flex">
-            <a href="#impressum" className="rounded-lg px-3 py-1.5 hover:bg-[#f2f0e8]">
-              Impressum
-            </a>
-            <a href="#datenschutz" className="rounded-lg px-3 py-1.5 hover:bg-[#f2f0e8]">
-              Datenschutz
-            </a>
-          </div>
-        </div>
+        <AppHeader
+          backLabel="Zurück"
+          backIcon="ti-arrow-left"
+          right={
+            <div className="hidden items-center gap-1.5 text-sm font-semibold sm:flex">
+              <a
+                href="#impressum"
+                className="rounded-lg px-3 py-1.5 text-muted transition-colors hover:bg-[#eaf0fc] hover:text-accent"
+              >
+                Impressum
+              </a>
+              <a
+                href="#datenschutz"
+                className="rounded-lg px-3 py-1.5 text-muted transition-colors hover:bg-[#eaf0fc] hover:text-accent"
+              >
+                Datenschutz
+              </a>
+            </div>
+          }
+        />
 
         <div className="mx-auto max-w-[860px]">
           {/* ===== IMPRESSUM ===== */}

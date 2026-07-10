@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "re
 import { Logo } from "./components/Logo";
 import { OnboardingTour } from "./components/OnboardingTour";
 import { KontaktPopover } from "./components/KontaktPopover";
+import { AppHeader } from "./components/AppHeader";
 import { generateShareCard } from "@/lib/generateShareCard";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
@@ -733,26 +734,15 @@ function StartScreen({
   const [showPicker, setShowPicker] = useState(false);
   return (
     <div className="pb-4">
-      <div
-        className="mb-3 flex items-center justify-between rounded-xl border-[1.5px] bg-card px-4 py-2.5"
-        style={{ borderColor: "#d8d6cd" }}
-      >
-        <div className="flex items-center gap-2.5">
-          <Logo size={30} />
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-1.5 rounded-lg border-[1.5px] bg-card px-3.5 py-[7px] text-sm font-semibold"
-            style={{ borderColor: "#d8d6cd" }}
-          >
-            <i className="ti ti-home text-sm" />
-            Home
-          </button>
-        </div>
-        <span className="flex items-center gap-1 text-sm text-muted">
-          <span className="font-extrabold text-foreground">140+</span>
-          &nbsp;Fälle
-        </span>
-      </div>
+      <AppHeader
+        onBackClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        right={
+          <span className="flex items-center gap-1 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
+            <span className="font-extrabold text-foreground">140+</span>
+            &nbsp;Fälle
+          </span>
+        }
+      />
       <div className="grid gap-4 md:grid-cols-[1fr_320px] md:items-start">
         <div>
         <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">

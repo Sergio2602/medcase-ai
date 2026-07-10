@@ -44,20 +44,20 @@ sehen kann.
 
 ### Phase 1: Transparenz im Produkt selbst (sofort, geringer Aufwand)
 
-- `sourceNotes` im UI sichtbar machen — z. B. als aufklappbarer "Quellen"-
-  Block im Result-Screen, gleiches Muster wie `caseContext`-Badge. Macht aus
-  einem internen Dokufeld ein Vertrauenssignal für jeden, der genau hinschaut.
-- Öffentliche "Methodik"-Seite (oder Unterseite/Footer-Link): erklärt in
-  einfachen Worten die Quellendisziplin (AWMF/ESC/RKI/IMPP/Onkopedia, explizit
-  kein Amboss/UpToDate), die Anti-Giveaway-Prinzipien und die Auswahl-Logik
-  (IMPP-Blueprint für Klinik, GK1-Anwendungsbeispiele für Vorklinik). Inhalt
-  existiert bereits in `case-tracking.md`/`vorklinik-case-tracking.md`, muss
-  nur für ein externes Publikum umformuliert werden.
-- Transparente "Über"-Seite: Sergio als Medizinstudent im 7. Semester, klar
-  benannt — das ist ehrlich ein Vertrauensfaktor (Peer-Perspektive statt
-  anonymer Firma), aber nur, wenn direkt daneben steht, dass kein
+- **Entscheidung 2026-07-10:** `sourceNotes` NICHT im Result-Screen anzeigen
+  (Sergio: hält den Ergebnis-Screen bewusst schlank, kein Quellen-Block dort).
+  Stattdessen bündeln wir Quellendisziplin, Methodik und Auswahl-Logik auf
+  einer eigenen **"Über uns"-Seite** — ein Link/Footer-Eintrag reicht, keine
+  Verlinkung pro Einzelfall nötig.
+- Inhalt der "Über uns"-Seite: Quellendisziplin (AWMF/ESC/RKI/IMPP/Onkopedia,
+  explizit kein Amboss/UpToDate), Anti-Giveaway-Prinzipien, Auswahl-Logik
+  (IMPP-Blueprint für Klinik, GK1-Anwendungsbeispiele für Vorklinik), plus
+  Sergio als Medizinstudent im 7. Semester transparent benannt (Peer-
+  Perspektive als Vertrauensfaktor) — direkt daneben klar benennen, dass kein
   fachärztliches Review stattgefunden hat. Verschweigen wäre riskanter als
-  offen zu benennen.
+  offen zu benennen. Inhalt existiert bereits in `case-tracking.md`/
+  `vorklinik-case-tracking.md`, muss nur für ein externes Publikum umformuliert
+  werden — allgemein/methodisch, nicht als Zitatliste pro Fall.
 
 ### Phase 2: Externe Absicherung (mittelfristig, vor breiterer Bewerbung)
 
@@ -66,6 +66,12 @@ sehen kann.
   wird. Quellenangaben ersetzen kein fachliches Review — sie zeigen nur, dass
   sauber recherchiert wurde, nicht, dass nichts übersehen wurde. Realistischer
   Weg: Kommilitonen im PJ/Assistenzarztjahr, Dozentenkontakte aus dem Studium.
+- **Konkret geplant (Stand 2026-07-10):** Sergio spricht selbst mit Ärzten an
+  und fragt, ob sie sich die App anschauen — sobald sie "fertig gepolished"
+  ist. D. h. die "Über uns"-Seite + sichtbare Methodik (Phase 1) ist die
+  Mindestvoraussetzung, BEVOR dieser Kontakt stattfindet, nicht danach —
+  sonst sehen die angesprochenen Ärzte genau die Lücke (keine Quellen, keine
+  Methodik sichtbar), die dieser Plan schließen soll.
 - Feedback-/Fehlermelde-Funktion im Tool selbst nachrüsten (siehe
   `agenda.md`) — kostengünstiger Zwischenschritt zum vollen Review, gibt
   Kritikern einen direkten, sichtbaren Kanal statt stiller Frustration.

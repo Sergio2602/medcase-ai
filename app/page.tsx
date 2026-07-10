@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { Logo } from "./components/Logo";
 import { OnboardingTour } from "./components/OnboardingTour";
+import { KontaktPopover } from "./components/KontaktPopover";
 import { generateShareCard } from "@/lib/generateShareCard";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
@@ -802,8 +803,8 @@ function StartScreen({
         <span>© 2026 Medcase</span>
         <div className="flex items-center gap-4">
           <a href="/impressum" className="hover:underline">Impressum</a>
-          <a href="/datenschutz" className="hover:underline">Datenschutz</a>
-          <span>Kontakt</span>
+          <a href="/impressum#datenschutz" className="hover:underline">Datenschutz</a>
+          <KontaktPopover />
         </div>
       </footer>
     </div>

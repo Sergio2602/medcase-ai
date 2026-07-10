@@ -1,87 +1,350 @@
 import Link from "next/link";
 import { Logo } from "@/app/components/Logo";
+import { KontaktPopover } from "@/app/components/KontaktPopover";
 
 export const metadata = {
-  title: "Impressum — Medcase",
+  title: "Impressum & Datenschutz — Medcase",
 };
+
+function SectionLabel({ icon, children }: { icon: string; children: React.ReactNode }) {
+  return (
+    <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+      <i className={`ti ${icon} text-sm`} />
+      {children}
+    </p>
+  );
+}
+
+function LegalBasis({ text }: { text: string }) {
+  return (
+    <p className="mt-3 flex items-start gap-1.5 text-xs text-muted">
+      <i className="ti ti-scale mt-[1px] shrink-0 text-[11px]" />
+      {text}
+    </p>
+  );
+}
+
+function Divider() {
+  return <div className="mb-6 h-px bg-card-border/10" />;
+}
 
 export default function ImpressumPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1140px]">
+      <div className="mx-auto max-w-[1320px]">
+        {/* Nav bar — matches Home/StartScreen width */}
         <div
-          className="mb-6 flex items-center gap-2.5 rounded-xl border-[1.5px] bg-card px-4 py-2.5"
+          className="mb-4 flex items-center justify-between rounded-xl border-[1.5px] bg-card px-4 py-2.5"
           style={{ borderColor: "#d8d6cd" }}
         >
-          <Logo size={30} />
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 rounded-lg border-[1.5px] bg-card px-3.5 py-[7px] text-sm font-semibold"
-            style={{ borderColor: "#d8d6cd" }}
+          <div className="flex items-center gap-2.5">
+            <Logo size={30} />
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 rounded-lg border-[1.5px] bg-card px-3.5 py-[7px] text-sm font-semibold"
+              style={{ borderColor: "#d8d6cd" }}
+            >
+              <i className="ti ti-arrow-left text-sm" />
+              Zurück
+            </Link>
+          </div>
+          <div className="hidden items-center gap-3 text-sm font-semibold sm:flex">
+            <a href="#impressum" className="rounded-lg px-3 py-1.5 hover:bg-[#f2f0e8]">
+              Impressum
+            </a>
+            <a href="#datenschutz" className="rounded-lg px-3 py-1.5 hover:bg-[#f2f0e8]">
+              Datenschutz
+            </a>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-[860px]">
+          {/* ===== IMPRESSUM ===== */}
+          <div id="impressum" className="card scroll-mt-6 p-8">
+            <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
+              Impressum
+            </h1>
+            <p className="mb-8 text-sm text-muted">
+              Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)
+            </p>
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-user-shield">Anbieter</SectionLabel>
+              <p className="leading-relaxed">
+                Sergio Jacinto Hein
+                <br />
+                Anni-Eisler-Lehmann-Str. 2, Apartment 25
+                <br />
+                55122 Mainz
+                <br />
+                Deutschland
+              </p>
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-mail">Kontakt</SectionLabel>
+              <p className="leading-relaxed">
+                E-Mail:{" "}
+                <a
+                  href="mailto:kontakt.medcase@gmail.com"
+                  className="text-accent underline underline-offset-2"
+                >
+                  kontakt.medcase@gmail.com
+                </a>
+              </p>
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-info-circle">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Sergio Jacinto Hein (Anschrift wie oben).
+              </p>
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-shield-check">Haftung für Inhalte</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen
+                Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir
+                als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte
+                fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine
+                rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der
+                Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.
+                Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer
+                konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden
+                Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+              </p>
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-link">Haftung für Links</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir
+                keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine
+                Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige
+                Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum
+                Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige
+                Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente
+                inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer
+                Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden
+                wir derartige Links umgehend entfernen.
+              </p>
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-copyright">Urheberrecht</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten
+                unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung,
+                Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes
+                bedürfen der schriftlichen Zustimmung des jeweiligen Erstellers. Downloads und
+                Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch
+                gestattet.
+              </p>
+            </section>
+
+            <Divider />
+
+            <section>
+              <SectionLabel icon="ti-scale">Verbraucherstreitbeilegung</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+                Verbraucherschlichtungsstelle teilzunehmen.
+              </p>
+            </section>
+          </div>
+
+          {/* ===== DATENSCHUTZ ===== */}
+          <div id="datenschutz" className="card mt-4 scroll-mt-6 p-8">
+            <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
+              Datenschutzerklärung
+            </h1>
+            <p className="mb-8 text-sm text-muted">
+              Informationen zur Datenverarbeitung bei Medcase
+            </p>
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-user-shield">Verantwortlicher</SectionLabel>
+              <p className="leading-relaxed">
+                Sergio Jacinto Hein
+                <br />
+                Anni-Eisler-Lehmann-Str. 2, Apartment 25
+                <br />
+                55122 Mainz
+                <br />
+                E-Mail:{" "}
+                <a
+                  href="mailto:kontakt.medcase@gmail.com"
+                  className="text-accent underline underline-offset-2"
+                >
+                  kontakt.medcase@gmail.com
+                </a>
+              </p>
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-cookie">Cookies</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Diese Website verwendet ausschließlich technisch notwendige Cookies. Es werden
+                keine Marketing-, Werbe- oder Tracking-Cookies eingesetzt.
+              </p>
+              <div className="mt-4 flex flex-col gap-3">
+                <div className="rounded-lg border-[1.5px] border-card-border/15 p-4">
+                  <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold">
+                    <i className="ti ti-cookie text-xs text-muted" />
+                    disclaimerSeen
+                  </p>
+                  <p className="text-sm leading-relaxed text-muted">
+                    Speichert, ob du den Hinweis zur Nutzung gelesen hast. Laufzeit: 1 Jahr.
+                  </p>
+                  <LegalBasis text="Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an fehlerfreier Darstellung)." />
+                </div>
+                <div className="rounded-lg border-[1.5px] border-card-border/15 p-4">
+                  <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold">
+                    <i className="ti ti-cookie text-xs text-muted" />
+                    medcase_onboarding_seen
+                  </p>
+                  <p className="text-sm leading-relaxed text-muted">
+                    Speichert, ob du die Einführungstour bereits gesehen hast. Laufzeit: 1 Jahr.
+                  </p>
+                  <LegalBasis text="Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an fehlerfreier Darstellung)." />
+                </div>
+              </div>
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-mail">E-Mail-Benachrichtigungen</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Wenn du deine E-Mail-Adresse für Release-Benachrichtigungen hinterlässt,
+                verwenden wir sie ausschließlich dafür. Keine Weitergabe an Dritte, keine Nutzung
+                für Marketing. Du kannst die Benachrichtigungen jederzeit per E-Mail an{" "}
+                <a
+                  href="mailto:kontakt.medcase@gmail.com"
+                  className="text-accent underline underline-offset-2"
+                >
+                  kontakt.medcase@gmail.com
+                </a>{" "}
+                abbestellen.
+              </p>
+              <LegalBasis text="Art. 6 Abs. 1 lit. a DSGVO (Einwilligung)." />
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-server">Hosting</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Diese Website wird bei Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723,
+                USA gehostet. Beim Aufruf der Seite werden automatisch Server-Logdaten erfasst
+                (IP-Adresse, Zeitstempel, aufgerufene URL). Diese Daten werden von Vercel zur
+                Bereitstellung des Dienstes verarbeitet und nicht dauerhaft gespeichert. Weitere
+                Informationen:{" "}
+                <a
+                  href="https://vercel.com/legal/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent underline underline-offset-2"
+                >
+                  Vercel Privacy Policy
+                </a>
+                .
+              </p>
+              <LegalBasis text="Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Bereitstellung des Dienstes)." />
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-database">Upstash Redis (Datenspeicher)</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Wenn du über die Funktion &bdquo;Fall melden&ldquo; einen Fehlerhinweis absendest,
+                wird dieser temporär in einer Upstash-Redis-Datenbank gespeichert. Gespeichert
+                werden: Fall-ID, gewählte Schwierigkeit, optionaler Freitext und Zeitstempel —
+                keine personenbezogenen Daten. Anbieter: Upstash, Inc. Serverstandort: [PLATZHALTER
+                — von Sergio zu bestätigen]. Upstash ist Vercel-Marketplace-Partner. Weitere
+                Informationen:{" "}
+                <a
+                  href="https://upstash.com/trust/privacy.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent underline underline-offset-2"
+                >
+                  Upstash Privacy Policy
+                </a>
+                .
+              </p>
+              <LegalBasis text="Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Qualitätssicherung)." />
+            </section>
+
+            <Divider />
+
+            <section className="mb-6">
+              <SectionLabel icon="ti-message-circle">Discord-Webhook (Fall melden)</SectionLabel>
+              <p className="leading-relaxed text-muted">
+                Fehlermeldungen über die Funktion &bdquo;Fall melden&ldquo; werden zusätzlich per
+                Webhook an einen internen Discord-Server übermittelt. Zweck: interne
+                Fehlerbehebung und Qualitätssicherung. Übermittelt werden: Fall-ID, Schwierigkeit,
+                optionaler Freitext und Zeitstempel — keine personenbezogenen Daten. Keine
+                Weitergabe an Dritte. Anbieter: Discord Inc., 444 De Haro Street, Suite 200, San
+                Francisco, CA 94107, USA.
+              </p>
+              <LegalBasis text="Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Qualitätssicherung)." />
+            </section>
+
+            <Divider />
+
+            <section>
+              <SectionLabel icon="ti-gavel">Deine Rechte</SectionLabel>
+              <p className="mb-3 leading-relaxed text-muted">
+                Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der
+                Verarbeitung sowie Datenübertragbarkeit. Bei Fragen oder zur Ausübung deiner
+                Rechte wende dich an{" "}
+                <a
+                  href="mailto:kontakt.medcase@gmail.com"
+                  className="text-accent underline underline-offset-2"
+                >
+                  kontakt.medcase@gmail.com
+                </a>
+                .
+              </p>
+              <p className="leading-relaxed text-muted">
+                Du hast außerdem das Recht, dich bei einer Datenschutzaufsichtsbehörde zu
+                beschweren, insbesondere in dem EU-Mitgliedstaat deines Wohnsitzes.
+              </p>
+            </section>
+          </div>
+
+          {/* Footer */}
+          <footer
+            className="mt-4 flex items-center justify-between border-t border-card-border/15 pt-3"
+            style={{ fontSize: 11, color: "#5f5e5a" }}
           >
-            <i className="ti ti-arrow-left text-sm" />
-            Zurück
-          </Link>
-        </div>
-
-        <div className="card mx-auto max-w-[820px] p-8">
-          <h1 className="mb-6 text-3xl font-extrabold tracking-tight">
-            Impressum
-          </h1>
-
-          <section className="mb-6">
-            <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted">
-              Angaben gemäß § 5 DDG
-            </p>
-            <p className="leading-relaxed">
-              Sergio Jacinto Hein
-              <br />
-              Anni-Eisler-Lehmann-Str. 2, Apartment 25
-              <br />
-              55122 Mainz
-            </p>
-          </section>
-
-          <div className="mb-6 h-px bg-card-border/10" />
-
-          <section className="mb-6">
-            <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted">
-              Kontakt
-            </p>
-            <p className="leading-relaxed">
-              E-Mail:{" "}
-              <a
-                href="mailto:kontakt.medcase@gmail.com"
-                className="text-accent underline underline-offset-2"
-              >
-                kontakt.medcase@gmail.com
+            <span>© 2026 Medcase</span>
+            <div className="flex items-center gap-4">
+              <a href="#impressum" className="hover:underline">
+                Impressum
               </a>
-            </p>
-          </section>
-
-          <div className="mb-6 h-px bg-card-border/10" />
-
-          <section>
-            <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted">
-              Verbraucherstreitbeilegung
-            </p>
-            <p className="leading-relaxed text-muted">
-              Wir sind nicht bereit oder verpflichtet, an
-              Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-              teilzunehmen.
-            </p>
-          </section>
+              <a href="#datenschutz" className="hover:underline">
+                Datenschutz
+              </a>
+              <KontaktPopover />
+            </div>
+          </footer>
         </div>
-
-        <footer
-          className="mx-auto mt-4 max-w-[820px] border-t border-card-border/15 pt-3 text-center"
-          style={{ fontSize: 11, color: "#5f5e5a" }}
-        >
-          © 2026 Medcase ·{" "}
-          <Link href="/datenschutz" className="hover:underline">
-            Datenschutz
-          </Link>
-        </footer>
       </div>
     </div>
   );

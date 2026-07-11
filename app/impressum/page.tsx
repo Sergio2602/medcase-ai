@@ -91,7 +91,7 @@ function TocSidebar() {
 export default function ImpressumPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1320px]">
+      <div className="mx-auto max-w-[1560px]">
         <AppHeader
           backLabel="Zurück"
           backIcon="ti-arrow-left"

@@ -71,7 +71,7 @@ function StepChip({ n, icon, title, text }: { n: number; icon: string; title: st
 export default function UeberUnsPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1320px]">
+      <div className="mx-auto max-w-[1560px]">
         <AppHeader backLabel="Zurück" backIcon="ti-arrow-left" />
 
         <div className="mx-auto max-w-[760px]">

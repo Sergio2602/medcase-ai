@@ -258,7 +258,7 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen px-4 pt-5 md:px-10 ${phase === "playing" || phase === "result" ? "" : "pb-8"}`}>
-      <div className="mx-auto max-w-[1320px]">
+      <div className="mx-auto max-w-[1560px]">
         {phase === "start" && <StartScreen onStart={startCase} />}
         {phase === "loading" && <LoadingScreen />}
         {(phase === "playing" || phase === "result") && activeCase && (
@@ -750,7 +750,7 @@ function StartScreen({
           </span>
         }
       />
-      <div className="grid gap-4 md:grid-cols-[1fr_320px] md:items-start">
+      <div className="grid gap-6 md:grid-cols-[1fr_380px] md:items-start">
         <div>
         <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
           Für Medizinstudierende · Deutschland

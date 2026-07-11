@@ -467,30 +467,6 @@ function RotatingPatientPreview() {
   );
 }
 
-function StatsRow() {
-  const items = [
-    { icon: "ti-files", value: "66+", label: "Klinische Fälle", muted: false },
-    { icon: "ti-stairs-up", value: "3", label: "Schwierigkeitsstufen", muted: false },
-    { icon: "ti-diamond", value: "—", label: "Pro-Preis folgt", muted: true },
-  ];
-  return (
-    <div className="mt-5 flex items-center border-y border-card-border/15 py-4">
-      {items.map((item, i) => (
-        <div key={item.label} className="contents">
-          {i > 0 && <div className="h-10 w-px shrink-0 bg-card-border/15" />}
-          <div className={`flex flex-1 flex-col items-center gap-1 px-4 text-center ${item.muted ? "opacity-50" : ""}`}>
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
-              <i className={`ti ${item.icon} text-sm`} />
-            </div>
-            <p className="text-2xl font-extrabold text-foreground">{item.value}</p>
-            <p className={`text-[12px] font-medium text-muted ${item.muted ? "italic" : ""}`}>{item.label}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 const DIFFICULTY_INFO: Record<
   Difficulty,
   { label: string; description: string }
@@ -815,7 +791,6 @@ function StartScreen({
         />
       )}
       </div>
-      <StatsRow />
       <WelcomeNote />
       <footer
         className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"

@@ -6,6 +6,7 @@ import { OnboardingTour } from "./components/OnboardingTour";
 import { KontaktPopover } from "./components/KontaktPopover";
 import { AppHeader } from "./components/AppHeader";
 import { generateShareCard } from "@/lib/generateShareCard";
+import { recordCaseResult } from "@/lib/stats";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
 type Phase = "start" | "loading" | "playing" | "result";
@@ -156,6 +157,7 @@ export default function Home() {
   });
   const [dailyUsed, setDailyUsed] = useState(0);
   const dailyLimit = 5;
+  const caseStartedAtRef = useRef<number | null>(null);
 
   async function startCase(selected: Difficulty, selectedDiscipline?: Discipline) {
     setDifficulty(selected);
@@ -193,6 +195,7 @@ export default function Home() {
         diagnosisOptions: shuffle(loadedCase.diagnosisOptions),
       });
       setDailyUsed((d) => d + 1);
+      caseStartedAtRef.current = Date.now();
       setPhase("playing");
     } catch {
       setPhase("start");
@@ -219,6 +222,16 @@ export default function Home() {
     setScore((s) => s + earned);
     setPlayed((p) => p + 1);
     if (correct) setSolved((s) => s + 1);
+    const startedAt = caseStartedAtRef.current;
+    recordCaseResult({
+      caseId: activeCase.id,
+      discipline,
+      difficulty: activeCase.difficulty,
+      correct,
+      score: earned,
+      durationSeconds: startedAt ? Math.round((Date.now() - startedAt) / 1000) : 0,
+      timestamp: Date.now(),
+    });
     setPhase("result");
   }
 
@@ -736,6 +749,7 @@ function StartScreen({
     <div className="pb-4">
       <AppHeader
         onBackClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        secondaryLink={{ href: "/statistik", label: "Statistik", icon: "ti-chart-bar" }}
         right={
           <span className="flex items-center gap-1 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
             <span className="font-extrabold text-foreground">140+</span>

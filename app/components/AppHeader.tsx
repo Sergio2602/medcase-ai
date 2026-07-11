@@ -12,16 +12,20 @@ export function AppHeader({
   backLabel = "Home",
   backIcon = "ti-home",
   onBackClick,
+  secondaryLink,
   right,
 }: {
   backHref?: string;
   backLabel?: string;
   backIcon?: string;
   onBackClick?: () => void;
+  secondaryLink?: { href: string; label: string; icon: string };
   right?: ReactNode;
 }) {
   const backButtonClass =
     "flex items-center gap-1.5 rounded-lg bg-[#eaf0fc] px-3.5 py-[7px] text-sm font-semibold text-accent transition-colors hover:bg-[#dbe6fa]";
+  const secondaryButtonClass =
+    "flex items-center gap-1.5 rounded-lg border-[1.5px] border-card-border/15 px-3.5 py-[7px] text-sm font-semibold text-muted transition-colors hover:border-accent/30 hover:text-accent";
 
   return (
     <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border-[1.5px] border-card-border/10 bg-card px-4 py-2.5">
@@ -37,6 +41,12 @@ export function AppHeader({
           <Link href={backHref} className={backButtonClass}>
             <i className={`ti ${backIcon} text-sm`} />
             {backLabel}
+          </Link>
+        )}
+        {secondaryLink && (
+          <Link href={secondaryLink.href} className={secondaryButtonClass}>
+            <i className={`ti ${secondaryLink.icon} text-sm`} />
+            <span className="hidden sm:inline">{secondaryLink.label}</span>
           </Link>
         )}
       </div>

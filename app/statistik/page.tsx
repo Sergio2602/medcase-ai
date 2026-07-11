@@ -16,14 +16,36 @@ const DISCIPLINE_LABELS: Record<string, string> = {
   anaesthesiologie: "Anästhesiologie",
 };
 
+const DISCIPLINE_ICONS: Record<string, string> = {
+  zufaellig: "ti-arrows-shuffle",
+  innere: "ti-heart-rate-monitor",
+  kardiologie: "ti-heart",
+  chirurgie: "ti-cut",
+  allgemeinmedizin: "ti-first-aid-kit",
+  neurologie: "ti-brain",
+  hno: "ti-ear",
+  augenheilkunde: "ti-eye",
+  anaesthesiologie: "ti-vaccine",
+};
+
 const DIFFICULTY_LABELS: Record<string, string> = {
   vorklinik: "Vorklinik",
   klinik: "Klinik",
   examen: "PJ",
 };
 
+const DIFFICULTY_ICONS: Record<string, string> = {
+  vorklinik: "ti-book-2",
+  klinik: "ti-stethoscope",
+  examen: "ti-building-hospital",
+};
+
 function labelFor(map: Record<string, string>, id: string) {
   return map[id] ?? id;
+}
+
+function iconFor(map: Record<string, string>, id: string) {
+  return map[id] ?? "ti-chart-bar";
 }
 
 function formatDuration(totalSeconds: number) {
@@ -39,6 +61,34 @@ function formatDate(timestamp: number) {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+// Grün ab 70 %, Orange/Gelb 40–69 %, Rot darunter — dieselbe Ampel-Logik wie
+// bei den Lab-Flags im Spiel, damit die Farbsprache app-weit konsistent bleibt.
+function accuracyColors(pct: number) {
+  if (pct >= 70) return { bg: "#e7f6ec", text: "#15803d", bar: "#22c55e" };
+  if (pct >= 40) return { bg: "#fef3e2", text: "#92400e", bar: "#f59e0b" };
+  return { bg: "#fdf1f0", text: "#c0362c", bar: "#ef4444" };
+}
+
+function AccuracyBadge({ pct }: { pct: number }) {
+  const c = accuracyColors(pct);
+  return (
+    <div className="flex min-w-[110px] flex-col gap-1">
+      <span
+        className="w-fit rounded-full px-2.5 py-0.5 text-xs font-bold"
+        style={{ backgroundColor: c.bg, color: c.text }}
+      >
+        {pct}% Trefferquote
+      </span>
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-card-border/10">
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${pct}%`, backgroundColor: c.bar }}
+        />
+      </div>
+    </div>
+  );
 }
 
 type Group = {
@@ -68,11 +118,13 @@ function GroupTable({
   icon,
   groups,
   labels,
+  icons,
 }: {
   title: string;
   icon: string;
   groups: Group[];
   labels: Record<string, string>;
+  icons: Record<string, string>;
 }) {
   return (
     <div className="card p-6">
@@ -87,21 +139,18 @@ function GroupTable({
           return (
             <div
               key={g.id}
-              className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 rounded-lg border-[1.5px] border-card-border/10 px-4 py-3"
+              className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 rounded-lg border-[1.5px] border-card-border/10 px-4 py-3"
             >
-              <span className="min-w-[120px] font-semibold">{labelFor(labels, g.id)}</span>
+              <span className="flex min-w-[150px] items-center gap-2 font-semibold">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+                  <i className={`ti ${iconFor(icons, g.id)} text-sm`} />
+                </span>
+                {labelFor(labels, g.id)}
+              </span>
               <span className="text-sm text-muted">
                 <span className="font-bold text-foreground">{g.count}</span> gelöst
               </span>
-              <span className="text-sm text-muted">
-                Trefferquote{" "}
-                <span
-                  className="font-bold"
-                  style={{ color: accuracy >= 70 ? "#15803d" : accuracy >= 40 ? "#92400e" : "#c0362c" }}
-                >
-                  {accuracy}%
-                </span>
-              </span>
+              <AccuracyBadge pct={accuracy} />
               <span className="text-sm text-muted">
                 Ø Zeit <span className="font-bold text-foreground">{formatDuration(avgDuration)}</span>
               </span>
@@ -111,6 +160,35 @@ function GroupTable({
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+function SummaryCard({
+  icon,
+  label,
+  value,
+  color,
+}: {
+  icon: string;
+  label: string;
+  value: string;
+  color: string;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <div
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: `${color}1a`, color }}
+      >
+        <i className={`ti ${icon} text-lg`} />
+      </div>
+      <div>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted">{label}</p>
+        <p className="text-xl font-extrabold" style={{ color }}>
+          {value}
+        </p>
       </div>
     </div>
   );
@@ -157,7 +235,7 @@ export default function StatistikPage() {
       <div className="mx-auto max-w-[1320px]">
         <AppHeader backLabel="Zurück" backIcon="ti-arrow-left" />
 
-        <div className="mx-auto max-w-[860px]">
+        <div className="mx-auto max-w-[980px]">
           <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
             Deine Statistik
           </h1>
@@ -179,23 +257,21 @@ export default function StatistikPage() {
 
           {results !== null && results.length > 0 && summary && (
             <div className="flex flex-col gap-4">
-              <div className="card grid grid-cols-2 gap-4 p-6 sm:grid-cols-4">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted">Gelöst</p>
-                  <p className="text-xl font-extrabold">{summary.count}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted">Trefferquote</p>
-                  <p className="text-xl font-extrabold">{summary.accuracy}%</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted">Punkte gesamt</p>
-                  <p className="text-xl font-extrabold text-accent">{summary.totalScore}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-muted">Ø Zeit / Fall</p>
-                  <p className="text-xl font-extrabold">{formatDuration(summary.avgDuration)}</p>
-                </div>
+              <div className="card grid grid-cols-2 gap-5 p-6 sm:grid-cols-4">
+                <SummaryCard icon="ti-flag-check" label="Gelöst" value={String(summary.count)} color="#1d4ed8" />
+                <SummaryCard
+                  icon="ti-target-arrow"
+                  label="Trefferquote"
+                  value={`${summary.accuracy}%`}
+                  color={accuracyColors(summary.accuracy).text}
+                />
+                <SummaryCard icon="ti-coin" label="Punkte gesamt" value={String(summary.totalScore)} color="#a16207" />
+                <SummaryCard
+                  icon="ti-clock"
+                  label="Ø Zeit / Fall"
+                  value={formatDuration(summary.avgDuration)}
+                  color="#0f0f0f"
+                />
               </div>
 
               <GroupTable
@@ -203,12 +279,14 @@ export default function StatistikPage() {
                 icon="ti-stethoscope"
                 groups={byDiscipline}
                 labels={DISCIPLINE_LABELS}
+                icons={DISCIPLINE_ICONS}
               />
               <GroupTable
                 title="Nach Schwierigkeit"
                 icon="ti-school"
                 groups={byDifficulty}
                 labels={DIFFICULTY_LABELS}
+                icons={DIFFICULTY_ICONS}
               />
 
               <div className="card p-6">
@@ -223,9 +301,15 @@ export default function StatistikPage() {
                       className="flex items-center justify-between gap-3 border-b border-card-border/10 py-1.5 text-sm last:border-b-0"
                     >
                       <span className="flex items-center gap-1.5">
-                        <i
-                          className={`ti ${r.correct ? "ti-check text-[#15803d]" : "ti-x text-[#c0362c]"} text-sm`}
-                        />
+                        <span
+                          className="flex h-5 w-5 items-center justify-center rounded-full"
+                          style={{
+                            backgroundColor: r.correct ? "#e7f6ec" : "#fdf1f0",
+                            color: r.correct ? "#15803d" : "#c0362c",
+                          }}
+                        >
+                          <i className={`ti ${r.correct ? "ti-check" : "ti-x"} text-[11px]`} />
+                        </span>
                         {labelFor(DISCIPLINE_LABELS, r.discipline)} ·{" "}
                         {labelFor(DIFFICULTY_LABELS, r.difficulty)}
                       </span>

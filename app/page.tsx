@@ -468,22 +468,25 @@ function RotatingPatientPreview() {
 }
 
 function StatsRow() {
+  const items = [
+    { icon: "ti-files", value: "140+", label: "Klinische Fälle", muted: false },
+    { icon: "ti-stairs-up", value: "3", label: "Schwierigkeitsstufen", muted: false },
+    { icon: "ti-diamond", value: "—", label: "Pro-Preis folgt", muted: true },
+  ];
   return (
     <div className="mt-5 flex items-center border-y border-card-border/15 py-4">
-      <div className="flex-1 px-4 text-center">
-        <p className="text-2xl font-extrabold text-foreground">140+</p>
-        <p className="text-[12px] font-medium text-muted">Klinische Fälle</p>
-      </div>
-      <div className="h-10 w-px shrink-0 bg-card-border/15" />
-      <div className="flex-1 px-4 text-center">
-        <p className="text-2xl font-extrabold text-foreground">3</p>
-        <p className="text-[12px] font-medium text-muted">Schwierigkeitsstufen</p>
-      </div>
-      <div className="h-10 w-px shrink-0 bg-card-border/15" />
-      <div className="flex-1 px-4 text-center opacity-50">
-        <p className="text-2xl font-extrabold text-foreground">—</p>
-        <p className="text-[12px] italic text-muted">Pro-Preis folgt</p>
-      </div>
+      {items.map((item, i) => (
+        <div key={item.label} className="contents">
+          {i > 0 && <div className="h-10 w-px shrink-0 bg-card-border/15" />}
+          <div className={`flex flex-1 flex-col items-center gap-1 px-4 text-center ${item.muted ? "opacity-50" : ""}`}>
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+              <i className={`ti ${item.icon} text-sm`} />
+            </div>
+            <p className="text-2xl font-extrabold text-foreground">{item.value}</p>
+            <p className={`text-[12px] font-medium text-muted ${item.muted ? "italic" : ""}`}>{item.label}</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -764,7 +767,8 @@ function StartScreen({
         onBackClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         secondaryLink={{ href: "/statistik", label: "Statistik", icon: "ti-chart-bar" }}
         right={
-          <span className="flex items-center gap-1 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
+          <span className="flex items-center gap-1.5 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
+            <i className="ti ti-files text-sm text-accent" />
             <span className="font-extrabold text-foreground">140+</span>
             &nbsp;Fälle
           </span>

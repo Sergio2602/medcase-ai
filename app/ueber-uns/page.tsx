@@ -215,6 +215,81 @@ export default function UeberUnsPage() {
             </div>
           </div>
 
+          {/* ===== CANNOT-MISS ===== */}
+          <div className="card mb-4 border-[1.5px] border-[#d97706]/25 p-8">
+            <div className="mb-4 flex items-center gap-2.5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#d97706] text-white">
+                <i className="ti ti-alert-triangle text-[15px]" />
+              </span>
+              <p className="text-xs font-bold uppercase tracking-wide text-[#92400e]">
+                Cannot-miss: eine eigene, bewusste Kategorie
+              </p>
+            </div>
+
+            <p className="mb-4 max-w-[62ch] text-sm leading-relaxed text-muted">
+              Häufigkeit allein reicht als Auswahlkriterium nicht. Manche Diagnosen sind selten, aber
+              zeitkritisch und lebensbedrohlich — wer sie übersieht, riskiert den Patienten. Deshalb ist
+              &bdquo;cannot-miss&ldquo; bei uns keine Randnotiz, sondern eine eigene, dritte Auswahl-Achse
+              neben Prüfungshäufigkeit und Prävalenz — gestützt durch den IMPP-Blueprint selbst: Achse 2
+              weist &bdquo;Notfallmaßnahmen&ldquo; mit 5–20 % einen eigenständigen, substanziellen Anteil
+              zu, nicht nur &bdquo;wenn Zeit bleibt&ldquo;.
+            </p>
+
+            <div className="mb-4 rounded-lg border-[1.5px] border-[#d97706]/25 bg-[#fef3e2] p-4">
+              <p className="text-sm font-semibold text-[#92400e]">
+                <span className="text-xl font-extrabold">10</span> von 26 quellenbasierten Fällen (rund
+                38 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
+              </p>
+            </div>
+
+            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Aktuell live</p>
+            <div className="mb-4 flex flex-wrap gap-1.5">
+              {[
+                "Akute Appendizitis",
+                "Zentraler Diabetes insipidus",
+                "Status asthmaticus (resp. Azidose)",
+                "Phenylketonurie",
+                "AB0-Transfusionsreaktion",
+                "NSTEMI",
+                "Akute Lungenembolie",
+                "Obere GI-Blutung",
+                "Diabetische Ketoazidose",
+                "Riesenzellarteriitis",
+              ].map((d) => (
+                <span
+                  key={d}
+                  className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-[#d97706]/30 bg-white px-2.5 py-1 text-[11.5px] font-semibold text-[#92400e]"
+                >
+                  <i className="ti ti-alert-triangle text-[9px]" />
+                  {d}
+                </span>
+              ))}
+            </div>
+
+            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Geplant (PJ/Examen-Bank, noch nicht live)</p>
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                "Aortendissektion Typ A",
+                "Akuter Mediainfarkt",
+                "Status epilepticus",
+                "Urosepsis / septischer Schock",
+                "Thyreotoxische Krise",
+                "Rupturierte Extrauteringravidität",
+                "Präeklampsie/HELLP-Syndrom",
+                "Invagination (Kleinkind)",
+                "Anaphylaktischer Schock",
+              ].map((d) => (
+                <span
+                  key={d}
+                  className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-card-border/15 px-2.5 py-1 text-[11.5px] font-semibold text-muted"
+                >
+                  <i className="ti ti-clock text-[9px]" />
+                  {d}
+                </span>
+              ))}
+            </div>
+          </div>
+
           {/* ===== ARBEITSAUFWAND ===== */}
           <div className="card mb-4 p-8">
             <SectionLabel icon="ti-clipboard-check">Wie viel Arbeit in der Fallbank steckt — ehrlich aufgeschlüsselt</SectionLabel>

@@ -469,7 +469,7 @@ function RotatingPatientPreview() {
 
 function StatsRow() {
   const items = [
-    { icon: "ti-files", value: "140+", label: "Klinische Fälle", muted: false },
+    { icon: "ti-files", value: "66+", label: "Klinische Fälle", muted: false },
     { icon: "ti-stairs-up", value: "3", label: "Schwierigkeitsstufen", muted: false },
     { icon: "ti-diamond", value: "—", label: "Pro-Preis folgt", muted: true },
   ];
@@ -769,7 +769,7 @@ function StartScreen({
         right={
           <span className="flex items-center gap-1.5 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
             <i className="ti ti-files text-sm text-accent" />
-            <span className="font-extrabold text-foreground">140+</span>
+            <span className="font-extrabold text-foreground">66+</span>
             &nbsp;Fälle
           </span>
         }
@@ -823,6 +823,7 @@ function StartScreen({
       >
         <span>© 2026 Medcase</span>
         <div className="flex items-center gap-4">
+          <a href="/ueber-uns" className="hover:underline">Über uns</a>
           <a href="/impressum" className="hover:underline">Impressum</a>
           <a href="/impressum#datenschutz" className="hover:underline">Datenschutz</a>
           <KontaktPopover />

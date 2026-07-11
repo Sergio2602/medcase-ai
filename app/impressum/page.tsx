@@ -416,6 +416,9 @@ export default function ImpressumPage() {
             >
               <span>© 2026 Medcase</span>
               <div className="flex items-center gap-4">
+                <a href="/ueber-uns" className="hover:underline">
+                  Über uns
+                </a>
                 <a href="#impressum" className="hover:underline">
                   Impressum
                 </a>

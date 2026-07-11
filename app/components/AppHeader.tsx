@@ -13,6 +13,7 @@ export function AppHeader({
   backIcon = "ti-home",
   onBackClick,
   secondaryLink,
+  secondaryLinks,
   right,
 }: {
   backHref?: string;
@@ -20,8 +21,10 @@ export function AppHeader({
   backIcon?: string;
   onBackClick?: () => void;
   secondaryLink?: { href: string; label: string; icon: string };
+  secondaryLinks?: { href: string; label: string; icon: string }[];
   right?: ReactNode;
 }) {
+  const allSecondaryLinks = secondaryLinks ?? (secondaryLink ? [secondaryLink] : []);
   const backButtonClass =
     "flex items-center gap-1.5 rounded-lg bg-[#eaf0fc] px-3.5 py-[7px] text-sm font-semibold text-accent transition-colors hover:bg-[#dbe6fa]";
   const secondaryButtonClass =
@@ -43,12 +46,12 @@ export function AppHeader({
             {backLabel}
           </Link>
         )}
-        {secondaryLink && (
-          <Link href={secondaryLink.href} className={secondaryButtonClass}>
-            <i className={`ti ${secondaryLink.icon} text-sm`} />
-            <span className="hidden sm:inline">{secondaryLink.label}</span>
+        {allSecondaryLinks.map((link) => (
+          <Link key={link.href} href={link.href} className={secondaryButtonClass}>
+            <i className={`ti ${link.icon} text-sm`} />
+            <span className="hidden sm:inline">{link.label}</span>
           </Link>
-        )}
+        ))}
       </div>
       {right}
     </div>

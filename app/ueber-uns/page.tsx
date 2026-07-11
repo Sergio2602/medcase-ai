@@ -343,8 +343,8 @@ export default function UeberUnsPage() {
                   nicht nur &bdquo;wenn Zeit bleibt&ldquo;.
                 </p>
 
-                <div className="mb-4 rounded-lg border-[1.5px] border-[#d97706]/25 bg-[#fef3e2] p-4">
-                  <p className="text-sm font-semibold text-[#92400e]">
+                <div className="mb-4 rounded-lg border-[1.5px] border-accent/25 bg-[#eaf0fc] p-4">
+                  <p className="text-sm font-semibold text-accent">
                     <span className="text-xl font-extrabold">22</span> von 41 quellenbasierten Fällen (rund
                     54 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
                   </p>
@@ -378,7 +378,7 @@ export default function UeberUnsPage() {
                   ].map((d) => (
                     <span
                       key={d}
-                      className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-[#d97706]/30 bg-white px-2.5 py-1 text-[11.5px] font-semibold text-[#92400e]"
+                      className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-2.5 py-1 text-[11.5px] font-semibold text-accent"
                     >
                       <i className="ti ti-alert-triangle text-[9px]" />
                       {d}

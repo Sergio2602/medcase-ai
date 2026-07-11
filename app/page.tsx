@@ -741,7 +741,10 @@ function StartScreen({
     <div className="flex min-h-[calc(100vh-64px)] flex-col pb-4">
       <AppHeader
         onBackClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        secondaryLink={{ href: "/statistik", label: "Statistik", icon: "ti-chart-bar" }}
+        secondaryLinks={[
+          { href: "/statistik", label: "Statistik", icon: "ti-chart-bar" },
+          { href: "/ueber-uns", label: "Über uns", icon: "ti-info-circle" },
+        ]}
         right={
           <span className="flex items-center gap-1.5 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
             <i className="ti ti-files text-sm text-accent" />
@@ -799,7 +802,6 @@ function StartScreen({
         >
           <span>© 2026 Medcase</span>
           <div className="flex items-center gap-4">
-            <a href="/ueber-uns" className="hover:underline">Über uns</a>
             <a href="/impressum" className="hover:underline">Impressum</a>
             <a href="/impressum#datenschutz" className="hover:underline">Datenschutz</a>
             <KontaktPopover />

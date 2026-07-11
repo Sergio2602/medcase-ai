@@ -95,6 +95,7 @@ export default function ImpressumPage() {
         <AppHeader
           backLabel="Zurück"
           backIcon="ti-arrow-left"
+          secondaryLink={{ href: "/ueber-uns", label: "Über uns", icon: "ti-info-circle" }}
           right={
             <div className="hidden items-center gap-1.5 text-sm font-semibold sm:flex">
               <a
@@ -416,9 +417,6 @@ export default function ImpressumPage() {
             >
               <span>© 2026 Medcase</span>
               <div className="flex items-center gap-4">
-                <a href="/ueber-uns" className="hover:underline">
-                  Über uns
-                </a>
                 <a href="#impressum" className="hover:underline">
                   Impressum
                 </a>

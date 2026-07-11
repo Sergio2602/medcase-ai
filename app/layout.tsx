@@ -17,12 +17,30 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "700"],
 });
 
+const TITLE = "Medcase — Klinisches Denken trainieren";
+const DESCRIPTION =
+  "Medcase trainiert klinisches Denken anhand realistischer Patientenfälle für Vorklinik, Klinik und PJ.";
+
 export const metadata: Metadata = {
-  title: "Medcase — Klinisches Denken trainieren",
-  description:
-    "Medcase trainiert klinisches Denken anhand realistischer Patientenfälle für Vorklinik, Klinik und PJ.",
+  title: TITLE,
+  description: DESCRIPTION,
   manifest: "/manifest.json",
-  icons: { apple: "/icon-192.png" },
+  // Favicon/App-Icons kommen über die Next.js-Dateikonvention automatisch:
+  // app/favicon.ico, app/icon.png, app/apple-icon.png — kein manuelles
+  // icons-Feld mehr nötig (der alte Verweis auf /icon-192.png existierte
+  // nicht und führte zu einem kaputten Apple-Touch-Icon).
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: "Medcase",
+    locale: "de_DE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export const viewport: Viewport = {

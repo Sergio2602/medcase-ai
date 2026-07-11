@@ -745,7 +745,7 @@ function StartScreen({
         right={
           <span className="flex items-center gap-1.5 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
             <i className="ti ti-files text-sm text-accent" />
-            <span className="font-extrabold text-foreground">66+</span>
+            <span className="font-extrabold text-foreground">41+</span>
             &nbsp;Fälle
           </span>
         }

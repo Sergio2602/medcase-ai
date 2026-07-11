@@ -213,6 +213,28 @@ export default function UeberUnsPage() {
                 .
               </p>
             </div>
+
+            <Divider />
+
+            <div className="max-w-[62ch]">
+              <p className="mb-3 text-sm font-bold text-foreground">Examen/PJ-Fälle: kein IMPP-M3-Blueprint — deshalb zwei andere Achsen</p>
+              <p className="mb-3 text-[13px] leading-relaxed text-muted">
+                Geprüft (verifiziert direkt auf impp.de): Das IMPP führt ausschließlich die schriftlichen
+                Prüfungen M1 und M2 durch. Der Dritte Abschnitt (M3, nach dem Praktischen Jahr) ist eine
+                mündlich-praktische Prüfung, lokal an den Universitäten abgenommen — kein bundesweiter
+                Blueprint, keine IMPP-Statistik dazu. Eine &bdquo;IMPP-M3-Häufigkeit&ldquo; existiert schlicht nicht, wir
+                erfinden hier keine. Stattdessen zwei reale Achsen: die GK2/M2-Gewichtung als inhaltliche
+                Grundlage (M3 prüft denselben Stoff, nur mündlich-praktisch) plus echte
+                Krankenhaushäufigkeit nach Destatis.
+              </p>
+              <p className="text-[13px] leading-relaxed text-muted">
+                Quelle für Krankenhaushäufigkeit:{" "}
+                <SourceLink href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Krankenhauser/Publikationen/Downloads-Krankenhaeuser/statistischer-bericht-diagnosedaten-5231301237015.html">
+                  Destatis – Diagnosen der Krankenhauspatientinnen und -patienten
+                </SourceLink>
+                , jährliche amtliche Statistik aller vollstationären ICD-10-Diagnosen in Deutschland.
+              </p>
+            </div>
           </div>
 
           {/* ===== CANNOT-MISS ===== */}
@@ -237,13 +259,13 @@ export default function UeberUnsPage() {
 
             <div className="mb-4 rounded-lg border-[1.5px] border-[#d97706]/25 bg-[#fef3e2] p-4">
               <p className="text-sm font-semibold text-[#92400e]">
-                <span className="text-xl font-extrabold">10</span> von 26 quellenbasierten Fällen (rund
-                38 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
+                <span className="text-xl font-extrabold">22</span> von 41 quellenbasierten Fällen (rund
+                54 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
               </p>
             </div>
 
-            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Aktuell live</p>
-            <div className="mb-4 flex flex-wrap gap-1.5">
+            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Alle aktuell live</p>
+            <div className="flex flex-wrap gap-1.5">
               {[
                 "Akute Appendizitis",
                 "Zentraler Diabetes insipidus",
@@ -255,35 +277,24 @@ export default function UeberUnsPage() {
                 "Obere GI-Blutung",
                 "Diabetische Ketoazidose",
                 "Riesenzellarteriitis",
+                "Sigmadivertikulitis mit Perforation",
+                "Aortendissektion Typ A",
+                "Kompartmentsyndrom",
+                "Ischämischer Mediainfarkt",
+                "Status epilepticus",
+                "Urosepsis / septischer Schock",
+                "Thyreotoxische Krise",
+                "Rupturierte Extrauteringravidität",
+                "HELLP-Syndrom",
+                "Invagination (Kleinkind)",
+                "Alkoholentzugsdelir",
+                "Anaphylaktischer Schock",
               ].map((d) => (
                 <span
                   key={d}
                   className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-[#d97706]/30 bg-white px-2.5 py-1 text-[11.5px] font-semibold text-[#92400e]"
                 >
                   <i className="ti ti-alert-triangle text-[9px]" />
-                  {d}
-                </span>
-              ))}
-            </div>
-
-            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Geplant (PJ/Examen-Bank, noch nicht live)</p>
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                "Aortendissektion Typ A",
-                "Akuter Mediainfarkt",
-                "Status epilepticus",
-                "Urosepsis / septischer Schock",
-                "Thyreotoxische Krise",
-                "Rupturierte Extrauteringravidität",
-                "Präeklampsie/HELLP-Syndrom",
-                "Invagination (Kleinkind)",
-                "Anaphylaktischer Schock",
-              ].map((d) => (
-                <span
-                  key={d}
-                  className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-card-border/15 px-2.5 py-1 text-[11.5px] font-semibold text-muted"
-                >
-                  <i className="ti ti-clock text-[9px]" />
                   {d}
                 </span>
               ))}
@@ -313,18 +324,19 @@ export default function UeberUnsPage() {
                   Vollständig quellenbasiert, mit individuellen Quellenangaben pro Fall.
                 </p>
               </div>
-              <div className="rounded-lg border-[1.5px] border-[#d97706]/30 bg-[#fef3e2] p-4">
-                <p className="text-2xl font-extrabold text-[#92400e]">40</p>
-                <p className="text-xs font-semibold text-[#92400e]">Examen/PJ-Fälle</p>
-                <p className="mt-1 text-[11px] leading-snug text-[#92400e]/80">
-                  Ältere Fallbank, noch ohne dokumentierte Einzelquellen. Überarbeitung nach demselben
-                  Standard ist geplant, aber noch nicht erfolgt.
+              <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
+                <p className="text-2xl font-extrabold text-[#15803d]">15</p>
+                <p className="text-xs font-semibold text-[#15803d]">Examen/PJ-Fälle</p>
+                <p className="mt-1 text-[11px] leading-snug text-[#15803d]/80">
+                  Vollständig neu erstellt, quellenbasiert (AWMF/Destatis), ersetzt die alte ungeprüfte
+                  40-Fälle-Bank vollständig.
                 </p>
               </div>
             </div>
 
             <p className="mb-2 max-w-[62ch] text-[13px] leading-relaxed text-muted">
-              Bei den 26 quellenbasierten Fällen (Vorklinik + Klinik/Innere) enthält jeder Fall zusätzlich:
+              Alle 41 Fälle (Vorklinik + Klinik/Innere + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
+              Fall enthält zusätzlich:
             </p>
             <ul className="mb-5 flex max-w-[62ch] flex-col gap-1.5 text-[13px] leading-relaxed text-muted">
               <li className="flex items-start gap-2">

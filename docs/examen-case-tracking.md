@@ -95,8 +95,45 @@ neue Fälle werden in einer separaten Datei gesammelt und erst am Ende
 komplett getauscht — damit die App zu keinem Zeitpunkt eine leere oder
 kaputte Fallbank für die Schwierigkeit "Examen" ausliefert.
 
-## 7. Kandidaten (zur Freigabe, Stand siehe Chat-Vorschlag)
+## 7. Stand — Examen/PJ
 
-Siehe Chat — 15 Kandidaten über Chirurgie, Neurologie, Innere/Intensiv,
-Gynäkologie/Geburtshilfe, Pädiatrie, Psychiatrie, Notfallmedizin vorgeschlagen,
-Freigabe durch Sergio noch ausstehend.
+**Alle 15 Fälle erstellt, strukturvalidiert und live (2026-07-11).** Die alte
+40-Fälle-Bank (`pj.json`, "blind generiert, ungeprüft") wurde vollständig
+ersetzt, nicht nur ergänzt — analog zum Vorgehen bei Vorklinik (alte 50 → neue
+15).
+
+| ID | Diagnose | Fachrichtung | Kategorie |
+|---|---|---|---|
+| `sigmadivertikulitis-1` | Sigmadivertikulitis mit gedeckter Perforation (Hinchey Ib) | Chirurgie | Cannot-miss |
+| `bridenileus-1` | Mechanischer Dünndarmileus durch postoperative Briden | Chirurgie | Häufig |
+| `cholezystitis-choledocholithiasis-1` | Akute Cholezystitis mit Choledocholithiasis | Chirurgie | Häufig |
+| `aortendissektion-typ-a-1` | Akute Aortendissektion Typ A | Gefäßchirurgie | Cannot-miss |
+| `kompartmentsyndrom-1` | Akutes Kompartmentsyndrom nach Unterschenkelfraktur | Unfallchirurgie | Cannot-miss |
+| `mediainfarkt-1` | Akuter ischämischer Mediainfarkt (kardioembolisch) | Neurologie | Cannot-miss |
+| `status-epilepticus-1` | Generalisierter Status epilepticus | Neurologie | Cannot-miss |
+| `urosepsis-1` | Urosepsis mit septischem Schock | Innere/Intensiv | Cannot-miss |
+| `pyelonephritis-1` | Akute unkomplizierte Pyelonephritis | Innere/Uro | Häufig |
+| `thyreotoxische-krise-1` | Thyreotoxische Krise bei Morbus Basedow | Endokrinologie | Cannot-miss |
+| `extrauteringraviditaet-1` | Rupturierte Extrauteringravidität | Gynäkologie | Cannot-miss |
+| `praeeklampsie-hellp-1` | HELLP-Syndrom bei schwerer Präeklampsie | Geburtshilfe | Cannot-miss |
+| `invagination-1` | Ileokolische Invagination | Pädiatrie | Cannot-miss |
+| `alkoholentzugsdelir-1` | Alkoholentzugsdelir (Delirium tremens) | Psychiatrie | Cannot-miss |
+| `anaphylaxie-1` | Anaphylaktischer Schock | Notfallmedizin | Cannot-miss |
+
+11 von 15 Fällen sind cannot-miss (bewusst hoher Anteil, passend zur
+PJ/Hammerexamen-Zielgruppe kurz vor eigenverantwortlichem Handeln).
+Quellen: AWMF-Registernummern siehe `sourceNotes` je Fall (021-020, 021-018,
+021-008, 011-018, 030-046, 030-079, 079-001, 043-044, 015-076, 015-018,
+006-027, 076-001, 061-025) sowie Destatis-Krankenhausdiagnosestatistik.
+Kompartmentsyndrom und thyreotoxische Krise: keine eigenständige deutsche
+AWMF-Leitlinie gefunden, offen als Lehrbuch-/Fachgesellschaftskonsens
+ausgewiesen statt eine Leitlinie zu erfinden (siehe jeweilige `sourceNotes`).
+
+## 8. Nächste Schritte
+
+- [x] 15 Kandidaten mit Sergio abgestimmt
+- [x] Alle 15 Fälle geschrieben
+- [x] Strukturvalidierung (Python-Skript: Pflichtfelder, diagnosisOptions/differentialNotes 1:1, gültige caseContext-Werte)
+- [x] Alte 40 Fälle ersetzt (nicht aufgehoben — vollständig verworfen)
+- [ ] Fälle in der laufenden App stichprobenartig durchspielen/gegenlesen
+- [ ] Bei Bedarf Ausbau über die 15 hinaus (weitere PJ-relevante Fachrichtungen)

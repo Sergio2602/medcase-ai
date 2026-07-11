@@ -265,7 +265,7 @@ export default function StatistikPage() {
                   value={`${summary.accuracy}%`}
                   color={accuracyColors(summary.accuracy).text}
                 />
-                <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#a16207" />
+                <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#1d4ed8" />
                 <SummaryCard
                   icon="ti-clock"
                   label="Ø Zeit / Fall"

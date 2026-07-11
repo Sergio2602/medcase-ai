@@ -184,11 +184,11 @@ export default function UeberUnsPage() {
                   warum ein unabhängiges fachärztliches Review vor einer breiteren Bewerbung fest eingeplant
                   ist (siehe Qualitätssicherung).
                 </p>
-                <div className="flex items-start gap-2.5 rounded-lg border-[1.5px] border-[#d97706]/40 bg-[#fef3e2] px-4 py-3.5">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#d97706] text-white">
-                    <i className="ti ti-alert-triangle text-[11px]" />
+                <div className="flex items-start gap-2.5 rounded-lg border-[1.5px] border-accent/25 bg-[#eaf0fc] px-4 py-3.5">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-white">
+                    <i className="ti ti-info-circle text-[11px]" />
                   </span>
-                  <p className="text-[13px] font-semibold leading-relaxed text-[#92400e]">
+                  <p className="text-[13px] font-semibold leading-relaxed text-accent">
                     Aktueller Stand: Medcase befindet sich in der Aufbauphase. Die Fälle werden KI-gestützt
                     erstellt und quellenbasiert recherchiert (siehe Methodik unten) — ein fachärztliches
                     Review hat noch nicht stattgefunden und ersetzt kein ärztliches Fachurteil oder eine

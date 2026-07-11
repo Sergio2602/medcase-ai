@@ -257,14 +257,8 @@ export default function Home() {
   }
 
   return (
-    <div
-      className={`min-h-screen px-4 md:px-10 ${
-        phase === "playing" || phase === "result"
-          ? "pt-5"
-          : "flex flex-col justify-center py-6"
-      }`}
-    >
-      <div className="mx-auto w-full max-w-[1560px]">
+    <div className={`min-h-screen px-4 pt-5 md:px-10 ${phase === "playing" || phase === "result" ? "" : "pb-8"}`}>
+      <div className="mx-auto max-w-[1560px]">
         {phase === "start" && <StartScreen onStart={startCase} />}
         {phase === "loading" && <LoadingScreen />}
         {(phase === "playing" || phase === "result") && activeCase && (
@@ -744,7 +738,7 @@ function StartScreen({
 }) {
   const [showPicker, setShowPicker] = useState(false);
   return (
-    <div className="pb-4">
+    <div className="flex min-h-[calc(100vh-64px)] flex-col pb-4">
       <AppHeader
         onBackClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         secondaryLink={{ href: "/statistik", label: "Statistik", icon: "ti-chart-bar" }}
@@ -797,19 +791,21 @@ function StartScreen({
         />
       )}
       </div>
-      <WelcomeNote />
-      <footer
-        className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"
-        style={{ fontSize: 11, color: "#5f5e5a" }}
-      >
-        <span>© 2026 Medcase</span>
-        <div className="flex items-center gap-4">
-          <a href="/ueber-uns" className="hover:underline">Über uns</a>
-          <a href="/impressum" className="hover:underline">Impressum</a>
-          <a href="/impressum#datenschutz" className="hover:underline">Datenschutz</a>
-          <KontaktPopover />
-        </div>
-      </footer>
+      <div className="mt-auto pt-10">
+        <WelcomeNote />
+        <footer
+          className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"
+          style={{ fontSize: 11, color: "#5f5e5a" }}
+        >
+          <span>© 2026 Medcase</span>
+          <div className="flex items-center gap-4">
+            <a href="/ueber-uns" className="hover:underline">Über uns</a>
+            <a href="/impressum" className="hover:underline">Impressum</a>
+            <a href="/impressum#datenschutz" className="hover:underline">Datenschutz</a>
+            <KontaktPopover />
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { OnboardingTour } from "./components/OnboardingTour";
 import { KontaktPopover } from "./components/KontaktPopover";
 import { AppHeader } from "./components/AppHeader";
 import { generateShareCard } from "@/lib/generateShareCard";
-import { recordCaseResult } from "@/lib/stats";
+import { recordCaseResult, readCaseResults } from "@/lib/stats";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
 type Phase = "start" | "loading" | "playing" | "result";
@@ -158,6 +158,19 @@ export default function Home() {
   const [dailyUsed, setDailyUsed] = useState(0);
   const dailyLimit = 5;
   const caseStartedAtRef = useRef<number | null>(null);
+
+  // Score/Solved/Played sind React-State (verschwinden bei Reload) — beim
+  // Mount aus dem persistierten Statistik-Log (localStorage, siehe
+  // lib/stats.ts) vorbefüllen, damit der Punktestand über Reloads hinweg
+  // bestehen bleibt, statt wieder bei 0 zu starten. Rein additiv: neue
+  // Fälle zählen weiterhin per setScore/setSolved/setPlayed in submitDiagnosis.
+  useEffect(() => {
+    const results = readCaseResults();
+    if (results.length === 0) return;
+    setScore(results.reduce((sum, r) => sum + r.score, 0));
+    setSolved(results.filter((r) => r.correct).length);
+    setPlayed(results.length);
+  }, []);
 
   async function startCase(selected: Difficulty, selectedDiscipline?: Discipline) {
     setDifficulty(selected);

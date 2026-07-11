@@ -257,8 +257,14 @@ export default function Home() {
   }
 
   return (
-    <div className={`min-h-screen px-4 pt-5 md:px-10 ${phase === "playing" || phase === "result" ? "" : "pb-8"}`}>
-      <div className="mx-auto max-w-[1560px]">
+    <div
+      className={`min-h-screen px-4 md:px-10 ${
+        phase === "playing" || phase === "result"
+          ? "pt-5"
+          : "flex flex-col justify-center py-6"
+      }`}
+    >
+      <div className="mx-auto w-full max-w-[1560px]">
         {phase === "start" && <StartScreen onStart={startCase} />}
         {phase === "loading" && <LoadingScreen />}
         {(phase === "playing" || phase === "result") && activeCase && (

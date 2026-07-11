@@ -2,15 +2,15 @@
 
 :root {
   /* Core palette — Design System v1.0 */
-  --background: #faf8f3;
+  --background: #ffffff;
   --foreground: #0f0f0f;
   --card: #ffffff;
   --card-border: #0f0f0f;
   --accent: #1d4ed8;
   --accent-foreground: #ffffff;
 
-  /* Muted text on warm background */
-  --muted: #5f5e5a;
+  /* Muted text — darker for better contrast/legibility */
+  --muted: #454440;
 
   /* Avatar palette — approved pastel set, saturated */
   --avatar-1: #ef9a9a; /* Rosa */

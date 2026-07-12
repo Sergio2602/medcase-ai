@@ -4,7 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "re
 import { Logo } from "./components/Logo";
 import { OnboardingTour } from "./components/OnboardingTour";
 import { KontaktPopover } from "./components/KontaktPopover";
-import { AppHeader } from "./components/AppHeader";
+import { CenteredNav } from "./components/CenteredNav";
+import { FadeInUp } from "./components/FadeInUp";
 import { generateShareCard } from "@/lib/generateShareCard";
 import { recordCaseResult, readCaseResults } from "@/lib/stats";
 
@@ -84,6 +85,10 @@ type Revealed = {
 const BASE_SCORE = 100;
 const INVESTIGATION_COST = 10;
 const MIN_SCORE = BASE_SCORE - 4 * INVESTIGATION_COST;
+// Zusätzlicher Versatz, mit dem die Diagnose-/Result-Insel unterhalb ihrer
+// eigentlichen Ankerlinie platziert wird — schafft mittig mehr Raum für
+// aufgedeckte Befunde, bevor die Insel beginnt.
+const ISLAND_TOP_GAP = 28;
 
 function hasImaging(c: Case): boolean {
   return typeof c.imaging === "string" && c.imaging.trim().length > 0;
@@ -158,6 +163,17 @@ export default function Home() {
   const [dailyUsed, setDailyUsed] = useState(0);
   const dailyLimit = 5;
   const caseStartedAtRef = useRef<number | null>(null);
+
+  // Safari/Chrome merken sich beim Reload die letzte Scroll-Position der Seite
+  // (history.scrollRestoration = "auto" per Default) — dadurch landet man nach
+  // einem F5 wieder dort, wo man vorher gescrollt war, statt oben. Wir wollen
+  // aber, dass ein Reload immer ganz oben startet, daher hier hart deaktivieren.
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
   // Score/Solved/Played sind React-State (verschwinden bei Reload) — beim
   // Mount aus dem persistierten Statistik-Log (localStorage, siehe
@@ -288,6 +304,10 @@ export default function Home() {
   );
 }
 
+// Jeder Fall hat mehrere Kategorien (Anamnese/Untersuchung/Labor) mit echten
+// Beispiel-Befunden statt nur einem Label — die Preview "tippt" diese
+// Punkte nacheinander, bevor sie zur nächsten Kategorie/zum nächsten Fall
+// wechselt. Simuliert das echte Spielgefühl statt eines statischen Screenshots.
 const PATIENT_PREVIEWS = [
   {
     caseId: "FALL-0127",
@@ -296,7 +316,28 @@ const PATIENT_PREVIEWS = [
     name: "Klaus M.",
     meta: "58 J. · männlich",
     quote: "Starke Brustschmerzen seit heute Morgen …",
-    revealed: ["Anamnese", "Untersuchung"],
+    diagnosis: "NSTEMI",
+    options: ["NSTEMI", "Stabile Angina pectoris", "Akute Perikarditis", "Aortendissektion Typ A"],
+    steps: [
+      {
+        category: "Anamnese",
+        icon: "ti-message-circle",
+        points: [
+          "Schmerzbeginn vor 45 Minuten, retrosternal",
+          "Ausstrahlung in den linken Arm",
+          "Bekannter Hypertonus, Raucher (20 py)",
+        ],
+      },
+      {
+        category: "Labor",
+        icon: "ti-flask",
+        points: [
+          "Troponin I: 0,8 ng/ml (↑)",
+          "CK-MB: erhöht",
+          "D-Dimer: unauffällig",
+        ],
+      },
+    ],
   },
   {
     caseId: "FALL-0084",
@@ -305,7 +346,28 @@ const PATIENT_PREVIEWS = [
     name: "Sabine F.",
     meta: "34 J. · weiblich",
     quote: "Seit drei Tagen Fieber und Husten, jetzt auch Atemnot …",
-    revealed: ["Anamnese", "Labor"],
+    diagnosis: "Ambulant erworbene Pneumonie",
+    options: ["Ambulant erworbene Pneumonie", "Akute Bronchitis", "Akute Lungenembolie", "Exazerbierte COPD"],
+    steps: [
+      {
+        category: "Anamnese",
+        icon: "ti-message-circle",
+        points: [
+          "Fieber bis 39,2 °C seit 3 Tagen",
+          "Produktiver Husten, gelblicher Auswurf",
+          "Zunehmende Atemnot seit heute",
+        ],
+      },
+      {
+        category: "Labor",
+        icon: "ti-flask",
+        points: [
+          "CRP: 145 mg/l (↑↑)",
+          "Leukozyten: 14.200/µl",
+          "SpO₂: 91 % unter Raumluft",
+        ],
+      },
+    ],
   },
   {
     caseId: "FALL-0211",
@@ -314,152 +376,296 @@ const PATIENT_PREVIEWS = [
     name: "Thomas R.",
     meta: "45 J. · männlich",
     quote: "Plötzlich einseitige Schwäche im Arm, Sprache verwaschen …",
-    revealed: ["Anamnese"],
+    diagnosis: "Ischämischer Mediainfarkt",
+    options: ["Ischämischer Mediainfarkt", "Transitorische ischämische Attacke", "Migräne mit Aura", "Hypoglykämie"],
+    steps: [
+      {
+        category: "Anamnese",
+        icon: "ti-message-circle",
+        points: [
+          "Plötzliche linksseitige Schwäche",
+          "Sprachstörung seit ca. 20 Minuten",
+          "Keine bekannten Vorerkrankungen",
+        ],
+      },
+      {
+        category: "Untersuchung",
+        icon: "ti-stethoscope",
+        points: [
+          "Kraftgrad Arm links 2/5",
+          "NIHSS: 8 Punkte",
+          "Faziale Asymmetrie links",
+        ],
+      },
+    ],
   },
 ];
 
-const HOW_STEPS: { label: string; state: "done" | "current" | "next" }[] = [
-  { label: "Anamnese erheben", state: "done" },
-  { label: "Befunde anfordern", state: "current" },
-  { label: "Diagnose stellen", state: "next" },
-];
+// Farbcodierung je Befund-Kategorie — macht auf einen Blick klar, welche Art
+// von Befund gerade in der mittleren Spalte erhoben wird.
+const CATEGORY_STYLES: Record<string, { text: string; bg: string }> = {
+  Anamnese: { text: "#1d4ed8", bg: "#eaf0fc" },
+  Untersuchung: { text: "#7c3aed", bg: "#f3ecfd" },
+  Labor: { text: "#0d9488", bg: "#e3f5f3" },
+};
 
 function RotatingPatientPreview() {
-  const [index, setIndex] = useState(0);
+  const [caseIndex, setCaseIndex] = useState(0);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [pointCount, setPointCount] = useState(0);
+  // "revealing" = Befunde werden Schritt für Schritt getippt, "diagnosis" =
+  // die 4 Diagnose-Buttons erscheinen, "result" = die richtige Antwort
+  // blitzt kurz grün auf — spiegelt den echten Spielablauf im Mini-Format.
+  const [uiPhase, setUiPhase] = useState<"revealing" | "diagnosis" | "result">("revealing");
   const [visible, setVisible] = useState(true);
+  const autoRef = useRef(true);
 
+  const currentCase = PATIENT_PREVIEWS[caseIndex];
+  const currentStep = currentCase.steps[stepIndex];
+
+  // Eine einzige zeitgesteuerte Kette statt mehrerer Intervalle: solange
+  // noch nicht alle Punkte der aktuellen Kategorie "getippt" sind, wird
+  // alle ~550ms ein weiterer Punkt eingeblendet. Sind alle sichtbar, wird
+  // nach einer Lesepause zur nächsten Kategorie (oder zum nächsten Fall)
+  // gewechselt — simuliert das echte Aufdecken von Befunden im Spiel.
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const id = setInterval(() => {
+
+    if (uiPhase === "revealing") {
+      if (reduced) {
+        setPointCount(currentStep.points.length);
+        return;
+      }
+      if (pointCount < currentStep.points.length) {
+        const t = setTimeout(() => setPointCount((c) => c + 1), 550);
+        return () => clearTimeout(t);
+      }
+      if (!autoRef.current) return;
+      const isLastStep = stepIndex === currentCase.steps.length - 1;
+      const t = setTimeout(() => {
+        if (isLastStep) {
+          setUiPhase("diagnosis");
+        } else {
+          setStepIndex((i) => i + 1);
+          setPointCount(0);
+        }
+      }, 1900);
+      return () => clearTimeout(t);
+    }
+
+    if (uiPhase === "diagnosis") {
+      if (!autoRef.current) return;
+      const t = setTimeout(() => setUiPhase("result"), reduced ? 300 : 1600);
+      return () => clearTimeout(t);
+    }
+
+    // uiPhase === "result"
+    if (!autoRef.current) return;
+    const t = setTimeout(() => {
       setVisible(false);
       setTimeout(() => {
-        setIndex((i) => (i + 1) % PATIENT_PREVIEWS.length);
+        setCaseIndex((i) => (i + 1) % PATIENT_PREVIEWS.length);
+        setStepIndex(0);
+        setPointCount(0);
+        setUiPhase("revealing");
         setVisible(true);
       }, 300);
-    }, 4500);
-    return () => clearInterval(id);
-  }, []);
+    }, reduced ? 300 : 2200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pointCount, stepIndex, caseIndex, uiPhase]);
 
-  const p = PATIENT_PREVIEWS[index];
-  const possiblePoints = 100 - p.revealed.length * 10;
+  // Sobald der Nutzer selbst durchklickt (Pfeil oder Dot), übernimmt er die
+  // Kontrolle — die Auto-Rotation pausiert dauerhaft, statt mitten in der
+  // Interaktion wieder dazwischenzuspringen.
+  function goTo(i: number) {
+    autoRef.current = false;
+    setVisible(false);
+    setTimeout(() => {
+      setCaseIndex(i);
+      setStepIndex(0);
+      setPointCount(0);
+      setUiPhase("revealing");
+      setVisible(true);
+    }, 200);
+  }
+  function next() {
+    goTo((caseIndex + 1) % PATIENT_PREVIEWS.length);
+  }
+  function prev() {
+    goTo((caseIndex - 1 + PATIENT_PREVIEWS.length) % PATIENT_PREVIEWS.length);
+  }
+
+  const possiblePoints = 100 - (stepIndex + 1) * 10;
+  const stillTyping = uiPhase === "revealing" && pointCount < currentStep.points.length;
+  const totalFindings = currentCase.steps.reduce((sum, s) => sum + s.points.length, 0);
 
   return (
-    <div className="card p-5">
-      {/* Card header — always visible */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-2 w-2 rounded-full bg-[#16a34a]"
-            style={{ animation: "pulse-soft 2s ease-in-out infinite" }}
-          />
-          <span className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-            Laufender Fall
-          </span>
-        </div>
-        <span className="font-mono text-[10.5px] text-muted/60">{p.caseId}</span>
-      </div>
+    <div className="relative">
+      {/* Pfeile an den äußeren Kanten der Karte, statt darunter versteckt */}
+      <button
+        type="button"
+        onClick={prev}
+        aria-label="Vorheriger Fall"
+        className="absolute left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[1.5px] border-card-border/15 bg-card text-muted transition-colors hover:border-accent/30 hover:text-accent"
+      >
+        <i className="ti ti-chevron-left text-lg" />
+      </button>
+      <button
+        type="button"
+        onClick={next}
+        aria-label="Nächster Fall"
+        className="absolute right-0 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border-[1.5px] border-card-border/15 bg-card text-muted transition-colors hover:border-accent/30 hover:text-accent"
+      >
+        <i className="ti ti-chevron-right text-lg" />
+      </button>
 
-      {/* Patient block — fades on carousel transition */}
-      <div className="transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }}>
-        {/* Avatar + name */}
-        <div className="mb-3 flex items-center gap-3">
-          <div className="avatar-circle h-9 w-9 text-xs" style={{ backgroundColor: p.color }}>
-            {p.initials}
+      <div className="card p-6 sm:p-8">
+        {/* Card header — always visible */}
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span
+              className="inline-block h-2.5 w-2.5 rounded-full bg-[#16a34a]"
+              style={{ animation: "pulse-soft 2s ease-in-out infinite" }}
+            />
+            <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
+              Laufender Fall
+            </span>
           </div>
-          <div>
-            <p className="text-sm font-bold">{p.name}</p>
-            <p className="text-xs text-muted">{p.meta}</p>
-          </div>
+          <span className="font-mono text-xs text-muted/60">{currentCase.caseId}</span>
         </div>
 
-        {/* Quote */}
-        <p className="mb-4 border-l-[1.5px] border-card-border/20 pl-3 text-sm italic text-foreground/80">
-          „{p.quote}{'"'}
-        </p>
-
-        {/* Revealed findings */}
-        <div className="mb-4 flex flex-col gap-2">
-          {p.revealed.map((f) => (
-            <div key={f} className="flex items-center justify-between">
-              <span className="flex items-center gap-2 text-[13px] font-semibold text-accent">
-                <i className="ti ti-check text-[12px]" />
-                {f}
-              </span>
-              <span className="font-mono text-[11px] font-bold text-[#dc2626]">−10</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Divider */}
-        <div className="mb-3 border-t border-card-border/10" />
-
-        {/* Noch möglich */}
-        <div className="mb-2 flex items-baseline justify-between">
-          <span className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-            Noch möglich
-          </span>
-          <span className="font-mono text-[26px] font-extrabold leading-none text-accent">
-            {possiblePoints}
-          </span>
-        </div>
-      </div>
-
-      {/* Dot indicators */}
-      <div className="mb-3 mt-1 flex items-center justify-center gap-1.5">
-        {PATIENT_PREVIEWS.map((_, i) => (
-          <div
-            key={i}
-            className="transition-all duration-300"
-            style={{
-              backgroundColor: "#a8a69c",
-              width: i === index ? 18 : 6,
-              height: 6,
-              borderRadius: i === index ? 3 : 9999,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Progress steps */}
-      <div className="border-t border-card-border/10 pt-3">
-        <div className="flex flex-col gap-2">
-          {HOW_STEPS.map((step, i) => (
-            <div key={i} className="flex items-center gap-2.5">
-              {step.state === "done" ? (
-                <div
-                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
-                  style={{ backgroundColor: "#1d4ed8", color: "#ffffff" }}
-                >
-                  <i className="ti ti-check text-[10px]" />
-                </div>
-              ) : step.state === "current" ? (
-                <div
-                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold"
-                  style={{ backgroundColor: "#E6F1FB", color: "#0C447C" }}
-                >
-                  {i + 1}
-                </div>
-              ) : (
-                <div
-                  className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold"
-                  style={{ backgroundColor: "rgba(15,15,15,0.07)", color: "#5f5e5a" }}
-                >
-                  {i + 1}
-                </div>
-              )}
-              <span
-                className={`text-xs ${
-                  step.state === "current"
-                    ? "font-bold text-foreground"
-                    : step.state === "done"
-                    ? "font-medium text-muted"
-                    : "font-medium text-muted/60"
-                }`}
+        {/* Wieder dreigeteilt (Patient / Befunde / Punkte+Diagnose), aber mit
+            fixer Höhe je Spalte — die Karte darf beim Aufdecken nicht mehr in
+            der Höhe springen. Farbcodierung je Kategorie macht klar, was
+            gerade erhoben wird. */}
+        <div
+          className="grid gap-6 transition-opacity duration-300 sm:grid-cols-[0.9fr_1fr_0.95fr]"
+          style={{ opacity: visible ? 1 : 0 }}
+        >
+          {/* Spalte 1: Patient */}
+          <div className="flex h-[208px] flex-col justify-center">
+            <div className="mb-4 flex items-center gap-3.5">
+              <div
+                className="avatar-circle h-12 w-12 text-base"
+                style={{ backgroundColor: currentCase.color }}
               >
-                {step.label}
+                {currentCase.initials}
+              </div>
+              <div>
+                <p className="text-base font-bold">{currentCase.name}</p>
+                <p className="text-sm text-muted">{currentCase.meta}</p>
+              </div>
+            </div>
+            <p className="border-l-[1.5px] border-card-border/20 pl-3 text-base italic text-foreground/80">
+              „{currentCase.quote}{'"'}
+            </p>
+          </div>
+
+          {/* Spalte 2: Befunde — farblich je Kategorie, feste Höhe egal
+              wie viele Punkte gerade sichtbar sind. Kategorie-Wechsel wird
+              per key-Remount neu eingeblendet (line-pop). */}
+          <div
+            key={`${caseIndex}-${stepIndex}`}
+            className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-7 sm:pt-0"
+          >
+            <span
+              className="line-pop mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.065em]"
+              style={{ color: CATEGORY_STYLES[currentStep.category]?.text, backgroundColor: CATEGORY_STYLES[currentStep.category]?.bg }}
+            >
+              <i className={`ti ${currentStep.icon} text-xs`} />
+              {currentStep.category} wird erhoben
+            </span>
+            <div className="flex flex-1 flex-col gap-2.5">
+              {currentStep.points.slice(0, pointCount).map((point) => (
+                <div
+                  key={point}
+                  className="line-pop flex items-center gap-2 text-[14px] font-semibold"
+                  style={{ color: CATEGORY_STYLES[currentStep.category]?.text }}
+                >
+                  <i className="ti ti-check text-xs shrink-0" />
+                  <span>{point}</span>
+                </div>
+              ))}
+              {stillTyping && (
+                <span
+                  className="ml-[19px] inline-block h-3.5 w-[2px]"
+                  style={{
+                    backgroundColor: CATEGORY_STYLES[currentStep.category]?.text,
+                    animation: "pulse-soft 0.9s ease-in-out infinite",
+                  }}
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+            <span className="text-[11px] text-muted">{totalFindings} Befunde in diesem Fall</span>
+          </div>
+
+          {/* Spalte 3: Punktestand + Diagnose — immer sichtbar, Diagnose
+              aktiviert sich erst am Ende ("Extrainfos" statt leerer Fläche).
+              Punktezahl poppt bei jeder Änderung, Diagnose-Buttons poppen
+              gestaffelt rein, die richtige Antwort bekommt im Result einen
+              Scale-Bounce mit grünem Glow. */}
+          <div className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-7 sm:pt-0">
+            <div className="mb-3 flex items-baseline justify-between">
+              <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
+                {uiPhase === "result" ? "Erreicht" : "Noch möglich"}
+              </span>
+              <span
+                key={`${stepIndex}-${uiPhase}`}
+                className="score-settle font-mono text-[28px] font-extrabold leading-none"
+                style={{ color: uiPhase === "result" ? "#15803d" : "#1d4ed8" }}
+              >
+                {uiPhase === "result" ? "+" : ""}
+                {possiblePoints}
               </span>
             </div>
+            <div
+              key={uiPhase}
+              className="grid flex-1 grid-cols-2 content-start gap-1.5 border-t border-card-border/10 pt-3"
+            >
+              {currentCase.options.map((opt, i) => {
+                const isCorrect = opt === currentCase.diagnosis;
+                const showResult = uiPhase === "result";
+                return (
+                  <span
+                    key={opt}
+                    className={`line-pop flex items-center justify-center rounded-lg border-[1.5px] px-1.5 py-[7px] text-center text-[10px] font-semibold leading-snug transition-colors ${
+                      showResult && isCorrect
+                        ? "correct-pop border-[#16a34a] bg-[#e7f6ec] text-[#15803d]"
+                        : showResult
+                        ? "border-card-border/10 text-muted/40"
+                        : uiPhase === "diagnosis"
+                        ? "border-card-border/20 text-foreground/80"
+                        : "border-card-border/10 text-muted/40"
+                    }`}
+                    style={{ animationDelay: uiPhase === "diagnosis" ? `${i * 70}ms` : undefined }}
+                  >
+                    {showResult && isCorrect && <i className="ti ti-check mr-1 text-[9px] shrink-0" />}
+                    {opt}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Durchklickbare Fall-Auswahl (Dots) */}
+        <div className="mt-4 flex items-center justify-center gap-1.5">
+          {PATIENT_PREVIEWS.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Fall ${i + 1} anzeigen`}
+              className="transition-all duration-300"
+              style={{
+                backgroundColor: i === caseIndex ? "#1d4ed8" : "#a8a69c",
+                width: i === caseIndex ? 18 : 6,
+                height: 6,
+                borderRadius: i === caseIndex ? 3 : 9999,
+              }}
+            />
           ))}
         </div>
       </div>
@@ -690,6 +896,59 @@ function DifficultyModal({
   );
 }
 
+// Zählt beim ersten Sichtbarwerden von 0 auf den Zielwert hoch (ease-out,
+// ~900ms) statt die Zahl statisch anzuzeigen — macht die Statistik-Boxen
+// beim Herunterscrollen lebendiger, ohne echte Werte zu verfälschen.
+function AnimatedNumber({
+  target,
+  suffix = "",
+  duration = 900,
+}: {
+  target: number;
+  suffix?: string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [value, setValue] = useState(0);
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setValue(target);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !startedRef.current) {
+          startedRef.current = true;
+          const start = performance.now();
+          function tick(now: number) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setValue(Math.round(eased * target));
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration]);
+
+  return (
+    <span ref={ref}>
+      {value}
+      {suffix}
+    </span>
+  );
+}
+
 function WelcomeNote() {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -730,6 +989,312 @@ function WelcomeNote() {
   );
 }
 
+function MiniStep({
+  n,
+  icon,
+  title,
+  text,
+}: {
+  n: number;
+  icon: string;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="flex gap-2.5 rounded-lg border-[1.5px] border-card-border/10 p-3">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+        <i className={`ti ${icon} text-[13px]`} />
+      </div>
+      <div>
+        <p className="mb-0.5 text-[12.5px] font-bold text-foreground">
+          {n}. {title}
+        </p>
+        <p className="text-[12px] leading-snug text-muted">{text}</p>
+      </div>
+    </div>
+  );
+}
+
+function StatBox({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-3.5">
+      <p className="text-xl font-extrabold text-[#15803d]">
+        <AnimatedNumber target={value} />
+      </p>
+      <p className="text-[11.5px] font-semibold text-[#15803d]">{label}</p>
+    </div>
+  );
+}
+
+// Vertrauens-Block: nimmt die "ist das KI überhaupt seriös?"-Sorge vorweg,
+// bevor der Gründer-Text (persönlich, aber kein Beleg) folgt. Beide Hälften
+// (Warum-KI + So-entsteht-ein-Fall) leben in EINER Karte, damit sie optisch
+// zusammengehören statt als zwei getrennte "Inseln" zu wirken. Der "Mehr"-Chip
+// überlappt die interne Trennlinie als Overlay und triggert einen sanften
+// Scroll (html { scroll-behavior: smooth } in globals.css) statt eines Sprungs.
+function TrustAndProcessCard() {
+  return (
+    <div id="methodik" className="card mt-3 scroll-mt-24 overflow-visible p-0">
+      <div className="p-5 pb-7">
+        <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+          <i className="ti ti-shield-check text-sm text-accent" />
+          Warum KI-gestützte Fälle?
+        </p>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+          Wir kombinieren KI-Generierung mit echter Quellenrecherche — jeder Fall wird gegen
+          AWMF-Leitlinien, IMPP-Gegenstandskataloge und offizielle Versorgungsdaten geprüft,
+          nicht frei erfunden.
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-3 py-1 text-xs font-bold text-accent">
+            <i className="ti ti-files text-[11px]" />
+            <AnimatedNumber target={41} suffix="+ Fälle" />
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-3 py-1 text-xs font-bold text-accent">
+            <i className="ti ti-checkbox text-[11px]" />
+            <AnimatedNumber target={100} suffix="% quellenbasiert" />
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-3 py-1 text-xs font-bold text-accent">
+            <i className="ti ti-certificate text-[11px]" />
+            AWMF · IMPP · Destatis
+          </span>
+          <a
+            href="/ueber-uns"
+            className="ml-auto text-xs font-semibold text-accent hover:underline"
+          >
+            Mehr zur Methodik →
+          </a>
+        </div>
+      </div>
+
+      {/* Nahtübergang: reine Trennlinie, kein Overlay-Chip mehr nötig — genug Content folgt */}
+      <div className="border-t border-card-border/10">
+        <div id="wie-entsteht" className="scroll-mt-24 p-5 pt-6">
+          <p className="mb-1 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+            <i className="ti ti-route text-sm text-accent" />
+            So entsteht ein Fall
+          </p>
+          <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted">
+            Kein Fall wird &bdquo;einfach so&ldquo; von einer KI ausgegeben — jeder durchläuft
+            denselben festen, sechsstufigen Prozess.
+          </p>
+          <div className="mb-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                n: 1,
+                icon: "ti-list-search",
+                title: "Diagnose auswählen",
+                text: "Nach IMPP-Häufigkeit, realer Prävalenz (RKI) und Cannot-miss-Kriterium.",
+              },
+              {
+                n: 2,
+                icon: "ti-books",
+                title: "Recherche",
+                text: "Nur Primärquellen: AWMF, ESC, RKI, Onkopedia, IMPP, PubMed.",
+              },
+              {
+                n: 3,
+                icon: "ti-pencil",
+                title: "Fall schreiben",
+                text: "Anamnese, Untersuchung, Labor/Bildgebung, 4 Antwortoptionen.",
+              },
+              {
+                n: 4,
+                icon: "ti-checkup-list",
+                title: "Konsistenz-Check",
+                text: "Passen Laborwerte, Demografie und Bildgebung physiologisch zusammen?",
+              },
+              {
+                n: 5,
+                icon: "ti-shield-check",
+                title: "Strukturvalidierung",
+                text: "Automatisiertes Skript prüft Pflichtfelder vor Veröffentlichung.",
+              },
+              {
+                n: 6,
+                icon: "ti-quote",
+                title: "Quellen dokumentieren",
+                text: "Jede Quelle wird vermerkt — auch wenn die Quellenlage dünn ist.",
+              },
+            ].map((step, i) => (
+              <FadeInUp key={step.n} delay={i * 70}>
+                <MiniStep n={step.n} icon={step.icon} title={step.title} text={step.text} />
+              </FadeInUp>
+            ))}
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {[
+              { value: 15, label: "Vorklinik-Fälle" },
+              { value: 11, label: "Klinik/Innere-Fälle" },
+              { value: 15, label: "Examen/PJ-Fälle" },
+            ].map((stat, i) => (
+              <FadeInUp key={stat.label} delay={i * 90}>
+                <StatBox value={stat.value} label={stat.label} />
+              </FadeInUp>
+            ))}
+          </div>
+          <a
+            href="/ueber-uns#qualitaet"
+            className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
+          >
+            Vollständige Methodik &amp; Qualitätssicherung ansehen →
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Vereinfachte Version der RangeBar von /ueber-uns#impp-haeufigkeit — gleiche
+// Zahlen, nur kompakter für die Homepage.
+function MiniRangeBar({
+  label,
+  min,
+  max,
+  max100 = 30,
+}: {
+  label: string;
+  min: number;
+  max: number;
+  max100?: number;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-[168px] shrink-0 text-[13px] font-semibold text-foreground/85">{label}</span>
+      <div className="relative h-2 w-full overflow-hidden rounded-full bg-card-border/10">
+        <div
+          className="absolute h-full rounded-full bg-accent/70"
+          style={{ left: `${(min / max100) * 100}%`, width: `${((max - min) / max100) * 100}%` }}
+        />
+      </div>
+      <span className="w-[56px] shrink-0 text-right text-[13px] font-bold text-accent">
+        {min}–{max}%
+      </span>
+    </div>
+  );
+}
+
+const CANNOT_MISS_PREVIEW = [
+  "NSTEMI",
+  "Akute Lungenembolie",
+  "Aortendissektion Typ A",
+  "Status epilepticus",
+  "Urosepsis / septischer Schock",
+  "Anaphylaktischer Schock",
+];
+
+// Zieht die IMPP-Häufigkeit + Cannot-miss-Daten von /ueber-uns auf die
+// Homepage — gleiche Zahlen, keine erfundenen Werte, nur eine kompakte
+// Auswahl mit Link zur vollständigen Seite.
+function FallauswahlPreview() {
+  const impBars = [
+    { label: "Nervensystem & Psyche", min: 20, max: 30 },
+    { label: "Notfallmaßnahmen (Achse 2)", min: 5, max: 20 },
+    { label: "Kardiovaskuläres System", min: 10, max: 20 },
+    { label: "Respiratorisches System", min: 5, max: 15 },
+  ];
+
+  return (
+    <div className="card mt-3 p-6">
+      <p className="mb-1 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+        <i className="ti ti-target-arrow text-sm text-accent" />
+        Wonach wir Fälle auswählen
+      </p>
+      <p className="mb-4 max-w-2xl text-sm leading-relaxed text-muted">
+        Nicht zufällig: nach offiziellem IMPP-Prüfungs-Blueprint (M2-Examen) und einer eigenen
+        Cannot-miss-Achse für seltene, aber zeitkritische Diagnosen.
+      </p>
+
+      <div className="mb-5 flex flex-col gap-2.5">
+        {impBars.map((bar, i) => (
+          <FadeInUp key={bar.label} delay={i * 70}>
+            <MiniRangeBar {...bar} />
+          </FadeInUp>
+        ))}
+      </div>
+      <a
+        href="/ueber-uns#impp-haeufigkeit"
+        className="mb-5 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
+      >
+        Alle 10 Fachbereiche + Quelle ansehen →
+      </a>
+
+      <div className="border-t border-card-border/10 pt-5">
+        <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+          <i className="ti ti-alert-triangle text-sm text-accent" />
+          Cannot-miss-Fälle
+        </p>
+        <p className="mb-3 text-sm leading-relaxed text-muted">
+          <AnimatedNumber target={22} /> von <AnimatedNumber target={41} /> Fällen (rund{" "}
+          <AnimatedNumber target={54} suffix="%" />) sind bewusst als cannot-miss markiert — zeitkritisch,
+          aber leicht zu übersehen.
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {CANNOT_MISS_PREVIEW.map((d, i) => (
+            <FadeInUp key={d} delay={i * 50}>
+              <span className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-2.5 py-1 text-[11.5px] font-semibold text-accent">
+                <i className="ti ti-alert-triangle text-[9px]" />
+                {d}
+              </span>
+            </FadeInUp>
+          ))}
+          <span className="inline-flex items-center rounded-full border-[1.5px] border-card-border/15 px-2.5 py-1 text-[11.5px] font-semibold text-muted">
+            +16 weitere
+          </span>
+        </div>
+        <a
+          href="/ueber-uns#cannot-miss"
+          className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
+        >
+          Alle Cannot-miss-Fälle ansehen →
+        </a>
+      </div>
+    </div>
+  );
+}
+
+// Ebenfalls von /ueber-uns#qualitaet übernommen — gleicher Wortlaut/Status,
+// damit Homepage und Über-uns nie widersprüchliche Aussagen machen.
+function QualitaetPreviewCard() {
+  return (
+    <div className="card mt-3 p-6">
+      <p className="mb-4 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+        <i className="ti ti-shield-check text-sm text-accent" />
+        Qualitätssicherung
+      </p>
+      <div className="flex flex-col gap-3">
+        <FadeInUp>
+          <div className="flex gap-3">
+            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#e7f6ec] text-[#15803d]">
+              <i className="ti ti-check text-[13px]" />
+            </span>
+            <p className="text-sm leading-relaxed text-muted">
+              <strong className="text-foreground">&bdquo;Fall melden&ldquo;-Funktion ist live:</strong> Jeder Fall kann
+              direkt im Ergebnis-Screen gemeldet werden — ein echter Feedback-Kanal, kein Versprechen.
+            </p>
+          </div>
+        </FadeInUp>
+        <FadeInUp delay={90}>
+          <div className="flex gap-3">
+            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#fef3e2] text-[#92400e]">
+              <i className="ti ti-clock text-[13px]" />
+            </span>
+            <p className="text-sm leading-relaxed text-muted">
+              <strong className="text-foreground">Fachärztliches Review ist geplant, aber noch nicht erfolgt.</strong>{" "}
+              Quellenangaben ersetzen kein fachliches Urteil.
+            </p>
+          </div>
+        </FadeInUp>
+      </div>
+      <a
+        href="/ueber-uns#qualitaet"
+        className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
+      >
+        Vollständige Qualitätssicherung ansehen →
+      </a>
+    </div>
+  );
+}
 
 function StartScreen({
   onStart,
@@ -738,40 +1303,39 @@ function StartScreen({
 }) {
   const [showPicker, setShowPicker] = useState(false);
   return (
-    <div className="flex min-h-[calc(100vh-64px)] flex-col pb-4">
-      <AppHeader
-        onBackClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        secondaryLinks={[
-          { href: "/statistik", label: "Statistik", icon: "ti-chart-bar" },
-          { href: "/ueber-uns", label: "Über uns", icon: "ti-info-circle" },
-        ]}
-        right={
-          <span className="flex items-center gap-1.5 rounded-full bg-background px-3 py-1.5 text-sm text-muted">
-            <i className="ti ti-files text-sm text-accent" />
-            <span className="font-extrabold text-foreground">41+</span>
-            &nbsp;Fälle
-          </span>
-        }
-      />
-      <div className="grid gap-6 md:grid-cols-[1fr_380px] md:items-start">
-        <div>
+    <div className="relative flex min-h-[calc(100vh-64px)] flex-col pb-4">
+      {/* Dezente Hintergrund-Deko hinter dem Hero — gegen die "leere" Wirkung
+          auf breiten Screens. Kein overflow-hidden auf dem Root-Element,
+          damit die sticky Nav weiter funktioniert. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px]" aria-hidden="true">
+        {/* Sanft driftender Blauton-Verlauf statt statischer Flecken — deutet
+            "frisch, KI-generiert" an, ohne aufdringlich zu wirken. */}
+        <div className="hero-blob-a absolute left-[6%] top-6 h-72 w-72 rounded-full bg-accent/[0.07] blur-3xl" />
+        <div className="hero-blob-b absolute right-[8%] top-32 h-80 w-80 rounded-full bg-[#38bdf8]/[0.07] blur-3xl" />
+      </div>
+      <CenteredNav active="home" />
+      <div className="mx-auto flex max-w-xl flex-col items-center text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
           Für Medizinstudierende · Deutschland
         </span>
-        <h1 className="mt-3 max-w-xl text-4xl font-extrabold leading-[1.08] tracking-tight md:text-5xl">
-          Patientenfälle lösen.
-          <br />
-          Nicht nur auswendig lernen.
+        <h1 className="mt-2 text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl">
+          Klinisch neu denken.
         </h1>
-        <p className="mt-2 max-w-md text-lg leading-relaxed text-muted">
-          Echte klinische Situationen — Anamnese, Untersuchung, Labor. Du
-          entscheidest was du brauchst. Weniger Untersuchungen, mehr Punkte.
+        <p className="mt-1.5 max-w-md text-lg leading-relaxed text-muted">
+          Lerne klinisch zu denken und Befunde sinnvoll anzufordern.
         </p>
+      </div>
+
+      <div className="mx-auto mt-5 w-full max-w-6xl">
+        <RotatingPatientPreview />
+      </div>
+
+      <div className="mx-auto mt-4 flex flex-col items-center gap-2">
         <button
           onClick={() => setShowPicker(true)}
-          className="group relative mt-3 overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
+          className="group relative overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
         >
-          Ersten Fall lösen{" "}
+          Ersten Fall ausprobieren{" "}
           <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-2 group-active:translate-x-2">
             →
           </span>
@@ -779,23 +1343,68 @@ function StartScreen({
             className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-accent to-transparent"
             aria-hidden="true"
           />
+          {/* Periodisch durchlaufender Glanz-Streifen — soll Lust aufs Klicken machen */}
+          <span
+            className="cta-shine pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+            aria-hidden="true"
+          />
         </button>
-        <p className="mt-2 text-sm text-muted">
+        <p className="text-sm text-muted">
           Kostenlos · Kein Account nötig · 5 Fälle täglich
         </p>
       </div>
-      <div>
-        <RotatingPatientPreview />
-      </div>
+
+      {/* Konkreter Scroll-Teaser statt nur "Mehr" — zeigt schon einen
+          Ausschnitt aus "So entsteht ein Fall", damit oberhalb des Falds
+          klar wird, was beim Scrollen kommt. */}
+      <button
+        type="button"
+        onClick={() =>
+          document.getElementById("wie-entsteht")?.scrollIntoView({ behavior: "smooth", block: "start" })
+        }
+        className="group mx-auto mt-5 flex flex-col items-center gap-2.5"
+      >
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 rounded-full border-[1.5px] border-card-border/12 bg-card/70 px-4 py-2 backdrop-blur-sm transition-colors group-hover:border-accent/25">
+          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted">
+            <i className="ti ti-list-search text-[11px] text-accent" />
+            Diagnose auswählen
+          </span>
+          <i className="ti ti-chevron-right text-[10px] text-muted/25" />
+          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted">
+            <i className="ti ti-books text-[11px] text-accent" />
+            Recherche
+          </span>
+          <i className="ti ti-chevron-right text-[10px] text-muted/25" />
+          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted">
+            <i className="ti ti-pencil text-[11px] text-accent" />
+            Fall schreiben
+          </span>
+        </div>
+        <span className="flex items-center gap-1 text-xs font-semibold text-muted transition-colors group-hover:text-accent">
+          Mehr erfahren
+          <i className="ti ti-chevron-down text-sm" />
+        </span>
+      </button>
+
       {showPicker && (
         <DifficultyModal
           onSelect={onStart}
           onClose={() => setShowPicker(false)}
         />
       )}
-      </div>
-      <div className="mt-auto pt-10">
-        <WelcomeNote />
+      <div className="pt-12">
+        <FadeInUp>
+          <TrustAndProcessCard />
+        </FadeInUp>
+        <FadeInUp>
+          <FallauswahlPreview />
+        </FadeInUp>
+        <FadeInUp>
+          <QualitaetPreviewCard />
+        </FadeInUp>
+        <FadeInUp delay={120}>
+          <WelcomeNote />
+        </FadeInUp>
         <footer
           className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"
           style={{ fontSize: 11, color: "#5f5e5a" }}
@@ -851,14 +1460,14 @@ function StatPill({
 }) {
   if (variant === "score") {
     return (
-      <span className="flex items-baseline gap-[6px] whitespace-nowrap rounded-lg border-[1.5px] border-card-border/20 bg-card px-[16px] py-[7px]">
-        <span className="text-[11px] font-bold text-muted">{label}</span>
+      <span className="flex items-baseline gap-[6px] whitespace-nowrap rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.03] px-[16px] py-[7px]">
+        <span className="text-[11px] font-semibold text-muted">{label}</span>
         <span className="tabular-nums text-[19px] font-extrabold text-accent">{value}</span>
       </span>
     );
   }
   return (
-    <span className="rounded-lg border-[1.5px] border-card-border/20 bg-card px-3 py-1.5 text-sm font-semibold">
+    <span className="rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.03] px-3 py-1.5 text-sm font-semibold">
       <span className="mr-1 text-muted">{label}</span>
       <span className="text-accent">{value}</span>
     </span>
@@ -2177,7 +2786,9 @@ function GameScreen({
         return;
       }
 
-      const lineY = anchorRect.bottom - colRect.top;
+      // Extra Abstand nach unten versetzt: gibt der Mitte mehr Platz für
+      // aufgedeckte Befunde, bevor die Diagnoseinsel beginnt.
+      const lineY = anchorRect.bottom - colRect.top + ISLAND_TOP_GAP;
       setDiagnosisTop(lineY);
 
       // Pad the scroll container so the last content line can be scrolled above the island.
@@ -2269,15 +2880,12 @@ function GameScreen({
 
       {/* Mobile header */}
       <header className="sticky top-0 z-30 mb-6 -mt-5 pb-2 pt-4 sm:hidden">
-        <div
-          className="flex items-center justify-between gap-3 rounded-xl border-[1.5px] bg-card px-4 py-3"
-          style={{ borderColor: "#d8d6cd" }}
-        >
+        <div className="flex items-center justify-between gap-3 rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-4 py-2.5 backdrop-blur-md">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSidebarOpen(true)}
               aria-label="Menü öffnen"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground/70 transition-colors hover:bg-foreground/5"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-foreground/5"
             >
               <i className="ti ti-menu-2 text-lg" />
             </button>
@@ -2291,44 +2899,51 @@ function GameScreen({
           </div>
         </div>
         <div
-          className="mt-1.5 flex items-center justify-between rounded-xl border-[1.5px] border-card-border/20 bg-card px-3 py-1.5"
+          className="mt-1.5 flex items-center justify-between rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-4 py-1.5 backdrop-blur-md"
           style={{ visibility: isResult ? "hidden" : undefined }}
         >
-          <span className="text-[11px] font-bold uppercase tracking-wide text-muted">Mögliche Punkte</span>
+          <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">Mögliche Punkte</span>
           <span className="clinical-data text-sm font-extrabold text-accent">{possiblePoints} / {BASE_SCORE}</span>
         </div>
       </header>
 
-      {/* Desktop header */}
-      <header className="sticky top-0 z-30 mb-6 -mt-5 hidden pb-2 pt-4 sm:block">
-        <div
-          className="flex items-center justify-between gap-3 rounded-xl border-[1.5px] bg-card px-[18px] py-3"
-          style={{ borderColor: "#d8d6cd" }}
-        >
-          <div className="flex min-w-0 items-center gap-3">
+      {/* Desktop header — kompakte, zentrierte Pill wie CenteredNav auf den
+          übrigen Seiten, statt über die volle Breite verteilt. */}
+      <header className="sticky top-0 z-30 mb-4 -mt-5 hidden pb-2 pt-4 sm:block">
+        <div className="mx-auto flex w-fit max-w-full items-center gap-2.5 rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-2.5 py-2 backdrop-blur-md">
+          <button
+            onClick={onGoHome}
+            className="flex shrink-0 items-center overflow-hidden pl-1 transition-opacity hover:opacity-80"
+          >
+            <Logo size={28} />
+          </button>
+          <div className="h-5 w-px shrink-0 bg-card-border/15" />
+
+          {/* Pfad — eigener, dezent umrandeter Chip */}
+          <div className="flex min-w-0 items-center gap-1.5 rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.02] py-1 pl-1 pr-3 text-sm">
             <button
               onClick={onGoHome}
-              className="flex min-w-0 items-center overflow-hidden transition-opacity hover:opacity-80"
+              aria-label="Zurück zum Start"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-foreground/5 hover:text-accent"
             >
-              <Logo size={30} />
+              <i className="ti ti-arrow-left text-[13px]" />
             </button>
-            <div className="h-5 w-px shrink-0 bg-foreground/10" />
-            <div className="flex min-w-0 items-center gap-2 text-sm">
-              <button
-                onClick={onGoHome}
-                className="flex shrink-0 items-center gap-1 font-semibold text-muted transition-opacity hover:opacity-80"
-              >
-                <i className="ti ti-arrow-left" /> Start
-              </button>
-              <span className="shrink-0 text-muted/40">→</span>
-              <span className="shrink-0 font-semibold">{difficultyLabel}</span>
-              <span className="shrink-0 text-muted/40">→</span>
-              <span className="truncate font-semibold text-accent">
-                {disciplineLabel}
-              </span>
-            </div>
+            <button
+              onClick={onGoHome}
+              className="shrink-0 font-medium text-muted transition-colors hover:text-accent"
+            >
+              Start
+            </button>
+            <i className="ti ti-chevron-right shrink-0 text-[12px] text-muted/30" />
+            <span className="shrink-0 font-medium text-muted">{difficultyLabel}</span>
+            <i className="ti ti-chevron-right shrink-0 text-[12px] text-muted/30" />
+            <span className="truncate font-semibold text-accent">
+              {disciplineLabel}
+            </span>
           </div>
-          <div className="flex shrink-0 items-center gap-2">
+
+          <div className="h-5 w-px shrink-0 bg-card-border/15" />
+          <div className="flex shrink-0 items-center gap-2 pr-1">
             <StatPill label="PUNKTE" value={score} variant="score" />
             <StatPill label="GELÖST" value={`${solved}/${played}`} />
           </div>
@@ -2346,23 +2961,23 @@ function GameScreen({
               transition: "opacity 200ms ease-out",
             }}
           />
-          <div ref={contentScrollRef} data-content-scroll="" className="flex flex-col gap-6 flex-1 min-h-0 overflow-y-auto">
-          <div ref={patientCardRef} className="card flex gap-4 p-[18px]">
+          <div ref={contentScrollRef} data-content-scroll="" className="flex flex-col gap-4 flex-1 min-h-0 overflow-y-auto">
+          <div ref={patientCardRef} className="card flex gap-3 p-3.5">
             <div
-              className="avatar-circle h-14 w-14 shrink-0 text-lg"
+              className="avatar-circle h-11 w-11 shrink-0 text-sm"
               style={{ backgroundColor: color }}
             >
               {initials(caseData.patientName)}
             </div>
             <div>
-              <h2 className="text-lg font-bold">
+              <h2 className="text-[15px] font-bold leading-tight">
                 {caseData.patientName},{" "}
                 {caseData.age === 0 ? "Neugeboren" : `${caseData.age} Jahre`}
+                <span className="ml-1.5 font-normal text-muted">
+                  {caseData.gender === "male" ? "· Männlich" : "· Weiblich"}
+                </span>
               </h2>
-              <p className="text-sm text-muted">
-                {caseData.gender === "male" ? "Männlich" : "Weiblich"}
-              </p>
-              <blockquote className="mt-3 border-l-[1.5px] border-accent pl-3 italic">
+              <blockquote className="mt-1.5 border-l-[1.5px] border-accent pl-3 italic">
                 „{caseData.chiefComplaint}{'"'}
               </blockquote>
             </div>

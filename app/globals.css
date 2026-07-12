@@ -48,6 +48,16 @@
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background:
     radial-gradient(circle at 12% 8%, rgba(29,78,216,0.05), transparent 45%),
@@ -104,6 +114,18 @@ h1, h2, h3, h4 {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
+@keyframes shine-sweep {
+  0% { transform: translateX(-160%) skewX(-20deg); }
+  100% { transform: translateX(160%) skewX(-20deg); }
+}
+@keyframes line-pop {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes stat-ping {
+  0% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
 
 .motion-float {
   animation: float 3s ease-in-out infinite;
@@ -114,8 +136,22 @@ h1, h2, h3, h4 {
 .motion-pulse {
   animation: pulse-soft 2s ease-in-out infinite;
 }
+.cta-shine {
+  animation: shine-sweep 2.4s linear infinite;
+}
+.line-pop {
+  animation: line-pop 320ms ease-out;
+}
+.stat-ping {
+  animation: stat-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
+  .cta-shine,
+  .line-pop,
+  .stat-ping {
+    animation: none;
+  }
   .motion-float,
   .motion-wiggle,
   .motion-pulse {
@@ -131,8 +167,44 @@ h1, h2, h3, h4 {
 .score-settle {
   animation: scoreSettle 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+@keyframes correct-pop {
+  0% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(22,163,74,0.35); }
+  55% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(22,163,74,0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(22,163,74,0); }
+}
+.correct-pop {
+  animation: correct-pop 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .score-settle,
+  .correct-pop {
+    animation: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .score-settle {
+    animation: none;
+  }
+}
+
+/* Sanft driftender Blauton-Verlauf hinter dem Hero — soll "frisch, KI-generiert"
+   andeuten, ohne aufdringlich zu wirken. Zwei Blobs, leicht versetzte Dauer/
+   Delay, damit sich die Überlappung organisch verschiebt statt synchron zu pulsen. */
+@keyframes drift-glow {
+  0%, 100% { opacity: 0.55; transform: translate3d(0, 0, 0) scale(1); }
+  50% { opacity: 1; transform: translate3d(12px, -16px, 0) scale(1.1); }
+}
+.hero-blob-a {
+  animation: drift-glow 9s ease-in-out infinite;
+}
+.hero-blob-b {
+  animation: drift-glow 11s ease-in-out infinite 1.8s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob-a,
+  .hero-blob-b {
     animation: none;
   }
 }

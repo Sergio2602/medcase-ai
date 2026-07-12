@@ -1,5 +1,6 @@
 import { KontaktPopover } from "@/app/components/KontaktPopover";
-import { AppHeader } from "@/app/components/AppHeader";
+import { CenteredNav } from "@/app/components/CenteredNav";
+import { FadeInUp } from "@/app/components/FadeInUp";
 
 export const metadata = {
   title: "Impressum & Datenschutz — Medcase",
@@ -91,34 +92,15 @@ function TocSidebar() {
 export default function ImpressumPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1560px]">
-        <AppHeader
-          backLabel="Zurück"
-          backIcon="ti-arrow-left"
-          secondaryLink={{ href: "/ueber-uns", label: "Über uns", icon: "ti-info-circle" }}
-          right={
-            <div className="hidden items-center gap-1.5 text-sm font-semibold sm:flex">
-              <a
-                href="#impressum"
-                className="rounded-lg px-3 py-1.5 text-muted transition-colors hover:bg-[#eaf0fc] hover:text-accent"
-              >
-                Impressum
-              </a>
-              <a
-                href="#datenschutz"
-                className="rounded-lg px-3 py-1.5 text-muted transition-colors hover:bg-[#eaf0fc] hover:text-accent"
-              >
-                Datenschutz
-              </a>
-            </div>
-          }
-        />
+      <div className="mx-auto max-w-[1150px]">
+        <CenteredNav active={null} />
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
           <TocSidebar />
 
-          <div>
+          <div className="max-w-[860px]">
             {/* ===== IMPRESSUM ===== */}
+            <FadeInUp>
             <div id="impressum" className="card scroll-mt-6 p-8">
               <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
                 Impressum
@@ -224,8 +206,10 @@ export default function ImpressumPage() {
                 </p>
               </section>
             </div>
+            </FadeInUp>
 
             {/* ===== DATENSCHUTZ ===== */}
+            <FadeInUp>
             <div id="datenschutz" className="card mt-4 scroll-mt-6 p-8">
               <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
                 Datenschutzerklärung
@@ -409,6 +393,7 @@ export default function ImpressumPage() {
                 </p>
               </section>
             </div>
+            </FadeInUp>
 
             {/* Footer */}
             <footer

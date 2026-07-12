@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { AppHeader } from "@/app/components/AppHeader";
+import { CenteredNav } from "@/app/components/CenteredNav";
+import { FadeInUp } from "@/app/components/FadeInUp";
 import { readCaseResults, clearCaseResults, type CaseResult } from "@/lib/stats";
 
 const DISCIPLINE_LABELS: Record<string, string> = {
@@ -69,6 +70,47 @@ function accuracyColors(pct: number) {
   if (pct >= 70) return { bg: "#e7f6ec", text: "#15803d", bar: "#22c55e" };
   if (pct >= 40) return { bg: "#fef3e2", text: "#92400e", bar: "#f59e0b" };
   return { bg: "#fdf1f0", text: "#c0362c", bar: "#ef4444" };
+}
+
+// Kompakter Ring-Gauge für die Trefferquote — gleiche Größe wie die
+// Icon-Kreise der anderen Summary-Karten, damit alle vier Zellen strukturell
+// gleich aussehen. Animiert beim Laden von 0 auf den Zielwert.
+function RingGauge({ percent, color }: { percent: number; color: string }) {
+  const [animated, setAnimated] = useState(0);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setAnimated(percent);
+      return;
+    }
+    const id = requestAnimationFrame(() => setAnimated(percent));
+    return () => cancelAnimationFrame(id);
+  }, [percent]);
+
+  const radius = 16;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - animated / 100);
+
+  return (
+    <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+      <svg viewBox="0 0 40 40" className="h-10 w-10 -rotate-90">
+        <circle cx="20" cy="20" r={radius} fill="none" stroke="currentColor" className="text-card-border/10" strokeWidth={4} />
+        <circle
+          cx="20"
+          cy="20"
+          r={radius}
+          fill="none"
+          stroke={color}
+          strokeWidth={4}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          style={{ transition: "stroke-dashoffset 900ms cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+        />
+      </svg>
+    </div>
+  );
 }
 
 function AccuracyBadge({ pct }: { pct: number }) {
@@ -185,8 +227,8 @@ function SummaryCard({
         <i className={`ti ${icon} text-lg`} />
       </div>
       <div>
-        <p className="text-xs font-bold uppercase tracking-wide text-muted">{label}</p>
-        <p className="text-xl font-extrabold" style={{ color }}>
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted">{label}</p>
+        <p className="text-xl font-semibold" style={{ color }}>
           {value}
         </p>
       </div>
@@ -233,11 +275,7 @@ export default function StatistikPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
       <div className="mx-auto max-w-[1560px]">
-        <AppHeader
-          backLabel="Zurück"
-          backIcon="ti-arrow-left"
-          secondaryLink={{ href: "/ueber-uns", label: "Über uns", icon: "ti-info-circle" }}
-        />
+        <CenteredNav active="statistik" />
 
         <div className="mx-auto max-w-[980px]">
           <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
@@ -261,38 +299,31 @@ export default function StatistikPage() {
 
           {results !== null && results.length > 0 && summary && (
             <div className="flex flex-col gap-4">
-              <div className="card grid grid-cols-2 gap-5 p-6 sm:grid-cols-4">
-                <SummaryCard icon="ti-flag-check" label="Gelöst" value={String(summary.count)} color="#1d4ed8" />
-                <SummaryCard
-                  icon="ti-target-arrow"
-                  label="Trefferquote"
-                  value={`${summary.accuracy}%`}
-                  color={accuracyColors(summary.accuracy).text}
-                />
-                <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#1d4ed8" />
-                <SummaryCard
-                  icon="ti-clock"
-                  label="Ø Zeit / Fall"
-                  value={formatDuration(summary.avgDuration)}
-                  color="#0f0f0f"
-                />
-              </div>
+              <FadeInUp>
+                <div className="card grid grid-cols-2 items-center gap-5 p-6 sm:grid-cols-4">
+                  <SummaryCard icon="ti-flag-check" label="Gelöst" value={String(summary.count)} color="#1d4ed8" />
+                  <div className="flex items-center gap-3">
+                    <RingGauge percent={summary.accuracy} color={accuracyColors(summary.accuracy).text} />
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted">Trefferquote</p>
+                      <p className="text-xl font-semibold" style={{ color: accuracyColors(summary.accuracy).text }}>
+                        {summary.accuracy}%
+                      </p>
+                    </div>
+                  </div>
+                  <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#1d4ed8" />
+                  <SummaryCard
+                    icon="ti-clock"
+                    label="Ø Zeit / Fall"
+                    value={formatDuration(summary.avgDuration)}
+                    color="#0f0f0f"
+                  />
+                </div>
+              </FadeInUp>
 
-              <GroupTable
-                title="Nach Fachbereich"
-                icon="ti-stethoscope"
-                groups={byDiscipline}
-                labels={DISCIPLINE_LABELS}
-                icons={DISCIPLINE_ICONS}
-              />
-              <GroupTable
-                title="Nach Schwierigkeit"
-                icon="ti-school"
-                groups={byDifficulty}
-                labels={DIFFICULTY_LABELS}
-                icons={DIFFICULTY_ICONS}
-              />
-
+              {/* Case-Historie weiter oben, direkt nach der Summary — vorher
+                  ganz unten, kaum sichtbar ohne viel Scrollen. Unterer Bereich
+                  bewusst ohne Scroll-Animation: soll normal scrollbar sein. */}
               <div className="card p-6">
                 <p className="mb-4 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
                   <i className="ti ti-history text-sm" />
@@ -323,6 +354,21 @@ export default function StatistikPage() {
                   ))}
                 </div>
               </div>
+
+              <GroupTable
+                title="Nach Fachbereich"
+                icon="ti-stethoscope"
+                groups={byDiscipline}
+                labels={DISCIPLINE_LABELS}
+                icons={DISCIPLINE_ICONS}
+              />
+              <GroupTable
+                title="Nach Schwierigkeit"
+                icon="ti-school"
+                groups={byDifficulty}
+                labels={DIFFICULTY_LABELS}
+                icons={DIFFICULTY_ICONS}
+              />
 
               <div className="flex justify-end">
                 <button

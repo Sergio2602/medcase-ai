@@ -1,5 +1,6 @@
 import { KontaktPopover } from "@/app/components/KontaktPopover";
-import { AppHeader } from "@/app/components/AppHeader";
+import { CenteredNav } from "@/app/components/CenteredNav";
+import { FadeInUp } from "@/app/components/FadeInUp";
 
 export const metadata = {
   title: "Über uns & Methodik — Medcase",
@@ -129,39 +130,15 @@ function TocSidebar() {
 export default function UeberUnsPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1560px]">
-        <AppHeader
-          backLabel="Zurück"
-          backIcon="ti-arrow-left"
-          right={
-            <div className="hidden items-center gap-1.5 text-sm font-semibold sm:flex">
-              <a
-                href="#ueber-medcase"
-                className="rounded-lg px-3 py-1.5 text-muted transition-colors hover:bg-[#eaf0fc] hover:text-accent"
-              >
-                Team
-              </a>
-              <a
-                href="#fallauswahl"
-                className="rounded-lg px-3 py-1.5 text-muted transition-colors hover:bg-[#eaf0fc] hover:text-accent"
-              >
-                Fallauswahl
-              </a>
-              <a
-                href="#qualitaet"
-                className="rounded-lg px-3 py-1.5 text-muted transition-colors hover:bg-[#eaf0fc] hover:text-accent"
-              >
-                Qualität
-              </a>
-            </div>
-          }
-        />
+      <div className="mx-auto max-w-[1150px]">
+        <CenteredNav active="ueber-uns" />
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
           <TocSidebar />
 
-          <div>
+          <div className="max-w-[860px]">
             {/* ===== GRUPPE 1: ÜBER MEDCASE ===== */}
+            <FadeInUp>
             <div id="ueber-medcase" className="card scroll-mt-6 p-8">
               <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
                 Über uns &amp; Methodik
@@ -245,8 +222,10 @@ export default function UeberUnsPage() {
                 </div>
               </section>
             </div>
+            </FadeInUp>
 
             {/* ===== GRUPPE 2: FALLAUSWAHL ===== */}
+            <FadeInUp>
             <div id="fallauswahl" className="card mt-4 scroll-mt-6 p-8">
               <h2 className="mb-1 text-xl font-extrabold uppercase tracking-widest">
                 Fallauswahl
@@ -387,8 +366,10 @@ export default function UeberUnsPage() {
                 </div>
               </section>
             </div>
+            </FadeInUp>
 
             {/* ===== GRUPPE 3: QUALITÄT ===== */}
+            <FadeInUp>
             <div id="qualitaet" className="card mt-4 scroll-mt-6 p-8">
               <h2 className="mb-1 text-xl font-extrabold uppercase tracking-widest">
                 Qualität
@@ -495,6 +476,7 @@ export default function UeberUnsPage() {
                 </div>
               </section>
             </div>
+            </FadeInUp>
 
             {/* Footer */}
             <footer

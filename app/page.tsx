@@ -2096,7 +2096,16 @@ function ResultIsland({
   // Begründung") — clicking a wrong option selects it, clicking again (or a
   // different option) switches/deselects, instead of each box expanding
   // inline to a different height.
-  const [selectedNoteOption, setSelectedNoteOption] = useState<string | null>(null);
+  // Defaults to the user's own (wrong) pick when the answer was incorrect —
+  // more intuitive than opening on the generic synthesis explanation, since
+  // "why was MY answer wrong" is what someone wants to read first. Falls
+  // back to null (→ "Vollständige Begründung") when correct, since there's
+  // no wrong pick to explain.
+  const [selectedNoteOption, setSelectedNoteOption] = useState<string | null>(() =>
+    !lastResultCorrect && selectedDiagnosis && selectedDiagnosis !== caseData.correctDiagnosis
+      ? selectedDiagnosis
+      : null
+  );
 
   function toggleNote(option: string) {
     setSelectedNoteOption((prev) => (prev === option ? null : option));

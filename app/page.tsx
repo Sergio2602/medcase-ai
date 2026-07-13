@@ -1499,6 +1499,7 @@ function StartScreen({
 
 const LOADING_STAGES = [
   { icon: "ti-door-enter", text: "Patient betritt die Klinik …" },
+  { icon: "ti-stethoscope", text: "Klinische Daten werden zusammengestellt …" },
   { icon: "ti-file-check", text: "Fall wird vorbereitet …" },
 ];
 
@@ -1508,18 +1509,44 @@ function LoadingScreen() {
   useEffect(() => {
     const interval = setInterval(() => {
       setStage((s) => (s + 1) % LOADING_STAGES.length);
-    }, 900);
+    }, 1400);
     return () => clearInterval(interval);
   }, []);
 
+  const current = LOADING_STAGES[stage];
+
   return (
-    <div className="flex flex-col items-center gap-5 py-32 text-center">
-      <Logo size={32} />
-      <div className="motion-pulse flex flex-col items-center gap-3">
-        <i
-          className={`ti ${LOADING_STAGES[stage].icon} text-3xl text-accent`}
-        />
-        <p className="text-muted">{LOADING_STAGES[stage].text}</p>
+    <div className="relative flex min-h-[62vh] flex-col items-center justify-center gap-8 overflow-hidden text-center">
+      <div
+        className="hero-blob-a pointer-events-none absolute -left-16 top-6 h-72 w-72 rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(40,93,210,0.14), transparent 70%)" }}
+      />
+      <div
+        className="hero-blob-b pointer-events-none absolute -right-12 bottom-10 h-64 w-64 rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(139,92,246,0.10), transparent 70%)" }}
+      />
+
+      <Logo size={48} />
+
+      <div className="relative flex h-28 w-28 items-center justify-center">
+        <span className="loading-ring absolute inset-0 rounded-full border-[3px] border-accent/15 border-t-accent" />
+        <span className="loading-badge flex h-20 w-20 items-center justify-center rounded-full bg-[#ecf0f9]">
+          <i className={`ti ${current.icon} text-4xl text-accent`} />
+        </span>
+      </div>
+
+      <div key={stage} className="loading-stage-in flex flex-col items-center gap-3">
+        <p className="text-lg font-semibold text-foreground">{current.text}</p>
+        <div className="flex items-center gap-1.5">
+          {LOADING_STAGES.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === stage ? "w-6 bg-accent" : "w-1.5 bg-accent/20"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ import { Logo } from "./Logo";
 export function CenteredNav({
   active,
 }: {
-  active: "home" | "statistik" | "ueber-uns" | null;
+  active: "home" | "statistik" | "ueber-uns" | "qa" | null;
 }) {
   const [scrolled, setScrolled] = useState(false);
 
@@ -32,10 +32,11 @@ export function CenteredNav({
       isActive ? "bg-accent text-accent-foreground" : "text-muted hover:text-accent"
     }`;
 
-  const items: { key: "home" | "statistik" | "ueber-uns"; href: string; icon: string; label: string }[] = [
+  const items: { key: "home" | "statistik" | "ueber-uns" | "qa"; href: string; icon: string; label: string }[] = [
     { key: "home", href: "/", icon: "ti-home", label: "Home" },
     { key: "statistik", href: "/statistik", icon: "ti-chart-bar", label: "Statistik" },
     { key: "ueber-uns", href: "/ueber-uns", icon: "ti-info-circle", label: "Über uns" },
+    { key: "qa", href: "/qa", icon: "ti-help-circle", label: "Q&A" },
   ];
 
   return (

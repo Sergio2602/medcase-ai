@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
 import { readCaseResults, clearCaseResults, type CaseResult } from "@/lib/stats";
@@ -64,18 +65,34 @@ function formatDate(timestamp: number) {
   });
 }
 
-// Grün ab 70 %, Orange/Gelb 40–69 %, Rot darunter — dieselbe Ampel-Logik wie
-// bei den Lab-Flags im Spiel, damit die Farbsprache app-weit konsistent bleibt.
+// Nur 3 Stufen — Rot < 50 %, Gelb 50–79 %, Grün ab 80 % — in derselben
+// punchy-pastelligen Familie wie die Avatar-Farben (avatar-1/3/4 in
+// globals.css), statt der zu grellen reinen Ampelfarben. Einziger Ort in
+// der App mit mehr als der einen Akzentfarbe, darf also als Ausnahme
+// fröhlicher/lebendiger wirken statt dem sonst monotonen Blau-Schema
+// zu folgen — aber weich statt knallhart.
 function accuracyColors(pct: number) {
-  if (pct >= 70) return { bg: "#e7f6ec", text: "#15803d", bar: "#22c55e" };
-  if (pct >= 40) return { bg: "#fef3e2", text: "#92400e", bar: "#f59e0b" };
-  return { bg: "#fdf1f0", text: "#c0362c", bar: "#ef4444" };
+  if (pct >= 80) return { bg: "#e8f5e9", text: "#2e7d32", bar: "#66bb6a" };
+  if (pct >= 50) return { bg: "#fefce8", text: "#ca8a04", bar: "#facc15" };
+  return { bg: "#fdf2f1", text: "#b3524f", bar: "#ef9a9a" };
 }
 
-// Kompakter Ring-Gauge für die Trefferquote — gleiche Größe wie die
-// Icon-Kreise der anderen Summary-Karten, damit alle vier Zellen strukturell
-// gleich aussehen. Animiert beim Laden von 0 auf den Zielwert.
-function RingGauge({ percent, color }: { percent: number; color: string }) {
+// Ring-Gauge für die Trefferquote — jetzt als präsenter Hero-Ring in der
+// Summary-Karte (size/strokeWidth konfigurierbar statt fix), mit der
+// Prozentzahl mittig im Ring. Animiert beim Laden von 0 auf den Zielwert.
+function RingGauge({
+  percent,
+  color,
+  size = 40,
+  strokeWidth = 4,
+  showLabel = false,
+}: {
+  percent: number;
+  color: string;
+  size?: number;
+  strokeWidth?: number;
+  showLabel?: boolean;
+}) {
   const [animated, setAnimated] = useState(0);
 
   useEffect(() => {
@@ -88,27 +105,33 @@ function RingGauge({ percent, color }: { percent: number; color: string }) {
     return () => cancelAnimationFrame(id);
   }, [percent]);
 
-  const radius = 16;
+  const radius = size / 2 - strokeWidth;
+  const center = size / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - animated / 100);
 
   return (
-    <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
-      <svg viewBox="0 0 40 40" className="h-10 w-10 -rotate-90">
-        <circle cx="20" cy="20" r={radius} fill="none" stroke="currentColor" className="text-card-border/10" strokeWidth={4} />
+    <div className="relative flex shrink-0 items-center justify-center" style={{ height: size, width: size }}>
+      <svg viewBox={`0 0 ${size} ${size}`} className="-rotate-90" style={{ height: size, width: size }}>
+        <circle cx={center} cy={center} r={radius} fill="none" stroke="currentColor" className="text-card-border/10" strokeWidth={strokeWidth} />
         <circle
-          cx="20"
-          cy="20"
+          cx={center}
+          cy={center}
           r={radius}
           fill="none"
           stroke={color}
-          strokeWidth={4}
+          strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           style={{ transition: "stroke-dashoffset 900ms cubic-bezier(0.34, 1.56, 0.64, 1)" }}
         />
       </svg>
+      {showLabel && (
+        <span className="absolute font-extrabold" style={{ color, fontSize: size * 0.26 }}>
+          {Math.round(animated)}%
+        </span>
+      )}
     </div>
   );
 }
@@ -116,14 +139,14 @@ function RingGauge({ percent, color }: { percent: number; color: string }) {
 function AccuracyBadge({ pct }: { pct: number }) {
   const c = accuracyColors(pct);
   return (
-    <div className="flex min-w-[110px] flex-col gap-1">
+    <div className="flex min-w-[84px] flex-col gap-1">
       <span
-        className="w-fit rounded-full px-2.5 py-0.5 text-xs font-bold"
+        className="w-fit rounded-full px-2 py-0.5 text-[10.5px] font-bold"
         style={{ backgroundColor: c.bg, color: c.text }}
       >
-        {pct}% Trefferquote
+        {pct}%
       </span>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-card-border/10">
+      <div className="h-1 w-full overflow-hidden rounded-full bg-card-border/10">
         <div
           className="h-full rounded-full transition-all"
           style={{ width: `${pct}%`, backgroundColor: c.bar }}
@@ -169,36 +192,45 @@ function GroupTable({
   icons: Record<string, string>;
 }) {
   return (
-    <div className="card p-6">
-      <p className="mb-4 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+    <div className="card p-4">
+      <p className="mb-2.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
         <i className={`ti ${icon} text-sm`} />
         {title}
       </p>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1.5">
+        {groups.length === 0 && (
+          <p className="rounded-lg border-[1.5px] border-dashed border-card-border/15 px-3 py-3 text-center text-xs text-muted">
+            Noch keine Daten.
+          </p>
+        )}
         {groups.map((g) => {
           const accuracy = g.count > 0 ? Math.round((g.correct / g.count) * 100) : 0;
           const avgDuration = g.count > 0 ? g.totalDuration / g.count : 0;
           return (
             <div
               key={g.id}
-              className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 rounded-lg border-[1.5px] border-card-border/10 px-4 py-3"
+              className="rounded-lg border-[1.5px] border-card-border/10 px-3 py-2"
             >
-              <span className="flex min-w-[150px] items-center gap-2 font-semibold">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
-                  <i className={`ti ${iconFor(icons, g.id)} text-sm`} />
+              <div className="mb-1.5 flex items-center justify-between gap-2">
+                <span className="flex min-w-0 items-center gap-1.5 text-[13px] font-semibold">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+                    <i className={`ti ${iconFor(icons, g.id)} text-xs`} />
+                  </span>
+                  <span className="truncate">{labelFor(labels, g.id)}</span>
                 </span>
-                {labelFor(labels, g.id)}
-              </span>
-              <span className="text-sm text-muted">
-                <span className="font-bold text-foreground">{g.count}</span> gelöst
-              </span>
-              <AccuracyBadge pct={accuracy} />
-              <span className="text-sm text-muted">
-                Ø Zeit <span className="font-bold text-foreground">{formatDuration(avgDuration)}</span>
-              </span>
-              <span className="text-sm text-muted">
-                Punkte <span className="font-bold text-accent">{g.totalScore}</span>
-              </span>
+                <span className="shrink-0 text-[11px] text-muted">
+                  <span className="font-bold text-foreground">{g.count}</span> gelöst
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-2 pl-[30px]">
+                <AccuracyBadge pct={accuracy} />
+                <span className="text-[11px] text-muted">
+                  Ø <span className="font-bold text-foreground">{formatDuration(avgDuration)}</span>
+                </span>
+                <span className="text-[11px] text-muted">
+                  <span className="font-bold text-accent">{g.totalScore}</span> Pkt.
+                </span>
+              </div>
             </div>
           );
         })}
@@ -248,19 +280,22 @@ export default function StatistikPage() {
   const byDifficulty = useMemo(() => (results ? groupBy(results, "difficulty") : []), [results]);
 
   const summary = useMemo(() => {
-    if (!results || results.length === 0) return null;
+    // Auch bei 0 Fällen ein Objekt zurückgeben (statt null), damit die
+    // Struktur (Ring, Spalten, Historie) immer gleich bleibt — nur mit
+    // Null-Werten statt einer komplett anderen Leer-Ansicht.
+    if (!results) return null;
     const correct = results.filter((r) => r.correct).length;
     const totalScore = results.reduce((sum, r) => sum + r.score, 0);
     const totalDuration = results.reduce((sum, r) => sum + r.durationSeconds, 0);
     return {
       count: results.length,
-      accuracy: Math.round((correct / results.length) * 100),
+      accuracy: results.length > 0 ? Math.round((correct / results.length) * 100) : 0,
       totalScore,
-      avgDuration: totalDuration / results.length,
+      avgDuration: results.length > 0 ? totalDuration / results.length : 0,
     };
   }, [results]);
 
-  const recent = useMemo(() => (results ? [...results].reverse().slice(0, 10) : []), [results]);
+  const recent = useMemo(() => (results ? [...results].reverse().slice(0, 30) : []), [results]);
 
   function handleReset() {
     if (!confirmingReset) {
@@ -277,7 +312,7 @@ export default function StatistikPage() {
       <div className="mx-auto max-w-[1560px]">
         <CenteredNav active="statistik" />
 
-        <div className="mx-auto max-w-[980px]">
+        <div>
           <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
             Deine Statistik
           </h1>
@@ -287,49 +322,88 @@ export default function StatistikPage() {
 
           {results === null && <p className="text-sm text-muted">Lädt …</p>}
 
-          {results !== null && results.length === 0 && (
-            <div className="card p-8 text-center">
-              <i className="ti ti-notebook mb-3 block text-3xl text-muted" />
-              <p className="mb-1 font-semibold">Noch keine Fälle gelöst.</p>
-              <p className="text-sm text-muted">
-                Löse deinen ersten Fall — deine Statistik füllt sich automatisch.
-              </p>
-            </div>
-          )}
-
-          {results !== null && results.length > 0 && summary && (
+          {results !== null && summary && (
             <div className="flex flex-col gap-4">
-              <FadeInUp>
-                <div className="card grid grid-cols-2 items-center gap-5 p-6 sm:grid-cols-4">
-                  <SummaryCard icon="ti-flag-check" label="Gelöst" value={String(summary.count)} color="#1d4ed8" />
-                  <div className="flex items-center gap-3">
-                    <RingGauge percent={summary.accuracy} color={accuracyColors(summary.accuracy).text} />
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-muted">Trefferquote</p>
-                      <p className="text-xl font-semibold" style={{ color: accuracyColors(summary.accuracy).text }}>
-                        {summary.accuracy}%
-                      </p>
-                    </div>
-                  </div>
-                  <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#1d4ed8" />
-                  <SummaryCard
-                    icon="ti-clock"
-                    label="Ø Zeit / Fall"
-                    value={formatDuration(summary.avgDuration)}
-                    color="#0f0f0f"
+              {/* Volle Breite auf Desktop: links die Fachbereich-/
+                  Schwierigkeits-Aufschlüsselung (scrollbar bei vielen
+                  Einträgen), rechts Trefferquote + Stats. Auf Mobile bleibt
+                  die Reihenfolge Trefferquote zuerst, dann Aufschlüsselung. */}
+              <div className="grid gap-4 lg:grid-cols-2 lg:gap-6">
+                {/* Links: Fachbereich-/Schwierigkeits-Aufschlüsselung */}
+                <div className="flex flex-col gap-4 lg:max-h-[440px] lg:overflow-y-auto lg:pr-1">
+                  <GroupTable
+                    title="Nach Fachbereich"
+                    icon="ti-stethoscope"
+                    groups={byDiscipline}
+                    labels={DISCIPLINE_LABELS}
+                    icons={DISCIPLINE_ICONS}
+                  />
+                  <GroupTable
+                    title="Nach Schwierigkeit"
+                    icon="ti-school"
+                    groups={byDifficulty}
+                    labels={DIFFICULTY_LABELS}
+                    icons={DIFFICULTY_ICONS}
                   />
                 </div>
-              </FadeInUp>
 
-              {/* Case-Historie weiter oben, direkt nach der Summary — vorher
-                  ganz unten, kaum sichtbar ohne viel Scrollen. Unterer Bereich
-                  bewusst ohne Scroll-Animation: soll normal scrollbar sein. */}
-              <div className="card p-6">
-                <p className="mb-4 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+                {/* Rechts: Trefferquote — großer Ring, füllt die Spalte auf
+                    voller Höhe aus (h-full + justify-center), statt kleiner
+                    als die linke Spalte zu wirken. */}
+                <FadeInUp>
+                  <div className="card flex h-full flex-col items-center justify-center gap-6 p-6">
+                    <div className="flex items-center gap-5">
+                      <RingGauge
+                        percent={summary.accuracy}
+                        color={accuracyColors(summary.accuracy).text}
+                        size={140}
+                        strokeWidth={11}
+                        showLabel
+                      />
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted">Trefferquote</p>
+                        <p className="text-sm text-muted">gesamt</p>
+                      </div>
+                    </div>
+
+                    <div className="h-px w-full bg-card-border/10" />
+
+                    {/* Nebenwerte darunter, gleichmäßig über die volle Breite
+                        verteilt statt in einer schmalen Spalte daneben. */}
+                    <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
+                      <SummaryCard icon="ti-flag-check" label="Gelöst" value={String(summary.count)} color="#1d4ed8" />
+                      <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#1d4ed8" />
+                      <SummaryCard
+                        icon="ti-clock"
+                        label="Ø Zeit / Fall"
+                        value={formatDuration(summary.avgDuration)}
+                        color="#0f0f0f"
+                      />
+                    </div>
+                  </div>
+                </FadeInUp>
+              </div>
+
+              {/* Case-Historie über die volle Breite darunter — nimmt auf
+                  Desktop bewusst ~50vh ein, damit sie präsent bleibt statt
+                  erst nach viel Scrollen sichtbar zu werden. Liste scrollt
+                  intern, Kopfzeile bleibt fix. Unterer Bereich bewusst ohne
+                  Scroll-Animation. */}
+              <div className="card flex flex-col p-6 lg:h-[50vh]">
+                <p className="mb-4 flex shrink-0 items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
                   <i className="ti ti-history text-sm" />
                   Zuletzt gelöst
                 </p>
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-1.5 lg:flex-1 lg:overflow-y-auto lg:pr-1">
+                  {recent.length === 0 && (
+                    <div className="flex flex-1 flex-col items-center justify-center gap-1.5 py-8 text-center">
+                      <i className="ti ti-notebook text-2xl text-muted" />
+                      <p className="text-sm font-semibold">Noch keine Fälle gelöst.</p>
+                      <p className="text-xs text-muted">
+                        Löse deinen ersten Fall — deine Statistik füllt sich automatisch.
+                      </p>
+                    </div>
+                  )}
                   {recent.map((r, i) => (
                     <div
                       key={`${r.caseId}-${r.timestamp}-${i}`}
@@ -355,22 +429,7 @@ export default function StatistikPage() {
                 </div>
               </div>
 
-              <GroupTable
-                title="Nach Fachbereich"
-                icon="ti-stethoscope"
-                groups={byDiscipline}
-                labels={DISCIPLINE_LABELS}
-                icons={DISCIPLINE_ICONS}
-              />
-              <GroupTable
-                title="Nach Schwierigkeit"
-                icon="ti-school"
-                groups={byDifficulty}
-                labels={DIFFICULTY_LABELS}
-                icons={DIFFICULTY_ICONS}
-              />
-
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={handleReset}
@@ -379,6 +438,13 @@ export default function StatistikPage() {
                 >
                   {confirmingReset ? "Wirklich zurücksetzen?" : "Statistik zurücksetzen"}
                 </button>
+                <Link
+                  href="/"
+                  className="flex items-center gap-1.5 rounded-lg border-[1.5px] border-card-border/15 px-3.5 py-1.5 text-xs font-semibold text-muted transition-colors hover:border-accent/40 hover:text-accent"
+                >
+                  <i className="ti ti-arrow-left text-[12px]" />
+                  Zurück
+                </Link>
               </div>
             </div>
           )}

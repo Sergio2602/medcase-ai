@@ -202,9 +202,13 @@ h1, h2, h3, h4 {
 .hero-blob-b {
   animation: drift-glow 11s ease-in-out infinite 1.8s;
 }
+.hero-blob-c {
+  animation: drift-glow 13s ease-in-out infinite 0.9s;
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-blob-a,
-  .hero-blob-b {
+  .hero-blob-b,
+  .hero-blob-c {
     animation: none;
   }
 }

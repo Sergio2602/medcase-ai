@@ -129,6 +129,34 @@ function initials(name: string) {
     .toUpperCase();
 }
 
+// Eigener, spürbar langsamer Scroll statt des nativen (recht kurzen)
+// `scrollIntoView({behavior:"smooth"})` — für den "Mehr erfahren"-Cue auf
+// der Startseite, der bewusst ruhig/gleitend wirken soll.
+function slowScrollTo(id: string, duration = 900) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const startY = window.scrollY;
+  const targetY = startY + el.getBoundingClientRect().top;
+  if (reduced) {
+    window.scrollTo({ top: targetY, behavior: "instant" as ScrollBehavior });
+    return;
+  }
+  const start = performance.now();
+  function tick(now: number) {
+    const progress = Math.min((now - start) / duration, 1);
+    // Ease-out statt ease-in-out: startet sofort spürbar, statt erst
+    // "laggy" langsam anzulaufen — wird gegen Ende trotzdem sanft ruhiger.
+    const eased = 1 - Math.pow(1 - progress, 3);
+    // behavior: "instant" verhindert, dass die globale CSS
+    // scroll-behavior:smooth-Regel zusätzlich zu unserer eigenen
+    // rAF-Animation eine zweite (konkurrierende) Glättung anwendet.
+    window.scrollTo({ top: startY + (targetY - startY) * eased, behavior: "instant" as ScrollBehavior });
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
 const DIFFICULTIES: { id: Difficulty; label: string }[] = [
   { id: "vorklinik", label: "Vorklinik" },
   { id: "klinik", label: "Innere" },
@@ -318,6 +346,7 @@ const PATIENT_PREVIEWS = [
     quote: "Starke Brustschmerzen seit heute Morgen …",
     diagnosis: "NSTEMI",
     options: ["NSTEMI", "Stabile Angina pectoris", "Akute Perikarditis", "Aortendissektion Typ A"],
+    insight: "Retrosternaler Schmerz + Troponin-Erhöhung ohne ST-Hebung = klassisches NSTEMI-Bild.",
     steps: [
       {
         category: "Anamnese",
@@ -348,6 +377,7 @@ const PATIENT_PREVIEWS = [
     quote: "Seit drei Tagen Fieber und Husten, jetzt auch Atemnot …",
     diagnosis: "Ambulant erworbene Pneumonie",
     options: ["Ambulant erworbene Pneumonie", "Akute Bronchitis", "Akute Lungenembolie", "Exazerbierte COPD"],
+    insight: "Fieber, produktiver Husten, erhöhtes CRP und Hypoxie erfüllen die klinischen Pneumonie-Kriterien.",
     steps: [
       {
         category: "Anamnese",
@@ -378,6 +408,7 @@ const PATIENT_PREVIEWS = [
     quote: "Plötzlich einseitige Schwäche im Arm, Sprache verwaschen …",
     diagnosis: "Ischämischer Mediainfarkt",
     options: ["Ischämischer Mediainfarkt", "Transitorische ischämische Attacke", "Migräne mit Aura", "Hypoglykämie"],
+    insight: "Akute halbseitige Schwäche + Sprachstörung + hoher NIHSS = typisches Mediastromgebiet-Muster.",
     steps: [
       {
         category: "Anamnese",
@@ -409,6 +440,56 @@ const CATEGORY_STYLES: Record<string, { text: string; bg: string }> = {
   Labor: { text: "#0d9488", bg: "#e3f5f3" },
 };
 
+// Zählt animiert vom aktuell angezeigten zum neuen Wert hoch/runter, statt
+// abrupt umzuspringen — die einzige Animation, die auf der Diagnose-Seite
+// der Karte übrig bleiben soll.
+function TickingNumber({
+  value,
+  color,
+  prefix = "",
+}: {
+  value: number;
+  color: string;
+  prefix?: string;
+}) {
+  const [display, setDisplay] = useState(value);
+  const prevRef = useRef(value);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setDisplay(value);
+      prevRef.current = value;
+      return;
+    }
+    const from = prevRef.current;
+    const to = value;
+    if (from === to) return;
+    const duration = 320;
+    const start = performance.now();
+    let raf: number;
+    function tick(now: number) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(Math.round(from + (to - from) * eased));
+      if (progress < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        prevRef.current = to;
+      }
+    }
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [value]);
+
+  return (
+    <span className="font-mono text-[28px] font-extrabold leading-none" style={{ color }}>
+      {prefix}
+      {display}
+    </span>
+  );
+}
+
 function RotatingPatientPreview() {
   const [caseIndex, setCaseIndex] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
@@ -437,7 +518,7 @@ function RotatingPatientPreview() {
         return;
       }
       if (pointCount < currentStep.points.length) {
-        const t = setTimeout(() => setPointCount((c) => c + 1), 550);
+        const t = setTimeout(() => setPointCount((c) => c + 1), 320);
         return () => clearTimeout(t);
       }
       if (!autoRef.current) return;
@@ -449,13 +530,13 @@ function RotatingPatientPreview() {
           setStepIndex((i) => i + 1);
           setPointCount(0);
         }
-      }, 1900);
+      }, 650);
       return () => clearTimeout(t);
     }
 
     if (uiPhase === "diagnosis") {
       if (!autoRef.current) return;
-      const t = setTimeout(() => setUiPhase("result"), reduced ? 300 : 1600);
+      const t = setTimeout(() => setUiPhase("result"), reduced ? 300 : 450);
       return () => clearTimeout(t);
     }
 
@@ -469,8 +550,8 @@ function RotatingPatientPreview() {
         setPointCount(0);
         setUiPhase("revealing");
         setVisible(true);
-      }, 300);
-    }, reduced ? 300 : 2200);
+      }, 250);
+    }, reduced ? 300 : 1000);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pointCount, stepIndex, caseIndex, uiPhase]);
@@ -567,7 +648,7 @@ function RotatingPatientPreview() {
               per key-Remount neu eingeblendet (line-pop). */}
           <div
             key={`${caseIndex}-${stepIndex}`}
-            className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-7 sm:pt-0"
+            className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0"
           >
             <span
               className="line-pop mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.065em]"
@@ -603,43 +684,35 @@ function RotatingPatientPreview() {
 
           {/* Spalte 3: Punktestand + Diagnose — immer sichtbar, Diagnose
               aktiviert sich erst am Ende ("Extrainfos" statt leerer Fläche).
-              Punktezahl poppt bei jeder Änderung, Diagnose-Buttons poppen
-              gestaffelt rein, die richtige Antwort bekommt im Result einen
-              Scale-Bounce mit grünem Glow. */}
-          <div className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-7 sm:pt-0">
+              Die Punktezahl zählt animiert hoch/runter bei jeder Änderung.
+              Die Diagnose-Optionen sind von Anfang an normal les-/wählbar
+              (kein grau-deaktivierter Zustand) — nur die richtige Antwort
+              bekommt im Result einen Scale-Bounce mit grünem Glow. */}
+          <div className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
             <div className="mb-3 flex items-baseline justify-between">
               <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
                 {uiPhase === "result" ? "Erreicht" : "Noch möglich"}
               </span>
-              <span
-                key={`${stepIndex}-${uiPhase}`}
-                className="score-settle font-mono text-[28px] font-extrabold leading-none"
-                style={{ color: uiPhase === "result" ? "#15803d" : "#1d4ed8" }}
-              >
-                {uiPhase === "result" ? "+" : ""}
-                {possiblePoints}
-              </span>
+              <TickingNumber
+                value={possiblePoints}
+                prefix={uiPhase === "result" ? "+" : ""}
+                color={uiPhase === "result" ? "#15803d" : "#1d4ed8"}
+              />
             </div>
-            <div
-              key={uiPhase}
-              className="grid flex-1 grid-cols-2 content-start gap-1.5 border-t border-card-border/10 pt-3"
-            >
-              {currentCase.options.map((opt, i) => {
+            <div className="mt-1.5 grid grid-cols-2 gap-1.5 border-t border-card-border/10 pt-3.5">
+              {currentCase.options.map((opt) => {
                 const isCorrect = opt === currentCase.diagnosis;
                 const showResult = uiPhase === "result";
                 return (
                   <span
                     key={opt}
-                    className={`line-pop flex items-center justify-center rounded-lg border-[1.5px] px-1.5 py-[7px] text-center text-[10px] font-semibold leading-snug transition-colors ${
+                    className={`flex items-center justify-center rounded-lg border-[1.5px] px-1.5 py-[7px] text-center text-[10px] font-semibold leading-snug transition-colors ${
                       showResult && isCorrect
                         ? "correct-pop border-[#16a34a] bg-[#e7f6ec] text-[#15803d]"
                         : showResult
                         ? "border-card-border/10 text-muted/40"
-                        : uiPhase === "diagnosis"
-                        ? "border-card-border/20 text-foreground/80"
-                        : "border-card-border/10 text-muted/40"
+                        : "border-card-border/8 text-foreground/80"
                     }`}
-                    style={{ animationDelay: uiPhase === "diagnosis" ? `${i * 70}ms` : undefined }}
                   >
                     {showResult && isCorrect && <i className="ti ti-check mr-1 text-[9px] shrink-0" />}
                     {opt}
@@ -647,6 +720,20 @@ function RotatingPatientPreview() {
                 );
               })}
             </div>
+
+            {/* Kurze Begründung — zeigt, dass es dazu Informationen gibt,
+                sobald die Diagnose steht. Hellblau statt Amber (Info, keine
+                Warnung), mit Line-Pop-Einblendung. */}
+            {uiPhase === "result" && (
+              <div
+                key={`insight-${caseIndex}`}
+                className="line-pop mt-2 flex items-start gap-1.5 rounded-md border-[1.5px] border-accent/20 bg-[#eaf0fc] px-2 py-1.5"
+                style={{ animationDelay: "180ms" }}
+              >
+                <i className="ti ti-info-circle mt-[1px] shrink-0 text-[11px] text-accent" />
+                <p className="text-[10px] leading-snug text-accent">{currentCase.insight}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -966,15 +1053,21 @@ function WelcomeNote() {
             Gründer
           </span>
         </p>
-        {/* TODO Sergio: echten Text einsetzen */}
         <p
           className={`mt-1 text-sm leading-relaxed text-muted ${
             expanded ? "" : "line-clamp-2"
           }`}
         >
-          Hi, ich bin Sergio, Medizinstudent im 7. Semester. Ich baue Medcase,
-          weil ich selbst gemerkt habe wie sehr Fall-Denken hilft. Über
-          Feedback freue ich mich jederzeit.
+          Hi, ich bin Sergio, Medizinstudent im 7. Semester. Kurz vor meiner
+          ersten Famulatur wollte ich mich auf die häufigsten klinischen
+          Fälle vorbereiten – und hab gemerkt, was im Studium fehlt:
+          Anamnesen liest man nur in Textform, statt sie selbst zu erheben.
+          Und wenn im Unterricht Laborwerte gezeigt werden, hat man die
+          typischen Befundkombinationen selten im Kopf. Medcase trainiert
+          genau das, unabhängig von Anki-Karten: Du forderst die Befunde
+          selbst an und lernst durch eigenes Denken, welche Kombination zu
+          welcher Diagnose gehört – als eigene Vorbereitung oder Ergänzung
+          im Klinikalltag. Über Feedback freue ich mich jederzeit.
         </p>
         {!expanded && (
           <button
@@ -1307,11 +1400,14 @@ function StartScreen({
       {/* Dezente Hintergrund-Deko hinter dem Hero — gegen die "leere" Wirkung
           auf breiten Screens. Kein overflow-hidden auf dem Root-Element,
           damit die sticky Nav weiter funktioniert. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px]" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[920px]" aria-hidden="true">
         {/* Sanft driftender Blauton-Verlauf statt statischer Flecken — deutet
-            "frisch, KI-generiert" an, ohne aufdringlich zu wirken. */}
-        <div className="hero-blob-a absolute left-[6%] top-6 h-72 w-72 rounded-full bg-accent/[0.07] blur-3xl" />
-        <div className="hero-blob-b absolute right-[8%] top-32 h-80 w-80 rounded-full bg-[#38bdf8]/[0.07] blur-3xl" />
+            "frisch, KI-generiert" an, ohne aufdringlich zu wirken. Läuft jetzt
+            bis über die Fallkarte hinaus weiter, statt abrupt nach dem Hero
+            zu enden. */}
+        <div className="hero-blob-a absolute left-[6%] top-6 h-72 w-72 rounded-full bg-accent/[0.09] blur-3xl" />
+        <div className="hero-blob-b absolute right-[8%] top-32 h-80 w-80 rounded-full bg-[#38bdf8]/[0.08] blur-3xl" />
+        <div className="hero-blob-c absolute left-[22%] top-[640px] h-72 w-72 rounded-full bg-accent/[0.06] blur-3xl" />
       </div>
       <CenteredNav active="home" />
       <div className="mx-auto flex max-w-xl flex-col items-center text-center">
@@ -1352,39 +1448,17 @@ function StartScreen({
         <p className="text-sm text-muted">
           Kostenlos · Kein Account nötig · 5 Fälle täglich
         </p>
-      </div>
 
-      {/* Konkreter Scroll-Teaser statt nur "Mehr" — zeigt schon einen
-          Ausschnitt aus "So entsteht ein Fall", damit oberhalb des Falds
-          klar wird, was beim Scrollen kommt. */}
-      <button
-        type="button"
-        onClick={() =>
-          document.getElementById("wie-entsteht")?.scrollIntoView({ behavior: "smooth", block: "start" })
-        }
-        className="group mx-auto mt-5 flex flex-col items-center gap-2.5"
-      >
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 rounded-full border-[1.5px] border-card-border/12 bg-card/70 px-4 py-2 backdrop-blur-sm transition-colors group-hover:border-accent/25">
-          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted">
-            <i className="ti ti-list-search text-[11px] text-accent" />
-            Diagnose auswählen
-          </span>
-          <i className="ti ti-chevron-right text-[10px] text-muted/25" />
-          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted">
-            <i className="ti ti-books text-[11px] text-accent" />
-            Recherche
-          </span>
-          <i className="ti ti-chevron-right text-[10px] text-muted/25" />
-          <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted">
-            <i className="ti ti-pencil text-[11px] text-accent" />
-            Fall schreiben
-          </span>
-        </div>
-        <span className="flex items-center gap-1 text-xs font-semibold text-muted transition-colors group-hover:text-accent">
-          Mehr erfahren
-          <i className="ti ti-chevron-down text-sm" />
-        </span>
-      </button>
+        {/* Sekundärer CTA — kleiner als der primäre Button */}
+        <button
+          type="button"
+          onClick={() => slowScrollTo("methodik")}
+          className="group mt-2 flex items-center gap-1.5 rounded-lg border-[1.5px] border-accent/30 px-5 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent/5"
+        >
+          Erfahre mehr über unser Konzept
+          <i className="ti ti-chevron-down text-base transition-transform duration-200 group-hover:translate-y-0.5" />
+        </button>
+      </div>
 
       {showPicker && (
         <DifficultyModal
@@ -1411,6 +1485,7 @@ function StartScreen({
         >
           <span>© 2026 Medcase</span>
           <div className="flex items-center gap-4">
+            <a href="/news" className="hover:underline">News</a>
             <a href="/impressum" className="hover:underline">Impressum</a>
             <a href="/impressum#datenschutz" className="hover:underline">Datenschutz</a>
             <KontaktPopover />
@@ -2907,10 +2982,10 @@ function GameScreen({
         </div>
       </header>
 
-      {/* Desktop header — kompakte, zentrierte Pill wie CenteredNav auf den
-          übrigen Seiten, statt über die volle Breite verteilt. */}
+      {/* Desktop header — volle Breite, linksbündig (Logo + Pfad links,
+          Punktestand rechts), statt kompakter zentrierter Pill. */}
       <header className="sticky top-0 z-30 mb-4 -mt-5 hidden pb-2 pt-4 sm:block">
-        <div className="mx-auto flex w-fit max-w-full items-center gap-2.5 rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-2.5 py-2 backdrop-blur-md">
+        <div className="flex w-full items-center gap-2.5 rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-2.5 py-2 backdrop-blur-md">
           <button
             onClick={onGoHome}
             className="flex shrink-0 items-center overflow-hidden pl-1 transition-opacity hover:opacity-80"
@@ -2919,21 +2994,18 @@ function GameScreen({
           </button>
           <div className="h-5 w-px shrink-0 bg-card-border/15" />
 
-          {/* Pfad — eigener, dezent umrandeter Chip */}
-          <div className="flex min-w-0 items-center gap-1.5 rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.02] py-1 pl-1 pr-3 text-sm">
-            <button
-              onClick={onGoHome}
-              aria-label="Zurück zum Start"
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-foreground/5 hover:text-accent"
-            >
-              <i className="ti ti-arrow-left text-[13px]" />
-            </button>
-            <button
-              onClick={onGoHome}
-              className="shrink-0 font-medium text-muted transition-colors hover:text-accent"
-            >
-              Start
-            </button>
+          <button
+            onClick={onGoHome}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.02] px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:border-accent/30 hover:text-accent"
+          >
+            <i className="ti ti-arrow-left text-[13px]" />
+            Zurück
+          </button>
+
+          {/* Pfad — rein informativ, keine eigene Klickfunktion mehr; das
+              Zurückgehen übernimmt der separate Button daneben. */}
+          <div className="flex min-w-0 items-center gap-1.5 rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.02] py-1.5 px-3 text-sm">
+            <span className="shrink-0 font-medium text-muted">Start</span>
             <i className="ti ti-chevron-right shrink-0 text-[12px] text-muted/30" />
             <span className="shrink-0 font-medium text-muted">{difficultyLabel}</span>
             <i className="ti ti-chevron-right shrink-0 text-[12px] text-muted/30" />
@@ -2942,8 +3014,8 @@ function GameScreen({
             </span>
           </div>
 
-          <div className="h-5 w-px shrink-0 bg-card-border/15" />
-          <div className="flex shrink-0 items-center gap-2 pr-1">
+          <div className="ml-auto flex shrink-0 items-center gap-2 pr-1">
+            <div className="h-5 w-px shrink-0 bg-card-border/15" />
             <StatPill label="PUNKTE" value={score} variant="score" />
             <StatPill label="GELÖST" value={`${solved}/${played}`} />
           </div>

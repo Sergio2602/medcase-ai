@@ -92,13 +92,13 @@ function TocSidebar() {
 export default function ImpressumPage() {
   return (
     <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1150px]">
+      <div className="mx-auto max-w-[1560px]">
         <CenteredNav active={null} />
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
           <TocSidebar />
 
-          <div className="max-w-[860px]">
+          <div>
             {/* ===== IMPRESSUM ===== */}
             <FadeInUp>
             <div id="impressum" className="card scroll-mt-6 p-8">
@@ -402,6 +402,9 @@ export default function ImpressumPage() {
             >
               <span>© 2026 Medcase</span>
               <div className="flex items-center gap-4">
+                <a href="/news" className="hover:underline">
+                  News
+                </a>
                 <a href="#impressum" className="hover:underline">
                   Impressum
                 </a>

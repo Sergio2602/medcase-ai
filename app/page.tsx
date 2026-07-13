@@ -1219,7 +1219,7 @@ function TrustAndProcessCard() {
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { value: 15, label: "Vorklinik-Fälle" },
-              { value: 40, label: "Klinik/Innere-Fälle" },
+              { value: 40, label: "Klinik-Fälle" },
               { value: 15, label: "Examen/PJ-Fälle" },
             ].map((stat, i) => (
               <FadeInUp key={stat.label} delay={i * 90}>

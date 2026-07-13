@@ -412,9 +412,9 @@ export default function UeberUnsPage() {
                   </div>
                   <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
                     <p className="text-2xl font-extrabold text-[#15803d]">40</p>
-                    <p className="text-xs font-semibold text-[#15803d]">Klinik/Innere-Fälle</p>
+                    <p className="text-xs font-semibold text-[#15803d]">Klinik-Fälle</p>
                     <p className="mt-1 text-[11px] leading-snug text-[#15803d]/80">
-                      Vollständig quellenbasiert, mit individuellen Quellenangaben pro Fall.
+                      Innere + Allgemeinmedizin, vollständig quellenbasiert mit individuellen Quellenangaben pro Fall.
                     </p>
                   </div>
                   <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
@@ -428,7 +428,7 @@ export default function UeberUnsPage() {
                 </div>
 
                 <p className="mb-2 text-[13px] leading-relaxed text-muted">
-                  Alle 70 Fälle (Vorklinik + Klinik/Innere + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
+                  Alle 70 Fälle (Vorklinik + Klinik + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
                   Fall enthält zusätzlich:
                 </p>
                 <ul className="mb-3 flex flex-col gap-1.5 text-[13px] leading-relaxed text-muted">

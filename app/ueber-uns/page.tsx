@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { KontaktPopover } from "@/app/components/KontaktPopover";
 import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
@@ -56,7 +57,7 @@ function RangeBar({ label, min, max, max100 = 30 }: { label: string; min: number
 function StepChip({ n, icon, title, text }: { n: number; icon: string; title: string; text: string }) {
   return (
     <div className="flex gap-3 rounded-lg border-[1.5px] border-card-border/10 p-4">
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
         <i className={`ti ${icon} text-[15px]`} />
       </div>
       <div>
@@ -161,7 +162,7 @@ export default function UeberUnsPage() {
                   warum ein unabhängiges fachärztliches Review vor einer breiteren Bewerbung fest eingeplant
                   ist (siehe Qualitätssicherung).
                 </p>
-                <div className="flex items-start gap-2.5 rounded-lg border-[1.5px] border-accent/25 bg-[#eaf0fc] px-4 py-3.5">
+                <div className="flex items-start gap-2.5 rounded-lg border-[1.5px] border-accent/25 bg-[#ecf0f9] px-4 py-3.5">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-white">
                     <i className="ti ti-info-circle text-[11px]" />
                   </span>
@@ -276,7 +277,7 @@ export default function UeberUnsPage() {
                   {["Anatomie · 5 Fälle", "Physiologie · 5 Fälle", "Biochemie/Stoffwechsel · 5 Fälle"].map((t) => (
                     <span
                       key={t}
-                      className="rounded-full bg-[#eaf0fc] px-3 py-1 text-xs font-semibold text-accent"
+                      className="rounded-full bg-[#ecf0f9] px-3 py-1 text-xs font-semibold text-accent"
                     >
                       {t}
                     </span>
@@ -322,10 +323,10 @@ export default function UeberUnsPage() {
                   nicht nur &bdquo;wenn Zeit bleibt&ldquo;.
                 </p>
 
-                <div className="mb-4 rounded-lg border-[1.5px] border-accent/25 bg-[#eaf0fc] p-4">
+                <div className="mb-4 rounded-lg border-[1.5px] border-accent/25 bg-[#ecf0f9] p-4">
                   <p className="text-sm font-semibold text-accent">
-                    <span className="text-xl font-extrabold">22</span> von 41 quellenbasierten Fällen (rund
-                    54 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
+                    <span className="text-xl font-extrabold">29</span> von 56 quellenbasierten Fällen (rund
+                    52 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
                   </p>
                 </div>
 
@@ -354,10 +355,17 @@ export default function UeberUnsPage() {
                     "Invagination (Kleinkind)",
                     "Alkoholentzugsdelir",
                     "Anaphylaktischer Schock",
+                    "Cauda-equina-Syndrom",
+                    "Akute Pyelonephritis (Hausarzt)",
+                    "Bronchialkarzinom (Hausarzt-Erstdiagnose)",
+                    "TIA (Hausarztpraxis)",
+                    "Kolonkarzinom bei Eisenmangelanämie",
+                    "Akute Appendizitis (Hausarzt-Erstpräsentation)",
+                    "Instabile Angina pectoris (Hausarztpraxis)",
                   ].map((d) => (
                     <span
                       key={d}
-                      className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-2.5 py-1 text-[11.5px] font-semibold text-accent"
+                      className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-2.5 py-1 text-[11.5px] font-semibold text-accent"
                     >
                       <i className="ti ti-alert-triangle text-[9px]" />
                       {d}
@@ -394,7 +402,7 @@ export default function UeberUnsPage() {
                     </p>
                   </div>
                   <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
-                    <p className="text-2xl font-extrabold text-[#15803d]">11</p>
+                    <p className="text-2xl font-extrabold text-[#15803d]">26</p>
                     <p className="text-xs font-semibold text-[#15803d]">Klinik/Innere-Fälle</p>
                     <p className="mt-1 text-[11px] leading-snug text-[#15803d]/80">
                       Vollständig quellenbasiert, mit individuellen Quellenangaben pro Fall.
@@ -411,7 +419,7 @@ export default function UeberUnsPage() {
                 </div>
 
                 <p className="mb-2 text-[13px] leading-relaxed text-muted">
-                  Alle 41 Fälle (Vorklinik + Klinik/Innere + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
+                  Alle 56 Fälle (Vorklinik + Klinik/Innere + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
                   Fall enthält zusätzlich:
                 </p>
                 <ul className="mb-3 flex flex-col gap-1.5 text-[13px] leading-relaxed text-muted">
@@ -462,7 +470,7 @@ export default function UeberUnsPage() {
                     </p>
                   </div>
                   <div className="flex gap-3">
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
                       <i className="ti ti-mail" style={{ fontSize: 13 }} />
                     </span>
                     <p className="text-[13px] leading-relaxed text-muted">
@@ -485,15 +493,15 @@ export default function UeberUnsPage() {
             >
               <span>© 2026 Medcase</span>
               <div className="flex items-center gap-4">
-                <a href="/news" className="hover:underline">
+                <Link href="/news" className="hover:underline">
                   News
-                </a>
-                <a href="/impressum#impressum" className="hover:underline">
+                </Link>
+                <Link href="/impressum#impressum" className="hover:underline">
                   Impressum
-                </a>
-                <a href="/impressum#datenschutz" className="hover:underline">
+                </Link>
+                <Link href="/impressum#datenschutz" className="hover:underline">
                   Datenschutz
-                </a>
+                </Link>
                 <KontaktPopover />
               </div>
             </footer>

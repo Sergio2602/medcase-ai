@@ -73,7 +73,7 @@ function formatDate(timestamp: number) {
 // zu folgen — aber weich statt knallhart.
 function accuracyColors(pct: number) {
   if (pct >= 80) return { bg: "#e8f5e9", text: "#2e7d32", bar: "#66bb6a" };
-  if (pct >= 50) return { bg: "#fefce8", text: "#ca8a04", bar: "#facc15" };
+  if (pct >= 50) return { bg: "#fefce8", text: "#eab308", bar: "#facc15" };
   return { bg: "#fdf2f1", text: "#b3524f", bar: "#ef9a9a" };
 }
 
@@ -213,7 +213,7 @@ function GroupTable({
             >
               <div className="mb-1.5 flex items-center justify-between gap-2">
                 <span className="flex min-w-0 items-center gap-1.5 text-[13px] font-semibold">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
                     <i className={`ti ${iconFor(icons, g.id)} text-xs`} />
                   </span>
                   <span className="truncate">{labelFor(labels, g.id)}</span>
@@ -371,8 +371,8 @@ export default function StatistikPage() {
                     {/* Nebenwerte darunter, gleichmäßig über die volle Breite
                         verteilt statt in einer schmalen Spalte daneben. */}
                     <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
-                      <SummaryCard icon="ti-flag-check" label="Gelöst" value={String(summary.count)} color="#1d4ed8" />
-                      <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#1d4ed8" />
+                      <SummaryCard icon="ti-flag-check" label="Gelöst" value={String(summary.count)} color="#285dd2" />
+                      <SummaryCard icon="ti-star" label="Punkte gesamt" value={String(summary.totalScore)} color="#285dd2" />
                       <SummaryCard
                         icon="ti-clock"
                         label="Ø Zeit / Fall"

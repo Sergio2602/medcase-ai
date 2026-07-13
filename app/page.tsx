@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
+import Link from "next/link";
 import { Logo } from "./components/Logo";
 import { OnboardingTour } from "./components/OnboardingTour";
 import { KontaktPopover } from "./components/KontaktPopover";
@@ -435,7 +436,7 @@ const PATIENT_PREVIEWS = [
 // Farbcodierung je Befund-Kategorie — macht auf einen Blick klar, welche Art
 // von Befund gerade in der mittleren Spalte erhoben wird.
 const CATEGORY_STYLES: Record<string, { text: string; bg: string }> = {
-  Anamnese: { text: "#1d4ed8", bg: "#eaf0fc" },
+  Anamnese: { text: "#285dd2", bg: "#ecf0f9" },
   Untersuchung: { text: "#7c3aed", bg: "#f3ecfd" },
   Labor: { text: "#0d9488", bg: "#e3f5f3" },
 };
@@ -696,7 +697,7 @@ function RotatingPatientPreview() {
               <TickingNumber
                 value={possiblePoints}
                 prefix={uiPhase === "result" ? "+" : ""}
-                color={uiPhase === "result" ? "#15803d" : "#1d4ed8"}
+                color={uiPhase === "result" ? "#15803d" : "#285dd2"}
               />
             </div>
             <div className="mt-1.5 grid grid-cols-2 gap-1.5 border-t border-card-border/10 pt-3.5">
@@ -727,7 +728,7 @@ function RotatingPatientPreview() {
             {uiPhase === "result" && (
               <div
                 key={`insight-${caseIndex}`}
-                className="line-pop mt-2 flex items-start gap-1.5 rounded-md border-[1.5px] border-accent/20 bg-[#eaf0fc] px-2 py-1.5"
+                className="line-pop mt-2 flex items-start gap-1.5 rounded-md border-[1.5px] border-accent/20 bg-[#ecf0f9] px-2 py-1.5"
                 style={{ animationDelay: "180ms" }}
               >
                 <i className="ti ti-info-circle mt-[1px] shrink-0 text-[11px] text-accent" />
@@ -747,7 +748,7 @@ function RotatingPatientPreview() {
               aria-label={`Fall ${i + 1} anzeigen`}
               className="transition-all duration-300"
               style={{
-                backgroundColor: i === caseIndex ? "#1d4ed8" : "#a8a69c",
+                backgroundColor: i === caseIndex ? "#285dd2" : "#a8a69c",
                 width: i === caseIndex ? 18 : 6,
                 height: 6,
                 borderRadius: i === caseIndex ? 3 : 9999,
@@ -789,7 +790,7 @@ const DISCIPLINES: { id: Discipline; label: string; locked: boolean }[] = [
   { id: "innere", label: "Innere", locked: false },
   { id: "kardiologie", label: "Kardiologie", locked: true },
   { id: "chirurgie", label: "Chirurgie", locked: true },
-  { id: "allgemeinmedizin", label: "Allgemeinmedizin", locked: true },
+  { id: "allgemeinmedizin", label: "Allgemeinmedizin", locked: false },
   { id: "neurologie", label: "Neurologie", locked: true },
   { id: "hno", label: "HNO", locked: true },
   { id: "augenheilkunde", label: "Augenheilkunde", locked: true },
@@ -959,7 +960,7 @@ function DifficultyModal({
               </div>
               <div className="mt-3 flex items-start gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs leading-relaxed text-accent">
                 <i className="ti ti-info-circle mt-0.5 text-sm" />
-                Aktuell nur Innere spielbar. Weitere Fächer sind in Vorbereitung — kein festes Datum.
+                Aktuell Innere und Allgemeinmedizin spielbar. Weitere Fächer sind in Vorbereitung — kein festes Datum.
               </div>
             </div>
           )}
@@ -1095,7 +1096,7 @@ function MiniStep({
 }) {
   return (
     <div className="flex gap-2.5 rounded-lg border-[1.5px] border-card-border/10 p-3">
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
         <i className={`ti ${icon} text-[13px]`} />
       </div>
       <div>
@@ -1139,24 +1140,24 @@ function TrustAndProcessCard() {
           nicht frei erfunden.
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-3 py-1 text-xs font-bold text-accent">
+          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-3 py-1 text-xs font-bold text-accent">
             <i className="ti ti-files text-[11px]" />
-            <AnimatedNumber target={41} suffix="+ Fälle" />
+            <AnimatedNumber target={56} suffix="+ Fälle" />
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-3 py-1 text-xs font-bold text-accent">
+          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-3 py-1 text-xs font-bold text-accent">
             <i className="ti ti-checkbox text-[11px]" />
             <AnimatedNumber target={100} suffix="% quellenbasiert" />
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-3 py-1 text-xs font-bold text-accent">
+          <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-3 py-1 text-xs font-bold text-accent">
             <i className="ti ti-certificate text-[11px]" />
             AWMF · IMPP · Destatis
           </span>
-          <a
+          <Link
             href="/ueber-uns"
             className="ml-auto text-xs font-semibold text-accent hover:underline"
           >
             Mehr zur Methodik →
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -1218,7 +1219,7 @@ function TrustAndProcessCard() {
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { value: 15, label: "Vorklinik-Fälle" },
-              { value: 11, label: "Klinik/Innere-Fälle" },
+              { value: 26, label: "Klinik/Innere-Fälle" },
               { value: 15, label: "Examen/PJ-Fälle" },
             ].map((stat, i) => (
               <FadeInUp key={stat.label} delay={i * 90}>
@@ -1226,12 +1227,12 @@ function TrustAndProcessCard() {
               </FadeInUp>
             ))}
           </div>
-          <a
+          <Link
             href="/ueber-uns#qualitaet"
             className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
           >
             Vollständige Methodik &amp; Qualitätssicherung ansehen →
-          </a>
+          </Link>
         </div>
       </div>
     </div>
@@ -1305,12 +1306,12 @@ function FallauswahlPreview() {
           </FadeInUp>
         ))}
       </div>
-      <a
+      <Link
         href="/ueber-uns#impp-haeufigkeit"
         className="mb-5 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
       >
         Alle 10 Fachbereiche + Quelle ansehen →
-      </a>
+      </Link>
 
       <div className="border-t border-card-border/10 pt-5">
         <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
@@ -1318,29 +1319,29 @@ function FallauswahlPreview() {
           Cannot-miss-Fälle
         </p>
         <p className="mb-3 text-sm leading-relaxed text-muted">
-          <AnimatedNumber target={22} /> von <AnimatedNumber target={41} /> Fällen (rund{" "}
-          <AnimatedNumber target={54} suffix="%" />) sind bewusst als cannot-miss markiert — zeitkritisch,
+          <AnimatedNumber target={29} /> von <AnimatedNumber target={56} /> Fällen (rund{" "}
+          <AnimatedNumber target={52} suffix="%" />) sind bewusst als cannot-miss markiert — zeitkritisch,
           aber leicht zu übersehen.
         </p>
         <div className="flex flex-wrap gap-1.5">
           {CANNOT_MISS_PREVIEW.map((d, i) => (
             <FadeInUp key={d} delay={i * 50}>
-              <span className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/25 bg-[#eaf0fc] px-2.5 py-1 text-[11.5px] font-semibold text-accent">
+              <span className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-2.5 py-1 text-[11.5px] font-semibold text-accent">
                 <i className="ti ti-alert-triangle text-[9px]" />
                 {d}
               </span>
             </FadeInUp>
           ))}
           <span className="inline-flex items-center rounded-full border-[1.5px] border-card-border/15 px-2.5 py-1 text-[11.5px] font-semibold text-muted">
-            +16 weitere
+            +23 weitere
           </span>
         </div>
-        <a
+        <Link
           href="/ueber-uns#cannot-miss"
           className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
         >
           Alle Cannot-miss-Fälle ansehen →
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -1379,12 +1380,12 @@ function QualitaetPreviewCard() {
           </div>
         </FadeInUp>
       </div>
-      <a
+      <Link
         href="/ueber-uns#qualitaet"
         className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline"
       >
         Vollständige Qualitätssicherung ansehen →
-      </a>
+      </Link>
     </div>
   );
 }
@@ -1411,7 +1412,7 @@ function StartScreen({
       </div>
       <CenteredNav active="home" />
       <div className="mx-auto flex max-w-xl flex-col items-center text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#eaf0fc] px-4 py-1.5 text-sm font-bold text-accent">
+        <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#ecf0f9] px-4 py-1.5 text-sm font-bold text-accent">
           Für Medizinstudierende · Deutschland
         </span>
         <h1 className="mt-2 text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl">
@@ -1485,9 +1486,9 @@ function StartScreen({
         >
           <span>© 2026 Medcase</span>
           <div className="flex items-center gap-4">
-            <a href="/news" className="hover:underline">News</a>
-            <a href="/impressum" className="hover:underline">Impressum</a>
-            <a href="/impressum#datenschutz" className="hover:underline">Datenschutz</a>
+            <Link href="/news" className="hover:underline">News</Link>
+            <Link href="/impressum" className="hover:underline">Impressum</Link>
+            <Link href="/impressum#datenschutz" className="hover:underline">Datenschutz</Link>
             <KontaktPopover />
           </div>
         </footer>
@@ -2182,15 +2183,15 @@ function ResultIsland({
             )}
             {caseData.caseContext &&
               (caseData.caseContext.category === "cannot-miss" ? (
-                <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#d97706]/40 bg-[#fef3e2] px-2.5 py-1 text-[11px] font-semibold text-[#92400e]">
-                  <span className="flex h-[16px] w-[16px] shrink-0 items-center justify-center rounded-full bg-[#d97706] text-white">
+                <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#8b5cf6]/40 bg-[#f3eefc] px-2.5 py-1 text-[11px] font-semibold text-[#6d28d9]">
+                  <span className="flex h-[16px] w-[16px] shrink-0 items-center justify-center rounded-full bg-[#8b5cf6] text-white">
                     <i className="ti ti-alert-triangle text-[10px]" />
                   </span>
                   {caseData.caseContext.note}
                 </span>
               ) : (
-                <div className="mt-2 flex items-start gap-2 rounded-lg border-2 border-[#fb923c]/50 bg-[#fb923c]/[0.07] px-3 py-2">
-                  <span className="mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#fb923c]/15 text-[#fb923c]">
+                <div className="mt-2 flex items-start gap-2 rounded-lg border-2 border-accent/30 bg-[#ecf0f9] px-3 py-2">
+                  <span className="mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
                     <i className="ti ti-info-circle text-[11px]" />
                   </span>
                   <p className="text-[11.5px] font-semibold leading-snug text-foreground/85">

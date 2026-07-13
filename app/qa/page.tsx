@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { KontaktPopover } from "@/app/components/KontaktPopover";
 import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
@@ -11,7 +12,7 @@ export const metadata = {
 function SectionLabel({ icon, id, children }: { icon: string; id?: string; children: React.ReactNode }) {
   return (
     <p id={id} className="mb-2 scroll-mt-24 flex items-center gap-1.5 text-[15px] font-bold text-foreground">
-      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
         <i className={`ti ${icon} text-[13px]`} />
       </span>
       {children}
@@ -131,7 +132,7 @@ export default function QAPage() {
                   </SectionLabel>
                   <p className="text-sm leading-relaxed text-muted">
                     Drei Schwierigkeitsstufen — Vorklinik, Klinik und Examen/PJ — mit aktuell
-                    41 Fällen insgesamt (15 Vorklinik, 11 Klinik/Innere, 15 Examen/PJ).
+                    56 Fällen insgesamt (15 Vorklinik, 26 Klinik/Innere, 15 Examen/PJ).
                   </p>
                 </section>
               </div>
@@ -157,12 +158,12 @@ export default function QAPage() {
                     frei erfunden. Ein unabhängiges fachärztliches Review ist geplant, hat aber
                     noch nicht stattgefunden — die Quellenangaben ersetzen kein fachliches
                     Urteil.{" "}
-                    <a
+                    <Link
                       href="/ueber-uns#methodik"
                       className="text-accent underline underline-offset-2"
                     >
                       Mehr zur Methodik
-                    </a>
+                    </Link>
                     .
                   </p>
                 </section>
@@ -218,15 +219,15 @@ export default function QAPage() {
             >
               <span>© 2026 Medcase</span>
               <div className="flex items-center gap-4">
-                <a href="/news" className="hover:underline">
+                <Link href="/news" className="hover:underline">
                   News
-                </a>
-                <a href="/impressum#impressum" className="hover:underline">
+                </Link>
+                <Link href="/impressum#impressum" className="hover:underline">
                   Impressum
-                </a>
-                <a href="/impressum#datenschutz" className="hover:underline">
+                </Link>
+                <Link href="/impressum#datenschutz" className="hover:underline">
                   Datenschutz
-                </a>
+                </Link>
                 <KontaktPopover />
               </div>
             </footer>

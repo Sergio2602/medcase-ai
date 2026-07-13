@@ -1058,5 +1058,1184 @@
       "category": "haeufig",
       "note": "Herzinsuffizienz war 2023 mit 468.479 Fällen die häufigste Hauptdiagnose in deutschen Krankenhäusern (Destatis) — meist durch vermeidbare Trigger wie Diät- oder Medikamenten-Non-Adherence dekompensiert."
     }
+  },
+  {
+    "id": "kreuzschmerz-unspezifisch-1",
+    "difficulty": "klinik",
+    "patientName": "Sabine",
+    "age": 41,
+    "gender": "female",
+    "chiefComplaint": "Seit Montag hab ich so einen fiesen Schmerz im unteren Rücken, ich hab beim Blumenkübel-Tragen komisch reingegriffen. Sitzen tut am meisten weh.",
+    "history": "41-jährige Patientin, seit 3 Tagen akuter, lumbal betonter Rückenschmerz nach dem Heben eines schweren Blumenkübels im Garten. Schmerz ohne Ausstrahlung ins Bein, keine Kribbelparästhesien, keine Kraftminderung, keine Blasen- oder Mastdarmstörung, kein Taubheitsgefühl im Reithosenbereich. Kein Fieber, kein ungewollter Gewichtsverlust, keine Tumoranamnese, kein i.v.-Drogenabusus, keine längerfristige Kortikosteroidtherapie, kein relevantes Trauma außer dem Hebevorgang. Schmerz deutlich bewegungs- und lageabhängig, bessert sich im Liegen. Erstmaliges Auftreten dieser Stärke, gelegentlich ähnliche, leichtere Episoden in der Vergangenheit. Berufstätig als Erzieherin, keine Hinweise auf psychosoziale Chronifizierungsfaktoren.",
+    "examination": "AZ/EZ gut, afebril (36,7 °C), RR 122/78 mmHg, HF 76/min.\nInspektion: Physiologische Wirbelsäulenstatik, keine sichtbare Fehlhaltung, kein Klopfschmerz der Dornfortsätze.\nPalpation: Muskulärer Hartspann paravertebral L4/L5 beidseits.\nLasègue-Zeichen beidseits negativ. Kraft, Sensibilität und Muskeleigenreflexe (PSR, ASR) der unteren Extremität seitengleich intakt. Keine Klopfschmerzhaftigkeit der Nierenlager. Patientin verneint jegliche Sensibilitätsstörung perianal oder Blasenentleerungsstörung.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "0,3",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "normal"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "6,8",
+            "unit": "Tsd/µl",
+            "reference": "4,0–10,0",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Nicht-spezifischer Kreuzschmerz",
+    "diagnosisOptions": [
+      "Nicht-spezifischer Kreuzschmerz",
+      "Lumbaler Bandscheibenvorfall mit Nervenwurzelkompression",
+      "Akute Pyelonephritis",
+      "Vertebrale Kompressionsfraktur bei Osteoporose"
+    ],
+    "keyTakeaway": "Akuter Rückenschmerz nach Belastung ohne Red Flags (keine Ausstrahlung, kein neurologisches Defizit, kein Fieber, kein Trauma-adäquates Ereignis) = nicht-spezifischer Kreuzschmerz — häufigste Rückenschmerz-Diagnose in der Hausarztpraxis, keine Bildgebung indiziert.",
+    "differentialNotes": [
+      {
+        "option": "Lumbaler Bandscheibenvorfall mit Nervenwurzelkompression",
+        "whyNot": "Es fehlt ein ausstrahlender Beinschmerz, das Lasègue-Zeichen ist beidseits negativ und es liegen keine neurologischen Ausfälle vor — damit fehlt der radikuläre Charakter, der einen Bandscheibenvorfall mit Wurzelkompression kennzeichnen würde."
+      },
+      {
+        "option": "Akute Pyelonephritis",
+        "whyNot": "Kein Fieber, keine Klopfschmerzhaftigkeit der Nierenlager, keine Miktionsbeschwerden und unauffälliges CRP sprechen gegen eine Beteiligung des oberen Harntrakts."
+      },
+      {
+        "option": "Vertebrale Kompressionsfraktur bei Osteoporose",
+        "whyNot": "Es liegt kein adäquates Trauma vor, keine bekannten Osteoporose-Risikofaktoren, das Alter von 41 Jahren ist untypisch und es besteht kein Klopfschmerz der Dornfortsätze, der auf eine frische Fraktur hindeuten würde."
+      }
+    ],
+    "explanation": "Die Anamnese liefert keinen einzigen Hinweis auf eine der klassischen Red Flags des Kreuzschmerzes (Ausstrahlung mit neurologischem Defizit, Blasen-/Mastdarmstörung, Fieber, Tumoranamnese, adäquates Trauma). Der belastungsabhängige, muskulär getriggerte Schmerz mit unauffälligem neurologischem Status und normwertigen Entzündungsparametern entspricht damit der weitaus häufigsten Ursache akuter Rückenschmerzen: dem nicht-spezifischen Kreuzschmerz. Eine Bildgebung ist bei diesem unkomplizierten Verlauf in den ersten Wochen nicht indiziert.",
+    "sourceNotes": "Red-Flag-Systematik und Empfehlung gegen primäre Bildgebung nach Nationaler VersorgungsLeitlinie Kreuzschmerz (AWMF-Register nvl-007, leitlinien.de). Keine über die NVL hinausgehende spezifische DEGAM-Einzelleitlinie zum unspezifischen Kreuzschmerz herangezogen.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Rückenschmerz zählt zu den häufigsten Konsultationsanlässen in der Hausarztpraxis; die überwiegende Mehrheit der Fälle ist nicht-spezifisch (Nationale VersorgungsLeitlinie Kreuzschmerz)."
+    }
+  },
+  {
+    "id": "cauda-equina-1",
+    "difficulty": "klinik",
+    "patientName": "Frank",
+    "age": 52,
+    "gender": "male",
+    "chiefComplaint": "Der Rücken tut jetzt schon seit 2 Wochen weh, aber seit heute Morgen kann ich das Wasserlassen kaum noch spüren und meine Beine fühlen sich komisch taub an, so im Sattelbereich.",
+    "history": "52-jähriger Patient mit seit 2 Wochen bestehenden, progredienten tiefen Rückenschmerzen mit Ausstrahlung in beide Beine (beidseitige Ischialgie). Seit heute Morgen neu aufgetretene Sensibilitätsstörung perianal/perineal (,wie Watte beim Abwischen'), erschwertes Wasserlassen mit Gefühl der unvollständigen Blasenentleerung, kein spontaner Harnverlust. Zusätzlich subjektive Kraftminderung in beiden Beinen beim Treppensteigen. Kein Fieber, kein Trauma. Vorbekannt: rezidivierende Kreuzschmerzen seit Jahren, aktuell erstmals mit dieser Ausstrahlung und den neu aufgetretenen neurologischen Begleitsymptomen.",
+    "examination": "AZ reduziert durch Schmerzen, afebril, RR 132/84 mmHg, HF 88/min.\nKraft Fußheber/-senker beidseits 4/5 (leicht abgeschwächt), Achillessehnenreflex beidseits abgeschwächt.\nSensibilität: Reithosenförmige Sensibilitätsminderung perianal (S3–S5 beidseits).\nDigital-rektale Untersuchung: deutlich verminderter Analsphinktertonus.\nLasègue-Zeichen beidseits positiv bei 30°. Keine Klopfschmerzhaftigkeit der Nierenlager.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "0,4",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "normal"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "7,9",
+            "unit": "Tsd/µl",
+            "reference": "4,0–10,0",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Notfall-MRT der LWS: Großer sequestrierter Bandscheibenvorfall L4/L5 mit erheblicher Kompression des Duralsacks und der Cauda-equina-Fasern, hochgradige Spinalkanalstenose auf diesem Niveau.",
+    "correctDiagnosis": "Lumbaler Bandscheibenvorfall mit Cauda-equina-Syndrom",
+    "diagnosisOptions": [
+      "Lumbaler Bandscheibenvorfall mit Cauda-equina-Syndrom",
+      "Nicht-spezifischer Kreuzschmerz",
+      "Spinale epidurale Abszedierung",
+      "Konus-Syndrom bei spinaler Metastasierung"
+    ],
+    "keyTakeaway": "Reithosenanästhesie plus Blasen-/Mastdarmstörung plus vermindertem Sphinktertonus bei Rückenschmerz = Cauda-equina-Syndrom bis zum Beweis des Gegenteils — sofortige Bildgebung und notfallmäßige neurochirurgische Vorstellung, keine ambulante Abklärung.",
+    "differentialNotes": [
+      {
+        "option": "Nicht-spezifischer Kreuzschmerz",
+        "whyNot": "Die vorliegenden Red Flags (reithosenförmige Sensibilitätsstörung, Blasenentleerungsstörung, verminderter Sphinktertonus) schließen einen harmlosen unspezifischen Kreuzschmerz aus und definieren einen neurochirurgischen Notfall."
+      },
+      {
+        "option": "Spinale epidurale Abszedierung",
+        "whyNot": "Es besteht kein Fieber, die Entzündungswerte sind unauffällig und es liegen keine Risikofaktoren wie i.v.-Drogenabusus oder Immunsuppression vor; die MRT zeigt zudem eindeutig eine strukturelle Kompression durch Bandscheibengewebe und keine abszedierende Raumforderung."
+      },
+      {
+        "option": "Konus-Syndrom bei spinaler Metastasierung",
+        "whyNot": "Es fehlt jede Tumoranamnese oder B-Symptomatik, und der akute Beginn nach jahrelangen mechanischen Rückenschmerzen passt besser zu einem degenerativen Bandscheibenvorfall als zu einer ossären Metastasierung; die MRT bestätigt einen Bandscheibenvorfall, keine Raumforderung."
+      }
+    ],
+    "explanation": "Die Kombination aus beidseitiger Ischialgie, reithosenförmiger Sensibilitätsstörung, Blasenentleerungsstörung und vermindertem Analsphinktertonus erfüllt die klassische Trias eines Cauda-equina-Syndroms. Fehlendes Fieber und unauffällige Entzündungswerte sprechen gegen eine infektiöse Ursache, fehlende Tumoranamnese gegen eine Metastasierung. Die MRT bestätigt die klinische Verdachtsdiagnose eines sequestrierten Bandscheibenvorfalls als Ursache — eine sofortige operative Dekompression ist indiziert, da jede Verzögerung das Risiko einer bleibenden Blasen-/Mastdarmlähmung erhöht.",
+    "sourceNotes": "Red-Flag-Systematik des Kreuzschmerzes (reithosenförmige Sensibilitätsstörung, Blasen-/Mastdarmstörung) nach Nationaler VersorgungsLeitlinie Kreuzschmerz; Cauda-equina-Syndrom als absoluter neurochirurgischer Notfall mit Dringlichkeit der Dekompression nach S2k-Leitlinie Bandscheibenvorfall (AWMF-Register-Nr. 187-059). Keine exakte, quellenbelegte Zeitgrenze für den Dekompressionszeitpunkt in dieser Leitlinie zitiert — die 48h-Angabe im caseContext basiert auf allgemeiner neurochirurgischer Literatur, nicht auf einem AWMF-Einzelwert.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Das Cauda-equina-Syndrom ist ein neurochirurgischer Notfall — eine verzögerte Dekompression erhöht das Risiko einer bleibenden Blasen- und Mastdarmlähmung deutlich (S2k-Leitlinie Bandscheibenvorfall)."
+    }
+  },
+  {
+    "id": "zystitis-unkompliziert-1",
+    "difficulty": "klinik",
+    "patientName": "Julia",
+    "age": 27,
+    "gender": "female",
+    "chiefComplaint": "Seit gestern brennt es total beim Wasserlassen und ich muss alle 20 Minuten aufs Klo, obwohl kaum was kommt.",
+    "history": "27-jährige, ansonsten gesunde Patientin mit seit 1 Tag bestehender Dysurie, Pollakisurie und imperativem Harndrang. Kein Flankenschmerz, kein Fieber, kein Schüttelfrost. Keine vaginale Ausfluss- oder Juckreizsymptomatik. Schwangerschaft sicher ausgeschlossen (letzte Periode vor 10 Tagen, negativer Schwangerschaftstest). Keine bekannten Fehlbildungen der Harnwege, kein Diabetes mellitus, keine Immunsuppression, kein Harnwegskatheter. Erste Episode seit über einem Jahr, davor 2 unkomplizierte Zystitiden, jeweils folgenlos ausgeheilt. Sexuell aktiv, keine neue Partnerschaft.",
+    "examination": "AZ/EZ gut, afebril (36,7 °C), RR 118/74 mmHg, HF 76/min. Abdomen weich, leichter Druckschmerz suprapubisch, keine Abwehrspannung. Nierenlager beidseits nicht klopfschmerzhaft.",
+    "labs": [
+      {
+        "category": "Urin-Streifentest",
+        "values": [
+          {
+            "name": "Leukozyten",
+            "value": "++",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          },
+          {
+            "name": "Nitrit",
+            "value": "positiv",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          },
+          {
+            "name": "Erythrozyten",
+            "value": "+",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "0,4",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Unkomplizierte Zystitis",
+    "diagnosisOptions": [
+      "Unkomplizierte Zystitis",
+      "Akute unkomplizierte Pyelonephritis",
+      "Vulvovaginale Candidose",
+      "Interstitielle Zystitis (Painful-Bladder-Syndrom)"
+    ],
+    "keyTakeaway": "Typische Trias aus Dysurie, Pollakisurie und imperativem Harndrang bei nicht-schwangeren, sonst gesunden Frauen ohne Fieber oder Flankenschmerz = unkomplizierte Zystitis — laut DEGAM-Leitlinie reicht die klinische Diagnose, eine Urinkultur ist nicht routinemäßig erforderlich.",
+    "differentialNotes": [
+      {
+        "option": "Akute unkomplizierte Pyelonephritis",
+        "whyNot": "Es fehlen Fieber, Flankenschmerz und Klopfschmerzhaftigkeit der Nierenlager, das CRP ist normwertig — das spricht für eine reine Beteiligung des unteren Harntrakts."
+      },
+      {
+        "option": "Vulvovaginale Candidose",
+        "whyNot": "Es besteht kein Ausfluss und kein Juckreiz, dafür ein positiver Nachweis von Leukozyten und Nitrit im Urin-Streifentest — das spricht für eine bakterielle Harnwegsinfektion statt einer vaginalen Genese."
+      },
+      {
+        "option": "Interstitielle Zystitis (Painful-Bladder-Syndrom)",
+        "whyNot": "Der akute Beginn mit eindeutig infektiösem Urinbefund (positives Nitrit) passt zu einer akuten bakteriellen Episode, nicht zu einem chronisch-rezidivierenden Schmerzsyndrom ohne Erregernachweis, wie es für die interstitielle Zystitis charakteristisch ist."
+      }
+    ],
+    "explanation": "Die klassische Symptomtrias aus Dysurie, Pollakisurie und imperativem Harndrang bei einer jungen, nicht-schwangeren, ansonsten gesunden Frau ohne systemische Zeichen (kein Fieber, unauffälliges CRP) entspricht der Definition einer unkomplizierten Zystitis. Der positive Nachweis von Leukozyten und Nitrit im Urin-Streifentest untermauert die bakterielle Genese. Da keine Risikofaktoren für einen komplizierten Verlauf vorliegen, ist die klinische Diagnose ausreichend.",
+    "sourceNotes": "DEGAM S3-Leitlinie ,Brennen beim Wasserlassen' (AWMF-Register-Nr. 053-001): Definition der unkomplizierten Zystitis, Symptomtrias und Verzicht auf routinemäßige mikrobiologische Diagnostik bei typischer Klinik.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Die unkomplizierte Zystitis ist einer der häufigsten Gründe für eine Antibiotikaverordnung in der Hausarztpraxis, insbesondere bei jungen Frauen (DEGAM-Leitlinie Brennen beim Wasserlassen)."
+    }
+  },
+  {
+    "id": "pyelonephritis-hausarzt-1",
+    "difficulty": "klinik",
+    "patientName": "Melanie",
+    "age": 34,
+    "gender": "female",
+    "chiefComplaint": "Seit heute Morgen hab ich richtig hohes Fieber und dieser Flankenschmerz rechts ist so stark, dass ich mich kaum bewegen kann. Wasserlassen brennt auch schon seit 2 Tagen.",
+    "history": "34-jährige Patientin, seit 2 Tagen Dysurie und Pollakisurie, seit heute zusätzlich Fieber bis 39,4 °C mit Schüttelfrost sowie starkem rechtsseitigem Flankenschmerz. Übelkeit, einmaliges Erbrechen. Schwangerschaft ausgeschlossen. Keine bekannten Harnwegsanomalien, keine Immunsuppression, kein Diabetes mellitus. Keine vorbestehende antibiotische Therapie in den letzten 4 Wochen.",
+    "examination": "AZ deutlich reduziert, febril 39,2 °C, RR 108/68 mmHg, HF 108/min, AF 18/min. Deutlicher Klopfschmerz des rechten Nierenlagers. Abdomen weich, leichter Druckschmerz im rechten Unterbauch/Flanke, keine Abwehrspannung, keine Peritonismuszeichen.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "128",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "15,2",
+            "unit": "Tsd/µl",
+            "reference": "4,0–10,0",
+            "flag": "high"
+          },
+          {
+            "name": "Procalcitonin",
+            "value": "0,6",
+            "unit": "ng/ml",
+            "reference": "< 0,5",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Urin-Streifentest",
+        "values": [
+          {
+            "name": "Leukozyten",
+            "value": "+++",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          },
+          {
+            "name": "Nitrit",
+            "value": "positiv",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          },
+          {
+            "name": "Erythrozyten",
+            "value": "+",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Nierenwerte",
+        "values": [
+          {
+            "name": "Kreatinin",
+            "value": "0,9",
+            "unit": "mg/dl",
+            "reference": "0,5–0,9",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Sonographie der Nieren: Rechte Niere gering vergrößert mit echoarmem, ödematös aufgelockertem Parenchym, keine Harnstauung, kein Konkrementnachweis, keine Abszessformation.",
+    "correctDiagnosis": "Akute unkomplizierte Pyelonephritis",
+    "diagnosisOptions": [
+      "Akute unkomplizierte Pyelonephritis",
+      "Unkomplizierte Zystitis",
+      "Akute Appendizitis",
+      "Adnexitis (Pelvic Inflammatory Disease)"
+    ],
+    "keyTakeaway": "Fieber plus Flankenschmerz plus Klopfschmerzhaftigkeit der Nierenlager bei vorausgegangener Dysurie = Pyelonephritis-Verdacht — abwendbar gefährlicher Verlauf, da unbehandelt eine Urosepsis droht; hausärztliche Entscheidung stationär vs. ambulant richtet sich nach dem Allgemeinzustand.",
+    "differentialNotes": [
+      {
+        "option": "Unkomplizierte Zystitis",
+        "whyNot": "Fieber, Schüttelfrost, deutlicher Flankenklopfschmerz und deutlich erhöhtes CRP sprechen für eine Beteiligung des oberen Harntrakts, nicht für einen unkomplizierten unteren Harnwegsinfekt."
+      },
+      {
+        "option": "Akute Appendizitis",
+        "whyNot": "Das Schmerzmaximum liegt im Bereich der rechten Nierenloge mit positivem Klopfschmerz statt am McBurney-Punkt, die begleitende Dysurie seit 2 Tagen und der pathologische Urinbefund sprechen deutlich für eine aufsteigende Harnwegsinfektion."
+      },
+      {
+        "option": "Adnexitis (Pelvic Inflammatory Disease)",
+        "whyNot": "Es besteht kein vaginaler Fluor, kein bilateraler Unterbauchschmerz und kein Portioschiebeschmerz, dafür ein eindeutig pathologischer Urinstatus mit positivem Nitrit- und Leukozytennachweis."
+      }
+    ],
+    "explanation": "Die Kombination aus vorausgegangener Dysurie, hohem Fieber mit Schüttelfrost, deutlichem Flankenklopfschmerz und stark erhöhten Entzündungswerten bei pathologischem Urinstatus entspricht dem klassischen Bild einer akuten Pyelonephritis. Die Sonographie bestätigt die entzündliche Parenchymbeteiligung der rechten Niere ohne Harnstau oder Abszess. Unbehandelt kann sich hieraus eine Urosepsis entwickeln, weshalb eine zügige antibiotische Therapie und engmaschige Verlaufskontrolle notwendig sind.",
+    "sourceNotes": "AWMF S3-Leitlinie Harnwegsinfektionen (AWMF-Register-Nr. 043/044): Diagnosekriterien der akuten unkomplizierten Pyelonephritis, Symptomkonstellation (Flankenschmerz, Fieber, Klopfschmerz) und Therapieempfehlung.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Unbehandelt kann die akute Pyelonephritis in eine Urosepsis übergehen — die Abgrenzung zur harmlosen Zystitis anhand von Fieber und Flankenschmerz ist hausärztlich entscheidend (AWMF-Leitlinie Harnwegsinfektionen)."
+    }
+  },
+  {
+    "id": "bronchitis-akut-1",
+    "difficulty": "klinik",
+    "patientName": "Thomas",
+    "age": 38,
+    "gender": "male",
+    "chiefComplaint": "Ich huste jetzt seit einer Woche wie ein Kettenraucher, dabei rauche ich gar nicht. Fieber hab ich aber keins mehr, das war nur die ersten zwei Tage.",
+    "history": "38-jähriger Patient mit seit 7 Tagen bestehendem Husten, initial mit Fieber bis 38,2 °C und Gliederschmerzen über 2 Tage, seither afebril, Husten persistierend mit gelegentlich weißlichem Auswurf. Keine Blutbeimengung. Keine Dyspnoe in Ruhe oder bei Belastung. Kein Nachtschweiß, kein Gewichtsverlust. Keine Vorerkrankungen der Lunge, Nichtraucher. Kontakt zu erkälteten Kollegen vor 10 Tagen.",
+    "examination": "AZ/EZ gut, afebril (36,8 °C), RR 122/78 mmHg, HF 78/min, AF 14/min, SpO2 98 % unter Raumluft. Auskultation: Vesikuläres Atemgeräusch beidseits, vereinzelt grobblasige, verlagerbare Rasselgeräusche, kein Giemen, keine Bronchialatmung, kein Klopfschall gedämpft, kein pleuritisches Reibegeräusch.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "0,8",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "7,2",
+            "unit": "Tsd/µl",
+            "reference": "4,0–10,0",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Akute virale Bronchitis",
+    "diagnosisOptions": [
+      "Akute virale Bronchitis",
+      "Ambulant erworbene Pneumonie",
+      "Akute Erstmanifestation eines Asthma bronchiale",
+      "Beginnende Pertussis (Keuchhusten)"
+    ],
+    "keyTakeaway": "Akuter Husten nach fieberhaftem Infekt mit unauffälligem Auskultationsbefund und ohne Tachypnoe/Hypoxie = klinische Diagnose der akuten viralen Bronchitis — keine Antibiotika, keine routinemäßige Bildgebung nötig (DEGAM-Leitlinie Husten).",
+    "differentialNotes": [
+      {
+        "option": "Ambulant erworbene Pneumonie",
+        "whyNot": "Es fehlen Klopfschalldämpfung, Bronchialatmung und pleuritischer Schmerz, es besteht keine Tachypnoe oder Hypoxie, und das CRP ist nur gering erhöht — die Zusammenschau der klinischen Zeichen spricht gegen ein pulmonales Infiltrat."
+      },
+      {
+        "option": "Akute Erstmanifestation eines Asthma bronchiale",
+        "whyNot": "Es besteht kein Giemen, keine Belastungsdyspnoe, kein anfallsartiger Verlauf und keine atopische Anamnese — das spricht gegen eine obstruktive Genese."
+      },
+      {
+        "option": "Beginnende Pertussis (Keuchhusten)",
+        "whyNot": "Es fehlt der typische stakkatoartige Hustenanfall mit inspiratorischem Stridor sowie der für Pertussis charakteristische, über Wochen anhaltende Verlauf — der Verlauf mit initialem Fieber und Besserungstendenz nach einer Woche passt besser zu einem viralen Atemwegsinfekt."
+      }
+    ],
+    "explanation": "Der zeitliche Verlauf mit initialem fieberhaftem Infekt, gefolgt von persistierendem, aber unproduktivem bis gering produktivem Husten ohne Warnzeichen, sowie der unauffällige Auskultationsbefund und die nur gering erhöhten Entzündungswerte sprechen für eine unkomplizierte akute virale Bronchitis. Da weder Hinweise auf eine Pneumonie noch auf eine obstruktive oder pertussisforme Erkrankung vorliegen, ist eine rein symptomatische Therapie ohne Antibiotikagabe leitliniengerecht.",
+    "sourceNotes": "DEGAM S3-Leitlinie ,Akuter und chronischer Husten' (AWMF-Register-Nr. 053-013): klinische Diagnosestellung der akuten Bronchitis, Verzicht auf Antibiotikatherapie und Einschränkung der CRP-Aussagekraft zur alleinigen Abgrenzung gegenüber einer Pneumonie.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Akuter Husten ist einer der häufigsten Beratungsanlässe in der Hausarztpraxis; die meisten Fälle sind viral bedingt und selbstlimitierend (DEGAM-Leitlinie Husten)."
+    }
+  },
+  {
+    "id": "bronchialkarzinom-hausarzt-1",
+    "difficulty": "klinik",
+    "patientName": "Peter",
+    "age": 64,
+    "gender": "male",
+    "chiefComplaint": "Der Husten geht jetzt seit über 2 Monaten nicht mehr weg, und ich hab ungewollt 6 Kilo abgenommen, ohne dass ich irgendwas geändert hätte.",
+    "history": "64-jähriger Patient, seit ca. 8 Wochen persistierender Husten ohne Besserungstendenz, in den letzten 2 Wochen erstmals blutig tingierter Auswurf. Ungewollter Gewichtsverlust von 6 kg in 3 Monaten, zunehmende Abgeschlagenheit, Nachtschweiß. Keine Ruhedyspnoe. Raucheranamnese: 45 pack-years, aktuell weiterhin aktiv rauchend. Keine bekannten Vorerkrankungen der Lunge. Kein vorausgegangener typischer Erkältungsinfekt vor Symptombeginn.",
+    "examination": "AZ reduziert, EZ altersentsprechend, kachektischer Habitus. Afebril, RR 138/84 mmHg, HF 88/min, AF 16/min, SpO2 95 % unter Raumluft. Auskultation: Abgeschwächtes Atemgeräusch rechts basal, diskrete inspiratorische Nebengeräusche rechts, kein Giemen. Lymphknoten: Tastbar vergrößerter, derber, indolenter Lymphknoten rechts supraklavikulär (Virchow-Drüse). Kein Trommelschlegelfinger, keine Uhrglasnägel.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "3,2",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "high"
+          },
+          {
+            "name": "BSG",
+            "value": "68",
+            "unit": "mm/h",
+            "reference": "< 15",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "Hämoglobin",
+            "value": "10,8",
+            "unit": "g/dl",
+            "reference": "13,5–17,0",
+            "flag": "low"
+          },
+          {
+            "name": "Kalzium (korrigiert)",
+            "value": "2,9",
+            "unit": "mmol/l",
+            "reference": "2,2–2,6",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Röntgen-Thorax: Unscharf begrenzte, ca. 4 cm große Raumforderung im rechten Hilusbereich mit Verdacht auf hiläre Lymphknotenvergrößerung. Ergänzende Kontrastmittel-CT-Thorax: Zentraler Tumor im rechten Hauptbronchus mit hilärer und mediastinaler Lymphadenopathie, Verdacht auf Infiltration angrenzender Strukturen — hochgradig malignomsuspekt.",
+    "correctDiagnosis": "Bronchialkarzinom (bioptisch zu sichern)",
+    "diagnosisOptions": [
+      "Bronchialkarzinom (bioptisch zu sichern)",
+      "Akute virale Bronchitis",
+      "Ambulant erworbene Pneumonie",
+      "Lungentuberkulose"
+    ],
+    "keyTakeaway": "Husten über mehr als 3 Wochen ohne Besserung plus mindestens ein Alarmzeichen (Hämoptysen, Gewichtsverlust, Nachtschweiß, Raucheranamnese) = zwingende Indikation zur Röntgen-Thorax-/CT-Abklärung — der häufigste hausärztliche Fehler ist, einen ,hartnäckigen Husten' bei Rauchern zu lange rein symptomatisch zu behandeln.",
+    "differentialNotes": [
+      {
+        "option": "Akute virale Bronchitis",
+        "whyNot": "Eine Dauer von 8 Wochen, Hämoptysen, B-Symptomatik und eine supraklavikuläre Lymphknotenvergrößerung sind Alarmzeichen, die weit über einen banalen viralen Infekt hinausgehen und laut DEGAM-Leitlinie Husten eine weiterführende Bildgebung erfordern."
+      },
+      {
+        "option": "Ambulant erworbene Pneumonie",
+        "whyNot": "Es besteht kein akutes fieberhaftes Krankheitsbild, sondern ein schleichender Verlauf über Wochen mit Gewichtsverlust und Nachtschweiß; radiologisch zeigt sich eine zentrale Raumforderung statt eines alveolären Infiltrats."
+      },
+      {
+        "option": "Lungentuberkulose",
+        "whyNot": "Es fehlen anamnestische Hinweise wie Kontakt zu Tbc-Erkrankten, Herkunft aus einem Hochprävalenzland oder ein entsprechendes Risikoprofil; die CT-Morphologie mit zentralem endobronchialem Tumor und Virchow-Drüse passt eher zu einem Bronchialkarzinom als zu kavernösen Tbc-Infiltraten."
+      }
+    ],
+    "explanation": "Persistierender Husten über 8 Wochen mit neu aufgetretenen Hämoptysen, deutlicher B-Symptomatik (Gewichtsverlust, Nachtschweiß) und einer tastbaren supraklavikulären Lymphknotenvergrößerung bei langjähriger, ausgeprägter Raucheranamnese sind klassische Alarmzeichen für eine bronchopulmonale Malignität. Die Bildgebung bestätigt eine zentrale, hochgradig malignomsuspekte Raumforderung mit Lymphadenopathie. Eine histologische Sicherung mittels Bronchoskopie und Biopsie ist der nächste zwingende Schritt.",
+    "sourceNotes": "DEGAM-Leitlinie Husten (AWMF-Register-Nr. 053-013) nennt Hämoptysen, Gewichtsverlust und weitere Warnzeichen als Indikation für eine weiterführende Diagnostik bei chronischem Husten. Einordnung der Virchow-Drüse und der paraneoplastischen Hyperkalzämie sowie das diagnostische Stufenschema (Röntgen-Thorax, CT, Bronchoskopie mit Biopsie) folgen der S3-Leitlinie Prävention, Diagnostik, Therapie und Nachsorge des Lungenkarzinoms (AWMF-Register-Nr. 020/007) — eine eigenständige hausärztliche Screening-Leitlinie existiert dafür nicht, das Vorgehen ist daher aus der onkologisch-pneumologischen S3-Leitlinie abgeleitet.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Husten ist meist harmlos — aber bei Rauchern mit über 3 Wochen persistierendem Husten plus Alarmzeichen wie Hämoptysen oder Gewichtsverlust muss ein Bronchialkarzinom aktiv ausgeschlossen werden, da die Prognose stark vom Diagnosezeitpunkt abhängt."
+    }
+  },
+  {
+    "id": "bppv-1",
+    "difficulty": "klinik",
+    "patientName": "Ingrid",
+    "age": 58,
+    "gender": "female",
+    "chiefComplaint": "Immer wenn ich mich im Bett umdrehe oder morgens aufstehe, dreht sich für ein paar Sekunden alles wie Karussell, dann ist es wieder weg.",
+    "history": "58-jährige Patientin, seit 4 Tagen rezidivierende, sekundenlang andauernde Drehschwindelattacken, ausgelöst durch Lagewechsel (Umdrehen im Bett, Kopf nach hinten neigen). Zwischen den Episoden vollständig beschwerdefrei, kein Dauerschwindel. Begleitend leichte Übelkeit während der Attacken, kein Erbrechen. Kein Hörverlust, kein Tinnitus, keine Kopfschmerzen, keine Doppelbilder, keine Sprech- oder Schluckstörung, keine Sensibilitätsstörungen oder Kraftminderung. Kein vorausgegangener Infekt, kein Trauma.",
+    "examination": "AZ/EZ gut, RR 128/76 mmHg, HF 72/min. Dix-Hallpike-Manöver rechts positiv: nach ca. 3 Sekunden Latenz auftretender torsionell-vertikaler Nystagmus zum unten liegenden (rechten) Ohr, Dauer unter 30 Sekunden, mit begleitendem subjektivem Drehschwindel, Erschöpfbarkeit bei Wiederholung. Neurologische Untersuchung unauffällig: kein Spontannystagmus, unauffälliger Kopf-Impuls-Test, keine Blickrichtungsnystagmen, kein Absinken im Unterberger-Tretversuch, sicherer Finger-Nase-Versuch, keine Dysarthrie, kein Absinken im Armvorhalteversuch.",
+    "labs": [
+      {
+        "category": "Basislabor",
+        "values": [
+          {
+            "name": "Glukose (nüchtern)",
+            "value": "98",
+            "unit": "mg/dl",
+            "reference": "70–99",
+            "flag": "normal"
+          },
+          {
+            "name": "TSH",
+            "value": "1,8",
+            "unit": "mIU/l",
+            "reference": "0,4–4,0",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Benigner paroxysmaler Lagerungsschwindel (BPPV)",
+    "diagnosisOptions": [
+      "Benigner paroxysmaler Lagerungsschwindel (BPPV)",
+      "Transitorische ischämische Attacke im vertebrobasilären Stromgebiet",
+      "Neuritis vestibularis",
+      "Morbus Menière"
+    ],
+    "keyTakeaway": "Sekundenkurzer, lageabhängiger Drehschwindel mit positivem Dix-Hallpike-Test und unauffälliger neurologischer Untersuchung (insbesondere Kopf-Impuls-Test) = BPPV — kann hausärztlich mittels Lagerungsmanöver abschließend diagnostiziert und therapiert werden.",
+    "differentialNotes": [
+      {
+        "option": "Transitorische ischämische Attacke im vertebrobasilären Stromgebiet",
+        "whyNot": "Es fehlen zentral-neurologische Zeichen (unauffälliger Kopf-Impuls-Test, kein Spontannystagmus, keine Blickrichtungsnystagmen, keine Dysarthrie oder Extremitätenschwäche), und der klar lageabhängige, sekundenkurze Charakter der Attacken spricht für eine periphervestibuläre statt eine zentrale Ursache."
+      },
+      {
+        "option": "Neuritis vestibularis",
+        "whyNot": "Diese verursacht einen anhaltenden Dauerschwindel über Tage mit pathologischem Kopf-Impuls-Test, nicht kurze lageabhängige Attacken mit beschwerdefreien Intervallen wie hier vorliegend."
+      },
+      {
+        "option": "Morbus Menière",
+        "whyNot": "Per Definition erfordert dieser einen begleitenden fluktuierenden Hörverlust und Tinnitus, die hier fehlen; die Attacken bei Morbus Menière dauern zudem typischerweise Minuten bis Stunden, nicht nur Sekunden."
+      }
+    ],
+    "explanation": "Der lagewechselabhängige, sekundenkurze Drehschwindel mit beschwerdefreien Intervallen, der positive Dix-Hallpike-Test mit typischem torsionell-vertikalem, erschöpfbarem Nystagmus sowie die unauffällige übrige neurologische Untersuchung (insbesondere ein regelrechter Kopf-Impuls-Test) sprechen eindeutig für einen benignen paroxysmalen Lagerungsschwindel. Zentrale und weitere periphervestibuläre Ursachen sind durch das Fehlen entsprechender Begleitsymptome unwahrscheinlich.",
+    "sourceNotes": "DEGAM S3-Leitlinie ,Akuter Schwindel in der Hausarztpraxis' (AWMF-Register-Nr. 053-018): diagnostisches Vorgehen bei BPPV, Stellenwert des Dix-Hallpike-Manövers und Abgrenzung zu zentralen Schwindelursachen mittels Kopf-Impuls-Test.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "BPPV ist laut DEGAM-Leitlinie eine der häufigsten Schwindelursachen in der Hausarztpraxis und kann in der Regel hausärztlich abschließend diagnostiziert und behandelt werden."
+    }
+  },
+  {
+    "id": "tia-hausarzt-1",
+    "difficulty": "klinik",
+    "patientName": "Werner",
+    "age": 71,
+    "gender": "male",
+    "chiefComplaint": "Vor einer Stunde konnte ich plötzlich meinen rechten Arm nicht mehr richtig heben und meine Frau meinte, ich hätte komisch gesprochen. Jetzt geht's mir wieder gut.",
+    "history": "71-jähriger Patient, von der Ehefrau in die Praxis begleitet: Vor ca. 60 Minuten akut aufgetretene Schwäche des rechten Arms und undeutliches Sprechen, Dauer ca. 15 Minuten, seither vollständige Rückbildung. Kein Kopfschmerz, kein Schwindel, kein Sturz, kein Bewusstseinsverlust. Bekannte arterielle Hypertonie mit unregelmäßiger Medikamenteneinnahme. Kein bekanntes Vorhofflimmern, aber gelegentliches ,Herzstolpern' berichtet. Kein Diabetes mellitus bekannt. Nikotinkonsum 20 pack-years, sistiert vor 5 Jahren.",
+    "examination": "Bei Vorstellung kein neurologisches Defizit mehr nachweisbar — Kraft, Sensibilität und Sprache unauffällig, kein Fazialisdefizit, kein Absinken im Armhalteversuch. RR 168/96 mmHg, HF 92/min unregelmäßig. Herzauskultation: arrhythmische Herzaktion, keine Herzgeräusche. Karotiden: kein Strömungsgeräusch auskultierbar. Neurologisch orientierend unauffällig.",
+    "labs": [
+      {
+        "category": "Basislabor",
+        "values": [
+          {
+            "name": "Glukose",
+            "value": "112",
+            "unit": "mg/dl",
+            "reference": "70–99",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "1,0",
+            "unit": "mg/dl",
+            "reference": "0,7–1,2",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Gerinnung",
+        "values": [
+          {
+            "name": "INR",
+            "value": "1,0",
+            "unit": "",
+            "reference": "0,9–1,2",
+            "flag": "normal"
+          },
+          {
+            "name": "aPTT",
+            "value": "29",
+            "unit": "sek",
+            "reference": "25–38",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "In der Hausarztpraxis nicht verfügbar — sofortige notfallmäßige Zuweisung in eine Stroke Unit zur cCT-/cMRT-Diagnostik und zum Langzeit-EKG zur Abklärung eines möglichen paroxysmalen Vorhofflimmerns als Emboliequelle veranlasst.",
+    "correctDiagnosis": "Transitorische ischämische Attacke (TIA)",
+    "diagnosisOptions": [
+      "Transitorische ischämische Attacke (TIA)",
+      "Migräne mit Aura",
+      "Hypoglykämie",
+      "Periphere Fazialisparese (Bell-Parese)"
+    ],
+    "keyTakeaway": "Jede akut aufgetretene, auch vollständig rückgebildete fokal-neurologische Symptomatik (Armschwäche, Sprachstörung) ist bis zur fachärztlichen Abklärung eine TIA — hohes Frühschlaganfallrisiko, daher sofortige notfallmäßige Klinikeinweisung, keine ,Beobachtung' in der Praxis.",
+    "differentialNotes": [
+      {
+        "option": "Migräne mit Aura",
+        "whyNot": "Es fehlt die typische, allmählich über 5–20 Minuten ,wandernde' Ausbreitung der Aura-Symptomatik und der nachfolgende Kopfschmerz; die abrupte, isolierte motorische und Sprachsymptomatik bei einem 71-Jährigen mit vaskulären Risikofaktoren ist deutlich TIA-typischer."
+      },
+      {
+        "option": "Hypoglykämie",
+        "whyNot": "Der Blutzucker liegt zum Untersuchungszeitpunkt mit 112 mg/dl im Normbereich, und es wird keine für Hypoglykämie typische autonome Symptomatik wie Schwitzen, Zittern oder Heißhunger berichtet."
+      },
+      {
+        "option": "Periphere Fazialisparese (Bell-Parese)",
+        "whyNot": "Diese betrifft isoliert den N. facialis mit Stirnastbeteiligung und geht nicht mit Armschwäche oder Sprachstörung einher — hier liegt eine kombinierte Arm- und Sprachsymptomatik vor, die für ein zentrales (kortikales) Ereignis spricht."
+      }
+    ],
+    "explanation": "Die akut aufgetretene, kombinierte motorische (Armschwäche) und sprachliche Symptomatik mit vollständiger Rückbildung innerhalb von Minuten bei einem Patienten mit vaskulärem Risikoprofil (Hypertonie, mögliches Vorhofflimmern, Nikotinanamnese) entspricht einer transitorischen ischämischen Attacke. Eine Hypoglykämie ist laborchemisch ausgeschlossen, eine Migräneaura oder periphere Fazialisparese passt nicht zum Symptommuster. Da das Frühschlaganfallrisiko nach TIA in den ersten Tagen am höchsten ist, ist eine sofortige notfallmäßige Klinikeinweisung zwingend erforderlich.",
+    "sourceNotes": "ABCD2-Score und Risikoeinschätzung nach TIA (u.a. Deutsche Gesellschaft für Neurologie) zur Begründung der Dringlichkeit; keine eigenständige DEGAM-S3-Leitlinie zur TIA in der Hausarztpraxis identifiziert — die notfallmäßige Zuweisungsempfehlung folgt der allgemeinen Schlaganfall-Versorgungsleitlinie der DGN, nicht einer hausärztlichen Einzelleitlinie.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Ein relevanter Teil der TIA-Patient*innen erleidet innerhalb der folgenden Tage bis Wochen einen manifesten Schlaganfall — die vollständige Rückbildung der Symptome darf hausärztlich nicht als Entwarnung missverstanden werden (ABCD2-Score-Literatur, DGN)."
+    }
+  },
+  {
+    "id": "hashimoto-thyreoiditis-1",
+    "difficulty": "klinik",
+    "patientName": "Claudia",
+    "age": 36,
+    "gender": "female",
+    "chiefComplaint": "Ich bin seit Monaten dauermüde, hab zugenommen obwohl ich nichts anders mache, und mir ist ständig kalt, während alle anderen das Büro zu warm finden.",
+    "history": "36-jährige Patientin, seit ca. 6 Monaten zunehmende Müdigkeit und Antriebslosigkeit, ungewollte Gewichtszunahme von 4 kg, vermehrtes Kälteempfinden, trockene Haut, verstärkter Haarausfall, gelegentliche Obstipation. Menstruationszyklus unregelmäßiger und stärker als zuvor. Keine Halsschmerzen, kein Druckgefühl am Hals, keine Schluckbeschwerden. Familienanamnese: Mutter mit bekannter Schilddrüsenunterfunktion. Keine relevante Medikamentenanamnese.",
+    "examination": "AZ/EZ gut (BMI 26 kg/m²), RR 118/74 mmHg, HF 58/min (bradykard). Haut trocken, kühl, leicht blass. Schilddrüse diffus, leicht knotig verändert, indolent, nicht druckschmerzhaft, keine tastbare Vergrößerung über Grad I hinaus. Reflexe: Achillessehnenreflex beidseits mit verlängerter Relaxationsphase. Kein Exophthalmus, kein Handtremor.",
+    "labs": [
+      {
+        "category": "Schilddrüsenwerte",
+        "values": [
+          {
+            "name": "TSH",
+            "value": "12,4",
+            "unit": "mIU/l",
+            "reference": "0,4–4,0",
+            "flag": "high"
+          },
+          {
+            "name": "fT4",
+            "value": "0,6",
+            "unit": "ng/dl",
+            "reference": "0,9–1,7",
+            "flag": "low"
+          },
+          {
+            "name": "fT3",
+            "value": "2,1",
+            "unit": "pg/ml",
+            "reference": "2,3–4,2",
+            "flag": "low"
+          },
+          {
+            "name": "TPO-Antikörper",
+            "value": "340",
+            "unit": "IU/ml",
+            "reference": "< 34",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "LDL-Cholesterin",
+            "value": "178",
+            "unit": "mg/dl",
+            "reference": "< 130",
+            "flag": "high"
+          },
+          {
+            "name": "CK",
+            "value": "210",
+            "unit": "U/l",
+            "reference": "< 170",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Sonographie der Schilddrüse: Diffus echoarmes, inhomogenes Parenchym beidseits, normale bis leicht verkleinerte Gesamtgröße, keine dominanten Knoten — Befund passend zu chronisch-lymphozytärer Thyreoiditis.",
+    "correctDiagnosis": "Hashimoto-Thyreoiditis mit manifester Hypothyreose",
+    "diagnosisOptions": [
+      "Hashimoto-Thyreoiditis mit manifester Hypothyreose",
+      "Subklinische Hypothyreose",
+      "Depressive Episode",
+      "Morbus Basedow"
+    ],
+    "keyTakeaway": "TSH erhöht plus fT4 erniedrigt plus positive TPO-Antikörper plus sonographisch echoarmes Parenchym = Hashimoto-Thyreoiditis mit manifester Hypothyreose — eine der häufigsten endokrinologischen Diagnosen in der Hausarztpraxis, vor allem bei Frauen mittleren Alters.",
+    "differentialNotes": [
+      {
+        "option": "Subklinische Hypothyreose",
+        "whyNot": "Hier liegt sowohl ein erhöhtes TSH als auch ein erniedrigtes fT4 vor — per Definition eine manifeste und keine subklinische Hypothyreose, bei der das fT4 noch im Normbereich läge."
+      },
+      {
+        "option": "Depressive Episode",
+        "whyNot": "Diese kann ähnliche Symptome wie Antriebslosigkeit und Müdigkeit verursachen, erklärt aber nicht die somatischen Zeichen wie Bradykardie, Kälteintoleranz und trockene Haut sowie die eindeutig pathologischen Schilddrüsenwerte."
+      },
+      {
+        "option": "Morbus Basedow",
+        "whyNot": "Dieser verursacht eine Hyperthyreose mit erniedrigtem TSH und erhöhten peripheren Hormonen sowie meist Tachykardie und Exophthalmus — hier liegt das genaue Gegenteil vor (TSH erhöht, fT4/fT3 erniedrigt, Bradykardie)."
+      }
+    ],
+    "explanation": "Die laborchemische Konstellation aus erhöhtem TSH, erniedrigtem fT4/fT3 und deutlich erhöhten TPO-Antikörpern bei sonographisch echoarmem, inhomogenem Schilddrüsenparenchym belegt eindeutig eine Autoimmunthyreoiditis vom Hashimoto-Typ mit bereits manifester Hypothyreose. Die klinische Symptomatik (Kälteintoleranz, Gewichtszunahme, Bradykardie, trockene Haut) passt vollständig zum laborchemischen Befund.",
+    "sourceNotes": "Diagnosekriterien (TSH, fT4, TPO-Antikörper, Sonographiebefund) nach etablierter endokrinologischer Fachliteratur; keine eigenständige DEGAM-S3-Leitlinie speziell zur Hashimoto-Thyreoiditis identifiziert — die Einordnung folgt der allgemeinen Schilddrüsendiagnostik-Literatur, nicht einer hausärztlichen Einzelleitlinie.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Die Hashimoto-Thyreoiditis ist die häufigste Ursache einer Hypothyreose in Deutschland und betrifft Frauen deutlich häufiger als Männer."
+    }
+  },
+  {
+    "id": "kolonkarzinom-hausarzt-1",
+    "difficulty": "klinik",
+    "patientName": "Rainer",
+    "age": 68,
+    "gender": "male",
+    "chiefComplaint": "Ich bin seit Wochen so schlapp, dass ich kaum noch die Treppe hochkomme. Mein Hausarzt hat mal ins Blaue Eisentabletten verschrieben, aber das hat nichts gebracht.",
+    "history": "68-jähriger Patient, seit ca. 3 Monaten progrediente Abgeschlagenheit und Belastungsdyspnoe. Auf gezielte Nachfrage: schwarz gefärbter Stuhl vor Wochen einmal aufgefallen, wurde jedoch auf selbst gekaufte Eisentabletten zurückgeführt. Kein sichtbares hellrotes Blut im Stuhl. Ungewollter Gewichtsverlust von ca. 4 kg in 2 Monaten. Veränderte Stuhlgewohnheiten seit einigen Wochen mit Wechsel von Obstipation und dünnerem Stuhl. Kein Fieber. Keine bekannte Tumorerkrankung, letzte Koloskopie vor über 15 Jahren, keine Teilnahme an der Vorsorgekoloskopie seit Einführung des Screenings. Kein NSAR-Dauergebrauch. Keine bekannte Familienanamnese für kolorektales Karzinom.",
+    "examination": "AZ reduziert, blasses Hautkolorit, blasse Konjunktiven. RR 118/72 mmHg, HF 96/min, AF 16/min, SpO2 97 %. Abdomen weich, kein Druckschmerz, keine tastbare Resistenz, keine Hepatomegalie. Digital-rektale Untersuchung: kein tastbarer Tumor, Stuhl im Rektum makroskopisch dunkel gefärbt, vereinbar mit der berichteten Teerstuhl-Episode.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "Hämoglobin",
+            "value": "8,6",
+            "unit": "g/dl",
+            "reference": "13,5–17,0",
+            "flag": "low"
+          },
+          {
+            "name": "MCV",
+            "value": "71",
+            "unit": "fl",
+            "reference": "80–96",
+            "flag": "low"
+          },
+          {
+            "name": "Ferritin",
+            "value": "6",
+            "unit": "µg/l",
+            "reference": "30–400",
+            "flag": "low"
+          },
+          {
+            "name": "Transferrinsättigung",
+            "value": "4",
+            "unit": "%",
+            "reference": "16–45",
+            "flag": "low"
+          }
+        ]
+      },
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "1,1",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Koloskopie: Im Colon ascendens zirkulär wachsende, exulzerierte, stenosierende Raumforderung von ca. 5 cm Länge mit Kontaktblutung, hochgradig karzinomverdächtig. Biopsie entnommen — Schnellschnitt-Verdacht auf Adenokarzinom.",
+    "correctDiagnosis": "Kolonkarzinom (Adenokarzinom des Colon ascendens)",
+    "diagnosisOptions": [
+      "Kolonkarzinom (Adenokarzinom des Colon ascendens)",
+      "Eisenmangelanämie bei nutritivem Eisenmangel",
+      "Blutendes gastroduodenales Ulkus",
+      "Hämorrhoidalblutung"
+    ],
+    "keyTakeaway": "Eisenmangelanämie bei Männern und postmenopausalen Frauen ohne offensichtliche Ursache muss bis zum Beweis des Gegenteils gastrointestinal (Koloskopie plus ggf. Gastroskopie) abgeklärt werden — ,einfach Eisen geben' ohne Ursachensuche kann eine Kolonkarzinom-Diagnose gefährlich verzögern.",
+    "differentialNotes": [
+      {
+        "option": "Eisenmangelanämie bei nutritivem Eisenmangel",
+        "whyNot": "Diese erklärt weder die Teerstuhl-Anamnese noch das ausbleibende Ansprechen auf die bereits erfolgte Eisensubstitution noch den Gewichtsverlust und die veränderten Stuhlgewohnheiten — die Koloskopie bestätigt eine strukturelle Blutungsquelle."
+      },
+      {
+        "option": "Blutendes gastroduodenales Ulkus",
+        "whyNot": "Dieses würde eher zu Meläna mit epigastrischen Beschwerden passen; die Koloskopie zeigt hier jedoch eindeutig eine Raumforderung im Colon ascendens als Blutungsquelle, kein Ulkus im oberen Gastrointestinaltrakt."
+      },
+      {
+        "option": "Hämorrhoidalblutung",
+        "whyNot": "Diese verursacht typischerweise hellrotes, dem Stuhl aufgelagertes Blut und keine Eisenmangelanämie dieses Ausmaßes mit Teerstuhl-Anamnese; die Koloskopie liefert hier den eindeutigen Beweis einer proximalen Tumorblutung."
+      }
+    ],
+    "explanation": "Eine ausgeprägte mikrozytäre Eisenmangelanämie bei einem 68-jährigen Mann ohne offensichtliche Blutungsquelle, kombiniert mit Gewichtsverlust, veränderten Stuhlgewohnheiten und einer Teerstuhl-Anamnese, ist hochverdächtig auf eine gastrointestinale Tumorblutung. Die Koloskopie bestätigt eine stenosierende, kontaktblutende Raumforderung im Colon ascendens mit histologischem Verdacht auf ein Adenokarzinom.",
+    "sourceNotes": "DEGAM-Leitlinie Müdigkeit (AWMF-Register-Nr. 053-002) weist explizit darauf hin, dass eine Tumordiagnostik nur bei zusätzlichen Warnzeichen in Anamnese oder Befund gerechtfertigt ist — genau diese Konstellation (Anämie, Gewichtsverlust, veränderte Stuhlgewohnheiten, Teerstuhl-Anamnese) liegt hier vor. Allgemeine Abklärungsprinzipien der Eisenmangelanämie beim Erwachsenen aus etablierter internistischer Literatur, keine spezifische AWMF-Einzelleitlinie zur Eisenmangelanämie zitiert.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Eine unklare Eisenmangelanämie beim älteren Mann ist bis zum Beweis des Gegenteils gastrointestinal abzuklären — eine wahrgenommene Vorsorgekoloskopie hätte diesen Tumor möglicherweise früher entdeckt."
+    }
+  },
+  {
+    "id": "reizdarmsyndrom-1",
+    "difficulty": "klinik",
+    "patientName": "Anna",
+    "age": 29,
+    "gender": "female",
+    "chiefComplaint": "Seit über einem halben Jahr hab ich ständig Bauchschmerzen und Blähungen, die immer besser werden, wenn ich auf Toilette war. Mal hab ich Durchfall, mal komm ich tagelang nicht.",
+    "history": "29-jährige Patientin, seit 8 Monaten rezidivierende, krampfartige Unterbauchschmerzen, die regelhaft nach Stuhlgang bessern. Begleitend wechselnde Stuhlfrequenz und -konsistenz (Phasen von Diarrhö und Obstipation im Wechsel), Blähungen, Gefühl der unvollständigen Entleerung. Keine nächtliche Symptomatik. Kein Blut im Stuhl, kein unbeabsichtigter Gewichtsverlust, kein Fieber, keine Familienanamnese für chronisch-entzündliche Darmerkrankungen oder kolorektales Karzinom. Symptome deutlich stressabhängig (Verschlechterung in Prüfungsphasen). Keine Alarmsymptome erfragbar.",
+    "examination": "AZ/EZ gut, kein Gewichtsverlust dokumentiert. Abdomen weich, diffuser, gering ausgeprägter Druckschmerz im gesamten Unterbauch ohne Abwehrspannung, keine tastbare Resistenz, normale Darmgeräusche. Digital-rektale Untersuchung unauffällig, kein Blut am Fingerling.",
+    "labs": [
+      {
+        "category": "Basislabor",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "0,2",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "normal"
+          },
+          {
+            "name": "Hämoglobin",
+            "value": "13,6",
+            "unit": "g/dl",
+            "reference": "12,0–15,5",
+            "flag": "normal"
+          },
+          {
+            "name": "Calprotectin (Stuhl)",
+            "value": "22",
+            "unit": "µg/g",
+            "reference": "< 50",
+            "flag": "normal"
+          },
+          {
+            "name": "TSH",
+            "value": "1,6",
+            "unit": "mIU/l",
+            "reference": "0,4–4,0",
+            "flag": "normal"
+          },
+          {
+            "name": "tTG-IgA",
+            "value": "negativ",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Reizdarmsyndrom",
+    "diagnosisOptions": [
+      "Reizdarmsyndrom",
+      "Chronisch-entzündliche Darmerkrankung (Morbus Crohn/Colitis ulcerosa)",
+      "Zöliakie",
+      "Kolorektales Karzinom"
+    ],
+    "keyTakeaway": "Chronische, mit der Defäkation assoziierte Bauchschmerzen mit wechselnder Stuhlkonsistenz ohne Alarmsymptome (Blut, Gewichtsverlust, nächtliche Symptomatik, positive Familienanamnese) erfüllen die Rom-IV-Kriterien für ein Reizdarmsyndrom — eine Ausschlussdiagnose nach begrenzter Basisdiagnostik, keine ,Diagnose der Verzweiflung'.",
+    "differentialNotes": [
+      {
+        "option": "Chronisch-entzündliche Darmerkrankung (Morbus Crohn/Colitis ulcerosa)",
+        "whyNot": "Ein unauffälliges CRP und ein normales fäkales Calprotectin machen eine floride entzündliche Darmerkrankung sehr unwahrscheinlich; zudem fehlen Alarmsymptome wie Blut im Stuhl, nächtliche Symptomatik oder Gewichtsverlust."
+      },
+      {
+        "option": "Zöliakie",
+        "whyNot": "Die negative tTG-IgA-Serologie spricht gegen eine glutensensitive Enteropathie als Ursache der Beschwerden."
+      },
+      {
+        "option": "Kolorektales Karzinom",
+        "whyNot": "Bei einer 29-jährigen Patientin ohne Alarmsymptome (kein Blut im Stuhl, kein Gewichtsverlust, keine positive Familienanamnese, unauffälliges Basislabor) ist ein Karzinom hochunwahrscheinlich; der stressassoziierte, seit Monaten wechselhafte Verlauf passt stattdessen zum Reizdarmsyndrom."
+      }
+    ],
+    "explanation": "Die chronischen, mit der Defäkation assoziierten Bauchschmerzen mit wechselnder Stuhlkonsistenz über mehr als 6 Monate erfüllen die Rom-IV-Kriterien für ein Reizdarmsyndrom. Da keinerlei Alarmsymptome vorliegen und die begrenzte Basisdiagnostik (CRP, Calprotectin, Zöliakie-Serologie, Schilddrüsenwerte) unauffällig ist, kann die Diagnose ohne invasive weiterführende Diagnostik gestellt werden.",
+    "sourceNotes": "S3-Leitlinie Reizdarmsyndrom (AWMF-Register-Nr. 021/016, DGVS/DGNM): Rom-IV-Kriterien und Bedeutung von Alarmsymptomen für den Umfang der Basisdiagnostik.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Das Reizdarmsyndrom gehört zu den häufigsten gastroenterologischen Diagnosen in der Hausarztpraxis und betrifft Frauen deutlich häufiger als Männer."
+    }
+  },
+  {
+    "id": "appendizitis-hausarzt-1",
+    "difficulty": "klinik",
+    "patientName": "Lukas",
+    "age": 22,
+    "gender": "male",
+    "chiefComplaint": "Seit heute Morgen tut mir der Bauch weh, erst irgendwie um den Nabel rum, jetzt eher unten rechts. Mir ist auch übel.",
+    "history": "22-jähriger Patient, seit ca. 10 Stunden Bauchschmerzen, initial diffus periumbilikal, im Verlauf nach rechts unten wandernd. Begleitend Appetitlosigkeit, Übelkeit, einmaliges Erbrechen. Kein Durchfall. Zu Hause subfebrile Temperatur gemessen (37,8 °C). Schmerzverstärkung beim Husten und bei Erschütterungen. Keine relevante Vorgeschichte, keine Voroperationen.",
+    "examination": "AZ leicht reduziert, febril 37,9 °C, RR 124/78 mmHg, HF 92/min. Abdomen: Druckschmerz im rechten Unterbauch mit Punctum maximum am McBurney-Punkt, positiver Loslassschmerz (Blumberg-Zeichen) im rechten Unterbauch bei Palpation im linken Unterbauch, positives Psoas-Zeichen, diskrete lokale Abwehrspannung rechts, keine generalisierte Peritonitis. Keine Klopfschmerzhaftigkeit der Nierenlager.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "3,4",
+            "unit": "mg/dl",
+            "reference": "< 0,5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "13,8",
+            "unit": "Tsd/µl",
+            "reference": "4,0–10,0",
+            "flag": "high"
+          },
+          {
+            "name": "Neutrophile Granulozyten",
+            "value": "84",
+            "unit": "%",
+            "reference": "40–75",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Abdomensonographie: Appendix im rechten Unterbauch mit Durchmesser 9 mm, Wandverdickung, fehlende Kompressibilität, echoreiche periappendizeale Fettgewebsreaktion, freie Flüssigkeit im rechten Unterbauch — sonomorphologisch mit akuter Appendizitis vereinbar.",
+    "correctDiagnosis": "Akute Appendizitis",
+    "diagnosisOptions": [
+      "Akute Appendizitis",
+      "Unspezifische Gastroenteritis",
+      "Meckel-Divertikulitis",
+      "Rechtsseitige Ureterkolik"
+    ],
+    "keyTakeaway": "Wandernder Schmerz von periumbilikal in den rechten Unterbauch, positives McBurney- und Blumberg-Zeichen sowie Leukozytose/CRP-Erhöhung = klassische Appendizitis-Konstellation — auch als hausärztliche Erstvorstellung eine Notfalldiagnose mit sofortiger chirurgischer Zuweisung, kein ,Abwarten bis morgen'.",
+    "differentialNotes": [
+      {
+        "option": "Unspezifische Gastroenteritis",
+        "whyNot": "Es fehlt Durchfall, die klassische Schmerzwanderung von periumbilikal nach rechts unten sowie der positive McBurney- und Blumberg-Schmerz sprechen gegen eine unspezifische Magen-Darm-Infektion."
+      },
+      {
+        "option": "Meckel-Divertikulitis",
+        "whyNot": "Klinisch von der Appendizitis kaum zu unterscheiden, aber deutlich seltener; die sonographische Darstellung einer vergrößerten, nicht komprimierbaren Appendix am typischen Punctum maximum macht eine Appendizitis wahrscheinlicher."
+      },
+      {
+        "option": "Rechtsseitige Ureterkolik",
+        "whyNot": "Diese verursacht typischerweise wellenförmige, kolikartige Flankenschmerzen mit Ausstrahlung in die Leiste und oft Hämaturie, aber kein positives Blumberg- oder Psoas-Zeichen — hier liegt ein konstanter, durch Palpation reproduzierbarer Peritonismus vor."
+      }
+    ],
+    "explanation": "Die klassische Schmerzwanderung von periumbilikal in den rechten Unterbauch, verbunden mit positivem McBurney-, Blumberg- und Psoas-Zeichen sowie deutlicher Leukozytose und CRP-Erhöhung, entspricht dem typischen Bild einer akuten Appendizitis. Die Sonographie bestätigt den klinischen Verdacht. Eine sofortige chirurgische Zuweisung ist indiziert, da eine verzögerte Diagnose das Perforationsrisiko erhöht.",
+    "sourceNotes": "Klinische Appendizitis-Zeichen (McBurney-Punkt, Blumberg-Zeichen, Psoas-Zeichen) und sonographische Diagnosekriterien nach etablierter chirurgischer Fachliteratur. Keine eigenständige DEGAM-Leitlinie zur Appendizitis vorhanden; die Einordnung als hausärztliche AGV-Diagnose orientiert sich an der DEGAM-Systematik abwendbar gefährlicher Verläufe beim akuten Abdomen, nicht an einer AWMF-Einzelleitlinie zur Appendizitis.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Ein akutes Abdomen mit Schmerzwanderung in den rechten Unterbauch erfordert eine sofortige chirurgische Zuweisung — eine verzögerte Diagnose erhöht das Perforationsrisiko deutlich."
+    }
+  },
+  {
+    "id": "hypertonie-neueinstellung-1",
+    "difficulty": "klinik",
+    "patientName": "Michael",
+    "age": 47,
+    "gender": "male",
+    "chiefComplaint": "Ich fühl mich eigentlich fit, aber bei der Vorsorgeuntersuchung wurde mein Blutdruck gemessen und der Arzt meinte, der sei zu hoch.",
+    "history": "47-jähriger Patient, im Rahmen der hausärztlichen Vorsorgeuntersuchung erstmals auffällig erhöhter Blutdruck gemessen, daraufhin zur Bestätigung wiederbestellt. Keine Kopfschmerzen, kein Schwindel, keine Sehstörungen, keine Brustschmerzen, keine Dyspnoe. Keine bekannte Nierenerkrankung, kein Diabetes mellitus. Familienanamnese: Vater und ein Bruder mit bekannter arterieller Hypertonie. Übergewicht, sitzende berufliche Tätigkeit, mäßiger Kochsalzkonsum, gelegentlicher Alkoholkonsum, Nichtraucher. Keine Dauermedikation, insbesondere keine NSAR, keine Lakritzeinnahme.",
+    "examination": "AZ/EZ gut (BMI 29 kg/m²), Praxisblutdruck als Mittelwert aus 3 Messungen bei zwei getrennten Terminen: 162/96 mmHg, HF 78/min regelmäßig. Herzauskultation unauffällig, keine Strömungsgeräusche über den Karotiden oder Nierenarterien, periphere Pulse allseits gut tastbar, keine Ödeme.",
+    "labs": [
+      {
+        "category": "Nierenwerte",
+        "values": [
+          {
+            "name": "Kreatinin",
+            "value": "0,95",
+            "unit": "mg/dl",
+            "reference": "0,7–1,2",
+            "flag": "normal"
+          },
+          {
+            "name": "eGFR",
+            "value": "92",
+            "unit": "ml/min/1,73m²",
+            "reference": "> 90",
+            "flag": "normal"
+          },
+          {
+            "name": "Kalium",
+            "value": "4,1",
+            "unit": "mmol/l",
+            "reference": "3,5–5,0",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "Glukose (nüchtern)",
+            "value": "96",
+            "unit": "mg/dl",
+            "reference": "70–99",
+            "flag": "normal"
+          },
+          {
+            "name": "LDL-Cholesterin",
+            "value": "148",
+            "unit": "mg/dl",
+            "reference": "< 130",
+            "flag": "high"
+          },
+          {
+            "name": "HbA1c",
+            "value": "5,4",
+            "unit": "%",
+            "reference": "< 5,7",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Urin",
+        "values": [
+          {
+            "name": "Albumin-Kreatinin-Ratio",
+            "value": "18",
+            "unit": "mg/g",
+            "reference": "< 30",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "12-Kanal-EKG: Normofrequenter Sinusrhythmus, keine Erregungsrückbildungsstörung, kein Hinweis auf linksventrikuläre Hypertrophie.",
+    "correctDiagnosis": "Arterielle Hypertonie Grad 2",
+    "diagnosisOptions": [
+      "Arterielle Hypertonie Grad 2",
+      "Weißkittelhypertonie",
+      "Renoparenchymatöse (sekundäre) Hypertonie",
+      "Primärer Hyperaldosteronismus"
+    ],
+    "keyTakeaway": "Wiederholt bestätigter Praxisblutdruck von 140/90 mmHg oder mehr ohne Hinweise auf eine sekundäre Ursache (unauffällige Nierenwerte, normales Kalium, keine Endorganschäden) = primäre arterielle Hypertonie — die Basisdiagnostik dient vor allem dem Ausschluss sekundärer Ursachen und der Endorganschaden-Suche, nicht der Diagnosestellung selbst.",
+    "differentialNotes": [
+      {
+        "option": "Weißkittelhypertonie",
+        "whyNot": "Die wiederholt erhöhten Praxismessungen an unterschiedlichen Terminen ohne anamnestisch niedrigere häusliche Werte sprechen gegen ein rein praxisgebundenes Phänomen; zur endgültigen Bestätigung ist dennoch eine 24h-Langzeitblutdruckmessung leitliniengerecht vorgesehen."
+      },
+      {
+        "option": "Renoparenchymatöse (sekundäre) Hypertonie",
+        "whyNot": "Normale Nierenretentionswerte (Kreatinin, eGFR) und eine unauffällige Albumin-Kreatinin-Ratio sprechen gegen eine zugrundeliegende Nierenerkrankung als Ursache."
+      },
+      {
+        "option": "Primärer Hyperaldosteronismus",
+        "whyNot": "Das Kalium liegt im Normbereich ohne hypokaliämischen Hinweis, und es besteht keine therapieresistente Hypertonie — bei positiver Familienanamnese und Übergewicht ist eine primäre essentielle Hypertonie deutlich wahrscheinlicher als eine sekundäre endokrine Ursache."
+      }
+    ],
+    "explanation": "Der wiederholt bestätigte, deutlich erhöhte Praxisblutdruck bei fehlenden laborchemischen Hinweisen auf eine renale oder endokrine Ursache und fehlenden Endorganschäden im EKG entspricht einer primären (essentiellen) arteriellen Hypertonie. Die durchgeführte Basisdiagnostik dient dem leitliniengerechten Ausschluss sekundärer Ursachen und der Beurteilung eines möglichen Endorganschadens, nicht der eigentlichen Diagnosestellung.",
+    "sourceNotes": "Nationale VersorgungsLeitlinie Hypertonie (AWMF-Register-Nr. nvl-009fs, 2023): Diagnosekriterien (wiederholt bestätigter Praxisblutdruck ≥ 140/90 mmHg, bevorzugte Bestätigung durch 24h-Langzeitblutdruckmessung) und empfohlene Basisdiagnostik zum Ausschluss sekundärer Ursachen.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Arterielle Hypertonie ist einer der häufigsten Diagnose- und Behandlungsanlässe in der Hausarztpraxis und wird oft als Zufallsbefund bei Routineuntersuchungen entdeckt."
+    }
+  },
+  {
+    "id": "diabetes-typ2-polyneuropathie-1",
+    "difficulty": "klinik",
+    "patientName": "Renate",
+    "age": 61,
+    "gender": "female",
+    "chiefComplaint": "Ich hab seit einiger Zeit so ein Kribbeln in beiden Füßen, wie Ameisen, und meine Wunde am kleinen Zeh will einfach nicht heilen.",
+    "history": "61-jährige Patientin, seit einigen Monaten zunehmender Durst und häufigeres Wasserlassen, ungewollte Gewichtsabnahme von 3 kg trotz unverändertem Essverhalten. Seit ca. 6 Wochen symmetrisches Kribbeln und Taubheitsgefühl beider Füße, strumpfförmig verteilt, nachts betont. Eine kleine Schürfwunde am linken 5. Zeh heilt seit über 3 Wochen nicht ab. Übergewicht, Familienanamnese mit Typ-2-Diabetes bei der Mutter. Keine bekannte Diabetesdiagnose bisher, keine Blutzuckermessung in den letzten Jahren.",
+    "examination": "AZ/EZ adipös (BMI 31 kg/m²), RR 138/86 mmHg, HF 76/min. Inspektion Füße: trockene Haut, kleine, oberflächliche, nicht-infizierte Wunde plantar am linken 5. Zeh ohne Rötung oder Sekretion. Sensibilitätsprüfung: Vibrationsempfinden mit der Stimmgabel beidseits am Großzeh deutlich reduziert, Monofilament-Test an mehreren Prüfpunkten beidseits nicht wahrgenommen, Berührungs- und Schmerzempfinden strumpfförmig vermindert. Fußpulse (A. dorsalis pedis, A. tibialis posterior) beidseits gut tastbar. Achillessehnenreflex beidseits abgeschwächt.",
+    "labs": [
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "Glukose (nüchtern)",
+            "value": "186",
+            "unit": "mg/dl",
+            "reference": "70–99",
+            "flag": "high"
+          },
+          {
+            "name": "HbA1c",
+            "value": "8,4",
+            "unit": "%",
+            "reference": "< 5,7",
+            "flag": "high"
+          },
+          {
+            "name": "LDL-Cholesterin",
+            "value": "162",
+            "unit": "mg/dl",
+            "reference": "< 130",
+            "flag": "high"
+          },
+          {
+            "name": "Triglyceride",
+            "value": "210",
+            "unit": "mg/dl",
+            "reference": "< 150",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Nierenwerte",
+        "values": [
+          {
+            "name": "Kreatinin",
+            "value": "0,8",
+            "unit": "mg/dl",
+            "reference": "0,6–1,0",
+            "flag": "normal"
+          },
+          {
+            "name": "Albumin-Kreatinin-Ratio",
+            "value": "42",
+            "unit": "mg/g",
+            "reference": "< 30",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Diabetes mellitus Typ 2 mit distal-symmetrischer diabetischer Polyneuropathie",
+    "diagnosisOptions": [
+      "Diabetes mellitus Typ 2 mit distal-symmetrischer diabetischer Polyneuropathie",
+      "Diabetes mellitus Typ 2 ohne Folgeerkrankungen",
+      "Vitamin-B12-Mangel-Polyneuropathie",
+      "Periphere arterielle Verschlusskrankheit (pAVK)"
+    ],
+    "keyTakeaway": "Neu diagnostizierter Typ-2-Diabetes mit auffälligem Vibrationsempfinden und pathologischem Monofilament-Test = bereits bestehende distal-symmetrische Polyneuropathie — deshalb gehört die neurologische Fußuntersuchung zum Standard bei jeder Diabetes-Erstdiagnose, nicht erst nach Jahren.",
+    "differentialNotes": [
+      {
+        "option": "Diabetes mellitus Typ 2 ohne Folgeerkrankungen",
+        "whyNot": "Die pathologischen Befunde bei Vibrationsempfinden und Monofilament-Test beidseits belegen bereits eine manifeste periphere Nervenschädigung — die Diagnose ,ohne Folgeerkrankungen' würde diesen relevanten Befund ignorieren."
+      },
+      {
+        "option": "Vitamin-B12-Mangel-Polyneuropathie",
+        "whyNot": "Der neu diagnostizierte, deutlich erhöhte Nüchternblutzucker und das erhöhte HbA1c erklären die Symptomatik hier eindeutig; die Befundkonstellation spricht klar für eine diabetische statt eine nutritive Genese."
+      },
+      {
+        "option": "Periphere arterielle Verschlusskrankheit (pAVK)",
+        "whyNot": "Gut tastbare Fußpulse beidseits sprechen gegen eine relevante arterielle Durchblutungsstörung als Ursache der Beschwerden — hier ist die sensible Ausfallsymptomatik führend, kein ischämischer Ruheschmerz."
+      }
+    ],
+    "explanation": "Die Kombination aus klassischer Diabetes-Symptomatik (Polydipsie, Polyurie, Gewichtsverlust), deutlich erhöhtem Nüchternblutzucker und HbA1c sowie einer bereits nachweisbaren, beidseitigen sensiblen Ausfallsymptomatik (reduziertes Vibrationsempfinden, pathologischer Monofilament-Test) bei gut erhaltenen Fußpulsen entspricht einem neu diagnostizierten Typ-2-Diabetes mit bereits bestehender distal-symmetrischer Polyneuropathie. Die zusätzlich erhöhte Albumin-Kreatinin-Ratio weist auf eine beginnende diabetische Nephropathie hin.",
+    "sourceNotes": "Nationale VersorgungsLeitlinie Typ-2-Diabetes (AWMF-Register, Neuropathie-Screening mit kombinierter Testung von Groß- und Kleinfaserfunktion) sowie Diagnosekriterien des Diabetes mellitus (Nüchternglukose, HbA1c) nach derselben Leitlinie.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Ein erheblicher Teil der Menschen mit Typ-2-Diabetes zeigt bereits bei Erstdiagnose Zeichen einer Polyneuropathie — konsequentes Fuß-Screening kann spätere Komplikationen wie Amputationen verhindern (Nationale VersorgungsLeitlinie Typ-2-Diabetes)."
+    }
+  },
+  {
+    "id": "acs-hausarzt-1",
+    "difficulty": "klinik",
+    "patientName": "Dieter",
+    "age": 59,
+    "gender": "male",
+    "chiefComplaint": "Seit 2 Tagen hab ich immer wieder ein Engegefühl in der Brust, wenn ich die Treppen hochgehe, das lässt dann nach, wenn ich stehenbleibe. Heute war's aber auch beim Anziehen.",
+    "history": "59-jähriger Patient, seit 2 Tagen belastungsabhängiges retrosternales Engegefühl, das reproduzierbar bei körperlicher Anstrengung auftritt und sich in Ruhe innerhalb weniger Minuten bessert. Heute erstmals auch bei geringerer Belastung (Anziehen). Auf Nachfrage Druckgefühl mit Tendenz zum linken Arm. Begleitend leichte Luftnot bei den Episoden, keine Übelkeit. Bekannte arterielle Hypertonie und Hypercholesterinämie, beide medikamentös behandelt. Nikotinkonsum 25 pack-years, aktuell weiterhin aktiv rauchend. Vater mit Herzinfarkt im Alter von 60 Jahren. Patient vermutet selbst ,was mit dem Herzen'.",
+    "examination": "AZ/EZ gut, aktuell beschwerdefrei, RR 148/88 mmHg, HF 82/min regelmäßig, AF 14/min, SpO2 97 %. Herzauskultation: Herztöne rein, kein Herzgeräusch. Thoraxpalpation: kein Druckschmerz reproduzierbar, kein Schmerz bei Palpation der Rippenansätze. Lunge unauffällig. Keine Beinödeme.",
+    "labs": [
+      {
+        "category": "Herzmarker",
+        "values": [
+          {
+            "name": "hs-Troponin T (Erstwert)",
+            "value": "9",
+            "unit": "ng/l",
+            "reference": "< 14",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "LDL-Cholesterin",
+            "value": "168",
+            "unit": "mg/dl",
+            "reference": "< 130",
+            "flag": "high"
+          },
+          {
+            "name": "Glukose (nüchtern)",
+            "value": "108",
+            "unit": "mg/dl",
+            "reference": "70–99",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Ruhe-EKG in der Praxis: Normofrequenter Sinusrhythmus, keine ST-Streckenveränderungen, keine T-Negativierungen, kein Hinweis auf akute Ischämie im 12-Kanal-EKG — schließt ein akutes Koronarsyndrom jedoch nicht aus.",
+    "correctDiagnosis": "Instabile Angina pectoris bei Verdacht auf akutes Koronarsyndrom",
+    "diagnosisOptions": [
+      "Instabile Angina pectoris bei Verdacht auf akutes Koronarsyndrom",
+      "Stabile Angina pectoris",
+      "Gastroösophagealer Reflux",
+      "Interkostalneuralgie"
+    ],
+    "keyTakeaway": "Belastungsabhängiges, in Ruhe sistierendes Thoraxdruckgefühl mit Crescendo-Charakter (Beschwerden bereits bei zunehmend geringerer Belastung) bei kardiovaskulärem Risikoprofil = instabile Angina pectoris bis zum Beweis des Gegenteils — hoher Marburger Herz-Score, sofortige notfallmäßige Klinikeinweisung trotz unauffälligem Erst-EKG und -Troponin.",
+    "differentialNotes": [
+      {
+        "option": "Stabile Angina pectoris",
+        "whyNot": "Die Beschwerden treten seit heute bereits bei geringerer Belastung als zuvor auf (Crescendo-Charakter) — dieser progrediente Verlauf definiert per Definition eine instabile und keine stabile Belastungsangina mehr."
+      },
+      {
+        "option": "Gastroösophagealer Reflux",
+        "whyNot": "Die eindeutige Belastungsabhängigkeit mit Besserung in Ruhe, das hohe kardiovaskuläre Risikoprofil (Raucher, Hypertonie, Hypercholesterinämie, positive Familienanamnese) und der hohe Marburger Herz-Score sprechen deutlich für eine kardiale statt eine gastrale Genese."
+      },
+      {
+        "option": "Interkostalneuralgie",
+        "whyNot": "Es besteht kein reproduzierbarer Druckschmerz bei Thoraxpalpation — das Fehlen der Reproduzierbarkeit ist im Marburger Herz-Score sogar ein Pluspunkt für eine kardiale Genese; der Schmerzcharakter ist eindeutig belastungsgetriggert, nicht atem- oder bewegungsabhängig."
+      }
+    ],
+    "explanation": "Ein belastungsabhängiges, in Ruhe sistierendes retrosternales Druckgefühl mit progredientem Crescendo-Charakter bei einem Patienten mit mehreren kardiovaskulären Risikofaktoren (Raucher, Hypertonie, Hypercholesterinämie, positive Familienanamnese) erfüllt mehrere Kriterien des Marburger Herz-Scores und begründet den dringenden Verdacht auf ein akutes Koronarsyndrom im Sinne einer instabilen Angina pectoris. Ein unauffälliges Erst-EKG und ein normwertiger Erst-Troponin-Wert schließen dies nicht aus, da eine Kontrollmessung nach einigen Stunden sowie eine weiterführende kardiologische Diagnostik notwendig sind.",
+    "sourceNotes": "Marburger Herz-Score nach DEGAM-Leitlinie Brustschmerz (AWMF-Register-Nr. 053-023): Kriterien Alter/Geschlecht, bekannte Gefäßerkrankung, Belastungsabhängigkeit, fehlende Reproduzierbarkeit durch Palpation, patientenseitige Vermutung einer kardialen Ursache; bei niedrigem Score (≤ 2 Punkte) laut Validierungsstudien KHK-Wahrscheinlichkeit unter 2,5 %. Ein einmaliger negativer Troponin-Erstwert schließt ein akutes Koronarsyndrom bei fortbestehendem Verdacht nicht aus (Kontrollwert nach einigen Stunden erforderlich) — allgemeine Grundsätze der ESC-Leitlinie zum akuten Koronarsyndrom ohne ST-Hebung, nicht Teil der DEGAM-Leitlinie selbst.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Der Marburger Herz-Score wurde gezielt für die Hausarztpraxis entwickelt, um bei Brustschmerz-Patient*innen mit niedrigem Risiko unnötige Einweisungen zu vermeiden — bei hohem Score gilt jedoch: sofortige Klinikeinweisung, denn ein normales Erst-EKG schließt ein akutes Koronarsyndrom nicht aus (DEGAM-Leitlinie Brustschmerz)."
+    }
   }
 ]

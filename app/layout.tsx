@@ -4,6 +4,7 @@ import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 import "./globals.css";
 import { AddToHomescreenBanner } from "./components/AddToHomescreenBanner";
 import { DisclaimerModal } from "./components/DisclaimerModal";
+import { PageTransition } from "./components/PageTransition";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1d4ed8",
+  themeColor: "#285dd2",
 };
 
 export default function RootLayout({
@@ -53,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className={`${inter.variable} ${ibmPlexMono.variable} antialiased`}>
-        {children}
+        <PageTransition>{children}</PageTransition>
         <DisclaimerModal />
         <AddToHomescreenBanner />
       </body>

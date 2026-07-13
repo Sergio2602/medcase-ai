@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { getCookie, setCookie } from "@/lib/cookies";
 
 const COOKIE_NAME = "disclaimerSeen";
@@ -83,13 +84,13 @@ export function DisclaimerModal() {
           }}
         >
           Diese Seite verwendet ein technisch notwendiges Cookie, um deinen Fortschritt zu speichern — keine Marketing- oder Tracking-Cookies. Wenn du deine E-Mail für Release-Benachrichtigungen hinterlässt, nutzen wir sie ausschließlich dafür, nicht für Marketing. Mit &bdquo;Verstanden&ldquo; bestätigst du, dass du diesen Hinweis gelesen hast. Details:{" "}
-          <a href="/impressum#datenschutz" style={{ color: "var(--accent)" }}>
+          <Link href="/impressum#datenschutz" style={{ color: "var(--accent)" }}>
             Datenschutzerklärung
-          </a>
+          </Link>
           ,{" "}
-          <a href="/impressum" style={{ color: "var(--accent)" }}>
+          <Link href="/impressum" style={{ color: "var(--accent)" }}>
             Impressum
-          </a>
+          </Link>
           .
         </p>
 

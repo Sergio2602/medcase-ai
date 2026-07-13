@@ -52,7 +52,7 @@ function drawLogoIcon(
   // Blue rounded background square
   const r = Math.round(size * 0.25);
   drawRoundedRect(ctx, x, y, size, size, r);
-  ctx.fillStyle = "#1d4ed8";
+  ctx.fillStyle = "#285dd2";
   ctx.fill();
 
   // Scale the 24×24 SVG viewBox to the icon area (with ~20% padding)
@@ -139,12 +139,12 @@ export async function generateShareCard(data: ShareCardData): Promise<Blob> {
   ctx.fillStyle = "#0f0f0f";
   const medW = ctx.measureText("Med").width;
   ctx.fillText("Med", PAD + ICON_SIZE + 18, LOGO_Y + 52);
-  ctx.fillStyle = "#1d4ed8";
+  ctx.fillStyle = "#285dd2";
   ctx.fillText("case", PAD + ICON_SIZE + 18 + medW, LOGO_Y + 52);
 
   // ── Score ─────────────────────────────────────────────────────────────
   ctx.font = '800 210px "Inter", system-ui, sans-serif';
-  ctx.fillStyle = "#1d4ed8";
+  ctx.fillStyle = "#285dd2";
   ctx.textAlign = "center";
   ctx.fillText(String(data.score), W / 2, 490);
 

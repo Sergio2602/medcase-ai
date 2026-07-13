@@ -8,7 +8,7 @@ export function Logo({ size = 28 }: { size?: number }) {
           width: size,
           height: size,
           borderRadius: radius,
-          backgroundColor: "#1d4ed8",
+          backgroundColor: "#285dd2",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -49,7 +49,7 @@ export function Logo({ size = 28 }: { size?: number }) {
       </div>
       <span className="min-w-0 truncate text-xl font-extrabold tracking-tight">
         <span style={{ color: "#0f0f0f" }}>Med</span>
-        <span style={{ color: "#1d4ed8" }}>case</span>
+        <span style={{ color: "#285dd2" }}>case</span>
       </span>
     </div>
   );

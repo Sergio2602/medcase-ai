@@ -6,7 +6,7 @@
   --foreground: #0f0f0f;
   --card: #ffffff;
   --card-border: #0f0f0f;
-  --accent: #1d4ed8;
+  --accent: #285dd2;
   --accent-foreground: #ffffff;
 
   /* Muted text — darker for better contrast/legibility */
@@ -60,8 +60,8 @@ html {
 
 body {
   background:
-    radial-gradient(circle at 12% 8%, rgba(29,78,216,0.05), transparent 45%),
-    radial-gradient(circle at 88% 78%, rgba(29,78,216,0.045), transparent 50%),
+    radial-gradient(circle at 12% 8%, rgba(40,93,210,0.05), transparent 45%),
+    radial-gradient(circle at 88% 78%, rgba(40,93,210,0.045), transparent 50%),
     repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
     repeating-linear-gradient(90deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
     var(--background);
@@ -209,6 +209,23 @@ h1, h2, h3, h4 {
   .hero-blob-a,
   .hero-blob-b,
   .hero-blob-c {
+    animation: none;
+  }
+}
+
+/* Seitenwechsel: neuer Seiteninhalt gleitet leicht horizontal + fadet ein,
+   statt hart zu wechseln. Läuft über PageTransition (per usePathname()
+   remounted), gilt für jede interne Navigation via next/link. */
+@keyframes page-slide-in {
+  0% { opacity: 0; transform: translateX(60px); }
+  20% { opacity: 1; }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.page-transition {
+  animation: page-slide-in 1500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
     animation: none;
   }
 }

@@ -35,7 +35,7 @@ export function AppHeader({
 }) {
   const allSecondaryLinks = secondaryLinks ?? (secondaryLink ? [secondaryLink] : []);
   const backButtonClass =
-    "flex items-center gap-1.5 rounded-lg bg-[#eaf0fc] px-3.5 py-[7px] text-sm font-semibold text-accent transition-colors hover:bg-[#dbe6fa]";
+    "flex items-center gap-1.5 rounded-lg bg-[#ecf0f9] px-3.5 py-[7px] text-sm font-semibold text-accent transition-colors hover:bg-[#d8e0f4]";
   const secondaryButtonClass =
     "flex items-center gap-1.5 rounded-lg border-[1.5px] border-card-border/15 px-3.5 py-[7px] text-sm font-semibold text-muted transition-colors hover:border-accent/30 hover:text-accent";
 

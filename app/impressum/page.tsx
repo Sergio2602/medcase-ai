@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { KontaktPopover } from "@/app/components/KontaktPopover";
 import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
@@ -402,9 +403,9 @@ export default function ImpressumPage() {
             >
               <span>© 2026 Medcase</span>
               <div className="flex items-center gap-4">
-                <a href="/news" className="hover:underline">
+                <Link href="/news" className="hover:underline">
                   News
-                </a>
+                </Link>
                 <a href="#impressum" className="hover:underline">
                   Impressum
                 </a>

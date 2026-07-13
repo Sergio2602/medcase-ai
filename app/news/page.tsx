@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { KontaktPopover } from "@/app/components/KontaktPopover";
 import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
@@ -37,7 +38,7 @@ const NEWS_ITEMS: { date: string; icon: string; tag: string; title: string; text
 function Tag({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
     <span
-      className="line-pop inline-flex w-fit items-center rounded-full bg-[#eaf0fc] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-accent"
+      className="line-pop inline-flex w-fit items-center rounded-full bg-[#ecf0f9] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-accent"
       style={{ animationDelay: `${delay}ms` }}
     >
       {children}
@@ -73,7 +74,7 @@ export default function NewsPage() {
                 </span>
               </div>
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
                   <i className={`ti ${featured.icon} text-xl`} />
                 </div>
                 <div className="min-w-0">
@@ -95,7 +96,7 @@ export default function NewsPage() {
                 <div className="card flex h-full flex-col gap-3 p-5">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2.5">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#eaf0fc] text-accent">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
                         <i className={`ti ${item.icon} text-sm`} />
                       </div>
                       <Tag delay={i * 90}>{item.tag}</Tag>
@@ -118,12 +119,12 @@ export default function NewsPage() {
           >
             <span>© 2026 Medcase</span>
             <div className="flex items-center gap-4">
-              <a href="/impressum#impressum" className="hover:underline">
+              <Link href="/impressum#impressum" className="hover:underline">
                 Impressum
-              </a>
-              <a href="/impressum#datenschutz" className="hover:underline">
+              </Link>
+              <Link href="/impressum#datenschutz" className="hover:underline">
                 Datenschutz
-              </a>
+              </Link>
               <KontaktPopover />
             </div>
           </footer>

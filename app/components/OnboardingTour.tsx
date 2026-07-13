@@ -170,7 +170,7 @@ export function OnboardingTour({
             left: tooltipStyle.left,
             width: tooltipStyle.width,
             zIndex: 60,
-            backgroundColor: "#1d4ed8",
+            backgroundColor: "#285dd2",
             color: "#ffffff",
             borderRadius: 14,
             padding: "16px 20px",
@@ -191,7 +191,7 @@ export function OnboardingTour({
                 height: 0,
                 borderLeft: "7px solid transparent",
                 borderRight: "7px solid transparent",
-                borderBottom: "7px solid #1d4ed8",
+                borderBottom: "7px solid #285dd2",
               }}
             />
           ) : (
@@ -206,7 +206,7 @@ export function OnboardingTour({
                 height: 0,
                 borderLeft: "7px solid transparent",
                 borderRight: "7px solid transparent",
-                borderTop: "7px solid #1d4ed8",
+                borderTop: "7px solid #285dd2",
               }}
             />
           )}
@@ -259,7 +259,7 @@ export function OnboardingTour({
               onClick={advance}
               style={{
                 backgroundColor: "#ffffff",
-                color: "#1d4ed8",
+                color: "#285dd2",
                 border: "none",
                 borderRadius: 8,
                 padding: "7px 16px",

@@ -50,7 +50,7 @@ export function AddToHomescreenBanner() {
     >
       <i
         className="ti ti-share-2"
-        style={{ fontSize: 20, color: "#1d4ed8", flexShrink: 0, marginTop: 1 }}
+        style={{ fontSize: 20, color: "#285dd2", flexShrink: 0, marginTop: 1 }}
         aria-hidden
       />
       <p style={{ fontSize: 13, lineHeight: 1.5, flex: 1, color: "#0f0f0f", margin: 0 }}>

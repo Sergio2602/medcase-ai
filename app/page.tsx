@@ -1142,7 +1142,7 @@ function TrustAndProcessCard() {
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-3 py-1 text-xs font-bold text-accent">
             <i className="ti ti-files text-[11px]" />
-            <AnimatedNumber target={56} suffix="+ Fälle" />
+            <AnimatedNumber target={70} suffix="+ Fälle" />
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-3 py-1 text-xs font-bold text-accent">
             <i className="ti ti-checkbox text-[11px]" />
@@ -1219,7 +1219,7 @@ function TrustAndProcessCard() {
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { value: 15, label: "Vorklinik-Fälle" },
-              { value: 26, label: "Klinik/Innere-Fälle" },
+              { value: 40, label: "Klinik/Innere-Fälle" },
               { value: 15, label: "Examen/PJ-Fälle" },
             ].map((stat, i) => (
               <FadeInUp key={stat.label} delay={i * 90}>
@@ -1319,8 +1319,8 @@ function FallauswahlPreview() {
           Cannot-miss-Fälle
         </p>
         <p className="mb-3 text-sm leading-relaxed text-muted">
-          <AnimatedNumber target={29} /> von <AnimatedNumber target={56} /> Fällen (rund{" "}
-          <AnimatedNumber target={52} suffix="%" />) sind bewusst als cannot-miss markiert — zeitkritisch,
+          <AnimatedNumber target={38} /> von <AnimatedNumber target={70} /> Fällen (rund{" "}
+          <AnimatedNumber target={54} suffix="%" />) sind bewusst als cannot-miss markiert — zeitkritisch,
           aber leicht zu übersehen.
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -1333,7 +1333,7 @@ function FallauswahlPreview() {
             </FadeInUp>
           ))}
           <span className="inline-flex items-center rounded-full border-[1.5px] border-card-border/15 px-2.5 py-1 text-[11.5px] font-semibold text-muted">
-            +23 weitere
+            +32 weitere
           </span>
         </div>
         <Link

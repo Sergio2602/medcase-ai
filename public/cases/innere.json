@@ -2237,5 +2237,1337 @@
       "category": "cannot-miss",
       "note": "Der Marburger Herz-Score wurde gezielt für die Hausarztpraxis entwickelt, um bei Brustschmerz-Patient*innen mit niedrigem Risiko unnötige Einweisungen zu vermeiden — bei hohem Score gilt jedoch: sofortige Klinikeinweisung, denn ein normales Erst-EKG schließt ein akutes Koronarsyndrom nicht aus (DEGAM-Leitlinie Brustschmerz)."
     }
+  },
+  {
+    "id": "perikardtamponade-1",
+    "difficulty": "klinik",
+    "patientName": "Sabine",
+    "age": 58,
+    "gender": "female",
+    "chiefComplaint": "Mir fehlt seit ein paar Tagen einfach die Luft, sogar beim Sprechen muss ich Pausen machen. Und wenn ich aufstehe, wird mir richtig schwindelig.",
+    "history": "58-jährige Patientin mit bekanntem, vor 2 Jahren diagnostiziertem metastasiertem Mammakarzinom (aktuell unter palliativer Chemotherapie) stellt sich mit seit 4–5 Tagen zunehmender Ruhedyspnoe vor, mittlerweile bereits beim Sprechen spürbar. Zusätzlich berichtet sie über ein neues, drückendes Engegefühl im Brustkorb ohne eindeutige Ausstrahlung. Auf Nachfrage keine Beinschwellung. Der Ehemann berichtet ergänzend, sie wirke seit gestern zunehmend blass und wie erschöpft, auch im Sitzen, und habe wiederholt kurze Schwindelepisoden beim raschen Aufstehen. Kein Fieber, kein Husten. Keine bekannte KHK, keine arterielle Hypertonie. Letzte onkologische Verlaufsbildgebung vor 6 Wochen zeigte stabile pulmonale und ossäre Metastasen ohne Hinweis auf Perikardbefall zu dem Zeitpunkt.",
+    "examination": "AZ deutlich reduziert, EZ mäßig (BMI 21 kg/m² bei bekanntem tumorbedingtem Gewichtsverlust). RR 88/62 mmHg, HF 118/min (rhythmisch), AF 24/min, Temp. 36,7 °C, SpO2 93 % unter Raumluft.\nKopf/Hals: Deutlich gestaute Halsvenen, bereits im Sitzen sichtbar (fehlender inspiratorischer Kollaps).\nHerz: Herztöne deutlich leiser als bei Voruntersuchung, kein Herzgeräusch, kein Reibegeräusch. Pulsus paradoxus: inspiratorischer RR-Abfall von 18 mmHg.\nLunge: Vesikuläratmen beidseits, keine Rasselgeräusche, keine Dämpfung.\nAbdomen: Weich, keine Abwehrspannung, keine Hepatomegalie tastbar.\nExtremitäten: Keine Beinödeme, Pulse peripher schwach aber seitengleich tastbar.\nNeurologie: Wach, orientiert, kein Fokaldefizit.\n\nEKG (12-Kanal): Sinustachykardie 118/min, periphere Niedervoltage (QRS-Amplitude <5 mm in den Extremitätenableitungen), elektrischer Alternans (schlagweise wechselnde QRS-Amplitude) als Hinweis auf ein swinging heart bei großem Perikarderguss. Keine ST-Hebungen, keine pathologischen Q-Zacken.",
+    "labs": [
+      {
+        "category": "Kleines Blutbild",
+        "values": [
+          {
+            "name": "Hämoglobin",
+            "value": "10,2",
+            "unit": "g/dl",
+            "reference": "12,0–15,5",
+            "flag": "low"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "7.200",
+            "unit": "/µl",
+            "reference": "4.000–10.000",
+            "flag": "normal"
+          },
+          {
+            "name": "Thrombozyten",
+            "value": "245.000",
+            "unit": "/µl",
+            "reference": "150.000–400.000",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "18",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "NT-proBNP",
+            "value": "480",
+            "unit": "pg/ml",
+            "reference": "< 125",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "0,9",
+            "unit": "mg/dl",
+            "reference": "0,6–1,1",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Transthorakale Echokardiographie: Großer zirkulärer Perikarderguss (Separation ca. 2,4 cm diastolisch), diastolischer Kollaps des rechten Ventrikels, plethorische V. cava inferior ohne inspiratorischen Kollaps (<50 %), swinging heart. Linksventrikuläre Pumpfunktion echokardiographisch erhalten (EF ca. 60 %), keine regionale Wandbewegungsstörung.",
+    "correctDiagnosis": "Perikardtamponade bei malignem Perikarderguss",
+    "diagnosisOptions": [
+      "Perikardtamponade bei malignem Perikarderguss",
+      "Akut dekompensierte Herzinsuffizienz",
+      "Akute Lungenembolie",
+      "Spannungspneumothorax"
+    ],
+    "keyTakeaway": "Bekannte Malignität + Beck-Trias (Hypotonie, gestaute Halsvenen, leise Herztöne) + Pulsus paradoxus + Echo mit diastolischem RV-Kollaps und plethorischer V. cava inferior = Perikardtamponade, bis zum Beweis des Gegenteils — akut punktionspflichtig.",
+    "differentialNotes": [
+      {
+        "option": "Akut dekompensierte Herzinsuffizienz",
+        "whyNot": "Gegen eine akut dekompensierte Herzinsuffizienz sprechen das Fehlen pulmonaler Rasselgeräusche und Beinödeme sowie die in der Echokardiographie erhaltene linksventrikuläre Pumpfunktion (EF ca. 60 %) — bei einer kardialen Dekompensation wäre stattdessen eine eingeschränkte systolische oder diastolische Funktion mit pulmonaler Stauung zu erwarten. Das NT-proBNP ist zudem nur mäßig erhöht, während der große Perikarderguss mit diastolischem RV-Kollaps im Echo die hämodynamische Instabilität ausreichend erklärt."
+      },
+      {
+        "option": "Akute Lungenembolie",
+        "whyNot": "Es fehlen anamnestische Risikofaktoren für eine venöse Thromboembolie (keine Immobilisation, keine Beinschwellung), und die Echokardiographie zeigt den ursächlichen großen Perikarderguss mit RV-Kollaps direkt — bei einer Lungenembolie fände sich stattdessen eine akute RV-Dilatation ohne Perikardflüssigkeit. Der Pulsus paradoxus und die fehlende inspiratorische Kollabierbarkeit der V. cava inferior passen spezifischer zur Tamponade."
+      },
+      {
+        "option": "Spannungspneumothorax",
+        "whyNot": "Gegen einen Spannungspneumothorax sprechen das seitengleiche, unauffällige Atemgeräusch ohne hypersonoren Klopfschall, die fehlende Trachealverlagerung sowie der über Tage progrediente statt akut-perakute Verlauf. Die Echokardiographie liefert zudem den direkten Nachweis des ursächlichen Perikardergusses."
+      }
+    ],
+    "explanation": "Die erhaltene linksventrikuläre Pumpfunktion und das Fehlen pulmonaler Stauungszeichen sprechen gegen eine kardiale Dekompensation, fehlende VTE-Risikofaktoren und der direkte Echobefund gegen eine Lungenembolie, das seitengleiche Atemgeräusch ohne Klopfschalldifferenz gegen einen Spannungspneumothorax. In der Zusammenschau aus bekannter Malignität, Beck-Trias, Pulsus paradoxus und dem echokardiographischen Nachweis eines großen Perikardergusses mit diastolischem RV-Kollaps ergibt sich eine Perikardtamponade als wahrscheinlichste Diagnose.",
+    "sourceNotes": "Beck-Trias und echokardiographische Tamponade-Kriterien (diastolischer RV-Kollaps, plethorische, nicht-kollabierende V. cava inferior, swinging heart mit elektrischem Alternans) nach der ESC-Leitlinie 'Diagnosis and Management of Pericardial Diseases' (2015) — eine eigenständige deutsche AWMF-Leitlinie speziell zu Perikarderguss/-tamponade wurde nicht gefunden, die ESC-Leitlinie ist die in Deutschland maßgeblich angewandte Referenz. Malignom als häufigste Ursache eines großen/tamponierenden Perikardergusses aus derselben Leitlinie. Pulsus-paradoxus-Definition (inspiratorischer systolischer RR-Abfall >10 mmHg) allgemein kardiologisch etabliert.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Maligne Perikardergüsse treten im Verlauf bei bis zu 10–20 % aller Tumorpatienten auf (häufigste Ursache großer Perikardergüsse bei bekannter Krebserkrankung, ESC-Leitlinie 2015) — unerkannt akut lebensbedrohlich durch obstruktiven Schock."
+    }
+  },
+  {
+    "id": "vorhofflimmern-1",
+    "difficulty": "klinik",
+    "patientName": "Jürgen",
+    "age": 67,
+    "gender": "male",
+    "chiefComplaint": "Mein Herz stolpert seit zwei Tagen andauernd und rast dabei, das kenn ich so gar nicht von mir. Und ich komme schneller aus der Puste als sonst.",
+    "history": "67-jähriger Patient stellt sich mit seit etwa 2 Tagen bestehendem, als 'Herzstolpern' beschriebenem unregelmäßigem Herzrasen vor, begleitet von leichter Belastungsdyspnoe und allgemeiner Leistungsminderung. Keine Synkope, kein Schwindel in Ruhe. Auf Nachfrage: am Wochenende zuvor Teilnahme an einem Weinfest mit deutlich über dem üblichen Maß liegendem Alkoholkonsum. Bekannte, seit Jahren nur unregelmäßig behandelte arterielle Hypertonie. Kein bekannter Diabetes mellitus. Kein thorakaler Schmerz, keine Ausstrahlung. Keine bekannte Schilddrüsenerkrankung, kein vermehrtes Schwitzen oder Wärmeintoleranz in den letzten Monaten. Nikotinkonsum: 10 pack-years, vor 8 Jahren beendet.",
+    "examination": "AZ gut, EZ adipös (BMI 29 kg/m²). RR 138/88 mmHg, Puls absolut arrhythmisch, Frequenz peripher 128–148/min schwankend (Pulsdefizit vorhanden), AF 18/min, Temp. 36,6 °C, SpO2 96 % unter Raumluft.\nHerz: Herztöne unregelmäßig, keine Extratöne, kein Herzgeräusch, keine Halsvenenstauung.\nLunge: Vesikuläratmen beidseits, keine Rasselgeräusche.\nAbdomen: Weich, unauffällig.\nExtremitäten: Keine Ödeme, warm, Pulse peripher unregelmäßig aber seitengleich schwach tastbar.\nNeurologie: Unauffällig, kein Fokaldefizit, kein Tremor.\n\nEKG (12-Kanal): Absolute Arrhythmie ohne abgrenzbare P-Wellen, unregelmäßige RR-Abstände, mittlere Kammerfrequenz 142/min, Steiltyp, keine ST-Hebungen oder -Senkungen, keine Deltawelle.",
+    "labs": [
+      {
+        "category": "Schilddrüse",
+        "values": [
+          {
+            "name": "TSH",
+            "value": "1,4",
+            "unit": "mU/l",
+            "reference": "0,4–4,0",
+            "flag": "normal"
+          },
+          {
+            "name": "fT4",
+            "value": "1,2",
+            "unit": "ng/dl",
+            "reference": "0,9–1,7",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "Kalium",
+            "value": "4,2",
+            "unit": "mmol/l",
+            "reference": "3,5–5,0",
+            "flag": "normal"
+          },
+          {
+            "name": "Magnesium",
+            "value": "0,85",
+            "unit": "mmol/l",
+            "reference": "0,7–1,0",
+            "flag": "normal"
+          },
+          {
+            "name": "hs-Troponin T",
+            "value": "12",
+            "unit": "ng/l",
+            "reference": "< 14",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Transthorakale Echokardiographie (elektiv im Verlauf): Alle Herzhöhlen normal groß, keine relevanten Klappenvitien, keine regionale Wandbewegungsstörung, kein Perikarderguss.",
+    "correctDiagnosis": "Vorhofflimmern mit tachykarder Überleitung (Erstdiagnose)",
+    "diagnosisOptions": [
+      "Vorhofflimmern mit tachykarder Überleitung (Erstdiagnose)",
+      "Paroxysmale supraventrikuläre Tachykardie (AVNRT)",
+      "Sinustachykardie bei Hyperthyreose",
+      "Akut dekompensierte Herzinsuffizienz mit Tachyarrhythmie"
+    ],
+    "keyTakeaway": "Absolut arrhythmischer Puls + im EKG fehlende P-Wellen mit unregelmäßigen RR-Abständen = Vorhofflimmern, unabhängig von der Symptomdauer sofort relevant für Frequenz-, Rhythmus- und Schlaganfallrisiko-Management (CHA2DS2-VA-Score).",
+    "differentialNotes": [
+      {
+        "option": "Paroxysmale supraventrikuläre Tachykardie (AVNRT)",
+        "whyNot": "Gegen eine AVNRT spricht die absolute Unregelmäßigkeit der RR-Abstände — eine AVNRT verläuft als regelmäßige Tachykardie mit konstanter Frequenz, meist deutlich über 150/min, und endet typischerweise abrupt statt wie hier über Tage anzuhalten. Das Fehlen abgrenzbarer P-Wellen bei gleichzeitig völlig unregelmäßigem Rhythmus passt spezifischer zum Vorhofflimmern."
+      },
+      {
+        "option": "Sinustachykardie bei Hyperthyreose",
+        "whyNot": "Der normwertige TSH- sowie fT4-Wert schließt eine thyreotoxische Genese der Tachykardie weitgehend aus, ebenso fehlen klinische Hyperthyreose-Zeichen wie Tremor oder Wärmeintoleranz. Zudem wäre eine Sinustachykardie bei Hyperthyreose regelmäßig, nicht absolut arrhythmisch."
+      },
+      {
+        "option": "Akut dekompensierte Herzinsuffizienz mit Tachyarrhythmie",
+        "whyNot": "Es fehlen pulmonale Rasselgeräusche, Beinödeme und eine gestaute Halsvene, die bei einer kardialen Dekompensation zu erwarten wären; die Echokardiographie zeigt zudem unauffällige Herzhöhlen ohne Wandbewegungsstörung. Die leichte Belastungsdyspnoe erklärt sich hier ausreichend durch die hohe, unregelmäßige Kammerfrequenz selbst."
+      }
+    ],
+    "explanation": "Die absolute Unregelmäßigkeit spricht gegen eine regelmäßige AVNRT, der normwertige Schilddrüsenstatus gegen eine thyreotoxische Sinustachykardie, die unauffällige Echokardiographie ohne Stauungszeichen gegen eine kardiale Dekompensation. In der Zusammenschau aus absolut arrhythmischem Puls, fehlenden P-Wellen mit unregelmäßigen RR-Abständen im EKG und bekannten Risikofaktoren (Hypertonie, akuter Alkoholexzess als möglicher Trigger — 'Holiday Heart') ergibt sich ein neu aufgetretenes Vorhofflimmern mit tachykarder Überleitung als wahrscheinlichste Diagnose.",
+    "sourceNotes": "Diagnosekriterien (absolute Arrhythmie, fehlende P-Wellen im Oberflächen-EKG) und CHA2DS2-VA-Score zur Schlaganfallrisiko-Stratifizierung nach der S3-Leitlinie 'Vorhofflimmern' (AWMF-Register-Nr. 019-014, 2025) sowie der ESC/EACTS-Leitlinie 'Management of Atrial Fibrillation' (2024, AF-CARE-Konzept). 'Holiday Heart'-Phänomen (akuter Alkoholexzess als Trigger für paroxysmales Vorhofflimmern) aus allgemeiner kardiologischer Literatur, hier nicht separat leitliniengestützt.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Vorhofflimmern ist die häufigste anhaltende Herzrhythmusstörung im Erwachsenenalter, Prävalenz steigt mit dem Alter deutlich an (S3-Leitlinie Vorhofflimmern, AWMF 019-014)."
+    }
+  },
+  {
+    "id": "infektioese-endokarditis-1",
+    "difficulty": "klinik",
+    "patientName": "Marco",
+    "age": 45,
+    "gender": "male",
+    "chiefComplaint": "Ich hab seit gut einer Woche immer wieder Fieber mit Schüttelfrost, und mein Rücken tut auch ziemlich weh, so tief unten.",
+    "history": "45-jähriger Patient stellt sich mit seit ca. 9 Tagen bestehendem intermittierendem Fieber mit Schüttelfrostepisoden sowie zunehmender Abgeschlagenheit vor. Zusätzlich berichtet er über seit einigen Tagen bestehende, dumpfe Schmerzen im unteren Rückenbereich, die er auf schweres Heben zurückführt. Auf gezielte Nachfrage aktiver i.v. Drogenkonsum (Heroin) seit mehreren Jahren, zuletzt vor 2 Wochen eine Konsumepisode mit gemeinsam genutztem Injektionsbesteck. Nachtschweiß seit etwa einer Woche. Kein Zahnarztbesuch oder invasiver Eingriff in den letzten Monaten. Gewichtsverlust von ca. 3 kg in den letzten 2 Wochen, von ihm selbst auf reduzierten Appetit zurückgeführt. Keine bekannte Herzklappenerkrankung, kein künstlicher Herzklappenersatz.",
+    "examination": "AZ deutlich reduziert, EZ reduziert (BMI 20 kg/m²). RR 108/64 mmHg, HF 112/min (rhythmisch), AF 20/min, Temp. 39,1 °C, SpO2 96 % unter Raumluft.\nHaut: Multiple frische und ältere Einstichstellen beidseits in den Ellenbeugen. Feine, nicht wegdrückbare Petechien am harten Gaumen und an der Konjunktiva. Schmerzhafte, rötliche Knötchen an den Fingerbeeren (Osler-Knötchen). Splitterblutungen unter mehreren Fingernägeln.\nHerz: Neu aufgetretenes, hochfrequentes Systolikum, p.m. am linken unteren Sternalrand, 3/6, atemabhängig zunehmend (inspiratorische Verstärkung).\nLunge: Vesikuläratmen beidseits, keine Rasselgeräusche.\nAbdomen: Weich, diskreter Druckschmerz im linken Oberbauch, Milz ca. 2 cm unter dem Rippenbogen tastbar (Splenomegalie).\nWirbelsäule: Klopfschmerz über LWK 3/4, keine motorischen oder sensiblen Ausfälle, kein Kaudasyndrom.\nNeurologie: Wach, orientiert, kein Fokaldefizit.\n\nEKG (12-Kanal): Sinustachykardie 112/min, normale PQ-Zeit (kein Hinweis auf perivalvulären Abszess mit AV-Block), keine ST-Hebungen.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "165",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "15.400",
+            "unit": "/µl",
+            "reference": "4.000–10.000",
+            "flag": "high"
+          },
+          {
+            "name": "Procalcitonin",
+            "value": "2,1",
+            "unit": "ng/ml",
+            "reference": "< 0,5",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Mikrobiologie & Blutbild",
+        "values": [
+          {
+            "name": "Blutkulturen (3 Sets)",
+            "value": "3/3 positiv für Staphylococcus aureus",
+            "unit": "",
+            "reference": "steril",
+            "flag": "high"
+          },
+          {
+            "name": "Hämoglobin",
+            "value": "10,8",
+            "unit": "g/dl",
+            "reference": "13,5–17,5",
+            "flag": "low"
+          }
+        ]
+      }
+    ],
+    "imaging": "Transösophageale Echokardiographie (TEE): Trikuspidalklappe mit 12 mm großer, flottierender Vegetation am Segel, begleitende mittelgradige Trikuspidalinsuffizienz. Keine perivalvulären Abszessformationen, keine Perforation. Linksseitige Klappen unauffällig.",
+    "correctDiagnosis": "Infektiöse Endokarditis der Trikuspidalklappe bei i.v. Drogenabusus",
+    "diagnosisOptions": [
+      "Infektiöse Endokarditis der Trikuspidalklappe bei i.v. Drogenabusus",
+      "Vertebrale Spondylodiszitis mit sekundärer Sepsis",
+      "Akute Pyelonephritis mit Urosepsis",
+      "Akutes rheumatisches Fieber"
+    ],
+    "keyTakeaway": "I.v. Drogenabusus + Fieber mit peripheren Stigmata (Osler-Knötchen, Splitterblutungen, Petechien) + neues Herzgeräusch + positive Blutkulturen + Vegetation im Echo (Duke-Hauptkriterien) = infektiöse Endokarditis, bis zum Beweis des Gegenteils.",
+    "differentialNotes": [
+      {
+        "option": "Vertebrale Spondylodiszitis mit sekundärer Sepsis",
+        "whyNot": "Der Rückenschmerz mit Klopfschmerz über LWK 3/4 könnte für eine Spondylodiszitis sprechen — bei i.v. Drogenabusus tatsächlich eine relevante Differenzialdiagnose bzw. mögliche Begleitkomplikation (septische Embolie in die Wirbelsäule). Er erklärt jedoch nicht das neue Herzgeräusch, die Vegetation in der TEE oder die peripheren Endokarditis-Stigmata (Osler-Knötchen, Splitterblutungen, Petechien) — diese Trias aus positiven Blutkulturen, neuem Klappengeräusch und echokardiographischer Vegetation erfüllt die Duke-Hauptkriterien und macht die Endokarditis zur führenden, den Rückenschmerz miterklärenden Diagnose (septisch-embolische Genese)."
+      },
+      {
+        "option": "Akute Pyelonephritis mit Urosepsis",
+        "whyNot": "Es fehlen Flankenschmerz mit Klopfschmerzhaftigkeit über den Nierenlagern, Miktionsbeschwerden sowie ein pathologischer Urinbefund — die Blutkulturen sind zudem positiv für Staphylococcus aureus, einen für Harnwegsinfekte untypischen Erreger (dort meist gramnegative Stäbchen wie E. coli). Das neue Herzgeräusch mit Vegetation lässt sich durch eine Urosepsis nicht erklären."
+      },
+      {
+        "option": "Akutes rheumatisches Fieber",
+        "whyNot": "Gegen ein akutes rheumatisches Fieber sprechen das fehlende vorausgegangene Streptokokken-Infekt (Pharyngitis) in der Anamnese, das Erwachsenenalter (rheumatisches Fieber betrifft überwiegend Kinder/Jugendliche) sowie die positiven Blutkulturen mit direktem Erregernachweis — beim rheumatischen Fieber sind Blutkulturen typischerweise steril, da es sich um eine postinfektiöse Autoimmunreaktion handelt."
+      }
+    ],
+    "explanation": "Der Rückenschmerz allein erklärt weder das neue Herzgeräusch noch die Vegetation und passt eher als septisch-embolische Begleitkomplikation der Endokarditis; es fehlen die für eine Urosepsis typischen Flanken-/Miktionsbeschwerden und ein passender Erreger; die positiven Blutkulturen sprechen gegen ein rheumatisches Fieber. In der Zusammenschau aus i.v. Drogenabusus als Hauptrisikofaktor, Fieber mit peripheren Stigmata, neuem Herzgeräusch, positiven Blutkulturen (Staphylococcus aureus) und echokardiographisch nachgewiesener Vegetation an der Trikuspidalklappe ergibt sich eine infektiöse Endokarditis als wahrscheinlichste Diagnose.",
+    "sourceNotes": "Diagnosekriterien nach den überarbeiteten Duke-ISCVID-Kriterien 2023 (Hauptkriterien: positive Blutkulturen mit typischem Endokarditis-Erreger, Nachweis einer Endokardbeteiligung in der Echokardiographie) sowie der ESC-Leitlinie 'Management of Infective Endocarditis' (2023), deutscher Kommentar über die Deutsche Gesellschaft für Kardiologie (leitlinien.dgk.org, 2024). I.v. Drogenabusus als klassischer Risikofaktor für Rechtsherz-Endokarditis (Trikuspidalklappe) und Staphylococcus aureus als häufigster Erreger in diesem Kollektiv aus derselben Quelle. Eine eigenständige deutsche AWMF-Leitlinie für die adulte infektiöse Endokarditis wurde nicht gefunden — die AWMF-S2k-Leitlinie 023-024 behandelt ausschließlich das Kindes- und Jugendalter und wurde bewusst nicht als Quelle für die Erwachsenendiagnostik herangezogen; stattdessen dient die ESC-Leitlinie 2023 als maßgebliche, in Deutschland angewandte Referenz.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "I.v. Drogenabusus erhöht das Endokarditis-Risiko um ein Vielfaches gegenüber der Allgemeinbevölkerung, unbehandelt verläuft die infektiöse Endokarditis nahezu immer tödlich (ESC-Leitlinie 2023)."
+    }
+  },
+  {
+    "id": "copd-exazerbation-globalinsuffizienz-1",
+    "difficulty": "klinik",
+    "patientName": "Horst",
+    "age": 68,
+    "gender": "male",
+    "chiefComplaint": "Ich krieg seit drei Tagen immer schlechter Luft, und der Auswurf ist jetzt gelblich statt wie sonst weißlich. Meine Frau sagt, ich wirke heute irgendwie neben der Spur.",
+    "history": "68-jähriger Patient mit bekannter COPD GOLD III (Diagnose vor 6 Jahren, letzte Lungenfunktion FEV1 38 % vom Soll) stellt sich in Begleitung seiner Ehefrau vor. Seit 3 Tagen zunehmende Belastungsdyspnoe, inzwischen bereits in Ruhe spürbar, sowie vermehrter, gelblich-putrider Auswurf (vorbestehend meist weißlich-klar). Die Ehefrau berichtet zusätzlich, er wirke seit dem Vortag zunehmend verlangsamt und schläfrig, teils schwer zu wecken. Kein Fieber gemessen. Nikotinkonsum: aktuell noch aktiv, 45 pack-years. Dauermedikation: LAMA/LABA-Kombination, bei Bedarf SABA. Auf Nachfrage in den letzten Tagen deutlich häufigere Nutzung des Bedarfssprays ohne ausreichende Besserung. Keine bekannte Herzinsuffizienz, letzte kardiologische Kontrolle vor einem Jahr unauffällig. Keine relevante Immobilisation, keine Tumorerkrankung, keine Beinschwellung bemerkt.",
+    "examination": "AZ deutlich reduziert, EZ normal (BMI 26 kg/m²), Fassthorax. RR 148/88 mmHg, HF 108/min (rhythmisch), AF 28/min mit Einsatz der Atemhilfsmuskulatur und Lippenbremse, Temp. 37,1 °C, SpO2 86 % unter Raumluft.\nBewusstsein: Somnolent, auf Ansprache verzögert reagierend, zu Person und Ort orientiert, zur Zeit nicht sicher orientiert.\nLunge: Hypersonorer Klopfschall beidseits, deutlich verlängertes Exspirium mit diffusem exspiratorischem Giemen und Brummen, deutlich abgeschwächtes Atemgeräusch basal beidseits.\nHerz: Herztöne rein, tachykard, kein Herzgeräusch, keine Halsvenenstauung.\nAbdomen: Weich, unauffällig.\nExtremitäten: Warm, keine Ödeme, Zyanose der Lippen und Akren.\nNeurologie: Grobschlägiger Flapping-Tremor (Asterixis) bei ausgestreckten Armen, sonst kein fokal-neurologisches Defizit.",
+    "labs": [
+      {
+        "category": "Blutgasanalyse (kapillär, Raumluft)",
+        "values": [
+          {
+            "name": "pH",
+            "value": "7,29",
+            "unit": "",
+            "reference": "7,35–7,45",
+            "flag": "low"
+          },
+          {
+            "name": "pCO2",
+            "value": "68",
+            "unit": "mmHg",
+            "reference": "35–45",
+            "flag": "high"
+          },
+          {
+            "name": "pO2",
+            "value": "52",
+            "unit": "mmHg",
+            "reference": "75–100",
+            "flag": "low"
+          },
+          {
+            "name": "Bikarbonat",
+            "value": "31",
+            "unit": "mmol/l",
+            "reference": "22–26",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "42",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "12.100",
+            "unit": "/µl",
+            "reference": "4.000–10.000",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Röntgen-Thorax (a.p., liegend): Deutlich überblähte Lungen mit tiefstehenden, abgeflachten Zwerchfellkuppen, vermehrte Strahlentransparenz, schmales Herz ('Tropfenherz'). Keine neuen Infiltrate, kein Pleuraerguss, keine pulmonalvenöse Stauung, kein Pneumothorax.",
+    "correctDiagnosis": "Akute Exazerbation der COPD mit respiratorischer Globalinsuffizienz (Hyperkapnie)",
+    "diagnosisOptions": [
+      "Akute Exazerbation der COPD mit respiratorischer Globalinsuffizienz (Hyperkapnie)",
+      "Akut dekompensierte Herzinsuffizienz",
+      "Ambulant erworbene Pneumonie",
+      "Akute Lungenembolie"
+    ],
+    "keyTakeaway": "Bekannte COPD + vermehrter, putrider Auswurf + zunehmende Dyspnoe (Anthonisen-Trias) + Hyperkapnie mit respiratorischer Azidose und Asterixis = akute Exazerbation mit respiratorischer Globalinsuffizienz, bei Vigilanzminderung sofort NIV-pflichtig.",
+    "differentialNotes": [
+      {
+        "option": "Akut dekompensierte Herzinsuffizienz",
+        "whyNot": "Gegen eine kardiale Dekompensation sprechen das im Röntgen-Thorax schmale, nicht vergrößerte Herz ohne pulmonalvenöse Stauungszeichen sowie das Fehlen von Beinödemen — bei einer ADHF wäre stattdessen eine Kardiomegalie mit interstitiellem oder alveolärem Lungenödem zu erwarten. Die Blutgasanalyse mit ausgeprägter Hyperkapnie und teilkompensierter respiratorischer Azidose passt zudem spezifisch zur ventilatorischen Erschöpfung bei obstruktiver Lungenerkrankung."
+      },
+      {
+        "option": "Ambulant erworbene Pneumonie",
+        "whyNot": "Das Röntgen-Thorax zeigt kein neues Infiltrat, sondern lediglich die vorbestehende Lungenüberblähung — bei einer Pneumonie wäre eine umschriebene Verschattung zu erwarten. Auch fehlt trotz erhöhter Entzündungswerte ein hohes Fieber; die Zunahme von Sputummenge und -purulenz gemeinsam mit verstärkter Dyspnoe entspricht den klassischen Anthonisen-Kriterien einer COPD-Exazerbation."
+      },
+      {
+        "option": "Akute Lungenembolie",
+        "whyNot": "Es fehlen relevante Risikofaktoren für eine venöse Thromboembolie (keine Immobilisation, keine Tumorerkrankung, keine Beinschwellung), und der über 3 Tage progrediente statt akut einsetzende Verlauf passt nicht zum typischen Bild einer Lungenembolie. Die ausgeprägte Hyperkapnie mit metabolischer Kompensation erklärt sich hier durch die chronische Grunderkrankung mit akuter Exazerbation."
+      }
+    ],
+    "explanation": "Das schmale Herz ohne Stauungszeichen im Röntgen spricht gegen eine kardiale Dekompensation, das Fehlen eines neuen Infiltrats gegen eine Pneumonie, fehlende VTE-Risikofaktoren gegen eine Lungenembolie. In der Zusammenschau aus bekannter schwerer COPD, vermehrtem purulentem Auswurf, zunehmender Dyspnoe sowie der Blutgasanalyse mit ausgeprägter Hyperkapnie, respiratorischer Azidose und klinischer Asterixis als Zeichen der CO2-Narkose ergibt sich eine akute Exazerbation der COPD mit respiratorischer Globalinsuffizienz als wahrscheinlichste Diagnose.",
+    "sourceNotes": "Exazerbationsdefinition und Diagnostik-Algorithmus nach der Nationalen VersorgungsLeitlinie COPD, Kapitel Exazerbation (AWMF-Register-Nr. nvl-003, 2024) sowie dem GOLD-Report (Global Initiative for Chronic Obstructive Lung Disease, aktuelle Fassung). Anthonisen-Kriterien (Zunahme Dyspnoe, Sputummenge, Sputumpurulenz) aus der internationalen COPD-Literatur, in beiden genannten Leitlinien referenziert. NIV-Indikation bei respiratorischer Azidose (pH <7,35 mit Hyperkapnie) allgemein intensivmedizinisch etabliert.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "COPD-Exazerbationen zählen zu den häufigsten internistischen Aufnahmegründen in Deutschland; etwa die Hälfte der Patienten mit schwerer respiratorischer Globalinsuffizienz benötigt eine Beatmungsunterstützung, bevorzugt NIV (Nationale VersorgungsLeitlinie COPD)."
+    }
+  },
+  {
+    "id": "spontanpneumothorax-1",
+    "difficulty": "klinik",
+    "patientName": "Finn",
+    "age": 22,
+    "gender": "male",
+    "chiefComplaint": "Mir ist gerade beim Sofasitzen plötzlich ein stechender Schmerz rechts in die Brust geschossen, und seitdem komm ich nicht mehr richtig Luft.",
+    "history": "22-jähriger, schlanker Patient (Körpergröße 194 cm, BMI 19 kg/m²) stellt sich mit seit ca. 1 Stunde akut, ohne erkennbaren Auslöser einsetzendem, stechendem rechtsthorakalem Schmerz sowie zunehmender Belastungsdyspnoe vor. Kein Trauma, kein Sturz, keine körperliche Anstrengung unmittelbar vor Symptombeginn — der Patient saß in Ruhe auf dem Sofa. Gelegentlicher Cannabiskonsum, kein regelmäßiger Nikotinkonsum. Keine bekannte Lungenerkrankung, kein Asthma. Keine familiäre Häufung von Pneumothoraces bekannt. Kein Fieber, kein Husten, kein Auswurf. Keine Beinschwellung, keine Immobilisation.",
+    "examination": "AZ leicht reduziert, EZ schlank (BMI 19 kg/m², marfanoider Habitus mit langen Extremitäten). RR 128/78 mmHg, HF 104/min (rhythmisch), AF 22/min, Temp. 36,7 °C, SpO2 94 % unter Raumluft.\nInspektion: Symmetrische Thoraxform in Ruhe, keine Atemexkursionsdifferenz auf den ersten Blick, keine Halsvenenstauung, Trachea mittelständig.\nLunge: Rechts hypersonorer Klopfschall mit deutlich abgeschwächtem bis aufgehobenem Atemgeräusch, links seitengleich vesikuläres Atemgeräusch.\nHerz: Herztöne rein, tachykard, kein Herzgeräusch.\nAbdomen: Weich, unauffällig.\nExtremitäten: Warm, keine Ödeme, keine Wadendruckschmerzhaftigkeit, Pulse seitengleich.",
+    "labs": [
+      {
+        "category": "Basislabor",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "3",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "normal"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "8.100",
+            "unit": "/µl",
+            "reference": "4.000–10.000",
+            "flag": "normal"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "0,9",
+            "unit": "mg/dl",
+            "reference": "0,7–1,2",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Röntgen-Thorax p.a. im Stehen (Inspiration): Pneumothorax rechts mit ca. 30%igem Lungenkollaps, girlandenförmig abgrenzbare viszerale Pleuralinie ohne erkennbare Lungengefäßzeichnung peripher davon. Kein Mediastinalshift, keine asymmetrische Zwerchfelltiefstand, kein Hinweis auf Spannungskomponente. Linke Lunge unauffällig belüftet.",
+    "correctDiagnosis": "Primärer Spontanpneumothorax",
+    "diagnosisOptions": [
+      "Primärer Spontanpneumothorax",
+      "Akute Lungenembolie",
+      "Akutes Koronarsyndrom",
+      "Interkostalneuralgie / muskuloskelettaler Thoraxschmerz"
+    ],
+    "keyTakeaway": "Junger, schlanker Patient + akut einsetzender einseitiger Thoraxschmerz ohne Trauma + hypersonorer Klopfschall mit abgeschwächtem Atemgeräusch + im Röntgen bestätigter Pneumothorax ohne Mediastinalshift = primärer Spontanpneumothorax, bis zum Beweis des Gegenteils.",
+    "differentialNotes": [
+      {
+        "option": "Akute Lungenembolie",
+        "whyNot": "Der Röntgen-Thorax zeigt den ursächlichen Pneumothorax direkt; eine Lungenembolie würde meist ein unauffälliges oder nur unspezifisch verändertes Röntgenbild zeigen und nicht den hypersonoren Klopfschall mit aufgehobenem Atemgeräusch erklären. Zudem fehlen relevante VTE-Risikofaktoren."
+      },
+      {
+        "option": "Akutes Koronarsyndrom",
+        "whyNot": "Das junge Alter ohne kardiovaskuläre Risikofaktoren, das unauffällige EKG sowie der atemabhängige, stechende (nicht drückende) Schmerzcharakter sprechen gegen ein akutes Koronarsyndrom. Der lokale Auskultationsbefund mit hypersonorem Klopfschall wird durch eine kardiale Ischämie nicht erklärt."
+      },
+      {
+        "option": "Interkostalneuralgie / muskuloskelettaler Thoraxschmerz",
+        "whyNot": "Eine rein muskuloskelettale Ursache erklärt weder den hypersonoren Klopfschall noch das abgeschwächte Atemgeräusch und die verminderte Sauerstoffsättigung — diese Befunde sind organisch durch den im Röntgen nachgewiesenen Pneumothorax bedingt und nicht durch eine Weichteil- oder Nervenreizung."
+      }
+    ],
+    "explanation": "Der Röntgenbefund mit direktem Pneumothorax-Nachweis erklärt Klopfschall- und Auskultationsbefund und macht sowohl eine kardiale als auch eine rein muskuloskelettale Ursache überflüssig; fehlende VTE-Risikofaktoren sprechen gegen eine Lungenembolie. In der Zusammenschau aus jungem, schlankem Patienten (klassisches Risikoprofil), akut einsetzendem einseitigem Thoraxschmerz ohne Trauma, hypersonorem Klopfschall mit abgeschwächtem Atemgeräusch und dem radiologisch gesicherten Pneumothorax ohne Spannungszeichen ergibt sich ein primärer Spontanpneumothorax als Diagnose.",
+    "sourceNotes": "Diagnostischer Standard (Röntgen-Thorax p.a. im Stehen als Basisdiagnostik, Alternativen Sonographie/CT) nach der AWMF-S3-Leitlinie 'Diagnostik und Therapie von Spontanpneumothorax und postinterventionellem Pneumothorax' (AWMF-Register-Nr. 010-007, Stand 2018 — formal abgelaufen, aber weiterhin aktuellste deutsche Referenz, ehrlich vermerkt). Klassisches Risikoprofil (junge, schlanke, meist männliche Patienten, teils marfanoider Habitus) aus derselben Leitlinie.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Der primäre Spontanpneumothorax betrifft überwiegend junge, schlanke Männer zwischen 20 und 40 Jahren und kann unerkannt in einen lebensbedrohlichen Spannungspneumothorax übergehen (AWMF S3-Leitlinie 010-007)."
+    }
+  },
+  {
+    "id": "leberzirrhose-hepatische-enzephalopathie-1",
+    "difficulty": "klinik",
+    "patientName": "Wolfgang",
+    "age": 59,
+    "gender": "male",
+    "chiefComplaint": "Ich weiß auch nicht genau... ist heute Montag? Meine Frau sagt, ich soll herkommen.",
+    "history": "59-jähriger Patient mit bekannter, vor 3 Jahren diagnostizierter alkoholischer Leberzirrhose (zuletzt Child-Pugh-Stadium B) wird von seiner Ehefrau vorgestellt, da er seit 2 Tagen zunehmend verwirrt und tagsüber auffällig schläfrig wirke, nachts dagegen unruhig und wach ('Tag-Nacht-Umkehr'). Sie berichtet zudem von einem seit 4 Tagen bestehenden, ungewöhnlich hartnäckigen Stuhlgang — der Patient habe eigenständig seine sonst regelmäßig eingenommene Laktulose abgesetzt, da ihm der Geschmack zuwider gewesen sei. Kein Fieber gemessen. Kein Hinweis auf gastrointestinale Blutung (kein Teerstuhl, kein Blutbrechen). Aktuell laut Ehefrau kein Alkoholkonsum, letzter dokumentierter Konsum vor über einem Jahr. Keine bekannten neuen Medikamente, keine Diuretika-Dosisänderung in den letzten Wochen.",
+    "examination": "AZ reduziert, EZ normal (BMI 24 kg/m²). RR 118/74 mmHg, HF 88/min (rhythmisch), AF 16/min, Temp. 36,9 °C, SpO2 97 % unter Raumluft.\nBewusstsein: Somnolent, zeitlich nicht orientiert (hält den Wochentag für falsch), örtlich und zur Person orientiert, verlangsamte, aber verständliche Sprache (West-Haven Grad II).\nHaut: Ikterus der Skleren und Haut, multiple Spider naevi am oberen Stamm, Palmarerythem.\nAbdomen: Gespannt-prall, deutliche Vorwölbung, positive Flankendämpfung mit Lageabhängigkeit (Aszites), Leber nicht sicher abgrenzbar, keine Abwehrspannung.\nExtremitäten: Beidseitige, leichte Unterschenkelödeme.\nNeurologie: Grobschlägiger Flapping-Tremor (Asterixis) bei ausgestreckten Händen beidseits auslösbar, kein fokal-neurologisches Defizit, Foetor hepaticus.",
+    "labs": [
+      {
+        "category": "Leberwerte & Ammoniak",
+        "values": [
+          {
+            "name": "Ammoniak",
+            "value": "118",
+            "unit": "µg/dl",
+            "reference": "< 94",
+            "flag": "high"
+          },
+          {
+            "name": "Bilirubin gesamt",
+            "value": "3,8",
+            "unit": "mg/dl",
+            "reference": "< 1,2",
+            "flag": "high"
+          },
+          {
+            "name": "GOT (AST)",
+            "value": "78",
+            "unit": "U/l",
+            "reference": "< 50",
+            "flag": "high"
+          },
+          {
+            "name": "INR",
+            "value": "1,7",
+            "unit": "",
+            "reference": "0,9–1,1",
+            "flag": "high"
+          },
+          {
+            "name": "Albumin",
+            "value": "2,6",
+            "unit": "g/dl",
+            "reference": "3,5–5,2",
+            "flag": "low"
+          }
+        ]
+      },
+      {
+        "category": "Blutbild & Niere",
+        "values": [
+          {
+            "name": "Thrombozyten",
+            "value": "88.000",
+            "unit": "/µl",
+            "reference": "150.000–400.000",
+            "flag": "low"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "1,3",
+            "unit": "mg/dl",
+            "reference": "0,7–1,2",
+            "flag": "high"
+          },
+          {
+            "name": "Natrium",
+            "value": "132",
+            "unit": "mmol/l",
+            "reference": "135–145",
+            "flag": "low"
+          },
+          {
+            "name": "CRP",
+            "value": "12",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Sonographie Abdomen: Zirrhotisch umgebaute, höckerige Leberoberfläche mit inhomogenem Parenchym, deutlicher Aszites in allen Quadranten, Splenomegalie (Milzlänge 14 cm), keine fokale Raumforderung, Pfortader durchgängig ohne Thrombus.",
+    "correctDiagnosis": "Dekompensierte Leberzirrhose mit hepatischer Enzephalopathie (West-Haven Grad II)",
+    "diagnosisOptions": [
+      "Dekompensierte Leberzirrhose mit hepatischer Enzephalopathie (West-Haven Grad II)",
+      "Alkoholentzugsdelir",
+      "Urämische Enzephalopathie",
+      "Sepsis-assoziierte Enzephalopathie"
+    ],
+    "keyTakeaway": "Bekannte Leberzirrhose + identifizierbarer Trigger (hier Obstipation nach Laktulose-Pause) + Vigilanzminderung mit Tag-Nacht-Umkehr und Asterixis + erhöhtes Ammoniak = hepatische Enzephalopathie, bis zum Beweis des Gegenteils — immer aktiv nach dem Trigger suchen.",
+    "differentialNotes": [
+      {
+        "option": "Alkoholentzugsdelir",
+        "whyNot": "Gegen ein Alkoholentzugsdelir sprechen der laut Ehefrau seit über einem Jahr bestehende Alkoholverzicht (kein akutes Entzugsereignis) sowie das Fehlen typischer Entzugszeichen wie ausgeprägter vegetativer Hyperaktivität, Halluzinationen oder grobschlägigem Ruhetremor. Der hier auslösbare Flapping-Tremor (Asterixis) ist ein spezifisches Zeichen der hepatischen Enzephalopathie, kein Entzugszeichen."
+      },
+      {
+        "option": "Urämische Enzephalopathie",
+        "whyNot": "Der Kreatininwert ist nur leicht erhöht und liegt weit unterhalb des Bereichs, der üblicherweise eine urämische Enzephalopathie verursacht. Die deutlich erhöhten Leberwerte, das erhöhte Ammoniak und die sonographisch gesicherte Zirrhose erklären die Vigilanzminderung ausreichend hepatisch."
+      },
+      {
+        "option": "Sepsis-assoziierte Enzephalopathie",
+        "whyNot": "Es fehlen Fieber und eine relevante Erhöhung der Entzündungswerte (CRP nur gering erhöht), die für eine Sepsis zu erwarten wären. Auch ohne erkennbaren Infektfokus ist eine septische Genese unwahrscheinlich — passender ist der klar identifizierbare Trigger (Obstipation nach Laktulose-Pause) für eine hepatische Enzephalopathie."
+      }
+    ],
+    "explanation": "Der langjährige Alkoholverzicht spricht gegen ein Entzugsdelir, der nur leicht erhöhte Kreatininwert gegen eine urämische Genese, das Fehlen von Fieber und deutlicher Entzündungsreaktion gegen eine Sepsis. In der Zusammenschau aus bekannter Leberzirrhose, identifizierbarem Trigger (abgesetzte Laktulose mit resultierender Obstipation), Vigilanzminderung mit Tag-Nacht-Umkehr, auslösbarer Asterixis und deutlich erhöhtem Ammoniak ergibt sich eine hepatische Enzephalopathie im Rahmen der dekompensierten Leberzirrhose als wahrscheinlichste Diagnose.",
+    "sourceNotes": "Diagnostik und Stadieneinteilung (West-Haven-Kriterien) der hepatischen Enzephalopathie sowie Trigger-Suche als zentraler Bestandteil des Managements nach der AWMF-S2k-Leitlinie 'Komplikationen der Leberzirrhose' (AWMF-Register-Nr. 021-017, DGVS, Stand 2023). Child-Pugh-Klassifikation zur Schweregradeinteilung der Leberzirrhose allgemein hepatologisch etabliert, in derselben Leitlinie referenziert.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Die hepatische Enzephalopathie tritt im Verlauf bei bis zu 30–40 % aller Zirrhose-Patienten auf und ist unbehandelt potenziell reversibel bis lebensbedrohlich — der auslösende Trigger muss aktiv gesucht werden (AWMF S2k-Leitlinie 021-017)."
+    }
+  },
+  {
+    "id": "akute-cholangitis-1",
+    "difficulty": "klinik",
+    "patientName": "Ingeborg",
+    "age": 72,
+    "gender": "female",
+    "chiefComplaint": "Mir ist heiß und kalt zugleich, und der Bauch tut oben rechts weh — aber ehrlich gesagt weiß ich grad nicht mehr genau, wie ich hergekommen bin.",
+    "history": "72-jährige Patientin mit bekannter, bislang asymptomatischer Cholezystolithiasis wird vom Rettungsdienst nach Sturz zuhause vorgestellt. Die Tochter berichtet, die Mutter habe seit dem Vortag über rechtsseitige Oberbauchschmerzen und Fieber mit Schüttelfrost geklagt, sei aber erst heute Morgen zunehmend verwirrt aufgefunden worden. Auf Nachfrage der Tochter kein Erbrechen, kein Durchfall. Kein bekannter Diabetes mellitus, keine bekannte Demenz — die Verwirrtheit sei für die Tochter neu und ungewohnt. Keine Voroperation am Gallengangssystem, kein vorausgegangener endoskopischer Eingriff (ERCP).",
+    "examination": "AZ deutlich reduziert, EZ normal (BMI 25 kg/m²). RR 96/58 mmHg, HF 116/min (rhythmisch), AF 24/min, Temp. 39,4 °C, SpO2 94 % unter Raumluft.\nBewusstsein: Somnolent, zu Person orientiert, zeitlich und örtlich nicht sicher orientiert, auf Ansprache verlangsamt reagierend.\nHaut/Skleren: Deutlicher Ikterus von Skleren und Haut.\nAbdomen: Druckschmerz im rechten Oberbauch mit positivem Murphy-Zeichen, keine Abwehrspannung, keine tastbare Resistenz, spärliche Darmgeräusche.\nHerz: Herztöne rein, tachykard, kein Herzgeräusch.\nLunge: Vesikuläratmen beidseits, keine Rasselgeräusche.\nExtremitäten: Kaltschweißig, verlängerte Rekapillarisierungszeit (>3 Sek.), periphere Zyanose der Akren.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "224",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "18.600",
+            "unit": "/µl",
+            "reference": "4.000–10.000",
+            "flag": "high"
+          },
+          {
+            "name": "Procalcitonin",
+            "value": "6,4",
+            "unit": "ng/ml",
+            "reference": "< 0,5",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Cholestase & Leber",
+        "values": [
+          {
+            "name": "Bilirubin gesamt",
+            "value": "5,2",
+            "unit": "mg/dl",
+            "reference": "< 1,2",
+            "flag": "high"
+          },
+          {
+            "name": "GGT",
+            "value": "312",
+            "unit": "U/l",
+            "reference": "< 60",
+            "flag": "high"
+          },
+          {
+            "name": "Alkalische Phosphatase",
+            "value": "285",
+            "unit": "U/l",
+            "reference": "40–130",
+            "flag": "high"
+          },
+          {
+            "name": "Lipase",
+            "value": "48",
+            "unit": "U/l",
+            "reference": "< 60",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Sonstige Werte",
+        "values": [
+          {
+            "name": "Blutkulturen (2 Sets)",
+            "value": "2/2 positiv für Escherichia coli",
+            "unit": "",
+            "reference": "steril",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "1,6",
+            "unit": "mg/dl",
+            "reference": "0,6–1,1",
+            "flag": "high"
+          },
+          {
+            "name": "Laktat",
+            "value": "2,8",
+            "unit": "mmol/l",
+            "reference": "< 2,0",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Sonographie Abdomen: Erweiterter Ductus choledochus (9 mm, Norm <7 mm) mit echoreichem Konkrement im distalen Choledochus und dorsalem Schallschatten, Cholezystolithiasis mit mehreren Konkrementen, Gallenblasenwand nicht verdickt. Keine freie Flüssigkeit, keine Cholezystitis-Zeichen an der Gallenblase selbst.",
+    "correctDiagnosis": "Akute Cholangitis bei Choledocholithiasis (mit beginnendem septischem Schock)",
+    "diagnosisOptions": [
+      "Akute Cholangitis bei Choledocholithiasis (mit beginnendem septischem Schock)",
+      "Akute Cholezystitis (unkompliziert)",
+      "Akute Pankreatitis",
+      "Perforiertes gastroduodenales Ulkus"
+    ],
+    "keyTakeaway": "Fieber + Ikterus + rechtsseitiger Oberbauchschmerz (Charcot-Trias, auch unvollständig!) + sonographisch erweiterter Gallengang mit Konkrement = akute Cholangitis, zeitkritische Notfallindikation zur biliären Drainage — bei Hypotonie/Verwirrtheit droht der Übergang in den septischen Schock (Reynolds-Pentade).",
+    "differentialNotes": [
+      {
+        "option": "Akute Cholezystitis (unkompliziert)",
+        "whyNot": "Eine isolierte Cholezystitis erklärt zwar den Murphy-Schmerz, nicht aber den ausgeprägten Ikterus mit deutlich erhöhtem direktem Bilirubin und den sonographisch erweiterten, konkrementhaltigen Ductus choledochus — bei einer reinen Cholezystitis ist die Gallenblasenwand meist verdickt, was hier fehlt, während stattdessen die Zeichen einer Gallengangsobstruktion im Vordergrund stehen."
+      },
+      {
+        "option": "Akute Pankreatitis",
+        "whyNot": "Die Lipase ist normwertig, was eine akute Pankreatitis unwahrscheinlich macht — bei einer Pankreatitis wäre sie typischerweise auf mindestens das Dreifache der Norm erhöht. Der sonographische Nachweis eines Konkrements im Ductus choledochus mit begleitender Cholestase erklärt das Beschwerdebild besser."
+      },
+      {
+        "option": "Perforiertes gastroduodenales Ulkus",
+        "whyNot": "Es fehlt eine Abwehrspannung oder ein 'bretthartes' Abdomen, wie es bei einer Hohlorganperforation mit Peritonitis zu erwarten wäre; die Darmgeräusche sind lediglich spärlich, nicht aufgehoben. Der Ikterus mit cholestatischem Leberwertmuster und der sonographische Konkrementnachweis im Gallengang sprechen eindeutig für eine biliäre statt eine perforationsbedingte Ursache."
+      }
+    ],
+    "explanation": "Die normwertige Lipase spricht gegen eine Pankreatitis, die fehlende Abwehrspannung gegen eine Ulkusperforation, die fehlende Gallenblasenwandverdickung bei gleichzeitig deutlicher Cholestase gegen eine isolierte Cholezystitis. In der Zusammenschau aus Fieber mit Schüttelfrost, Ikterus und rechtsseitigem Oberbauchschmerz (Charcot-Trias — hier durch die neu aufgetretene Verwirrtheit und Hypotonie sogar in Richtung der erweiterten Reynolds-Pentade reichend) sowie dem sonographischen Nachweis eines obstruierenden Choledochus-Konkrements und positiven Blutkulturen ergibt sich eine akute Cholangitis mit beginnendem septischem Schock als Diagnose — zeitkritische Indikation zur notfallmäßigen biliären Drainage (ERCP).",
+    "sourceNotes": "Diagnosekriterien (Charcot-Trias, deren eingeschränkte Sensitivität von nur 16–72 % in mehreren Kohorten sowie die strukturierten TG18-Kriterien aus Entzündungszeichen, Cholestase und Bildgebung) nach den Tokyo Guidelines 2018 (TG18) für akute Cholangitis (Kiriyama et al., J Hepatobiliary Pancreat Sci 2018) — international etablierter Standard, auch in deutschen Kliniken verwendet; eine spezifische deutsche AWMF-Leitlinie mit eigenen Cholangitis-Diagnosekriterien wurde nicht gefunden, ehrlich vermerkt. Schweregrad-Einschätzung (hier hochgradig bei Hypotonie und Vigilanzminderung) ebenfalls nach TG18-Schweregradkriterien.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Die klassische Charcot-Trias ist bei akuter Cholangitis nur bei 16–72 % der Patienten vollständig nachweisbar (Tokyo Guidelines 2018) — ein unvollständiges Bild darf die zeitkritische Diagnose nicht verzögern, unbehandelt hohe Letalität durch Sepsis."
+    }
+  },
+  {
+    "id": "colitis-ulcerosa-erstmanifestation-1",
+    "difficulty": "klinik",
+    "patientName": "Lena",
+    "age": 24,
+    "gender": "female",
+    "chiefComplaint": "Ich hab seit gut 6 Wochen ständig Durchfall, und seit ein paar Tagen ist da auch Blut mit dabei. Ich muss auch ständig aufs Klo, selbst wenn kaum was kommt.",
+    "history": "24-jährige Patientin stellt sich mit seit ca. 6 Wochen bestehenden, zunehmend blutig-schleimigen Durchfällen (aktuell 6–8 Stühle/Tag) vor, begleitet von imperativem Stuhldrang und Tenesmen. Zusätzlich berichtet sie von einem ungewollten Gewichtsverlust von ca. 3 kg. Kein Auslandsaufenthalt in den letzten Monaten, keine Antibiotikaeinnahme in den letzten 3 Monaten. Auf Nachfrage keine familiäre Häufung chronisch-entzündlicher Darmerkrankungen bekannt. Kein Fieber. Gelegentliche krampfartige Unterbauchschmerzen, v. a. linksseitig, die sich nach Stuhlgang bessern. Keine Gelenkschmerzen, keine Hautveränderungen, keine Augenrötung bemerkt.",
+    "examination": "AZ leicht reduziert, EZ normal (BMI 20 kg/m²). RR 112/70 mmHg, HF 92/min, AF 14/min, Temp. 36,8 °C, SpO2 99 % unter Raumluft.\nHaut: Blässe der Konjunktiven, keine Hauteffloreszenzen (kein Erythema nodosum, kein Pyoderma gangraenosum).\nAbdomen: Weich, leichter Druckschmerz im linken Unterbauch ohne Abwehrspannung, keine tastbare Walze, regelrechte Darmgeräusche.\nRektale Untersuchung: Blut am Fingerling, keine tastbare Raumforderung.\nGelenke: Keine Schwellung oder Rötung, freie Beweglichkeit.\nAugen: Keine Rötung, keine Photophobie.",
+    "labs": [
+      {
+        "category": "Entzündungswerte & Blutbild",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "28",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "BSG",
+            "value": "32",
+            "unit": "mm/h",
+            "reference": "< 20",
+            "flag": "high"
+          },
+          {
+            "name": "Hämoglobin",
+            "value": "10,4",
+            "unit": "g/dl",
+            "reference": "12,0–15,5",
+            "flag": "low"
+          },
+          {
+            "name": "Ferritin",
+            "value": "9",
+            "unit": "ng/ml",
+            "reference": "15–150",
+            "flag": "low"
+          }
+        ]
+      },
+      {
+        "category": "Stuhldiagnostik",
+        "values": [
+          {
+            "name": "Fäkales Calprotectin",
+            "value": "850",
+            "unit": "µg/g",
+            "reference": "< 50",
+            "flag": "high"
+          },
+          {
+            "name": "Stuhlkultur / C.-difficile-Toxin",
+            "value": "negativ",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Ileokoloskopie mit Stufenbiopsien: Kontinuierliche, scharf gegen gesundes Gewebe abgrenzbare Entzündung vom Rektum bis zur linken Kolonflexur, aufgehobenes Gefäßmuster, granulierte, leicht vulnerable Schleimhaut mit spontaner Kontaktblutung, multiple flache Erosionen, keine Fisteln, keine Strikturen, terminales Ileum makroskopisch unauffällig. Histologie: Basale Plasmozytose, Kryptenabszesse, Kryptenarchitekturstörung, keine Granulome.",
+    "correctDiagnosis": "Colitis ulcerosa (Erstmanifestation, linksseitige Kolitis, mäßige Aktivität)",
+    "diagnosisOptions": [
+      "Colitis ulcerosa (Erstmanifestation, linksseitige Kolitis, mäßige Aktivität)",
+      "Morbus Crohn",
+      "Infektiöse Kolitis",
+      "Reizdarmsyndrom"
+    ],
+    "keyTakeaway": "Wochenlange blutig-schleimige Diarrhö mit Tenesmen + kontinuierliche, rektal beginnende Entzündung in der Koloskopie + erhöhtes fäkales Calprotectin bei negativer Stuhlkultur = Colitis ulcerosa, bis zum Beweis des Gegenteils.",
+    "differentialNotes": [
+      {
+        "option": "Morbus Crohn",
+        "whyNot": "Gegen einen Morbus Crohn sprechen die kontinuierliche, scharf begrenzte Entzündung ohne skip lesions, das unauffällige terminale Ileum sowie das Fehlen von Fisteln, Strikturen oder Granulomen in der Histologie — beim Morbus Crohn wäre typischerweise ein diskontinuierlicher, transmuraler Befall mit möglichen Fisteln und epitheloidzelligen Granulomen zu erwarten."
+      },
+      {
+        "option": "Infektiöse Kolitis",
+        "whyNot": "Die Stuhlkultur sowie der C.-difficile-Toxin-Nachweis sind negativ, und der über 6 Wochen chronisch-progrediente statt akute Verlauf spricht gegen eine infektiöse Genese — eine bakterielle Kolitis verläuft meist akut über Tage und klingt spontan oder unter Antibiose ab, nicht chronisch progredient über Wochen."
+      },
+      {
+        "option": "Reizdarmsyndrom",
+        "whyNot": "Beim Reizdarmsyndrom fehlen per Definition organische Entzündungszeichen — hier bestehen jedoch sichtbares Blut im Stuhl, deutlich erhöhtes CRP und fäkales Calprotectin sowie ein floride entzündlicher Endoskopiebefund mit Histologie, die eine funktionelle Störung ausschließen."
+      }
+    ],
+    "explanation": "Das unauffällige terminale Ileum und die kontinuierliche, granulomfreie Entzündung sprechen gegen einen Morbus Crohn, negative Stuhldiagnostik gegen eine infektiöse Kolitis, deutlich erhöhtes Calprotectin und der floride Endoskopiebefund gegen ein Reizdarmsyndrom. In der Zusammenschau aus mehrwöchiger blutig-schleimiger Diarrhö mit Tenesmen, kontinuierlicher, rektal beginnender Entzündung in der Koloskopie mit passender Histologie und deutlich erhöhtem fäkalem Calprotectin bei negativer Stuhlkultur ergibt sich eine Colitis ulcerosa als Erstmanifestation.",
+    "sourceNotes": "Diagnostik-Algorithmus (Endoskopie mit Stufenbiopsien, fäkales Calprotectin als nicht-invasiver Aktivitätsmarker, Ausschluss infektiöser Ursachen) nach der aktualisierten AWMF-S3-Leitlinie 'Colitis ulcerosa' (AWMF-Register-Nr. 021-009, DGVS, Version 6.2, Januar 2024). Abgrenzungskriterien zum Morbus Crohn (Kontinuität, Befallsmuster, Granulome) ebenfalls aus derselben Leitlinie.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Colitis ulcerosa manifestiert sich am häufigsten zwischen dem 20. und 35. Lebensjahr, mit steigender Inzidenz in Deutschland (AWMF S3-Leitlinie 021-009)."
+    }
+  },
+  {
+    "id": "nephrotisches-syndrom-1",
+    "difficulty": "klinik",
+    "patientName": "Andreas",
+    "age": 45,
+    "gender": "male",
+    "chiefComplaint": "Meine Augen sind morgens seit Wochen so geschwollen, dass ich kaum gucken kann, und abends sind meine Beine dick wie Baumstämme. Und mein Urin schäumt neuerdings richtig stark.",
+    "history": "45-jähriger Patient stellt sich mit seit ca. 4 Wochen progredienten, morgens betonten periorbitalen Ödemen sowie im Tagesverlauf zunehmenden, abends maximalen beidseitigen Unterschenkelödemen vor. Zusätzlich sei ihm ein ungewöhnlich stark schäumender Urin aufgefallen. Keine Dysurie, keine Makrohämaturie. Auf Nachfrage kein Hautausschlag, keine Gelenkschmerzen, kein Mundgeschwür, keine Photosensibilität. Kein bekannter Diabetes mellitus. Gewichtszunahme von ca. 6 kg innerhalb der letzten 4 Wochen, von ihm selbst zunächst auf die Ödeme zurückgeführt. Keine bekannte Lebererkrankung, kein Alkoholabusus. Keine neuen Medikamente in den letzten Monaten.",
+    "examination": "AZ leicht reduziert, EZ normal (BMI 26 kg/m² inkl. Ödemen). RR 148/92 mmHg, HF 78/min, AF 14/min, Temp. 36,6 °C, SpO2 98 % unter Raumluft.\nKopf: Deutliche periorbitale Ödeme beidseits, v. a. morgens betont.\nAbdomen: Leichte Vorwölbung, diskrete Flankendämpfung vereinbar mit geringem Aszites, keine Hepatosplenomegalie tastbar, keine Spider naevi, kein Palmarerythem.\nExtremitäten: Ausgeprägte, symmetrische, gut eindrückbare ('teigige') Unterschenkel- und Knöchelödeme bis zur Kniehöhe.\nHerz: Herztöne rein, kein Herzgeräusch, keine Halsvenenstauung.\nLunge: Basal diskret abgeschwächtes Atemgeräusch beidseits (vereinbar mit kleinen Pleuraergüssen), keine Rasselgeräusche.\nHaut: Keine Vaskulitiszeichen, kein Schmetterlingserythem.",
+    "labs": [
+      {
+        "category": "Urin & Niere",
+        "values": [
+          {
+            "name": "Protein-Kreatinin-Ratio (Spontanurin)",
+            "value": "5,8",
+            "unit": "g/g",
+            "reference": "< 0,2",
+            "flag": "high"
+          },
+          {
+            "name": "Erythrozytenzylinder im Sediment",
+            "value": "keine nachweisbar",
+            "unit": "",
+            "reference": "keine",
+            "flag": "normal"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "1,1",
+            "unit": "mg/dl",
+            "reference": "0,7–1,2",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie",
+        "values": [
+          {
+            "name": "Albumin",
+            "value": "2,1",
+            "unit": "g/dl",
+            "reference": "3,5–5,2",
+            "flag": "low"
+          },
+          {
+            "name": "Gesamteiweiß",
+            "value": "4,8",
+            "unit": "g/dl",
+            "reference": "6,4–8,3",
+            "flag": "low"
+          },
+          {
+            "name": "LDL-Cholesterin",
+            "value": "245",
+            "unit": "mg/dl",
+            "reference": "< 115",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "Sonographie Nieren: Beidseits normal große Nieren (rechts 11,2 cm, links 11,5 cm) mit regelrechter Parenchym-Pyelon-Differenzierung, keine Harnstauung, keine Konkremente. Geringer Aszites und beidseits kleine Pleuraergüsse basal.",
+    "correctDiagnosis": "Nephrotisches Syndrom (V. a. membranöse Nephropathie)",
+    "diagnosisOptions": [
+      "Nephrotisches Syndrom (V. a. membranöse Nephropathie)",
+      "Nephritisches Syndrom bei rapid-progressiver Glomerulonephritis",
+      "Ödeme bei akut dekompensierter Herzinsuffizienz",
+      "Hepatisch bedingte Ödeme bei Leberzirrhose"
+    ],
+    "keyTakeaway": "Große Proteinurie (>3,5 g/Tag) + Hypalbuminämie + generalisierte Ödeme + Hyperlipidämie (nephrotische Tetrade) ohne Erythrozytenzylinder im Urin = nephrotisches Syndrom — Abgrenzung vom nephritischen Syndrom über das Urin-Sediment, bioptische Abklärung der Grunderkrankung erforderlich.",
+    "differentialNotes": [
+      {
+        "option": "Nephritisches Syndrom bei rapid-progressiver Glomerulonephritis",
+        "whyNot": "Im Urin-Sediment fehlen Erythrozytenzylinder und dysmorphe Erythrozyten, die als Kennzeichen eines nephritischen Sediments für eine (rapid-progressive) Glomerulonephritis sprechen würden. Die im Vordergrund stehende massive Proteinurie mit Hypalbuminämie und Hyperlipidämie ohne Hämaturie oder Kreatininanstieg passt stattdessen zum klassischen nephrotischen Bild."
+      },
+      {
+        "option": "Ödeme bei akut dekompensierter Herzinsuffizienz",
+        "whyNot": "Es fehlen pulmonale Rasselgeräusche, eine gestaute Halsvene sowie eine kardiale Grunderkrankung in der Anamnese; die massive Proteinurie mit Hypalbuminämie (onkotischer Druckabfall) erklärt die Ödembildung hier ausreichend und spezifischer als eine kardiale Ursache."
+      },
+      {
+        "option": "Hepatisch bedingte Ödeme bei Leberzirrhose",
+        "whyNot": "Es fehlen klinische und laborchemische Zirrhosezeichen (keine Spider naevi, kein Palmarerythem, normwertige Leberwerte, keine Gerinnungsstörung) sowie eine entsprechende Anamnese. Das Gesamteiweiß ist zwar erniedrigt, jedoch primär durch den massiven renalen Eiweißverlust und nicht durch eine hepatische Synthesestörung bedingt."
+      }
+    ],
+    "explanation": "Das Fehlen von Erythrozytenzylindern spricht gegen ein nephritisches Geschehen, fehlende kardiale Stauungszeichen gegen eine Herzinsuffizienz, fehlende Zirrhosestigmata gegen eine hepatische Genese der Ödeme. In der Zusammenschau aus ausgeprägter Proteinurie, Hypalbuminämie, generalisierten Ödemen und Hyperlipidämie — der klassischen nephrotischen Tetrade — ohne nephritisches Sediment ergibt sich ein nephrotisches Syndrom, dessen genaue Ursache erst bioptisch zu klären ist.",
+    "sourceNotes": "Definition und diagnostische Tetrade des nephrotischen Syndroms (Proteinurie >3,5 g/Tag, Hypalbuminämie, Ödeme, Hyperlipidämie) sowie Abgrenzung zum nephritischen Sediment nach dem KDIGO 2021 Clinical Practice Guideline for the Management of Glomerular Diseases — internationale Referenzleitlinie, in Deutschland nephrologischer Standard; ein eigenständiges deutsches AWMF-Dokument mit identischen Diagnosekriterien wurde nicht gefunden, ehrlich vermerkt. Häufigste Ursachen des adulten nephrotischen Syndroms (Podozytopathien: Minimal-Change, FSGS, membranöse Nephropathie) ebenfalls aus KDIGO 2021.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Ein unbehandeltes nephrotisches Syndrom erhöht das Risiko für venöse Thromboembolien (u. a. Nierenvenenthrombose) und schwere Infektionen deutlich (KDIGO 2021) — die zugrunde liegende Glomerulopathie muss bioptisch zeitnah abgeklärt werden."
+    }
+  },
+  {
+    "id": "tiefe-beinvenenthrombose-1",
+    "difficulty": "klinik",
+    "patientName": "Christine",
+    "age": 52,
+    "gender": "female",
+    "chiefComplaint": "Mein rechtes Bein ist seit zwei Tagen dick und spannt total, beim Auftreten tut die Wade richtig weh.",
+    "history": "52-jährige Patientin, 2 Wochen nach elektiver Knie-Totalendoprothese rechts, stellt sich mit seit 2 Tagen zunehmender Schwellung und Spannungsgefühl der rechten Wade vor. Die Physiotherapie sei zuletzt schmerzbedingt seltener durchgeführt worden, die Patientin habe sich überwiegend geschont und viel gesessen. Keine Atemnot, kein Thoraxschmerz. Einnahme der verordneten Thromboseprophylaxe (niedermolekulares Heparin) nach eigenen Angaben 'meistens, aber nicht jeden Tag'. Keine bekannte Thrombophilie, keine Thrombose in der Vorgeschichte, keine aktive Tumorerkrankung. Kein Fieber, keine offene Wunde am betroffenen Bein außer der reizlosen OP-Narbe.",
+    "examination": "AZ gut, EZ normal (BMI 27 kg/m²). RR 128/80 mmHg, HF 88/min, AF 15/min, Temp. 37,1 °C, SpO2 98 % unter Raumluft.\nExtremitäten: Rechter Unterschenkel deutlich geschwollen, Umfangsdifferenz zur Gegenseite 4 cm (gemessen 15 cm unterhalb der Tuberositas tibiae), diskrete livide Verfärbung, Überwärmung im Vergleich zur Gegenseite, deutlicher Druckschmerz entlang der tiefen Venenstraße (Wade und Kniekehle), reizlose, trockene OP-Narbe am Knie ohne Hinweis auf lokale Infektion. Homans-Zeichen positiv (schmerzhafte Dorsalextension des Fußes) — unzuverlässiges Zeichen mit geringer diagnostischer Aussagekraft, hier nur ergänzend erhoben.\nLunge: Vesikuläratmen beidseits, keine Rasselgeräusche, keine Dyspnoezeichen.\nHerz: Herztöne rein, keine Tachykardie in Ruhe.",
+    "labs": [
+      {
+        "category": "Gerinnung & Entzündungswerte",
+        "values": [
+          {
+            "name": "D-Dimer",
+            "value": "4100",
+            "unit": "µg/l",
+            "reference": "< 500",
+            "flag": "high"
+          },
+          {
+            "name": "CRP",
+            "value": "14",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "0,8",
+            "unit": "mg/dl",
+            "reference": "0,6–1,1",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Kompressionssonographie der Beinvenen rechts: Fehlende vollständige Komprimierbarkeit der V. poplitea und der V. femoralis superficialis im proximalen Drittel, echoarmes intraluminales Material darstellbar, kein Fluss im Farbdoppler in den betroffenen Segmenten. V. femoralis communis und V. iliaca frei durchgängig. Linke Beinvenen unauffällig komprimierbar.",
+    "correctDiagnosis": "Tiefe Beinvenenthrombose (V. poplitea und V. femoralis superficialis rechts)",
+    "diagnosisOptions": [
+      "Tiefe Beinvenenthrombose (V. poplitea und V. femoralis superficialis rechts)",
+      "Erysipel des rechten Unterschenkels",
+      "Ruptur einer Baker-Zyste",
+      "Postoperatives Lymphödem"
+    ],
+    "keyTakeaway": "Immobilisation/OP-Risikofaktor + einseitige Wadenschwellung mit Druckschmerz (hohe Wells-Score-Wahrscheinlichkeit) + deutlich erhöhtes D-Dimer + fehlende Komprimierbarkeit in der Kompressionssonographie = tiefe Beinvenenthrombose, sofortige Antikoagulation.",
+    "differentialNotes": [
+      {
+        "option": "Erysipel des rechten Unterschenkels",
+        "whyNot": "Gegen ein Erysipel sprechen das Fehlen einer scharf begrenzten, flammenden Rötung mit Fieber sowie eines Entzündungsherds als Eintrittspforte — die Entzündungswerte sind nur postoperativ leicht erhöht, nicht im für ein Erysipel typischen deutlich erhöhten Bereich. Die Kompressionssonographie liefert zudem den direkten Thrombosenachweis."
+      },
+      {
+        "option": "Ruptur einer Baker-Zyste",
+        "whyNot": "Auch wenn die kürzliche Knie-OP eine Baker-Zyste grundsätzlich möglich macht, zeigt die Kompressionssonographie einen echten intraluminalen Thrombus mit fehlender Komprimierbarkeit der tiefen Venen und nicht das für eine rupturierte Zyste typische Bild einer extraluminalen Flüssigkeitsansammlung."
+      },
+      {
+        "option": "Postoperatives Lymphödem",
+        "whyNot": "Ein Lymphödem entwickelt sich in der Regel langsamer über Wochen bis Monate und geht nicht mit einem so deutlichen, lokalisierten Druckschmerz entlang der tiefen Venenstraße einher. Der akute, über 2 Tage progrediente Verlauf nach Immobilisation passt besser zu einer Thrombose, die sonographisch auch direkt bestätigt wird."
+      }
+    ],
+    "explanation": "Fehlende Rötung mit Fieber spricht gegen ein Erysipel, der sonographische Thrombusnachweis gegen eine Baker-Zysten-Ruptur, der akute statt schleichende Verlauf gegen ein Lymphödem. In der Zusammenschau aus relevanten Risikofaktoren (kürzliche Knie-OP, Immobilisation, lückenhafte Thromboseprophylaxe), einseitiger Wadenschwellung mit Druckschmerz, deutlich erhöhtem D-Dimer und dem sonographischen Nachweis einer fehlenden Komprimierbarkeit der tiefen Venen ergibt sich eine tiefe Beinvenenthrombose als Diagnose.",
+    "sourceNotes": "Diagnostik-Algorithmus (klinische Wahrscheinlichkeit nach Wells-Score, D-Dimer-Stufendiagnostik, Kompressionssonographie als Goldstandard-Bildgebung) nach der AWMF-S2k-Leitlinie 'Diagnostik und Therapie der Venenthrombose und der Lungenembolie' (AWMF-Register-Nr. 065-002, Stand 2023). Altersadjustierter D-Dimer-Grenzwert (Alter × 10 µg/l bei Patienten >50 Jahre) ebenfalls aus derselben Leitlinie. Homans-Zeichen als historisch, aber unzuverlässig eingeordnet gemäß allgemeiner phlebologischer Literatur.",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Postoperative Immobilisation nach großen orthopädischen Eingriffen ist einer der stärksten Risikofaktoren für eine tiefe Beinvenenthrombose — deshalb die leitliniengestützte medikamentöse Thromboseprophylaxe (AWMF S2k-Leitlinie 065-002)."
+    }
+  },
+  {
+    "id": "hyperosmolares-hyperglykaemisches-syndrom-1",
+    "difficulty": "klinik",
+    "patientName": "Erika",
+    "age": 78,
+    "gender": "female",
+    "chiefComplaint": "Ich... hab so Durst... schon lange nichts getrunken...",
+    "history": "78-jährige Patientin mit bekanntem Typ-2-Diabetes mellitus (orale Therapie, zuletzt suboptimal eingestellt) wird von einer Nachbarin gefunden, die sie seit 2 Tagen nicht mehr gesehen hatte und zunehmend somnolent im Sessel liegend antraf. Die Nachbarin berichtet, die Patientin lebe allein, habe während der aktuellen Hitzewelle vermutlich zu wenig getrunken, und sei ihr bereits vor 3 Tagen als 'schlapp und durstig' aufgefallen. Kein Erbrechen berichtet. Nach Angaben der Nachbarin keine bekannte Niereninsuffizienz. Keine erkennbare Infektquelle bemerkt, kein Fieber gefühlt.",
+    "examination": "AZ stark reduziert, EZ normal (BMI 24 kg/m²). RR 96/58 mmHg, HF 118/min, AF 20/min, Temp. 37,4 °C, SpO2 96 % unter Raumluft.\nBewusstsein: Somnolent bis soporös (GCS 11), auf Schmerzreiz gezielt abwehrend.\nHaut/Schleimhäute: Ausgeprägte Exsikkosezeichen — stehende Hautfalten, trockene Zunge und Mundschleimhaut, eingesunkene Augäpfel.\nAtmung: Regelmäßig, kein Azetongeruch, keine Kussmaul-Atmung.\nHerz: Herztöne rein, tachykard, kein Herzgeräusch.\nAbdomen: Weich, kein Druckschmerz, spärliche Darmgeräusche.\nNeurologie: Kein fokal-neurologisches Defizit, keine Nackensteifigkeit.",
+    "labs": [
+      {
+        "category": "Glukosestoffwechsel",
+        "values": [
+          {
+            "name": "Blutzucker (venös)",
+            "value": "682",
+            "unit": "mg/dl",
+            "reference": "70–100",
+            "flag": "high"
+          },
+          {
+            "name": "HbA1c",
+            "value": "11,2",
+            "unit": "%",
+            "reference": "< 6,5",
+            "flag": "high"
+          },
+          {
+            "name": "Serumosmolalität (berechnet)",
+            "value": "342",
+            "unit": "mosm/kg",
+            "reference": "280–300",
+            "flag": "high"
+          },
+          {
+            "name": "Ketonkörper im Urin",
+            "value": "Spuren",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "normal"
+          }
+        ]
+      },
+      {
+        "category": "Blutgasanalyse (venös) & Elektrolyte",
+        "values": [
+          {
+            "name": "pH",
+            "value": "7,34",
+            "unit": "",
+            "reference": "7,35–7,45",
+            "flag": "normal"
+          },
+          {
+            "name": "Bikarbonat",
+            "value": "20",
+            "unit": "mmol/l",
+            "reference": "22–26",
+            "flag": "low"
+          },
+          {
+            "name": "Natrium",
+            "value": "152",
+            "unit": "mmol/l",
+            "reference": "135–145",
+            "flag": "high"
+          },
+          {
+            "name": "Kalium",
+            "value": "5,3",
+            "unit": "mmol/l",
+            "reference": "3,5–5,0",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "2,1",
+            "unit": "mg/dl",
+            "reference": "0,6–1,1",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Hyperosmolares hyperglykämisches Syndrom (HHS)",
+    "diagnosisOptions": [
+      "Hyperosmolares hyperglykämisches Syndrom (HHS)",
+      "Diabetische Ketoazidose",
+      "Laktatazidose",
+      "Urämische Enzephalopathie bei chronischer Niereninsuffizienz"
+    ],
+    "keyTakeaway": "Älterer Typ-2-Diabetiker + extreme Exsikkose + Blutzucker >600 mg/dl + Serumosmolalität >320 mosm/kg + fehlende Ketoazidose = hyperosmolares hyperglykämisches Syndrom — Abgrenzung zur DKA über Ketonkörper und pH-Wert.",
+    "differentialNotes": [
+      {
+        "option": "Diabetische Ketoazidose",
+        "whyNot": "Gegen eine diabetische Ketoazidose sprechen die fehlende bis nur gering positive Ketonurie, der annähernd normwertige pH-Wert ohne signifikante metabolische Azidose sowie das Fehlen von Kussmaul-Atmung und Azetongeruch. Die extrem hohe Serumosmolalität bei gleichzeitig fehlender Ketoazidose ist typisch für das HHS, das zudem überwiegend ältere Typ-2-Diabetiker betrifft."
+      },
+      {
+        "option": "Laktatazidose",
+        "whyNot": "Der pH-Wert ist annähernd normwertig ohne Hinweis auf eine ausgeprägte metabolische Azidose, wie sie bei einer Laktatazidose zu erwarten wäre. Die extrem hohe Blutglukose und Serumosmolalität erklären das klinische Bild ausreichend."
+      },
+      {
+        "option": "Urämische Enzephalopathie bei chronischer Niereninsuffizienz",
+        "whyNot": "Der Kreatininanstieg ist hier sekundär durch die ausgeprägte Exsikkose (prärenales Nierenversagen) bedingt und normalisiert sich unter Rehydratation typischerweise rasch — er liegt nicht in dem Bereich, der für sich genommen eine urämische Enzephalopathie erklären würde. Die extreme Hyperglykämie mit Hyperosmolalität ist die führende, die Vigilanzminderung erklärende Störung."
+      }
+    ],
+    "explanation": "Fehlende Ketose und normwertiger pH sprechen gegen eine DKA, unauffälliges Laktat gegen eine Laktatazidose, der nur mäßige, exsikkosebedingte Kreatininanstieg gegen eine primär urämische Genese. In der Zusammenschau aus höherem Alter, bekanntem Typ-2-Diabetes, ausgeprägter Exsikkose, extrem hoher Blutglukose, stark erhöhter Serumosmolalität und fehlender signifikanter Ketoazidose ergibt sich ein hyperosmolares hyperglykämisches Syndrom als Diagnose — vorsichtige, primär isotone Rehydratation als Therapiepriorität vor Insulingabe.",
+    "sourceNotes": "Diagnosekriterien (Plasmaglukose >600 mg/dl, Serumosmolalität >320 mosm/kg, fehlende signifikante Ketoazidose, pH meist >7,3) konsistent aus mehreren unabhängigen Quellen gegengeprüft (Deximed, GPnotebook, MSD Manual Profi-Ausgabe) sowie mit den internationalen ADA-Konsensuskriterien übereinstimmend; ein eigenständiges deutsches AWMF-Dokument speziell zu HHS-Diagnosekriterien wurde nicht gefunden, ehrlich vermerkt. Abgrenzung zur DKA (Ketose/Azidose vs. reine Hyperosmolalität) durchgängig in allen genannten Quellen übereinstimmend beschrieben.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Das HHS betrifft überwiegend ältere Typ-2-Diabetiker und hat mit bis zu 20 % eine deutlich höhere Letalität als die diabetische Ketoazidose — Risikofaktor v. a. unzureichende Flüssigkeitsaufnahme bei alleinlebenden älteren Menschen (z. B. während Hitzewellen)."
+    }
+  },
+  {
+    "id": "addison-krise-1",
+    "difficulty": "klinik",
+    "patientName": "Julia",
+    "age": 34,
+    "gender": "female",
+    "chiefComplaint": "Mir ist seit gestern so übel, ich musste mehrfach erbrechen, und mir ist total schwindelig, wenn ich aufstehe. Meine Haut ist doch schon länger komisch dunkel, aber das hat noch nie so gemacht.",
+    "history": "34-jährige Patientin mit bekanntem Morbus Addison (Erstdiagnose vor 3 Jahren, seither Substitution mit Hydrocortison und Fludrocortison) stellt sich mit seit gestern bestehender Übelkeit mit mehrfachem Erbrechen, diffusen Bauchschmerzen sowie ausgeprägtem Schwindel beim Aufstehen vor. Auf Nachfrage seit vorgestern grippeähnliche Symptome mit leichtem Fieber und Durchfall (vermutlich Gastroenteritis), weshalb sie durch das wiederholte Erbrechen ihre Hydrocortison-Tabletten seit gestern nicht mehr habe bei sich behalten können — eine Stressdosis-Anpassung sei ihr nicht bekannt gewesen. Zunehmende Schwäche und Verwirrtheit im Tagesverlauf. Bekannte Hyperpigmentierung der Haut seit Erstdiagnose, aktuell nach eigener Einschätzung nicht deutlich verstärkt.",
+    "examination": "AZ deutlich reduziert, EZ normal (BMI 21 kg/m²). RR 82/54 mmHg (im Liegen), deutlicher orthostatischer Abfall, HF 122/min, AF 22/min, Temp. 37,8 °C, SpO2 97 % unter Raumluft.\nHaut: Deutliche Hyperpigmentierung der Handlinien, Mamillen, Narben und Mundschleimhaut.\nAbdomen: Diffuser Druckschmerz ohne Abwehrspannung, keine Peritonismuszeichen, lebhafte Darmgeräusche.\nHerz: Herztöne rein, tachykard, kein Herzgeräusch, keine Halsvenenstauung (eher kollabiert).\nLunge: Vesikuläratmen beidseits, unauffällig.\nNeurologie: Wach, aber verlangsamt und zeitlich unscharf orientiert, kein fokal-neurologisches Defizit.",
+    "labs": [
+      {
+        "category": "Elektrolyte & Glukose",
+        "values": [
+          {
+            "name": "Natrium",
+            "value": "126",
+            "unit": "mmol/l",
+            "reference": "135–145",
+            "flag": "low"
+          },
+          {
+            "name": "Kalium",
+            "value": "6,1",
+            "unit": "mmol/l",
+            "reference": "3,5–5,0",
+            "flag": "high"
+          },
+          {
+            "name": "Blutzucker",
+            "value": "58",
+            "unit": "mg/dl",
+            "reference": "70–100",
+            "flag": "low"
+          }
+        ]
+      },
+      {
+        "category": "Hormone & Entzündungswerte",
+        "values": [
+          {
+            "name": "Kortisol (Zufallswert)",
+            "value": "2,1",
+            "unit": "µg/dl",
+            "reference": "5–25",
+            "flag": "low"
+          },
+          {
+            "name": "ACTH",
+            "value": "620",
+            "unit": "pg/ml",
+            "reference": "10–60",
+            "flag": "high"
+          },
+          {
+            "name": "CRP",
+            "value": "22",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "1,3",
+            "unit": "mg/dl",
+            "reference": "0,6–1,1",
+            "flag": "high"
+          }
+        ]
+      }
+    ],
+    "imaging": "",
+    "correctDiagnosis": "Addison-Krise (akute Exazerbation bei bekannter primärer Nebenniereninsuffizienz)",
+    "diagnosisOptions": [
+      "Addison-Krise (akute Exazerbation bei bekannter primärer Nebenniereninsuffizienz)",
+      "Septischer Schock bei Gastroenteritis",
+      "Hypoglykämie anderer Ursache",
+      "Akutes Abdomen bei Appendizitis"
+    ],
+    "keyTakeaway": "Bekannter M. Addison + Stresstrigger (hier Gastroenteritis mit Erbrechen der Hydrocortison-Dosis) + Hypotonie/Schock + Hyponatriämie mit Hyperkaliämie + Hyperpigmentierung = Addison-Krise — bei Verdacht sofort Hydrocortison geben, nicht auf die vollständige Diagnostik warten.",
+    "differentialNotes": [
+      {
+        "option": "Septischer Schock bei Gastroenteritis",
+        "whyNot": "Gegen einen primär septischen Schock sprechen die nur leicht erhöhten Entzündungswerte ohne hohes Fieber sowie das Fehlen eines eindeutigen septischen Fokus — die Kombination aus Hyponatriämie und Hyperkaliämie zusammen mit der bekannten Hyperpigmentierung ist hochspezifisch für eine primäre Nebenniereninsuffizienz und wird durch eine unkomplizierte Sepsis allein nicht erklärt. Die Gastroenteritis fungiert hier lediglich als Stresstrigger für die Krise."
+      },
+      {
+        "option": "Hypoglykämie anderer Ursache",
+        "whyNot": "Die Hypoglykämie tritt hier im Rahmen des Kortisolmangels auf (Kortisol fördert die Glukoneogenese) und ist von der begleitenden Elektrolytstörung sowie der ausgeprägten Hypotonie begleitet — eine isolierte Hypoglykämie anderer Genese würde diese Kombination nicht erklären."
+      },
+      {
+        "option": "Akutes Abdomen bei Appendizitis",
+        "whyNot": "Der Bauchschmerz ist diffus und nicht in die rechte Fossa iliaca lokalisiert, es fehlen Loslassschmerz, Abwehrspannung und ein für eine Appendizitis typisches Fieberausmaß. Die pseudoperitonitischen Bauchschmerzen sind ein bekanntes, durch die Glukokortikoidkrise selbst bedingtes Symptom und bilden sich unter Hydrocortison-Substitution rasch zurück."
+      }
+    ],
+    "explanation": "Die spezifische Elektrolytkombination aus Hyponatriämie und Hyperkaliämie zusammen mit der Hyperpigmentierung sprechen gegen eine unkomplizierte Sepsis, die Hypoglykämie ist durch den Kortisolmangel gut erklärt, der diffuse Bauchschmerz ohne Peritonismus spricht gegen eine Appendizitis. In der Zusammenschau aus bekanntem Morbus Addison, einem klar identifizierbaren Stresstrigger, Schocksymptomatik, Hyponatriämie mit Hyperkaliämie, Hypoglykämie sowie erniedrigtem Kortisol bei stark erhöhtem ACTH ergibt sich eine Addison-Krise als Diagnose.",
+    "sourceNotes": "Diagnostische Trias (Hyponatriämie + Hyperkaliämie + Hypoglykämie) sowie ACTH-Kortisol-Konstellation (ACTH stark erhöht bei erniedrigtem Kortisol als Hinweis auf primäre Nebenniereninsuffizienz) konsistent aus MSD Manual Profi-Ausgabe und internisten-im-netz.de gegengeprüft; ein eigenständiges deutsches AWMF-Leitliniendokument speziell zur Addison-Krise wurde nicht gefunden, ehrlich vermerkt — Diagnostik und Sofortmanagement folgen dem allgemeinen endokrinologischen Konsens ('Behandeln vor vollständiger Diagnostik'). Stresstrigger-Konzept allgemein endokrinologisch etabliert.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Die Addison-Krise ist ein akut lebensbedrohlicher endokrinologischer Notfall — häufigster Auslöser ist eine fehlende Stressdosis-Anpassung der Glukokortikoid-Substitution bei interkurrenter Erkrankung."
+    }
+  },
+  {
+    "id": "akute-myeloische-leukaemie-1",
+    "difficulty": "klinik",
+    "patientName": "Peter",
+    "age": 61,
+    "gender": "male",
+    "chiefComplaint": "Ich bin seit Wochen einfach nur noch müde und schlapp, und jetzt hab ich ständig blaue Flecken, ohne mich zu stoßen. Beim Zähneputzen blutet auch ständig das Zahnfleisch.",
+    "history": "61-jähriger Patient stellt sich mit seit ca. 4 Wochen zunehmender Abgeschlagenheit und Belastungsdyspnoe vor. Zusätzlich seien ihm in den letzten 2 Wochen spontane Hämatome ohne adäquates Trauma sowie rezidivierendes Zahnfleischbluten beim Zähneputzen aufgefallen. Seit einer Woche wiederkehrendes Fieber bis 38,5 °C ohne erkennbaren Infektfokus, aktuell zusätzlich schmerzhafte Aphthen im Mund. Ungewollter Gewichtsverlust von ca. 4 kg in den letzten 6 Wochen sowie Nachtschweiß. Keine bekannte Blutgerinnungsstörung, keine Einnahme gerinnungshemmender Medikamente. Kein bekannter Alkoholabusus, keine bekannte Lebererkrankung.",
+    "examination": "AZ deutlich reduziert, EZ normal (BMI 24 kg/m²). RR 118/74 mmHg, HF 102/min, AF 18/min, Temp. 38,3 °C, SpO2 97 % unter Raumluft.\nHaut: Ausgeprägte Blässe, multiple, unterschiedlich alte Hämatome an Armen und Beinen ohne adäquates Trauma, petechiale Einblutungen an den Unterschenkeln.\nMund: Gingivahyperplasie mit spontaner Blutungsneigung, mehrere schmerzhafte Aphthen der Mundschleimhaut.\nAbdomen: Milz ca. 3 cm unter dem Rippenbogen tastbar (mäßige Splenomegalie), Leber nicht vergrößert tastbar, keine Abwehrspannung.\nLymphknoten: Keine relevante Lymphadenopathie zervikal, axillär oder inguinal tastbar.\nSkelett: Deutlicher Klopfschmerz über dem Sternum.\nNeurologie: Unauffällig, kein Meningismus.",
+    "labs": [
+      {
+        "category": "Blutbild",
+        "values": [
+          {
+            "name": "Hämoglobin",
+            "value": "7,8",
+            "unit": "g/dl",
+            "reference": "13,5–17,5",
+            "flag": "low"
+          },
+          {
+            "name": "Thrombozyten",
+            "value": "22.000",
+            "unit": "/µl",
+            "reference": "150.000–400.000",
+            "flag": "low"
+          },
+          {
+            "name": "Leukozyten",
+            "value": "3.100",
+            "unit": "/µl",
+            "reference": "4.000–10.000",
+            "flag": "low"
+          },
+          {
+            "name": "Blasten im Differentialblutbild",
+            "value": "34",
+            "unit": "%",
+            "reference": "0",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Klinische Chemie & Gerinnung",
+        "values": [
+          {
+            "name": "LDH",
+            "value": "680",
+            "unit": "U/l",
+            "reference": "< 250",
+            "flag": "high"
+          },
+          {
+            "name": "Harnsäure",
+            "value": "9,8",
+            "unit": "mg/dl",
+            "reference": "< 7,0",
+            "flag": "high"
+          },
+          {
+            "name": "Kreatinin",
+            "value": "0,9",
+            "unit": "mg/dl",
+            "reference": "0,7–1,2",
+            "flag": "normal"
+          },
+          {
+            "name": "Fibrinogen",
+            "value": "320",
+            "unit": "mg/dl",
+            "reference": "180–350",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Knochenmarkzytologie/-histologie (Beckenkammpunktion): Hyperzelluläres Mark mit 68 % myeloischen Blasten, vereinzelt Auer-Stäbchen nachweisbar, deutlich verdrängte normale Hämatopoese. Durchflusszytometrie und molekulargenetische Aufarbeitung zur WHO-2022-Klassifikation eingeleitet.",
+    "correctDiagnosis": "Akute myeloische Leukämie (AML), Erstdiagnose",
+    "diagnosisOptions": [
+      "Akute myeloische Leukämie (AML), Erstdiagnose",
+      "Aplastische Anämie",
+      "Immunthrombozytopenie (ITP)",
+      "Virusassoziierte reaktive Panzytopenie (z. B. EBV)"
+    ],
+    "keyTakeaway": "B-Symptomatik + Blutungsneigung + Panzytopenie mit ≥20 % Blasten im Blutausstrich/Knochenmark (WHO-Kriterium), ggf. Auer-Stäbchen = akute myeloische Leukämie, bis zum Beweis des Gegenteils — sofortige hämatologische Vorstellung.",
+    "differentialNotes": [
+      {
+        "option": "Aplastische Anämie",
+        "whyNot": "Bei einer aplastischen Anämie wäre das Knochenmark hypozellulär und leer ('leeres Mark'), hier zeigt sich jedoch ein hyperzelluläres Mark mit massiv erhöhtem Blastenanteil (68 %) und Auer-Stäbchen-Nachweis — beides beweisend gegen eine Aplasie und für eine floride leukämische Infiltration."
+      },
+      {
+        "option": "Immunthrombozytopenie (ITP)",
+        "whyNot": "Eine Immunthrombozytopenie erklärt allein die Thrombozytopenie, nicht aber die begleitende Anämie, Leukopenie mit Blastennachweis oder das systemische B-Symptom-Bild. Die Panzytopenie mit Blasten im Blutausstrich schließt eine isolierte ITP aus."
+      },
+      {
+        "option": "Virusassoziierte reaktive Panzytopenie (z. B. EBV)",
+        "whyNot": "Es fehlt eine relevante Lymphadenopathie, wie sie bei einer EBV-Infektion typisch wäre, und der periphere Blutausstrich zeigt keine atypischen Lymphozyten, sondern myeloische Blasten mit Auer-Stäbchen — ein Befund, der bei einer reaktiven viralen Genese nicht zu erwarten und beweisend für eine akute Leukämie ist."
+      }
+    ],
+    "explanation": "Das hyperzelluläre statt aplastische Knochenmark spricht gegen eine aplastische Anämie, die begleitende Anämie und Leukopenie mit Blastennachweis gegen eine isolierte ITP, das Fehlen von Lymphadenopathie und atypischen Lymphozyten gegen eine EBV-assoziierte Genese. In der Zusammenschau aus B-Symptomatik, Blutungsneigung durch Thrombozytopenie, Panzytopenie mit ≥20 % Blasten im peripheren Blutausstrich sowie dem Nachweis von Auer-Stäbchen in der Knochenmarkzytologie ergibt sich eine akute myeloische Leukämie als Erstdiagnose.",
+    "sourceNotes": "Diagnosekriterien (Blastenanteil ≥20 % im peripheren Blut, Knochenmark oder Nachweis AML-definierender genetischer Alterationen unabhängig vom Blastenanteil) nach der WHO-Klassifikation 2022 und der DGHO-Onkopedia-Leitlinie 'Akute Myeloische Leukämie (AML)' (aktualisiert 2023). Auer-Stäbchen als klassisches morphologisches Korrelat myeloischer Blasten aus derselben Quelle.",
+    "caseContext": {
+      "category": "cannot-miss",
+      "note": "Die AML ist ein hämatologischer Notfall mit rascher Progredienz — unbehandelt führt die Verdrängung der normalen Hämatopoese innerhalb von Wochen zu lebensbedrohlichen Blutungen und Infektionen (DGHO Onkopedia)."
+    }
+  },
+  {
+    "id": "rheumatoide-arthritis-frueherkennung-1",
+    "difficulty": "klinik",
+    "patientName": "Martina",
+    "age": 47,
+    "gender": "female",
+    "chiefComplaint": "Meine Finger sind seit Wochen morgens so steif, dass ich kaum eine Faust machen kann, das dauert oft über eine Stunde bis es besser wird. Und mittlerweile schwellen auch beide Hände symmetrisch an.",
+    "history": "47-jährige Patientin stellt sich mit seit ca. 8 Wochen bestehenden, symmetrischen Schwellungen und Schmerzen der Fingergrund- und Fingermittelgelenke beidseits vor. Ausgeprägte Morgensteifigkeit von über einer Stunde Dauer, die sich im Tagesverlauf bessert. Zunehmende Kraftminderung beim Faustschluss. Auf Nachfrage keine vorausgegangene Darm- oder Harnwegsinfektion in den Wochen zuvor, kein Hautausschlag, keine Nagelveränderungen, keine Rückenschmerzen. Keine familiäre Häufung von Schuppenflechte bekannt. Kein Fieber. Leichte allgemeine Abgeschlagenheit seit Beschwerdebeginn.",
+    "examination": "AZ leicht reduziert, EZ normal (BMI 25 kg/m²). RR 122/78 mmHg, HF 76/min, AF 14/min, Temp. 36,7 °C, SpO2 99 % unter Raumluft.\nHände: Symmetrische, teigige Schwellung und Druckschmerzhaftigkeit der Grundgelenke (MCP II–IV) und Mittelgelenke (PIP) beidseits, positiver Gaenslen-Handgriff, eingeschränkter, schmerzhafter Faustschluss beidseits.\nHaut: Keine psoriatischen Plaques, keine Tüpfelnägel, keine Onycholyse.\nWirbelsäule/Iliosakralgelenke: Kein Klopf- oder Stauchungsschmerz, freie Beweglichkeit.\nAugen: Keine Rötung, keine Photophobie.\nHerz/Lunge: Unauffällig.",
+    "labs": [
+      {
+        "category": "Entzündungswerte",
+        "values": [
+          {
+            "name": "CRP",
+            "value": "24",
+            "unit": "mg/l",
+            "reference": "< 5",
+            "flag": "high"
+          },
+          {
+            "name": "BSG",
+            "value": "38",
+            "unit": "mm/h",
+            "reference": "< 20",
+            "flag": "high"
+          }
+        ]
+      },
+      {
+        "category": "Serologie",
+        "values": [
+          {
+            "name": "Rheumafaktor",
+            "value": "68",
+            "unit": "IU/ml",
+            "reference": "< 14",
+            "flag": "high"
+          },
+          {
+            "name": "Anti-CCP-Antikörper (ACPA)",
+            "value": "210",
+            "unit": "U/ml",
+            "reference": "< 17",
+            "flag": "high"
+          },
+          {
+            "name": "ANA",
+            "value": "negativ",
+            "unit": "",
+            "reference": "negativ",
+            "flag": "normal"
+          },
+          {
+            "name": "Harnsäure",
+            "value": "4,1",
+            "unit": "mg/dl",
+            "reference": "2,4–5,7",
+            "flag": "normal"
+          }
+        ]
+      }
+    ],
+    "imaging": "Gelenksonographie beider Hände: Verdickte, hypoechogene Synovialis der MCP-II/III- und mehrerer PIP-Gelenke beidseits mit deutlich vermehrter Vaskularisation im Power-Doppler (aktive Synovitis), kein Erguss-dominantes Bild. Konventionelles Röntgen beider Hände: noch keine Erosionen oder gelenknahe Osteoporose nachweisbar (typisch für das Frühstadium).",
+    "correctDiagnosis": "Rheumatoide Arthritis (Früh-/Erstmanifestation)",
+    "diagnosisOptions": [
+      "Rheumatoide Arthritis (Früh-/Erstmanifestation)",
+      "Psoriasisarthritis",
+      "Reaktive Arthritis",
+      "Aktivierte Polyarthrose der Fingergelenke"
+    ],
+    "keyTakeaway": "Symmetrische MCP-/PIP-Polyarthritis + Morgensteifigkeit >60 Minuten + positives Anti-CCP/Rheumafaktor + sonographischer Synovitis-Nachweis (ACR/EULAR-2010-Kriterien ≥6 Punkte) = rheumatoide Arthritis — frühe Diagnose entscheidend für den Therapiebeginn.",
+    "differentialNotes": [
+      {
+        "option": "Psoriasisarthritis",
+        "whyNot": "Es fehlen jegliche Hautveränderungen im Sinne einer Psoriasis sowie typische Nagelzeichen (Tüpfelnägel, Onycholyse), und der DIP-Befall, der für eine Psoriasisarthritis charakteristisch wäre, ist hier nicht vorhanden — stattdessen liegt ein für die rheumatoide Arthritis typisches Befallsmuster der MCP-/PIP-Gelenke vor."
+      },
+      {
+        "option": "Reaktive Arthritis",
+        "whyNot": "Es fehlt eine vorausgegangene Darm- oder Urogenitalinfektion in den Wochen vor Symptombeginn, und eine reaktive Arthritis betrifft meist asymmetrisch die großen Gelenke der unteren Extremität statt symmetrisch die kleinen Fingergelenke. Die stark positive Serologie passt zudem nicht zur reaktiven Arthritis, die üblicherweise seronegativ verläuft."
+      },
+      {
+        "option": "Aktivierte Polyarthrose der Fingergelenke",
+        "whyNot": "Bei einer Polyarthrose wären eher die Fingerendgelenke (DIP, Heberden-Knoten) betroffen statt der Grund- und Mittelgelenke, die Morgensteifigkeit dauert typischerweise nur wenige Minuten statt über eine Stunde, und Rheumafaktor sowie Anti-CCP wären negativ. Die sonographisch nachgewiesene floride Synovitis mit positiver Serologie spricht eindeutig für ein entzündliches statt degeneratives Geschehen."
+      }
+    ],
+    "explanation": "Fehlende Haut- und Nagelveränderungen sprechen gegen eine Psoriasisarthritis, die fehlende vorausgegangene Infektion und die seropositive Konstellation gegen eine reaktive Arthritis, das untypische Gelenkbefallsmuster und die lange Morgensteifigkeit gegen eine Polyarthrose. In der Zusammenschau aus symmetrischer MCP-/PIP-Polyarthritis, Morgensteifigkeit über eine Stunde, positivem Rheumafaktor und stark positivem Anti-CCP sowie dem sonographischen Nachweis einer aktiven Synovitis ergibt sich eine rheumatoide Arthritis als Diagnose.",
+    "sourceNotes": "Klassifikationskriterien (Gelenkbefall, Serologie, Akute-Phase-Reaktanten, Symptomdauer, Schwellenwert ≥6 Punkte für gesicherte RA) nach den ACR/EULAR-2010-Klassifikationskriterien für rheumatoide Arthritis (Aletaha et al., Arthritis Rheum 2010).",
+    "caseContext": {
+      "category": "haeufig",
+      "note": "Die rheumatoide Arthritis ist mit einer Prävalenz von ca. 0,5–1 % in der erwachsenen Bevölkerung die häufigste entzündlich-rheumatische Gelenkerkrankung — frühzeitige Diagnose im 'window of opportunity' verbessert die Langzeitprognose deutlich (ACR/EULAR 2010)."
+    }
   }
 ]

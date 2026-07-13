@@ -132,7 +132,7 @@ export default function QAPage() {
                   </SectionLabel>
                   <p className="text-sm leading-relaxed text-muted">
                     Drei Schwierigkeitsstufen — Vorklinik, Klinik und Examen/PJ — mit aktuell
-                    56 Fällen insgesamt (15 Vorklinik, 26 Klinik/Innere, 15 Examen/PJ).
+                    70 Fällen insgesamt (15 Vorklinik, 40 Klinik/Innere, 15 Examen/PJ).
                   </p>
                 </section>
               </div>

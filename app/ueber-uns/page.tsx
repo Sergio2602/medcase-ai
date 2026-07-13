@@ -325,8 +325,8 @@ export default function UeberUnsPage() {
 
                 <div className="mb-4 rounded-lg border-[1.5px] border-accent/25 bg-[#ecf0f9] p-4">
                   <p className="text-sm font-semibold text-accent">
-                    <span className="text-xl font-extrabold">29</span> von 56 quellenbasierten Fällen (rund
-                    52 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
+                    <span className="text-xl font-extrabold">38</span> von 70 quellenbasierten Fällen (rund
+                    54 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
                   </p>
                 </div>
 
@@ -362,6 +362,15 @@ export default function UeberUnsPage() {
                     "Kolonkarzinom bei Eisenmangelanämie",
                     "Akute Appendizitis (Hausarzt-Erstpräsentation)",
                     "Instabile Angina pectoris (Hausarztpraxis)",
+                    "Perikardtamponade (maligner Perikarderguss)",
+                    "Infektiöse Endokarditis (Trikuspidalklappe)",
+                    "Primärer Spontanpneumothorax",
+                    "Dekompensierte Leberzirrhose mit hepatischer Enzephalopathie",
+                    "Akute Cholangitis",
+                    "Nephrotisches Syndrom",
+                    "Hyperosmolares hyperglykämisches Syndrom (HHS)",
+                    "Addison-Krise",
+                    "Akute myeloische Leukämie (AML)",
                   ].map((d) => (
                     <span
                       key={d}
@@ -402,7 +411,7 @@ export default function UeberUnsPage() {
                     </p>
                   </div>
                   <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
-                    <p className="text-2xl font-extrabold text-[#15803d]">26</p>
+                    <p className="text-2xl font-extrabold text-[#15803d]">40</p>
                     <p className="text-xs font-semibold text-[#15803d]">Klinik/Innere-Fälle</p>
                     <p className="mt-1 text-[11px] leading-snug text-[#15803d]/80">
                       Vollständig quellenbasiert, mit individuellen Quellenangaben pro Fall.
@@ -419,7 +428,7 @@ export default function UeberUnsPage() {
                 </div>
 
                 <p className="mb-2 text-[13px] leading-relaxed text-muted">
-                  Alle 56 Fälle (Vorklinik + Klinik/Innere + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
+                  Alle 70 Fälle (Vorklinik + Klinik/Innere + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
                   Fall enthält zusätzlich:
                 </p>
                 <ul className="mb-3 flex flex-col gap-1.5 text-[13px] leading-relaxed text-muted">

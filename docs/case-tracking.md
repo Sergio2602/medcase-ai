@@ -222,27 +222,58 @@ Urteil die Grundlage, nicht eine vollständige IMPP-Krankheitsliste.
 | `eisenmangelanaemie-1` | Eisenmangelanämie bei okkultem GI-Blutverlust | Hämatologie | Häufig + DDx-tauglich | ✅ quellenbasiert erstellt | 2026-07-09 |
 | `riesenzellarteriitis-1` | Riesenzellarteriitis (Arteriitis temporalis) | Rheumatologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt | 2026-07-09 |
 | `adhf-1` | Akut dekompensierte Herzinsuffizienz | Kardiologie | Häufig + DDx-tauglich | ✅ quellenbasiert erstellt (Extra-Fall) | 2026-07-09 |
+| `perikardtamponade-1` | Perikardtamponade bei malignem Perikarderguss | Kardiologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `vorhofflimmern-1` | Vorhofflimmern mit tachykarder Überleitung (Erstdiagnose) | Kardiologie | Häufig + DDx-tauglich | ✅ quellenbasiert erstellt | 2026-07-13 |
+| `infektioese-endokarditis-1` | Infektiöse Endokarditis der Trikuspidalklappe bei i.v. Drogenabusus | Kardiologie/Infektiologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `copd-exazerbation-globalinsuffizienz-1` | Akute Exazerbation der COPD mit respiratorischer Globalinsuffizienz | Pneumologie | Häufig + DDx-tauglich | ✅ quellenbasiert erstellt (mittel-schwierig) | 2026-07-13 |
+| `spontanpneumothorax-1` | Primärer Spontanpneumothorax | Pneumologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt | 2026-07-13 |
+| `leberzirrhose-hepatische-enzephalopathie-1` | Dekompensierte Leberzirrhose mit hepatischer Enzephalopathie | Gastroenterologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `akute-cholangitis-1` | Akute Cholangitis bei Choledocholithiasis | Gastroenterologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `colitis-ulcerosa-erstmanifestation-1` | Colitis ulcerosa (Erstmanifestation) | Gastroenterologie | Häufig + DDx-tauglich | ✅ quellenbasiert erstellt | 2026-07-13 |
+| `nephrotisches-syndrom-1` | Nephrotisches Syndrom (V. a. membranöse Nephropathie) | Nephrologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `tiefe-beinvenenthrombose-1` | Tiefe Beinvenenthrombose | Nephrologie/Angiologie | Häufig + DDx-tauglich | ✅ quellenbasiert erstellt | 2026-07-13 |
+| `hyperosmolares-hyperglykaemisches-syndrom-1` | Hyperosmolares hyperglykämisches Syndrom (HHS) | Endokrinologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `addison-krise-1` | Addison-Krise (primäre NNR-Insuffizienz) | Endokrinologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `akute-myeloische-leukaemie-1` | Akute myeloische Leukämie (AML), Erstdiagnose | Hämatologie/Onkologie | Cannot-miss + DDx-tauglich | ✅ quellenbasiert erstellt (schwierig) | 2026-07-13 |
+| `rheumatoide-arthritis-frueherkennung-1` | Rheumatoide Arthritis (Früh-/Erstmanifestation) | Rheumatologie | Häufig + DDx-tauglich | ✅ quellenbasiert erstellt | 2026-07-13 |
+
+**Hinweis zur Abgrenzung von Allgemeinmedizin:** Zwischen `adhf-1` und
+`perikardtamponade-1` liegen in `innere.json` physisch 15 Allgemeinmedizin-
+Fälle (siehe `docs/allgemeinmedizin-case-tracking.md`, 2026-07-11 hinzugefügt,
+Hausarzt-/Famulatur-Perspektive). Die 14 Fälle ab `perikardtamponade-1` sind
+bewusst wieder klassische Innere-Subspezialitäten-Fälle (Klinik-/Stations-
+Perspektive statt Hausarztpraxis) — Nutzer-Zählung: 11 ursprüngliche Innere-
+Fälle + 14 neue = 25 "Innere" Fälle, plus separat 15 Allgemeinmedizin-Fälle,
+alle technisch im selben `innere.json`-Pool. Diese Erweiterung enthält
+bewusst mehrere schwierige/seltene Cannot-miss-Fälle (Perikardtamponade,
+Endokarditis, hepatische Enzephalopathie, Cholangitis, nephrotisches
+Syndrom, HHS, Addison-Krise, AML) statt nur lehrbuchhafter Standardfälle —
+auf expliziten Wunsch, um das Schwierigkeitsspektrum zu verbreitern.
 
 ## Abdeckungs-Matrix (Organsystem × Kategorie)
 
 Ziel: relative Gewichtung nach IMPP-Blueprint (Kardio > Pneumo≈Gastro≈Nephro >
-Endokrin > Hämato/Immun), nicht Gleichverteilung über alle Systeme.
+Endokrin > Hämato/Immun), nicht Gleichverteilung über alle Systeme. Zählt nur
+die 25 "Innere"-Fälle (11 ursprüngliche + 14 neue), nicht die 15
+Allgemeinmedizin-Fälle (eigene Matrix in
+`docs/allgemeinmedizin-case-tracking.md`).
 
 | Organsystem | IMPP-Zielanteil (relativ) | Häufig | Cannot-miss | DDx-tauglich abgedeckt |
 |---|---|---|---|---|
-| Kardiologie | hoch (10–20 %) | 2 | 1 | 3 |
-| Pneumologie | mittel-hoch (5–15 %) | 1 | 1 | 2 |
-| Gastroenterologie | mittel-hoch (5–15 %) | 1 | 1 | 2 |
-| Nephrologie | mittel-hoch (5–15 %) | 1 | 0 | 1 |
-| Endokrinologie/Stoffwechsel | mittel (5–10 %) | 0 | 1 | 1 |
-| Hämatologie/Immunologie | mittel-niedrig (2–10 %) | 1 | 0 | 1 |
-| Rheumatologie | unklar (Anteil an Muskuloskelettal 10–15 % nicht trennscharf) | 0 | 1 | 1 |
+| Kardiologie | hoch (10–20 %) | 3 | 3 | 6 |
+| Pneumologie | mittel-hoch (5–15 %) | 2 | 2 | 4 |
+| Gastroenterologie | mittel-hoch (5–15 %) | 2 | 3 | 5 |
+| Nephrologie/Angiologie | mittel-hoch (5–15 %) | 2 | 1 | 3 |
+| Endokrinologie/Stoffwechsel | mittel (5–10 %) | 0 | 3 | 3 |
+| Hämatologie/Onkologie | mittel-niedrig (2–10 %) | 1 | 1 | 2 |
+| Rheumatologie | unklar (Anteil an Muskuloskelettal 10–15 % nicht trennscharf) | 1 | 1 | 2 |
 
-**Alle 11 geplanten Fälle sind erstellt (Stand 2026-07-09).** Pilot-Batch
-abgeschlossen — Erweiterung über die kommenden Wochen/Monate folgt der
-gleichen Methode (Abschnitt 1–7), nächste Kandidaten werden nach Bedarf neu
-nach Blueprint-Lücken ausgewählt (aktuell am dünnsten: Endokrinologie und
-Hämatologie/Immunologie mit je 1 Fall).
+**Alle 25 geplanten Innere-Fälle sind erstellt (Stand 2026-07-13).** Zweiter
+Batch (14 Fälle, davon 8 cannot-miss/schwierig) abgeschlossen — deckt zuvor
+dünne Bereiche (Endokrinologie, Hämatologie, Rheumatologie, Nephrologie) ab
+und ergänzt Kardiologie/Pneumologie/Gastroenterologie um komplexere,
+seltenere Präsentationen. Weitere Erweiterung folgt bei Bedarf der gleichen
+Methode (Abschnitt 1–7).
 
 ## Nächste Kandidaten — überarbeiteter Vorschlag (noch nicht erstellt, zur Freigabe)
 

@@ -822,77 +822,86 @@ const DISCIPLINES: { id: Discipline; label: string; locked: boolean }[] = [
   { id: "anaesthesiologie", label: "Anästhesiologie", locked: true },
 ];
 
+// Niveau-Karte für das Auswahl-Modal. Spalten-tauglich (h-full, vertikaler
+// Aufbau), damit drei Karten nebeneinander gleich hoch stehen. Ausgewählt =
+// weiche Akzent-Tönung + Rahmen + Häkchen (nicht vollflächig blau — ein
+// vorausgewählter Default soll nicht wie die einzige Option wirken).
 function BereichCard({
   id,
   icon,
   title,
-  badge,
   description,
   selected,
-  collapsed,
+  preselected,
   onSelect,
 }: {
   id: Difficulty;
   icon: string;
   title: string;
-  badge?: string;
   description: string;
   selected: boolean;
-  collapsed: boolean;
+  preselected: boolean;
   onSelect: (id: Difficulty) => void;
 }) {
-  if (collapsed) {
-    return (
-      <button
-        onClick={() => onSelect(id)}
-        className="flex w-full items-center gap-3 rounded-xl border-[1.5px] border-card-border/20 px-4 py-2.5 text-left transition-colors hover:border-accent"
-      >
-        <i className={`${icon} text-muted`} />
-        <span className="font-semibold">{title}</span>
-      </button>
-    );
-  }
-
   return (
     <button
       onClick={() => onSelect(id)}
-      className={`relative w-full rounded-xl border-[1.5px] px-5 py-4 text-left transition-colors ${
+      className={`relative flex h-full min-h-[124px] w-full flex-col rounded-xl border-[1.5px] px-4 py-4 text-left transition-colors ${
         selected
-          ? "border-accent bg-accent"
+          ? "border-accent bg-accent/[0.07]"
           : "border-card-border/20 hover:border-accent"
       }`}
     >
-      <div className="mb-1 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <i className={`${icon} ${selected ? "text-accent-foreground" : ""}`} />
-          <span
-            className={`font-bold ${selected ? "text-accent-foreground" : ""}`}
-          >
-            {title}
+      <div className="mb-2 flex items-center justify-between gap-1">
+        <i className={`${icon} text-2xl ${selected ? "text-accent" : "text-muted"}`} />
+        {preselected ? (
+          <span className="rounded bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-accent">
+            Vorausgewählt
           </span>
-          {badge && (
-            <span
-              className={`rounded-md px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide ${
-                selected ? "bg-white text-accent" : "bg-accent/10 text-accent"
-              }`}
-            >
-              {badge}
-            </span>
-          )}
-        </div>
-        {selected && (
-          <i className="ti ti-check text-lg text-accent-foreground" />
-        )}
+        ) : selected ? (
+          <i className="ti ti-check text-lg text-accent" />
+        ) : null}
       </div>
-      <p
-        className={`text-sm ${
-          selected ? "text-accent-foreground/80" : "text-muted"
-        }`}
-      >
+      <span className={`font-bold ${selected ? "text-accent" : ""}`}>{title}</span>
+      <p className={`mt-0.5 text-[12.5px] leading-snug ${selected ? "text-accent/80" : "text-muted"}`}>
         {description}
       </p>
     </button>
   );
+}
+
+// Zuletzt gewählte Kombination (Niveau + Fach) lokal merken, damit ein
+// Wiederkehrer nicht jedes Mal neu wählen muss. Rein clientseitig, kein
+// Account. Validiert beim Laden (gesperrte/unbekannte Werte → Default).
+const LAST_CHOICE_KEY = "medcase:lastChoice";
+
+function loadLastChoice(): { difficulty: Difficulty; discipline: Discipline } {
+  const fallback = { difficulty: "klinik" as Difficulty, discipline: "zufaellig" as Discipline };
+  if (typeof window === "undefined") return fallback;
+  try {
+    const raw = window.localStorage.getItem(LAST_CHOICE_KEY);
+    if (!raw) return fallback;
+    const p = JSON.parse(raw) as { difficulty?: string; discipline?: string };
+    const difficulty = (["vorklinik", "klinik", "examen"] as Difficulty[]).includes(
+      p.difficulty as Difficulty
+    )
+      ? (p.difficulty as Difficulty)
+      : fallback.difficulty;
+    const discOk = DISCIPLINES.some((d) => d.id === p.discipline && !d.locked);
+    const discipline = discOk ? (p.discipline as Discipline) : fallback.discipline;
+    return { difficulty, discipline };
+  } catch {
+    return fallback;
+  }
+}
+
+function saveLastChoice(difficulty: Difficulty, discipline: Discipline) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(LAST_CHOICE_KEY, JSON.stringify({ difficulty, discipline }));
+  } catch {
+    // localStorage nicht verfügbar (Privatmodus o.ä.) — kein Fehler nach außen.
+  }
 }
 
 function DifficultyModal({
@@ -902,8 +911,25 @@ function DifficultyModal({
   onSelect: (d: Difficulty, disc: Discipline) => void;
   onClose: () => void;
 }) {
-  const [highlighted, setHighlighted] = useState<Difficulty | null>(null);
-  const [discipline, setDiscipline] = useState<Discipline>("zufaellig");
+  // Vorauswahl aus dem letzten Besuch (sonst Klinik/Zufällig).
+  const [highlighted, setHighlighted] = useState<Difficulty>(() => loadLastChoice().difficulty);
+  const [discipline, setDiscipline] = useState<Discipline>(() => loadLastChoice().discipline);
+  // Fach-Auswahl standardmäßig eingeklappt — Erstkontakt = eine Entscheidung.
+  const [showDisciplines, setShowDisciplines] = useState(false);
+  // "Vorausgewählt"-Hinweis nur bis zur ersten bewussten Interaktion zeigen.
+  const [touched, setTouched] = useState(false);
+
+  function pickDifficulty(id: Difficulty) {
+    setHighlighted(id);
+    setTouched(true);
+  }
+
+  const disciplineLabel = DISCIPLINES.find((d) => d.id === discipline)?.label ?? "Zufällig";
+
+  function start() {
+    saveLastChoice(highlighted, discipline);
+    onSelect(highlighted, discipline);
+  }
 
   return (
     <div
@@ -911,7 +937,7 @@ function DifficultyModal({
       onClick={onClose}
     >
       <div
-        className="flex max-h-[86vh] w-full flex-col overflow-hidden rounded-t-[20px] border-[1.5px] bg-card sm:max-w-md sm:rounded-xl"
+        className="flex max-h-[86vh] w-full flex-col overflow-hidden rounded-t-[20px] border-[1.5px] bg-card sm:max-w-2xl sm:rounded-xl"
         style={{ borderColor: "#d8d6cd" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -920,7 +946,7 @@ function DifficultyModal({
           <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-accent px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-accent-foreground">
             {"LOS GEHT'S"}
           </span>
-          <h2 className="mb-1 text-xl font-extrabold">Bereich wählen</h2>
+          <h2 className="mb-1 text-xl font-extrabold">Niveau wählen</h2>
           <p className="text-sm text-muted">
             Wähle die Schwierigkeit für deinen ersten Fall.
           </p>
@@ -928,80 +954,102 @@ function DifficultyModal({
 
         {/* Scrollable body */}
         <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-4">
-          <div className="flex flex-col gap-2">
+          {/* Drei Niveaus nebeneinander (Vergleich auf einen Blick), auf
+              Mobile gestapelt. */}
+          <div className="grid grid-cols-1 items-stretch gap-2.5 sm:grid-cols-3">
             {(Object.keys(DIFFICULTY_INFO) as Difficulty[]).map((id) => (
               <BereichCard
                 key={id}
                 id={id}
-                icon={`ti ${DIFFICULTY_ICONS[id]} text-xl`}
+                icon={`ti ${DIFFICULTY_ICONS[id]}`}
                 title={DIFFICULTY_INFO[id].label}
-                badge={id === "klinik" ? "Neu: Disziplinen" : undefined}
                 description={DIFFICULTY_INFO[id].description}
                 selected={highlighted === id}
-                collapsed={!!highlighted && highlighted !== id}
-                onSelect={setHighlighted}
+                preselected={highlighted === id && !touched}
+                onSelect={pickDifficulty}
               />
             ))}
           </div>
 
+          {/* Fach nur bei Klinik: standardmäßig eingeklappte Zeile (Default
+              "Zufällig"), auf Wunsch aufklappbar — volle Breite unter den
+              Karten, damit die Spalten gleich hoch bleiben. */}
           {highlighted === "klinik" && (
-            <div className="mt-4 border-t border-dashed border-card-border/20 pt-4">
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wide text-muted">
-                  Disziplin wählen
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => setShowDisciplines((v) => !v)}
+                className="flex w-full items-center justify-between rounded-xl border-[1.5px] border-card-border/20 px-4 py-2.5 text-left transition-colors hover:border-accent"
+              >
+                <span className="text-sm text-muted">
+                  Klinik-Fach:{" "}
+                  <span className="font-semibold text-foreground">{disciplineLabel}</span>
                 </span>
-                <span className="text-[11px] italic text-muted/70">
-                  für deine Famulatur-Vorbereitung
+                <span className="flex items-center gap-1 text-sm font-semibold text-accent">
+                  eingrenzen
+                  <i
+                    className={`ti ti-chevron-down transition-transform ${
+                      showDisciplines ? "rotate-180" : ""
+                    }`}
+                  />
                 </span>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {DISCIPLINES.map((d) => {
-                  const selected = discipline === d.id;
-                  if (d.locked) {
-                    return (
-                      <div
-                        key={d.id}
-                        className="flex cursor-not-allowed items-center justify-center gap-1 rounded-lg border-[1.5px] border-card-border/15 bg-foreground/[0.02] px-2 py-2.5 text-center text-xs font-semibold text-muted/60"
-                      >
-                        {d.label}
-                        <i className="ti ti-lock text-[11px] opacity-60" />
-                      </div>
-                    );
-                  }
-                  return (
-                    <button
-                      key={d.id}
-                      onClick={() => setDiscipline(d.id)}
-                      className={`rounded-lg border-[1.5px] px-2 py-2.5 text-center text-xs font-semibold transition-colors ${
-                        selected
-                          ? "border-accent bg-accent text-accent-foreground"
-                          : "border-card-border/20 bg-card hover:border-accent"
-                      }`}
-                    >
-                      {d.label}
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mt-3 flex items-start gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs leading-relaxed text-accent">
-                <i className="ti ti-info-circle mt-0.5 text-sm" />
-                Aktuell Innere und Allgemeinmedizin spielbar. Weitere Fächer sind in Vorbereitung — kein festes Datum.
-              </div>
+              </button>
+
+              {showDisciplines && (
+                <div className="mt-2">
+                  <div className="grid grid-cols-3 gap-2">
+                    {DISCIPLINES.map((d) => {
+                      const selected = discipline === d.id;
+                      if (d.locked) {
+                        return (
+                          <div
+                            key={d.id}
+                            className="flex cursor-not-allowed items-center justify-center gap-1 rounded-lg border-[1.5px] border-card-border/15 bg-foreground/[0.02] px-2 py-2.5 text-center text-xs font-semibold text-muted/60"
+                          >
+                            {d.label}
+                            <i className="ti ti-lock text-[11px] opacity-60" />
+                          </div>
+                        );
+                      }
+                      return (
+                        <button
+                          key={d.id}
+                          onClick={() => setDiscipline(d.id)}
+                          className={`rounded-lg border-[1.5px] px-2 py-2.5 text-center text-xs font-semibold transition-colors ${
+                            selected
+                              ? "border-accent bg-accent text-accent-foreground"
+                              : "border-card-border/20 bg-card hover:border-accent"
+                          }`}
+                        >
+                          {d.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-3 flex items-start gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs leading-relaxed text-accent">
+                    <i className="ti ti-info-circle mt-0.5 text-sm" />
+                    Aktuell Innere und Allgemeinmedizin spielbar. Weitere Fächer sind in Vorbereitung — kein festes Datum.
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
 
-        {/* Sticky footer */}
+        {/* Sticky footer — Button immer aktiv (es ist stets ein Niveau
+            gewählt); dezente Animation beim Hover/Klick. */}
         <div
           className="shrink-0 px-6 pb-6 pt-3"
           style={{ borderTop: "1.5px solid #d8d6cd" }}
         >
           <button
-            onClick={() => highlighted && onSelect(highlighted, discipline)}
-            disabled={!highlighted}
-            className="w-full rounded-xl bg-accent py-3.5 font-bold text-accent-foreground transition-opacity disabled:cursor-not-allowed disabled:bg-card-border/20 disabled:text-muted"
+            onClick={start}
+            className="group w-full rounded-xl bg-accent py-3.5 font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
           >
-            Fall starten →
+            Fall starten{" "}
+            <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1.5">
+              →
+            </span>
           </button>
         </div>
       </div>

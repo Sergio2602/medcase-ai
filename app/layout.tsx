@@ -3,6 +3,7 @@ import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 import "./globals.css";
 import { AddToHomescreenBanner } from "./components/AddToHomescreenBanner";
+import { AnalyticsProvider } from "./components/AnalyticsProvider";
 import { DisclaimerModal } from "./components/DisclaimerModal";
 import { PageTransition } from "./components/PageTransition";
 
@@ -54,6 +55,7 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className={`${inter.variable} ${ibmPlexMono.variable} antialiased`}>
+        <AnalyticsProvider />
         <PageTransition>{children}</PageTransition>
         <DisclaimerModal />
         <AddToHomescreenBanner />

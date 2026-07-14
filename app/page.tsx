@@ -9,6 +9,7 @@ import { CenteredNav } from "./components/CenteredNav";
 import { FadeInUp } from "./components/FadeInUp";
 import { generateShareCard } from "@/lib/generateShareCard";
 import { recordCaseResult, readCaseResults } from "@/lib/stats";
+import { track } from "@/lib/analytics";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
 type Phase = "start" | "loading" | "playing" | "result";
@@ -255,7 +256,12 @@ export default function Home() {
       setDailyUsed((d) => d + 1);
       caseStartedAtRef.current = Date.now();
       setPhase("playing");
+      track("fall_gestartet", {
+        difficulty: selected,
+        discipline: selectedDiscipline ?? discipline,
+      });
     } catch {
+      track("fall_generierung_fehlgeschlagen", { difficulty: selected });
       setPhase("start");
     }
   }
@@ -281,14 +287,25 @@ export default function Home() {
     setPlayed((p) => p + 1);
     if (correct) setSolved((s) => s + 1);
     const startedAt = caseStartedAtRef.current;
+    const durationSeconds = startedAt
+      ? Math.round((Date.now() - startedAt) / 1000)
+      : 0;
     recordCaseResult({
       caseId: activeCase.id,
       discipline,
       difficulty: activeCase.difficulty,
       correct,
       score: earned,
-      durationSeconds: startedAt ? Math.round((Date.now() - startedAt) / 1000) : 0,
+      durationSeconds,
       timestamp: Date.now(),
+    });
+    track("fall_abgeschlossen", {
+      correct,
+      score: earned,
+      befunde_angefordert: revealCount(revealed),
+      difficulty: activeCase.difficulty,
+      discipline,
+      duration_seconds: durationSeconds,
     });
     setPhase("result");
   }
@@ -985,8 +1002,9 @@ function DifficultyModal({
 }
 
 // Zählt beim ersten Sichtbarwerden von 0 auf den Zielwert hoch (ease-out,
-// ~900ms) statt die Zahl statisch anzuzeigen — macht die Statistik-Boxen
-// beim Herunterscrollen lebendiger, ohne echte Werte zu verfälschen.
+// ~900ms). WICHTIG: Initial-State ist der Zielwert, damit SSR/Crawler/
+// Link-Previews und Nutzer ohne JS die echte Zahl sehen (nicht "0") —
+// die Animation ist reines Client-Enhancement beim Herunterscrollen.
 function AnimatedNumber({
   target,
   suffix = "",
@@ -997,7 +1015,7 @@ function AnimatedNumber({
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(target);
   const startedRef = useRef(false);
 
   useEffect(() => {
@@ -1116,6 +1134,61 @@ function StatBox({ value, label }: { value: number; label: string }) {
         <AnimatedNumber target={value} />
       </p>
       <p className="text-[11.5px] font-semibold text-[#15803d]">{label}</p>
+    </div>
+  );
+}
+
+// Evidenz-Block: belegt mit Primärquellen, dass das Defizit, das Medcase
+// trainiert, in der Ausbildungsforschung dokumentiert ist. Nur verifizierte
+// Aussagen (direkt an der GMS-Originalquelle geprüft) — konsistent mit dem
+// Quellen-USP der Seite. Dient doppelt: Social-Proof-Ersatz für Besucher
+// heute, Argumentationsgrundlage für Skills-Lab-/Dozenten-Gespräche später.
+function EvidenceCard() {
+  return (
+    <div className="card mt-3 p-5">
+      <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
+        <i className="ti ti-school text-sm text-accent" />
+        Warum dieses Training im Studium fehlt
+      </p>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <div className="rounded-lg border-[1.5px] border-accent/20 bg-[#ecf0f9] p-4">
+          <p className="text-2xl font-extrabold text-accent">
+            Nur <AnimatedNumber target={50} suffix=" %" />
+          </p>
+          <p className="mt-1 text-[12.5px] leading-snug text-muted">
+            der Medizinstudierenden im klinischen Abschnitt haben im Curriculum
+            je von Clinical Reasoning gehört — obwohl sie es für die spätere
+            Praxis als sehr wichtig einschätzen.
+          </p>
+        </div>
+        <div className="rounded-lg border-[1.5px] border-accent/20 bg-[#ecf0f9] p-4">
+          <p className="text-2xl font-extrabold text-accent">
+            <i className="ti ti-dice-3 align-middle text-xl" /> Zufall
+          </p>
+          <p className="mt-1 text-[12.5px] leading-snug text-muted">
+            Nur wenige Fakultäten haben dedizierte Lehrformate dafür — „die
+            Lehre von Clinical Reasoning bleibt mehr oder weniger dem Zufall
+            überlassen&ldquo;.
+          </p>
+        </div>
+      </div>
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
+        Dabei gilt klinisches Denken laut NKLM als ärztliche Kernkompetenz für
+        Patientensicherheit und den gezielten Einsatz von Diagnostik. Genau
+        diese Lücke trainiert Medcase: Befunde bewusst anfordern, statt alles
+        vorgelegt zu bekommen.
+      </p>
+      <p className="mt-2 text-[11px] text-muted">
+        Quelle:{" "}
+        <a
+          href="https://www.egms.de/static/de/journals/zma/2020-37/zma001341.shtml"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-accent hover:underline"
+        >
+          Weidenbusch et al., GMS J Med Educ 2020 (LMU München)
+        </a>
+      </p>
     </div>
   );
 }
@@ -1419,7 +1492,8 @@ function StartScreen({
           Klinisch neu denken.
         </h1>
         <p className="mt-1.5 max-w-md text-lg leading-relaxed text-muted">
-          Lerne klinisch zu denken und Befunde sinnvoll anzufordern.
+          Realistische Patientenfälle für Vorklinik, Klinik und PJ — du
+          entscheidest, welche Befunde du anforderst.
         </p>
       </div>
 
@@ -1447,7 +1521,7 @@ function StartScreen({
           />
         </button>
         <p className="text-sm text-muted">
-          Kostenlos · Kein Account nötig · 5 Fälle täglich
+          Kostenlos · Kein Account nötig · Heute 5 freie Fälle
         </p>
 
         {/* Sekundärer CTA — kleiner als der primäre Button */}
@@ -1469,6 +1543,9 @@ function StartScreen({
       )}
       <div className="pt-12">
         <FadeInUp>
+          <EvidenceCard />
+        </FadeInUp>
+        <FadeInUp>
           <TrustAndProcessCard />
         </FadeInUp>
         <FadeInUp>
@@ -1479,6 +1556,29 @@ function StartScreen({
         </FadeInUp>
         <FadeInUp delay={120}>
           <WelcomeNote />
+        </FadeInUp>
+        {/* Abschluss-CTA: Wer bis hier gescrollt hat, ist überzeugt — und
+            fand bisher keinen Spiel-Einstieg mehr. Gleicher Picker wie oben. */}
+        <FadeInUp>
+          <div className="card mt-3 flex flex-col items-center gap-3 p-8 text-center">
+            <p className="text-xl font-extrabold tracking-tight md:text-2xl">
+              Dein erster Patient wartet.
+            </p>
+            <p className="max-w-md text-sm leading-relaxed text-muted">
+              Anamnese, Untersuchung und Labor selbst anfordern — und mit so
+              wenigen Befunden wie möglich zur richtigen Diagnose kommen.
+            </p>
+            <button
+              onClick={() => setShowPicker(true)}
+              className="group relative mt-1 overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
+            >
+              Ersten Fall starten{" "}
+              <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-2 group-active:translate-x-2">
+                →
+              </span>
+            </button>
+            <p className="text-xs text-muted">Kostenlos · Kein Account nötig</p>
+          </div>
         </FadeInUp>
         <footer
           className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"
@@ -2120,6 +2220,7 @@ function ResultIsland({
   async function handleShare() {
     if (isSharing) return;
     setIsSharing(true);
+    track("share_geklickt", { correct: lastResultCorrect, score: lastScoreEarned });
     try {
       const blob = await generateShareCard({
         score: lastScoreEarned,
@@ -2455,6 +2556,7 @@ function ReportCaseCard({
         body: JSON.stringify({ caseId, difficulty, reason }),
       });
       if (!res.ok) throw new Error();
+      track("fall_gemeldet", { difficulty });
       setReportState("success");
       setTimeout(() => {
         setReportState("idle");

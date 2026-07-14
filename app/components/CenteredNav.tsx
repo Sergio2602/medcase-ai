@@ -33,9 +33,11 @@ export function CenteredNav({
     }`;
 
   const items: { key: "home" | "statistik" | "ueber-uns" | "qa"; href: string; icon: string; label: string }[] = [
+    // Reihenfolge: Erstbesucher-Priorität — "Über uns" (Vertrauen) vor
+    // "Statistik" (nur für wiederkehrende Nutzer mit Spielhistorie relevant).
     { key: "home", href: "/", icon: "ti-home", label: "Home" },
-    { key: "statistik", href: "/statistik", icon: "ti-chart-bar", label: "Statistik" },
     { key: "ueber-uns", href: "/ueber-uns", icon: "ti-info-circle", label: "Über uns" },
+    { key: "statistik", href: "/statistik", icon: "ti-chart-bar", label: "Statistik" },
     { key: "qa", href: "/qa", icon: "ti-help-circle", label: "Q&A" },
   ];
 

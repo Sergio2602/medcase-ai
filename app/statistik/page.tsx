@@ -320,7 +320,31 @@ export default function StatistikPage() {
             Dein Lernfortschritt — lokal auf diesem Gerät gespeichert, kein Account nötig.
           </p>
 
-          {results === null && <p className="text-sm text-muted">Lädt …</p>}
+          {/* Skeleton statt "Lädt …" — spiegelt das echte Layout (Summary-
+              Karte + Listenzeilen), damit nichts springt und die Seite auch
+              im Initial-Render "fertig designed" wirkt. */}
+          {results === null && (
+            <div className="flex flex-col gap-4" aria-hidden="true">
+              <div className="card animate-pulse p-5">
+                <div className="h-4 w-40 rounded bg-card-border/20" />
+                <div className="mt-4 flex items-center gap-6">
+                  <div className="h-20 w-20 rounded-full bg-card-border/20" />
+                  <div className="flex flex-1 flex-col gap-3">
+                    <div className="h-3 w-3/4 rounded bg-card-border/20" />
+                    <div className="h-3 w-1/2 rounded bg-card-border/20" />
+                    <div className="h-3 w-2/3 rounded bg-card-border/20" />
+                  </div>
+                </div>
+              </div>
+              <div className="card animate-pulse p-5">
+                <div className="flex flex-col gap-3">
+                  <div className="h-3 w-full rounded bg-card-border/20" />
+                  <div className="h-3 w-5/6 rounded bg-card-border/20" />
+                  <div className="h-3 w-4/6 rounded bg-card-border/20" />
+                </div>
+              </div>
+            </div>
+          )}
 
           {results !== null && summary && (
             <div className="flex flex-col gap-4">

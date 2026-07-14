@@ -1201,7 +1201,7 @@ function StatBox({ value, label }: { value: number; label: string }) {
 // heute, Argumentationsgrundlage für Skills-Lab-/Dozenten-Gespräche später.
 function EvidenceCard() {
   return (
-    <div className="card mt-3 p-5">
+    <div id="konzept" className="card mt-3 scroll-mt-24 p-5">
       <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
         <i className="ti ti-school text-sm text-accent" />
         Warum dieses Training im Studium fehlt
@@ -1596,7 +1596,7 @@ function StartScreen({
         {/* Sekundärer CTA — kleiner als der primäre Button */}
         <button
           type="button"
-          onClick={() => slowScrollTo("methodik")}
+          onClick={() => slowScrollTo("konzept")}
           className="group mt-2 flex items-center gap-1.5 rounded-lg border-[1.5px] border-accent/30 px-5 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent/5"
         >
           Erfahre mehr über unser Konzept

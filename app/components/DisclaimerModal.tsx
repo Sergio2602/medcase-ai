@@ -1,27 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getCookie, setCookie } from "@/lib/cookies";
 
 const COOKIE_NAME = "disclaimerSeen";
 const COOKIE_DAYS = 365;
 
-export function DisclaimerModal() {
-  const [visible, setVisible] = useState(false);
+// Wurde der Hinweis schon bestätigt? (Nur client-seitig aufrufen, z.B. im
+// Click-Handler.)
+export function hasSeenDisclaimer(): boolean {
+  return Boolean(getCookie(COOKIE_NAME));
+}
 
-  useEffect(() => {
-    if (!getCookie(COOKIE_NAME)) {
-      setVisible(true);
-    }
-  }, []);
+// Kontrolliertes Disclaimer-Modal: erscheint NICHT mehr beim Pageload,
+// sondern wird vom Aufrufer geöffnet (erster Klick auf "Fall starten").
+// Gleiche rechtliche Wirkung — Hinweis vor der Nutzung —, aber der erste
+// Eindruck der Seite ist das Produkt statt eines Warnhinweises.
+export function DisclaimerModal({
+  open,
+  onAccept,
+}: {
+  open: boolean;
+  onAccept: () => void;
+}) {
+  if (!open) return null;
 
   function handleAccept() {
     setCookie(COOKIE_NAME, "true", COOKIE_DAYS);
-    setVisible(false);
+    onAccept();
   }
-
-  if (!visible) return null;
 
   return (
     <div

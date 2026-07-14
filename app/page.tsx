@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { Logo } from "./components/Logo";
+import { DisclaimerModal, hasSeenDisclaimer } from "./components/DisclaimerModal";
 import { OnboardingTour } from "./components/OnboardingTour";
 import { KontaktPopover } from "./components/KontaktPopover";
 import { CenteredNav } from "./components/CenteredNav";
@@ -601,27 +602,9 @@ function RotatingPatientPreview() {
 
   return (
     <div className="relative">
-      {/* Pfeile an den äußeren Kanten der Karte, statt darunter versteckt */}
-      <button
-        type="button"
-        onClick={prev}
-        aria-label="Vorheriger Fall"
-        className="absolute left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-[1.5px] border-card-border/15 bg-card text-muted transition-colors hover:border-accent/30 hover:text-accent"
-      >
-        <i className="ti ti-chevron-left text-lg" />
-      </button>
-      <button
-        type="button"
-        onClick={next}
-        aria-label="Nächster Fall"
-        className="absolute right-0 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border-[1.5px] border-card-border/15 bg-card text-muted transition-colors hover:border-accent/30 hover:text-accent"
-      >
-        <i className="ti ti-chevron-right text-lg" />
-      </button>
-
-      <div className="card p-6 sm:p-8">
+      <div className="card p-5 sm:p-6">
         {/* Card header — always visible */}
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span
               className="inline-block h-2.5 w-2.5 rounded-full bg-[#16a34a]"
@@ -643,7 +626,7 @@ function RotatingPatientPreview() {
           style={{ opacity: visible ? 1 : 0 }}
         >
           {/* Spalte 1: Patient */}
-          <div className="flex h-[208px] flex-col justify-center">
+          <div className="flex h-[184px] flex-col justify-center">
             <div className="mb-4 flex items-center gap-3.5">
               <div
                 className="avatar-circle h-12 w-12 text-base"
@@ -666,7 +649,7 @@ function RotatingPatientPreview() {
               per key-Remount neu eingeblendet (line-pop). */}
           <div
             key={`${caseIndex}-${stepIndex}`}
-            className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0"
+            className="flex h-[184px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0"
           >
             <span
               className="line-pop mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.065em]"
@@ -706,16 +689,21 @@ function RotatingPatientPreview() {
               Die Diagnose-Optionen sind von Anfang an normal les-/wählbar
               (kein grau-deaktivierter Zustand) — nur die richtige Antwort
               bekommt im Result einen Scale-Bounce mit grünem Glow. */}
-          <div className="flex h-[208px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
+          <div className="flex h-[184px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
             <div className="mb-3 flex items-baseline justify-between">
               <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
                 {uiPhase === "result" ? "Erreicht" : "Noch möglich"}
               </span>
-              <TickingNumber
-                value={possiblePoints}
-                prefix={uiPhase === "result" ? "+" : ""}
-                color={uiPhase === "result" ? "#15803d" : "#285dd2"}
-              />
+              <span className="flex items-baseline gap-1.5">
+                <TickingNumber
+                  value={possiblePoints}
+                  prefix={uiPhase === "result" ? "+" : ""}
+                  color={uiPhase === "result" ? "#15803d" : "#285dd2"}
+                />
+                <span className="text-[11px] font-bold uppercase tracking-[0.065em] text-muted">
+                  Punkte
+                </span>
+              </span>
             </div>
             <div className="mt-1.5 grid grid-cols-2 gap-1.5 border-t border-card-border/10 pt-3.5">
               {currentCase.options.map((opt) => {
@@ -755,23 +743,43 @@ function RotatingPatientPreview() {
           </div>
         </div>
 
-        {/* Durchklickbare Fall-Auswahl (Dots) */}
-        <div className="mt-4 flex items-center justify-center gap-1.5">
-          {PATIENT_PREVIEWS.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Fall ${i + 1} anzeigen`}
-              className="transition-all duration-300"
-              style={{
-                backgroundColor: i === caseIndex ? "#285dd2" : "#a8a69c",
-                width: i === caseIndex ? 18 : 6,
-                height: 6,
-                borderRadius: i === caseIndex ? 3 : 9999,
-              }}
-            />
-          ))}
+        {/* Kompakte Fall-Navigation: Pfeile flankieren die Dots direkt unter
+            dem Inhalt — sichtbar als EIN Bedienelement statt schwebender
+            Pfeile im Nichts an den Kartenrändern. */}
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={prev}
+            aria-label="Vorheriger Fall"
+            className="flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-card-border/15 text-muted transition-colors hover:border-accent/40 hover:text-accent"
+          >
+            <i className="ti ti-chevron-left text-base" />
+          </button>
+          <div className="flex items-center gap-2">
+            {PATIENT_PREVIEWS.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`Fall ${i + 1} anzeigen`}
+                className="transition-all duration-300"
+                style={{
+                  backgroundColor: i === caseIndex ? "#285dd2" : "#a8a69c",
+                  width: i === caseIndex ? 22 : 8,
+                  height: 8,
+                  borderRadius: i === caseIndex ? 4 : 9999,
+                }}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Nächster Fall"
+            className="flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-card-border/15 text-muted transition-colors hover:border-accent/40 hover:text-accent"
+          >
+            <i className="ti ti-chevron-right text-base" />
+          </button>
         </div>
       </div>
     </div>
@@ -1469,6 +1477,19 @@ function StartScreen({
   onStart: (d: Difficulty, disc: Discipline) => void;
 }) {
   const [showPicker, setShowPicker] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+
+  // Disclaimer-Gate: Der Hinweis erscheint nicht mehr beim Pageload, sondern
+  // beim ersten Klick auf einen Spiel-CTA — rechtlich gleichwertig (Hinweis
+  // vor Nutzung), aber der erste Eindruck der Seite bleibt das Produkt.
+  function openPicker() {
+    if (!hasSeenDisclaimer()) {
+      setShowDisclaimer(true);
+      return;
+    }
+    setShowPicker(true);
+  }
+
   return (
     <div className="relative flex min-h-[calc(100vh-64px)] flex-col pb-4">
       {/* Dezente Hintergrund-Deko hinter dem Hero — gegen die "leere" Wirkung
@@ -1503,7 +1524,7 @@ function StartScreen({
 
       <div className="mx-auto mt-4 flex flex-col items-center gap-2">
         <button
-          onClick={() => setShowPicker(true)}
+          onClick={openPicker}
           className="group relative overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
         >
           Ersten Fall ausprobieren{" "}
@@ -1541,6 +1562,13 @@ function StartScreen({
           onClose={() => setShowPicker(false)}
         />
       )}
+      <DisclaimerModal
+        open={showDisclaimer}
+        onAccept={() => {
+          setShowDisclaimer(false);
+          setShowPicker(true);
+        }}
+      />
       <div className="pt-12">
         <FadeInUp>
           <EvidenceCard />
@@ -1569,7 +1597,7 @@ function StartScreen({
               wenigen Befunden wie möglich zur richtigen Diagnose kommen.
             </p>
             <button
-              onClick={() => setShowPicker(true)}
+              onClick={openPicker}
               className="group relative mt-1 overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
             >
               Ersten Fall starten{" "}

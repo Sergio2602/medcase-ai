@@ -162,7 +162,7 @@ function slowScrollTo(id: string, duration = 900) {
 
 const DIFFICULTIES: { id: Difficulty; label: string }[] = [
   { id: "vorklinik", label: "Vorklinik" },
-  { id: "klinik", label: "Innere" },
+  { id: "klinik", label: "Klinik" },
   { id: "examen", label: "PJ" },
 ];
 
@@ -237,7 +237,7 @@ export default function Home() {
     });
     setSelectedDiagnosis(null);
     try {
-      const minDelay = new Promise((resolve) => setTimeout(resolve, 1800));
+      const minDelay = new Promise((resolve) => setTimeout(resolve, 800));
       const res = await fetch("/api/generate-case", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -3000,6 +3000,21 @@ function GameScreen({
   const reportAnchorRef = useRef<HTMLDivElement>(null);
   const leftColumnRef = useRef<HTMLDivElement>(null);
   const [diagnosisTop, setDiagnosisTop] = useState<number | null>(null);
+
+  // Reihenfolge, in der Befunde aufgedeckt wurden — der zuletzt angeforderte
+  // Befund wird oben angezeigt (der Nutzer liest einen Befund, fordert den
+  // nächsten an und will ihn sofort sehen, ohne zu scrollen). Deterministisch
+  // aus `revealed` abgeleitet, deshalb idempotent (React-StrictMode-sicher).
+  const revealOrderRef = useRef<string[]>([]);
+  revealOrderRef.current = revealOrderRef.current.filter(
+    (k) => revealed[k as keyof Revealed]
+  );
+  for (const k of ["history", "examination", "imaging", "labs"] as const) {
+    if (revealed[k] && !revealOrderRef.current.includes(k)) {
+      revealOrderRef.current.push(k);
+    }
+  }
+  const orderedFindingKeys = [...revealOrderRef.current].reverse();
   const islandMinHeightRef = useRef<number>(0);
 
   useLayoutEffect(() => {
@@ -3169,14 +3184,13 @@ function GameScreen({
             Zurück
           </button>
 
-          {/* Pfad — rein informativ, keine eigene Klickfunktion mehr; das
-              Zurückgehen übernimmt der separate Button daneben. */}
-          <div className="flex min-w-0 items-center gap-1.5 rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.02] py-1.5 px-3 text-sm">
-            <span className="shrink-0 font-medium text-muted">Start</span>
-            <i className="ti ti-chevron-right shrink-0 text-[12px] text-muted/30" />
-            <span className="shrink-0 font-medium text-muted">{difficultyLabel}</span>
-            <i className="ti ti-chevron-right shrink-0 text-[12px] text-muted/30" />
-            <span className="truncate font-semibold text-accent">
+          {/* Status-Chips statt Navigations-Pfad: zeigen klar, in welcher
+              Schwierigkeit + Disziplin man gerade spielt (rein informativ). */}
+          <div className="flex min-w-0 items-center gap-1.5">
+            <span className="shrink-0 rounded-full bg-accent/10 px-2.5 py-1 text-xs font-bold text-accent">
+              {difficultyLabel}
+            </span>
+            <span className="truncate rounded-full bg-foreground/[0.04] px-2.5 py-1 text-xs font-semibold text-muted">
               {disciplineLabel}
             </span>
           </div>
@@ -3305,38 +3319,72 @@ function GameScreen({
             </div>
           </div>
 
-          {revealed.history && (
-            <FindingCard
-              title="Anamnese"
-              icon="ti-notes"
-              text={caseData.history}
-              expanded={cardExpanded.history}
-              onToggle={() => setCardExpanded((e) => ({ ...e, history: !e.history }))}
-            />
-          )}
-          {revealed.examination && (
-            <FindingCard
-              title="Körperliche Untersuchung"
-              icon="ti-stethoscope"
-              text={caseData.examination}
-              expanded={cardExpanded.examination}
-              onToggle={() => setCardExpanded((e) => ({ ...e, examination: !e.examination }))}
-            />
-          )}
-          {revealed.imaging && (
-            <ImagingCard
-              imaging={caseData.imaging}
-              expanded={cardExpanded.imaging}
-              onToggle={() => setCardExpanded((e) => ({ ...e, imaging: !e.imaging }))}
-            />
-          )}
-          {revealed.labs && (
-            <LabCard
-              labs={caseData.labs}
-              expanded={cardExpanded.labs}
-              onToggle={() => setCardExpanded((e) => ({ ...e, labs: !e.labs }))}
-            />
-          )}
+          {/* Empty State: solange kein Befund aufgedeckt ist, füllt eine
+              zentrierte Aufforderung die Fläche (statt Leerraum) und
+              verstärkt das USP-Prinzip "du entscheidest, welche Befunde". */}
+          {!revealed.history &&
+            !revealed.examination &&
+            !revealed.imaging &&
+            !revealed.labs &&
+            !isResult && (
+              <div className="flex flex-1 flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed border-card-border/15 p-8 text-center">
+                <i className="ti ti-stethoscope text-3xl text-accent/40" />
+                <p className="mt-3 max-w-xs text-sm font-semibold text-foreground/70">
+                  Was brauchst du, um zur Diagnose zu kommen?
+                </p>
+                <p className="mt-1 max-w-xs text-xs text-muted">
+                  Fordere oben Anamnese, Untersuchung, Bildgebung oder Labor an —
+                  jeder Befund kostet Punkte, also nur was du wirklich brauchst.
+                </p>
+              </div>
+            )}
+
+          {/* Befund-Karten in umgekehrter Aufdeck-Reihenfolge: zuletzt
+              angeforderter Befund oben (siehe orderedFindingKeys). */}
+          {orderedFindingKeys.map((k) => {
+            if (k === "history") {
+              return (
+                <FindingCard
+                  key="history"
+                  title="Anamnese"
+                  icon="ti-notes"
+                  text={caseData.history}
+                  expanded={cardExpanded.history}
+                  onToggle={() => setCardExpanded((e) => ({ ...e, history: !e.history }))}
+                />
+              );
+            }
+            if (k === "examination") {
+              return (
+                <FindingCard
+                  key="examination"
+                  title="Körperliche Untersuchung"
+                  icon="ti-stethoscope"
+                  text={caseData.examination}
+                  expanded={cardExpanded.examination}
+                  onToggle={() => setCardExpanded((e) => ({ ...e, examination: !e.examination }))}
+                />
+              );
+            }
+            if (k === "imaging") {
+              return (
+                <ImagingCard
+                  key="imaging"
+                  imaging={caseData.imaging}
+                  expanded={cardExpanded.imaging}
+                  onToggle={() => setCardExpanded((e) => ({ ...e, imaging: !e.imaging }))}
+                />
+              );
+            }
+            return (
+              <LabCard
+                key="labs"
+                labs={caseData.labs}
+                expanded={cardExpanded.labs}
+                onToggle={() => setCardExpanded((e) => ({ ...e, labs: !e.labs }))}
+              />
+            );
+          })}
 
           </div>
           <div

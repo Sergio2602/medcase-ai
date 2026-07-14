@@ -20,6 +20,14 @@ let initialized = false;
 
 export function initAnalytics() {
   if (initialized || !KEY || typeof window === "undefined") return;
+  // Lokale Entwicklung nicht tracken — Dev-Sessions würden sonst die
+  // Validierungszahlen (Retention, Fälle/Session) verfälschen.
+  if (
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  ) {
+    return;
+  }
   posthog.init(KEY, {
     api_host: HOST,
     persistence: "localStorage",

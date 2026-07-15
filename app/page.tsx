@@ -3,8 +3,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { Logo } from "./components/Logo";
-import { DisclaimerModal, hasSeenDisclaimer } from "./components/DisclaimerModal";
-import { OnboardingTour } from "./components/OnboardingTour";
 import { KontaktPopover } from "./components/KontaktPopover";
 import { CenteredNav } from "./components/CenteredNav";
 import { FadeInUp } from "./components/FadeInUp";
@@ -1525,16 +1523,10 @@ function StartScreen({
   onStart: (d: Difficulty, disc: Discipline) => void;
 }) {
   const [showPicker, setShowPicker] = useState(false);
-  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
-  // Disclaimer-Gate: Der Hinweis erscheint nicht mehr beim Pageload, sondern
-  // beim ersten Klick auf einen Spiel-CTA — rechtlich gleichwertig (Hinweis
-  // vor Nutzung), aber der erste Eindruck der Seite bleibt das Produkt.
+  // Der Hinweis läuft jetzt über einen nicht-blockierenden Banner (Layout),
+  // deshalb öffnet der CTA direkt die Auswahl — kein Interrupt beim Start.
   function openPicker() {
-    if (!hasSeenDisclaimer()) {
-      setShowDisclaimer(true);
-      return;
-    }
     setShowPicker(true);
   }
 
@@ -1610,13 +1602,6 @@ function StartScreen({
           onClose={() => setShowPicker(false)}
         />
       )}
-      <DisclaimerModal
-        open={showDisclaimer}
-        onAccept={() => {
-          setShowDisclaimer(false);
-          setShowPicker(true);
-        }}
-      />
       <div className="pt-12">
         <FadeInUp>
           <EvidenceCard />
@@ -3281,6 +3266,10 @@ function GameScreen({
               <blockquote className="mt-1.5 border-l-[1.5px] border-accent pl-3 italic">
                 „{caseData.chiefComplaint}{'"'}
               </blockquote>
+              <p className="mt-2 flex items-center gap-1 text-[10.5px] text-muted/70">
+                <i className="ti ti-shield-check text-[10px]" />
+                Fiktiver Übungsfall — kein ärztlicher Rat.
+              </p>
             </div>
           </div>
 
@@ -3493,15 +3482,6 @@ function GameScreen({
           />
         </div>
       </div>
-
-      {phase === "playing" && (
-        <OnboardingTour
-          step1Ref={patientCardRef}
-          step2Ref={befundeRef}
-          step3Ref={diagnosisIslandRef}
-        />
-      )}
-
     </div>
   );
 }

@@ -141,7 +141,7 @@ export default function UeberUnsPage() {
             {/* ===== GRUPPE 1: ÜBER MEDCASE ===== */}
             <FadeInUp>
             <div id="ueber-medcase" className="card scroll-mt-6 p-8">
-              <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
+              <h1 className="mb-1 text-2xl font-extrabold tracking-tight">
                 Über uns &amp; Methodik
               </h1>
               <p className="mb-8 text-sm text-muted">
@@ -162,17 +162,6 @@ export default function UeberUnsPage() {
                   warum ein unabhängiges fachärztliches Review vor einer breiteren Bewerbung fest eingeplant
                   ist (siehe Qualitätssicherung).
                 </p>
-                <div className="flex items-start gap-2.5 rounded-lg border-[1.5px] border-accent/25 bg-[#ecf0f9] px-4 py-3.5">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-white">
-                    <i className="ti ti-info-circle text-[11px]" />
-                  </span>
-                  <p className="text-[13px] font-semibold leading-relaxed text-accent">
-                    Aktueller Stand: Medcase befindet sich in der Aufbauphase. Die Fälle werden KI-gestützt
-                    erstellt und quellenbasiert recherchiert (siehe Methodik unten) — ein fachärztliches
-                    Review hat noch nicht stattgefunden und ersetzt kein ärztliches Fachurteil oder eine
-                    Leitlinie. Der Review-Prozess ist vor breiterer Bewerbung fest eingeplant.
-                  </p>
-                </div>
               </section>
 
               <Divider />
@@ -228,7 +217,7 @@ export default function UeberUnsPage() {
             {/* ===== GRUPPE 2: FALLAUSWAHL ===== */}
             <FadeInUp>
             <div id="fallauswahl" className="card mt-4 scroll-mt-6 p-8">
-              <h2 className="mb-1 text-xl font-extrabold uppercase tracking-widest">
+              <h2 className="mb-1 text-xl font-extrabold tracking-tight">
                 Fallauswahl
               </h2>
               <p className="mb-8 text-sm text-muted">
@@ -388,7 +377,7 @@ export default function UeberUnsPage() {
             {/* ===== GRUPPE 3: QUALITÄT ===== */}
             <FadeInUp>
             <div id="qualitaet" className="card mt-4 scroll-mt-6 p-8">
-              <h2 className="mb-1 text-xl font-extrabold uppercase tracking-widest">
+              <h2 className="mb-1 text-xl font-extrabold tracking-tight">
                 Qualität
               </h2>
               <p className="mb-8 text-sm text-muted">
@@ -406,21 +395,21 @@ export default function UeberUnsPage() {
                   <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
                     <p className="text-2xl font-extrabold text-[#15803d]">15</p>
                     <p className="text-xs font-semibold text-[#15803d]">Vorklinik-Fälle</p>
-                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]/80">
+                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]">
                       Vollständig quellenbasiert, mit individuellen Quellenangaben pro Fall.
                     </p>
                   </div>
                   <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
                     <p className="text-2xl font-extrabold text-[#15803d]">40</p>
                     <p className="text-xs font-semibold text-[#15803d]">Klinik-Fälle</p>
-                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]/80">
+                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]">
                       Innere + Allgemeinmedizin, vollständig quellenbasiert mit individuellen Quellenangaben pro Fall.
                     </p>
                   </div>
                   <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
                     <p className="text-2xl font-extrabold text-[#15803d]">15</p>
                     <p className="text-xs font-semibold text-[#15803d]">Examen/PJ-Fälle</p>
-                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]/80">
+                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]">
                       Vollständig neu erstellt, quellenbasiert (AWMF/Destatis), ersetzt die alte ungeprüfte
                       40-Fälle-Bank vollständig.
                     </p>
@@ -493,6 +482,24 @@ export default function UeberUnsPage() {
                 </div>
               </section>
             </div>
+            </FadeInUp>
+
+            {/* Abschluss-CTA: Wer die Methodik komplett liest, ist überzeugt —
+                hier den Weg ins Produkt öffnen statt im Footer zu enden. */}
+            <FadeInUp>
+              <div className="card mt-4 flex flex-col items-center gap-3 p-8 text-center">
+                <p className="text-xl font-extrabold tracking-tight">Überzeugt? Probier's aus.</p>
+                <p className="max-w-md text-sm text-muted">
+                  Kostenlos, kein Account — dein erster Fall wartet.
+                </p>
+                <Link
+                  href="/"
+                  className="group mt-1 inline-flex items-center gap-1.5 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
+                >
+                  Ersten Fall lösen
+                  <i className="ti ti-arrow-right transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </div>
             </FadeInUp>
 
             {/* Footer */}

@@ -93,7 +93,7 @@ export default function QAPage() {
             {/* ===== GRUPPE 1: NUTZUNG ===== */}
             <FadeInUp>
               <div id="nutzung" className="card scroll-mt-6 p-8">
-                <h1 className="mb-1 text-2xl font-extrabold uppercase tracking-widest">
+                <h1 className="mb-1 text-2xl font-extrabold tracking-tight">
                   Fragen &amp; Antworten
                 </h1>
                 <p className="mb-8 text-sm text-muted">
@@ -104,7 +104,7 @@ export default function QAPage() {
                   <SectionLabel icon="ti-target-arrow" id="wofuer">
                     Wofür soll ich Medcase nutzen?
                   </SectionLabel>
-                  <p className="text-sm leading-relaxed text-muted">
+                  <p className="text-sm leading-relaxed text-foreground/90">
                     Um dich vor einer Famulatur oder Klausur auf die häufigsten klinischen
                     Fälle vorzubereiten: Du forderst Anamnese, Untersuchung und Labor selbst an
                     und lernst so, welche Befundkombination zu welcher Diagnose passt —
@@ -118,7 +118,7 @@ export default function QAPage() {
                   <SectionLabel icon="ti-wallet" id="kostenlos">
                     Ist Medcase kostenlos und brauche ich einen Account?
                   </SectionLabel>
-                  <p className="text-sm leading-relaxed text-muted">
+                  <p className="text-sm leading-relaxed text-foreground/90">
                     Ja, komplett kostenlos und ohne Account — du kannst direkt loslegen.
                     Aktuell stehen 5 Fälle pro Tag zur Verfügung.
                   </p>
@@ -130,7 +130,7 @@ export default function QAPage() {
                   <SectionLabel icon="ti-school" id="niveau">
                     Für welches Semester ist Medcase geeignet?
                   </SectionLabel>
-                  <p className="text-sm leading-relaxed text-muted">
+                  <p className="text-sm leading-relaxed text-foreground/90">
                     Drei Schwierigkeitsstufen — Vorklinik, Klinik und Examen/PJ — mit aktuell
                     70 Fällen insgesamt (15 Vorklinik, 40 Klinik — Innere + Allgemeinmedizin, 15 Examen/PJ).
                   </p>
@@ -141,7 +141,7 @@ export default function QAPage() {
             {/* ===== GRUPPE 2: INHALTE & QUALITÄT ===== */}
             <FadeInUp>
               <div id="inhalte-qualitaet" className="card mt-4 scroll-mt-6 p-8">
-                <h2 className="mb-1 text-xl font-extrabold uppercase tracking-widest">
+                <h2 className="mb-1 text-xl font-extrabold tracking-tight">
                   Inhalte &amp; Qualität
                 </h2>
                 <p className="mb-8 text-sm text-muted">
@@ -152,7 +152,7 @@ export default function QAPage() {
                   <SectionLabel icon="ti-robot" id="ki-faelle">
                     Wie entstehen die Fälle — ist das seriös?
                   </SectionLabel>
-                  <p className="text-sm leading-relaxed text-muted">
+                  <p className="text-sm leading-relaxed text-foreground/90">
                     KI-generiert, aber jeder Fall wird gegen AWMF-Leitlinien,
                     IMPP-Gegenstandskataloge und offizielle Versorgungsdaten geprüft, nicht
                     frei erfunden. Ein unabhängiges fachärztliches Review ist geplant, hat aber
@@ -174,7 +174,7 @@ export default function QAPage() {
                   <SectionLabel icon="ti-scale" id="amboss-ersatz">
                     Ersetzt Medcase AMBOSS oder andere Lernressourcen?
                   </SectionLabel>
-                  <p className="text-sm leading-relaxed text-muted">
+                  <p className="text-sm leading-relaxed text-foreground/90">
                     Nein. Medcase ersetzt kein Fakten-Nachschlagewerk, sondern trainiert
                     gezielt das klinische Denken: selbst entscheiden, welche Befunde du
                     brauchst, statt sie vorgelegt zu bekommen.
@@ -186,7 +186,7 @@ export default function QAPage() {
             {/* ===== GRUPPE 3: FEEDBACK ===== */}
             <FadeInUp>
               <div id="feedback" className="card mt-4 scroll-mt-6 p-8">
-                <h2 className="mb-1 text-xl font-extrabold uppercase tracking-widest">
+                <h2 className="mb-1 text-xl font-extrabold tracking-tight">
                   Feedback
                 </h2>
                 <p className="mb-8 text-sm text-muted">
@@ -197,7 +197,7 @@ export default function QAPage() {
                   <SectionLabel icon="ti-flag" id="fehler-melden">
                     Ich finde einen Fall fehlerhaft — was jetzt?
                   </SectionLabel>
-                  <p className="text-sm leading-relaxed text-muted">
+                  <p className="text-sm leading-relaxed text-foreground/90">
                     Direkt im Ergebnis-Screen über die &bdquo;Fall melden&ldquo;-Funktion — ein
                     echter Feedback-Kanal, kein leeres Versprechen. Alternativ per Mail an{" "}
                     <a
@@ -209,6 +209,24 @@ export default function QAPage() {
                     .
                   </p>
                 </section>
+              </div>
+            </FadeInUp>
+
+            {/* Abschluss-CTA: Wer die Q&A liest, ist interessiert — hier den
+                Weg ins Produkt öffnen, statt im Footer zu enden. */}
+            <FadeInUp>
+              <div className="card mt-4 flex flex-col items-center gap-3 p-8 text-center">
+                <p className="text-xl font-extrabold tracking-tight">Bereit, es auszuprobieren?</p>
+                <p className="max-w-md text-sm text-muted">
+                  Kostenlos, kein Account — dein erster Fall wartet.
+                </p>
+                <Link
+                  href="/"
+                  className="group mt-1 inline-flex items-center gap-1.5 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
+                >
+                  Ersten Fall lösen
+                  <i className="ti ti-arrow-right transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
               </div>
             </FadeInUp>
 

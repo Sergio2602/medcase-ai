@@ -65,16 +65,17 @@ function formatDate(timestamp: number) {
   });
 }
 
-// Nur 3 Stufen — Rot < 50 %, Gelb 50–79 %, Grün ab 80 % — in derselben
-// punchy-pastelligen Familie wie die Avatar-Farben (avatar-1/3/4 in
-// globals.css), statt der zu grellen reinen Ampelfarben. Einziger Ort in
-// der App mit mehr als der einen Akzentfarbe, darf also als Ausnahme
-// fröhlicher/lebendiger wirken statt dem sonst monotonen Blau-Schema
-// zu folgen — aber weich statt knallhart.
+// Drei Stufen — bewusst OHNE Rot. Medcase ist ein Lerntool: eine niedrige
+// Trefferquote früh im Lernprozess ist normal und darf nicht als "Gefahr"
+// rot leuchten (das entmutigt genau das Weiterüben). Deshalb:
+//   ab 80 %  = Grün  (positive Verstärkung, Belohnung)
+//   50–79 %  = Amber (solide)
+//   < 50 %   = neutrales Grau ("im Aufbau", nicht "schlecht")
+// Alle Text/BG-Paare sind WCAG-AA-konform (>= 6,5:1).
 function accuracyColors(pct: number) {
-  if (pct >= 80) return { bg: "#e8f5e9", text: "#2e7d32", bar: "#66bb6a" };
-  if (pct >= 50) return { bg: "#fefce8", text: "#eab308", bar: "#facc15" };
-  return { bg: "#fdf2f1", text: "#b3524f", bar: "#ef9a9a" };
+  if (pct >= 80) return { bg: "#e8f5e9", text: "#1b5e20", bar: "#4caf50" };
+  if (pct >= 50) return { bg: "#fef4e3", text: "#b45309", bar: "#f59e0b" };
+  return { bg: "#eef1f5", text: "#475569", bar: "#94a3b8" };
 }
 
 // Ring-Gauge für die Trefferquote — jetzt als präsenter Hero-Ring in der
@@ -379,7 +380,7 @@ export default function StatistikPage() {
                     <div className="flex items-center gap-5">
                       <RingGauge
                         percent={summary.accuracy}
-                        color={accuracyColors(summary.accuracy).text}
+                        color={accuracyColors(summary.accuracy).bar}
                         size={140}
                         strokeWidth={11}
                         showLabel

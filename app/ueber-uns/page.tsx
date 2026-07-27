@@ -488,7 +488,7 @@ export default function UeberUnsPage() {
                 hier den Weg ins Produkt öffnen statt im Footer zu enden. */}
             <FadeInUp>
               <div className="card mt-4 flex flex-col items-center gap-3 p-8 text-center">
-                <p className="text-xl font-extrabold tracking-tight">Überzeugt? Probier's aus.</p>
+                <p className="text-xl font-extrabold tracking-tight">Überzeugt? Probier&apos;s aus.</p>
                 <p className="max-w-md text-sm text-muted">
                   Kostenlos, kein Account — dein erster Fall wartet.
                 </p>

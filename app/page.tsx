@@ -9,6 +9,12 @@ import { FadeInUp } from "./components/FadeInUp";
 import { generateShareCard } from "@/lib/generateShareCard";
 import { recordCaseResult, readCaseResults } from "@/lib/stats";
 import { track } from "@/lib/analytics";
+import { getReviewMode, endReviewMode, type ReviewSession } from "@/lib/reviewMode";
+import { ReviewModeBar } from "./components/ReviewModeBar";
+import { SessionFeedbackModal } from "./components/SessionFeedbackModal";
+import { PostCaseFeedback } from "./components/PostCaseFeedback";
+import { LaunchIntentPrompt } from "./components/LaunchIntentPrompt";
+import { HomeWaitlistCard } from "./components/WaitlistSignup";
 
 type Difficulty = "vorklinik" | "klinik" | "examen";
 type Phase = "start" | "loading" | "playing" | "result";
@@ -168,6 +174,12 @@ export default function Home() {
   const [phase, setPhase] = useState<Phase>("start");
   const [difficulty, setDifficulty] = useState<Difficulty>("klinik");
   const [discipline, setDiscipline] = useState<Discipline>("zufaellig");
+  // Review-Modus (Experten, von /review gestartet) — steuert das Experten-
+  // Review am Ergebnis-Screen + die Feedback-Leiste.
+  const [reviewSession, setReviewSession] = useState<ReviewSession | null>(null);
+  const [showSessionFeedback, setShowSessionFeedback] = useState(false);
+  // Post-Case-Overlay: "doctor" (Review-Modus) oder "student" (Micro-Survey).
+  const [postFeedback, setPostFeedback] = useState<null | "doctor" | "student">(null);
   const [activeCase, setActiveCase] = useState<Case | null>(null);
   const [revealed, setRevealed] = useState<Revealed>({
     history: false,
@@ -189,8 +201,11 @@ export default function Home() {
     imaging: false,
     labs: false,
   });
+  // Tages-Zähler bleibt (Engagement-Messung + dezente UI), aber KEIN hartes Limit
+  // mehr im Validierungslauf: wir wollen die echte Nutzungshöhe sehen, nicht kappen.
   const [dailyUsed, setDailyUsed] = useState(0);
-  const dailyLimit = 5;
+  // Nicht-blockierender Launch-Intent-Ask (einmal, nach sichtbarem Engagement).
+  const [showIntent, setShowIntent] = useState(false);
   const caseStartedAtRef = useRef<number | null>(null);
 
   // Safari/Chrome merken sich beim Reload die letzte Scroll-Position der Seite
@@ -217,7 +232,43 @@ export default function Home() {
     setPlayed(results.length);
   }, []);
 
+  // Review-Modus beim Laden erkennen (von /review gesetzt).
+  useEffect(() => {
+    setReviewSession(getReviewMode());
+  }, []);
+
+  // Tages-Zähler + E-Mail-Unlock laden (Zähler setzt sich täglich zurück).
+  useEffect(() => {
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      const raw = localStorage.getItem("medcase:daily");
+      if (raw) {
+        const p = JSON.parse(raw) as { date?: string; count?: number };
+        if (p.date === today) setDailyUsed(p.count ?? 0);
+        else localStorage.setItem("medcase:daily", JSON.stringify({ date: today, count: 0 }));
+      }
+    } catch {}
+  }, []);
+
+  // Launch-Intent-Nudge: einmal PRO TAG auf der Startseite (frischer Reminder),
+  // aber nie mehr, wenn die Person sich bereits eingetragen hat. Leicht verzögert,
+  // damit die Seite erst zur Ruhe kommt.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      try {
+        if (localStorage.getItem("medcase:waitlistJoined")) return;
+        const today = new Date().toISOString().slice(0, 10);
+        if (localStorage.getItem("medcase:intentDay") === today) return;
+        localStorage.setItem("medcase:intentDay", today);
+        setShowIntent(true);
+      } catch {}
+    }, 2200);
+    return () => clearTimeout(t);
+  }, []);
+
   async function startCase(selected: Difficulty, selectedDiscipline?: Discipline) {
+    // Kein hartes Tageslimit mehr: freies Weiterspielen, damit wir die echte
+    // Engagement-Höhe messen (Fälle sind statisches JSON, kosten ~nichts).
     setDifficulty(selected);
     if (selectedDiscipline) setDiscipline(selectedDiscipline);
     setPhase("loading");
@@ -252,7 +303,14 @@ export default function Home() {
         ...loadedCase,
         diagnosisOptions: shuffle(loadedCase.diagnosisOptions),
       });
-      setDailyUsed((d) => d + 1);
+      setDailyUsed((d) => {
+        const next = d + 1;
+        try {
+          const today = new Date().toISOString().slice(0, 10);
+          localStorage.setItem("medcase:daily", JSON.stringify({ date: today, count: next }));
+        } catch {}
+        return next;
+      });
       caseStartedAtRef.current = Date.now();
       setPhase("playing");
       track("fall_gestartet", {
@@ -307,9 +365,38 @@ export default function Home() {
       duration_seconds: durationSeconds,
     });
     setPhase("result");
+
+    // Post-Case-Feedback als Overlay (nicht mehr eingebettet):
+    // Review-Modus → Arzt-Urteil direkt nach jedem Fall. Die Studenten-Survey
+    // kommt NICHT hier, sondern erst beim "Nächster Patient"-Klick (siehe
+    // nextCase) — so kann das Ergebnis erst in Ruhe gelesen werden.
+    if (reviewSession) {
+      setPostFeedback("doctor");
+    }
+    // Der Launch-Intent-Nudge läuft jetzt tagesbasiert über die Startseite
+    // (siehe Mount-Effect), nicht mehr über einen Fall-Schwellenwert im Spiel.
   }
 
   function nextCase() {
+    // Studenten-Survey WIEDERKEHREND, aber gedeckelt: erstes Mal nach dem 15.
+    // Fall, danach alle 25 Fälle (bei 15, 40, 65, …) — insgesamt MAXIMAL 3×.
+    // Fall-Zähler läuft pro Session (disziplin-übergreifend), der 3er-Deckel
+    // persistent über localStorage. Jeweils beim "Nächster Patient"-Klick; der
+    // nächste Fall startet erst, wenn die Survey geschlossen wird (onClose).
+    if (!reviewSession) {
+      try {
+        const n = Number(sessionStorage.getItem("medcase:resultCount") ?? "0") + 1;
+        sessionStorage.setItem("medcase:resultCount", String(n));
+        const shown = Number(localStorage.getItem("medcase:surveyCount") ?? "0");
+        const isTrigger = n === 15 || (n > 15 && (n - 15) % 25 === 0);
+        if (isTrigger && shown < 3) {
+          localStorage.setItem("medcase:surveyCount", String(shown + 1));
+          setPostFeedback("student");
+          return;
+        }
+      } catch {}
+    }
+    setPostFeedback(null);
     startCase(difficulty);
   }
 
@@ -320,6 +407,42 @@ export default function Home() {
   return (
     <div className={`min-h-screen px-4 pt-5 md:px-10 ${phase === "playing" || phase === "result" ? "" : "pb-8"}`}>
       <div className="mx-auto max-w-[1560px]">
+        {reviewSession && (
+          <ReviewModeBar
+            session={reviewSession}
+            onFeedback={() => setShowSessionFeedback(true)}
+            onEnd={() => {
+              endReviewMode();
+              setReviewSession(null);
+            }}
+          />
+        )}
+        {reviewSession && showSessionFeedback && (
+          <SessionFeedbackModal
+            session={reviewSession}
+            onClose={() => setShowSessionFeedback(false)}
+          />
+        )}
+        {postFeedback && activeCase && (
+          <PostCaseFeedback
+            kind={postFeedback}
+            caseData={activeCase}
+            session={reviewSession}
+            onClose={() => {
+              const wasStudent = postFeedback === "student";
+              setPostFeedback(null);
+              // Studenten-Survey wird nach dem "Nächster Patient"-Klick gezeigt;
+              // beim Schließen soll der nächste Fall starten.
+              if (wasStudent) startCase(difficulty);
+            }}
+          />
+        )}
+        {showIntent && (
+          <LaunchIntentPrompt
+            placement={phase === "start" ? "corner" : "top"}
+            onClose={() => setShowIntent(false)}
+          />
+        )}
         {phase === "start" && <StartScreen onStart={startCase} />}
         {phase === "loading" && <LoadingScreen />}
         {(phase === "playing" || phase === "result") && activeCase && (
@@ -341,7 +464,6 @@ export default function Home() {
             onNext={nextCase}
             onGoHome={goHome}
             dailyUsed={dailyUsed}
-            dailyLimit={dailyLimit}
           />
         )}
       </div>
@@ -1582,7 +1704,7 @@ function StartScreen({
           />
         </button>
         <p className="text-sm text-muted">
-          Kostenlos · Kein Account nötig · Heute 5 freie Fälle
+          Kostenlos · Kein Account nötig
         </p>
 
         {/* Sekundärer CTA — kleiner als der primäre Button */}
@@ -1617,6 +1739,9 @@ function StartScreen({
         </FadeInUp>
         <FadeInUp delay={120}>
           <WelcomeNote />
+        </FadeInUp>
+        <FadeInUp>
+          <HomeWaitlistCard />
         </FadeInUp>
         {/* Abschluss-CTA: Wer bis hier gescrollt hat, ist überzeugt — und
             fand bisher keinen Spiel-Einstieg mehr. Gleicher Picker wie oben. */}
@@ -2522,6 +2647,9 @@ function ResultIsland({
             );
           })()}
 
+          {/* Feedback läuft jetzt über ein Overlay NACH dem Fall (PostCaseFeedback),
+              nicht mehr eingebettet — verdeckte sonst die aufklappende Karte. */}
+
           {/* Primary CTA */}
           <button
             onClick={onNext}
@@ -2740,7 +2868,6 @@ function MobileSidebar({
   caseId,
   difficulty,
   dailyUsed,
-  dailyLimit,
 }: {
   open: boolean;
   onClose: () => void;
@@ -2750,7 +2877,6 @@ function MobileSidebar({
   caseId: string;
   difficulty: Difficulty;
   dailyUsed: number;
-  dailyLimit: number;
 }) {
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -2836,15 +2962,9 @@ function MobileSidebar({
           </p>
             <p className="mt-2 text-2xl font-extrabold">
               {dailyUsed}
-              <span className="text-base font-semibold text-muted"> / {dailyLimit} Fällen</span>
+              <span className="text-base font-semibold text-muted"> {dailyUsed === 1 ? "Fall" : "Fälle"}</span>
             </p>
-            <div className="mt-2.5 h-1.5 rounded-full bg-foreground/10">
-              <div
-                className="h-1.5 rounded-full bg-accent transition-all"
-                style={{ width: `${Math.min((dailyUsed / dailyLimit) * 100, 100)}%` }}
-              />
-            </div>
-            <p className="mt-2 text-xs text-muted">Free Tier · läuft täglich neu an</p>
+            <p className="mt-2 text-xs text-muted">heute gespielt · unbegrenzt</p>
           </div>
           <ReportCaseCard caseId={caseId} difficulty={difficulty} />
         </div>
@@ -2855,7 +2975,6 @@ function MobileSidebar({
 
 function StatusPanel({
   dailyUsed,
-  dailyLimit,
   possiblePoints,
   revealed,
   revealedAtSubmit,
@@ -2865,7 +2984,6 @@ function StatusPanel({
   anchorRef,
 }: {
   dailyUsed: number;
-  dailyLimit: number;
   possiblePoints: number;
   revealed: Revealed;
   revealedAtSubmit: Revealed;
@@ -2891,19 +3009,10 @@ function StatusPanel({
         </p>
         <p className="text-center text-[30px] font-extrabold leading-none">
           {dailyUsed}
-          <small className="text-[15px] font-semibold text-muted"> / {dailyLimit} Fällen</small>
+          <small className="text-[15px] font-semibold text-muted"> {dailyUsed === 1 ? "Fall" : "Fälle"}</small>
         </p>
-        <div
-          className="mt-[10px] h-[6px] overflow-hidden rounded-[3px]"
-          style={{ background: "#f1efe9" }}
-        >
-          <div
-            className="h-full bg-accent transition-all"
-            style={{ width: `${Math.min((dailyUsed / dailyLimit) * 100, 100)}%` }}
-          />
-        </div>
-        <p className="mt-[8px] text-center text-[11.5px] text-muted">
-          Free Tier · läuft täglich neu an
+        <p className="mt-[10px] text-center text-[11.5px] text-muted">
+          heute gespielt · unbegrenzt
         </p>
       </div>
 
@@ -2982,7 +3091,6 @@ function GameScreen({
   onNext,
   onGoHome,
   dailyUsed,
-  dailyLimit,
 }: {
   caseData: Case;
   difficulty: Difficulty;
@@ -3001,7 +3109,6 @@ function GameScreen({
   onNext: () => void;
   onGoHome: () => void;
   dailyUsed: number;
-  dailyLimit: number;
 }) {
   const difficultyLabel =
     DIFFICULTIES.find((d) => d.id === difficulty)?.label ?? difficulty;
@@ -3165,7 +3272,6 @@ function GameScreen({
         caseId={caseData.id}
         difficulty={difficulty}
         dailyUsed={dailyUsed}
-        dailyLimit={dailyLimit}
       />
 
       {/* Mobile header */}
@@ -3458,7 +3564,6 @@ function GameScreen({
         <aside className="hidden flex-col gap-4 md:sticky md:top-24 md:flex md:self-start">
           <StatusPanel
             dailyUsed={dailyUsed}
-            dailyLimit={dailyLimit}
             possiblePoints={possiblePoints}
             revealed={revealed}
             revealedAtSubmit={revealedAtSubmit}
@@ -3472,7 +3577,6 @@ function GameScreen({
         <div className="hidden flex-col gap-4 sm:flex md:hidden">
           <StatusPanel
             dailyUsed={dailyUsed}
-            dailyLimit={dailyLimit}
             possiblePoints={possiblePoints}
             revealed={revealed}
             revealedAtSubmit={revealedAtSubmit}

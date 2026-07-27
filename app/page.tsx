@@ -169,7 +169,6 @@ const DIFFICULTIES: { id: Difficulty; label: string }[] = [
   { id: "klinik", label: "Klinik" },
   { id: "examen", label: "PJ" },
 ];
-
 export default function Home() {
   const [phase, setPhase] = useState<Phase>("start");
   const [difficulty, setDifficulty] = useState<Difficulty>("klinik");
@@ -248,22 +247,6 @@ export default function Home() {
         else localStorage.setItem("medcase:daily", JSON.stringify({ date: today, count: 0 }));
       }
     } catch {}
-  }, []);
-
-  // Launch-Intent-Nudge: einmal PRO TAG auf der Startseite (frischer Reminder),
-  // aber nie mehr, wenn die Person sich bereits eingetragen hat. Leicht verzögert,
-  // damit die Seite erst zur Ruhe kommt.
-  useEffect(() => {
-    const t = setTimeout(() => {
-      try {
-        if (localStorage.getItem("medcase:waitlistJoined")) return;
-        const today = new Date().toISOString().slice(0, 10);
-        if (localStorage.getItem("medcase:intentDay") === today) return;
-        localStorage.setItem("medcase:intentDay", today);
-        setShowIntent(true);
-      } catch {}
-    }, 2200);
-    return () => clearTimeout(t);
   }, []);
 
   async function startCase(selected: Difficulty, selectedDiscipline?: Discipline) {
@@ -373,26 +356,29 @@ export default function Home() {
     if (reviewSession) {
       setPostFeedback("doctor");
     }
-    // Der Launch-Intent-Nudge läuft jetzt tagesbasiert über die Startseite
-    // (siehe Mount-Effect), nicht mehr über einen Fall-Schwellenwert im Spiel.
+    // Launch-Nudge und Studenten-Survey laufen meilensteinbasiert über nextCase
+    // (siehe dort), nicht hier.
   }
 
   function nextCase() {
-    // Studenten-Survey WIEDERKEHREND, aber gedeckelt: erstes Mal nach dem 15.
-    // Fall, danach alle 25 Fälle (bei 15, 40, 65, …) — insgesamt MAXIMAL 3×.
-    // Fall-Zähler läuft pro Session (disziplin-übergreifend), der 3er-Deckel
-    // persistent über localStorage. Jeweils beim "Nächster Patient"-Klick; der
-    // nächste Fall startet erst, wenn die Survey geschlossen wird (onClose).
+    // Meilenstein-Logik beim "Nächster Patient"-Klick. Fall-Zähler ist kumulativ
+    // und persistent (localStorage, disziplin-übergreifend), damit die Schwellen
+    // sitzungsübergreifend stimmen. Exakte Gleichheit = automatisch je 3× gedeckelt.
+    //  - Launch-Nudge (nicht-blockierend): 15 / 35 / 55, nie wenn schon eingetragen.
+    //  - Studenten-Survey (blockierendes Modal): 25 / 50 / 75.
     if (!reviewSession) {
       try {
-        const n = Number(sessionStorage.getItem("medcase:resultCount") ?? "0") + 1;
-        sessionStorage.setItem("medcase:resultCount", String(n));
-        const shown = Number(localStorage.getItem("medcase:surveyCount") ?? "0");
-        const isTrigger = n === 15 || (n > 15 && (n - 15) % 25 === 0);
-        if (isTrigger && shown < 3) {
-          localStorage.setItem("medcase:surveyCount", String(shown + 1));
+        const n = Number(localStorage.getItem("medcase:casesDone") ?? "0") + 1;
+        localStorage.setItem("medcase:casesDone", String(n));
+        if (n === 25 || n === 50 || n === 75) {
           setPostFeedback("student");
-          return;
+          return; // nächster Fall startet erst nach dem Schließen der Survey
+        }
+        if (
+          (n === 15 || n === 35 || n === 55) &&
+          !localStorage.getItem("medcase:waitlistJoined")
+        ) {
+          setShowIntent(true); // nicht-blockierend: weiterspielen wird nicht gestoppt
         }
       } catch {}
     }

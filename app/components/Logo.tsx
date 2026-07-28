@@ -1,55 +1,19 @@
 export function Logo({ size = 28 }: { size?: number }) {
-  const iconSize = Math.round(size * 0.6);
-  const radius = Math.round(size * 0.25);
+  // Wortmarke-only (kein Icon), Serifen-Schrift wie im Marken-Mockup.
+  const fontSize = Math.round(size * 0.78);
   return (
-    <div className="flex min-w-0 items-center gap-2 overflow-hidden">
-      <div
+    <div className="flex min-w-0 items-center overflow-hidden">
+      <span
+        className="min-w-0 truncate font-bold"
         style={{
-          width: size,
-          height: size,
-          borderRadius: radius,
-          backgroundColor: "#285dd2",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          fontSize,
+          letterSpacing: "-0.01em",
+          lineHeight: 1,
         }}
       >
-        <svg
-          width={iconSize}
-          height={iconSize}
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"
-            fill="transparent"
-            stroke="#ffffff"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <rect
-            x="9.5"
-            y="2.5"
-            width="5"
-            height="4"
-            rx="1.5"
-            fill="transparent"
-            stroke="#ffffff"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M12 18.5C12 18.5 8 16 8 13.5C8 11.5 9.5 11 11 11C11.8 11 12 11.8 12 11.8C12 11.8 12.2 11 13 11C14.5 11 16 11.5 16 13.5C16 16 12 18.5 12 18.5Z"
-            fill="#ffffff"
-          />
-        </svg>
-      </div>
-      <span className="min-w-0 truncate text-xl font-extrabold tracking-tight">
-        <span style={{ color: "#0f0f0f" }}>Med</span>
-        <span style={{ color: "#285dd2" }}>case</span>
+        <span style={{ color: "#1b3a5c" }}>Casolv</span>
+        <span style={{ color: "#2f6fb0" }}>o</span>
       </span>
     </div>
   );

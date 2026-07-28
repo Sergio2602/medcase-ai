@@ -43,14 +43,14 @@ export function CenteredNav({
 
   return (
     <div
-      className={`sticky top-3 z-50 mx-auto mb-6 flex w-fit items-center gap-1 rounded-full px-2 py-1.5 transition-all duration-300 ${
+      className={`sticky top-3 z-50 mx-auto mb-6 flex w-fit items-center gap-1.5 rounded-full px-3 py-2 transition-all duration-300 ${
         scrolled
-          ? "border-[1.5px] border-card-border/10 bg-card/90 backdrop-blur-md"
+          ? "border-[1.5px] border-card-border/10 bg-card/65 shadow-sm backdrop-blur-lg"
           : "border-[1.5px] border-card-border/8 bg-card/40 backdrop-blur-sm"
       }`}
     >
-      <span className="flex items-center pl-1.5 pr-1">
-        <Logo size={26} />
+      <span className="flex items-center pl-2 pr-1.5">
+        <Logo size={34} />
       </span>
       <div className="h-5 w-px shrink-0 bg-card-border/15" />
       {items.map((item) =>

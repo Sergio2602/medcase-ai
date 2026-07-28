@@ -560,9 +560,9 @@ const PATIENT_PREVIEWS = [
 // Farbcodierung je Befund-Kategorie — macht auf einen Blick klar, welche Art
 // von Befund gerade in der mittleren Spalte erhoben wird.
 const CATEGORY_STYLES: Record<string, { text: string; bg: string }> = {
-  Anamnese: { text: "#285dd2", bg: "#ecf0f9" },
+  Anamnese: { text: "#175e8f", bg: "#e6eef4" },
   Untersuchung: { text: "#7c3aed", bg: "#f3ecfd" },
-  Labor: { text: "#0d9488", bg: "#e3f5f3" },
+  Labor: { text: "#0e7490", bg: "#e2eef3" },
 };
 
 // Zählt animiert vom aktuell angezeigten zum neuen Wert hoch/runter, statt
@@ -713,7 +713,7 @@ function RotatingPatientPreview() {
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span
-              className="inline-block h-2.5 w-2.5 rounded-full bg-[#16a34a]"
+              className="inline-block h-2.5 w-2.5 rounded-full bg-[#175e8f]"
               style={{ animation: "pulse-soft 2s ease-in-out infinite" }}
             />
             <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
@@ -1653,14 +1653,14 @@ function StartScreen({
         <div className="hero-blob-c absolute left-[22%] top-[640px] h-72 w-72 rounded-full bg-accent/[0.06] blur-3xl" />
       </div>
       <CenteredNav active="home" />
-      <div className="mx-auto flex max-w-xl flex-col items-center text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#ecf0f9] px-4 py-1.5 text-sm font-bold text-accent">
+      <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+        <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#e6eef4] px-4 py-1.5 text-sm font-bold text-accent">
           Für Medizinstudierende · Deutschland
         </span>
-        <h1 className="mt-2 text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl">
+        <h1 className="mt-3 text-5xl font-extrabold leading-[1.03] tracking-tight md:text-7xl">
           Klinisch neu denken.
         </h1>
-        <p className="mt-1.5 max-w-md text-lg leading-relaxed text-muted">
+        <p className="mt-3 max-w-lg text-lg leading-relaxed text-muted">
           Realistische Patientenfälle für Vorklinik, Klinik und PJ — du
           entscheidest, welche Befunde du anforderst.
         </p>
@@ -2093,7 +2093,9 @@ function FindingCard({ title, icon, text, expanded, onToggle }: { title: string;
         {expanded && (
           <>
             <div className="border-t border-card-border/10" />
-            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{text}</p>
+            <div className="max-h-[40vh] overflow-y-auto overscroll-contain">
+              <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{text}</p>
+            </div>
           </>
         )}
       </div>
@@ -2128,7 +2130,9 @@ function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expande
         {expanded && (
           <>
             <div className="border-t border-card-border/10" />
-            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{imaging}</p>
+            <div className="max-h-[40vh] overflow-y-auto overscroll-contain">
+              <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{imaging}</p>
+            </div>
           </>
         )}
       </div>
@@ -2492,8 +2496,8 @@ function ResultIsland({
             )}
             {caseData.caseContext &&
               (caseData.caseContext.category === "cannot-miss" ? (
-                <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#8b5cf6]/40 bg-[#f3eefc] px-2.5 py-1 text-[11px] font-semibold text-[#6d28d9]">
-                  <span className="flex h-[16px] w-[16px] shrink-0 items-center justify-center rounded-full bg-[#8b5cf6] text-white">
+                <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#c0362c]/40 bg-[#fdecea] px-2.5 py-1 text-[11px] font-semibold text-[#a5231a]">
+                  <span className="flex h-[16px] w-[16px] shrink-0 items-center justify-center rounded-full bg-[#c0362c] text-white">
                     <i className="ti ti-alert-triangle text-[10px]" />
                   </span>
                   {caseData.caseContext.note}
@@ -3339,7 +3343,7 @@ function GameScreen({
               transition: "opacity 200ms ease-out",
             }}
           />
-          <div ref={contentScrollRef} data-content-scroll="" className="flex flex-col gap-4 flex-1 min-h-0 overflow-y-auto">
+          <div ref={contentScrollRef} data-content-scroll="" className="flex flex-col gap-2.5 flex-1 min-h-0 overflow-y-auto">
           <div ref={patientCardRef} className="card flex gap-3 p-3.5">
             <div
               className="avatar-circle h-11 w-11 shrink-0 text-sm"
@@ -3468,8 +3472,9 @@ function GameScreen({
               </div>
             )}
 
-          {/* Befund-Karten in umgekehrter Aufdeck-Reihenfolge: zuletzt
-              angeforderter Befund oben (siehe orderedFindingKeys). */}
+          {/* Befund-Karten im 2-Spalten-Raster (nebeneinander) — nutzt die
+              Breite, halbiert die Höhe; zuletzt angeforderter Befund zuerst. */}
+          <div className="mt-2 grid grid-cols-1 items-start gap-3 md:grid-cols-2">
           {orderedFindingKeys.map((k) => {
             if (k === "history") {
               return (
@@ -3514,6 +3519,7 @@ function GameScreen({
               />
             );
           })}
+          </div>
 
           </div>
           <div

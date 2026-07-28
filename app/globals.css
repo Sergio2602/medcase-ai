@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  /* Core palette — Design System v1.0 */
-  --background: #ffffff;
-  --foreground: #0f0f0f;
+  /* Core palette — CASOLVO Mono-Blau (PREVIEW, leicht reversibel; alte Werte in Klammern) */
+  --background: #faf8f3;      /* Pearl        (war #ffffff) */
+  --foreground: #15202b;      /* Anker        (war #0f0f0f) */
   --card: #ffffff;
-  --card-border: #0f0f0f;
-  --accent: #285dd2;
+  --card-border: #15202b;     /* Anker        (war #0f0f0f) */
+  --accent: #175e8f;          /* Cerulean / Medizinblau (davor #285dd2) */
   --accent-foreground: #ffffff;
 
-  /* Muted text — darker for better contrast/legibility */
-  --muted: #454440;
+  /* Muted text = Schiefer (war #454440) */
+  --muted: #5a6570;
 
   /* Avatar palette — approved pastel set, saturated */
   --avatar-1: #ef9a9a; /* Rosa */
@@ -60,8 +60,8 @@ html {
 
 body {
   background:
-    radial-gradient(circle at 12% 8%, rgba(40,93,210,0.05), transparent 45%),
-    radial-gradient(circle at 88% 78%, rgba(40,93,210,0.045), transparent 50%),
+    radial-gradient(circle at 12% 8%, rgba(23,94,143,0.05), transparent 45%),
+    radial-gradient(circle at 88% 78%, rgba(23,94,143,0.045), transparent 50%),
     repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
     repeating-linear-gradient(90deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
     var(--background);

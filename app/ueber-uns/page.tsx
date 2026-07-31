@@ -4,7 +4,7 @@ import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
 
 export const metadata = {
-  title: "Über uns & Methodik — Medcase",
+  title: "Über uns & Methodik · Medcase",
   description:
     "Wer hinter Medcase steht, wie Fälle recherchiert werden und woran sich die Auswahl orientiert.",
 };
@@ -153,14 +153,14 @@ export default function UeberUnsPage() {
                 <p className="mb-4 leading-relaxed">
                   Medcase ist ein Projekt mit medizinischem Hintergrund: Wir entwickeln KI-gestützte,
                   quellenbasierte Klinikfälle, mit denen Medizinstudierende klinisches Denken trainieren
-                  können — echte diagnostische Situationen statt reiner Auswendiglern-Karteikarten.
+                  können: echte diagnostische Situationen statt reiner Auswendiglern-Karteikarten.
                 </p>
                 <p className="mb-4 leading-relaxed">
-                  Gegründet und entwickelt wird Medcase von Sergio Jacinto Hein, Medizinstudent im 7.
-                  Semester in Mainz. Medizinisches Fachwissen und Produktentwicklung liegen damit aktuell in
-                  einer Hand — ein Vorteil für schnelle Iteration in der frühen Phase, gleichzeitig der Grund,
-                  warum ein unabhängiges fachärztliches Review vor einer breiteren Bewerbung fest eingeplant
-                  ist (siehe Qualitätssicherung).
+                  Ich bin Sergio Jacinto Hein, Medizinstudent in Mainz, bereits im klinischen
+                  Studienabschnitt, und entwickle das Projekt aus eigenem Interesse. Medizinisches Fachwissen
+                  und Produktentwicklung liegen damit bei mir in einer Hand: ein Vorteil für schnelle
+                  Iteration in der frühen Phase, zugleich der Grund, warum ich ein unabhängiges fachärztliches
+                  Review vor einer breiteren Bewerbung fest eingeplant habe (siehe Qualitätssicherung).
                 </p>
               </section>
 
@@ -177,7 +177,7 @@ export default function UeberUnsPage() {
                     n={1}
                     icon="ti-list-search"
                     title="Diagnose auswählen"
-                    text="Nach IMPP-Prüfungshäufigkeit, realer Prävalenz (RKI) und Cannot-miss-Kriterium — nicht zufällig."
+                    text="Nach IMPP-Prüfungshäufigkeit, realer Prävalenz (RKI) und Cannot-miss-Kriterium, nicht zufällig."
                   />
                   <StepChip
                     n={2}
@@ -207,7 +207,7 @@ export default function UeberUnsPage() {
                     n={6}
                     icon="ti-quote"
                     title="Quellen dokumentieren"
-                    text="Jede Diagnosekriterien-Quelle wird vermerkt — auch wenn die Quellenlage dünn ist, statt eine Quelle zu erfinden."
+                    text="Jede Diagnosekriterien-Quelle wird vermerkt, auch wenn die Quellenlage dünn ist, statt eine Quelle zu erfinden."
                   />
                 </div>
               </section>
@@ -221,7 +221,7 @@ export default function UeberUnsPage() {
                 Fallauswahl
               </h2>
               <p className="mb-8 text-sm text-muted">
-                Woran sich die Fallauswahl orientiert — und wie wir mit Cannot-miss-Diagnosen umgehen.
+                Woran sich die Fallauswahl orientiert und wie wir mit Cannot-miss-Diagnosen umgehen.
               </p>
 
               <section className="mb-6 max-w-[70ch]">
@@ -231,7 +231,7 @@ export default function UeberUnsPage() {
                 <p className="mb-4 text-[13px] leading-relaxed text-muted">
                   Das IMPP veröffentlicht seit Kurzem erstmals einen offiziellen &bdquo;Blueprint&ldquo; mit der
                   angestrebten Themenverteilung der 320 Prüfungsaufgaben im Zweiten Staatsexamen. Diese
-                  Zahlen gelten für das gesamte M2-Examen (alle Fächer) — wir nutzen sie zur{" "}
+                  Zahlen gelten für das gesamte M2-Examen (alle Fächer); wir nutzen sie zur{" "}
                   <em>relativen</em> Gewichtung zwischen den für unsere Klinik-Fälle relevanten Organsystemen,
                   nicht als exakte Fallzahl-Vorgabe pro System.
                 </p>
@@ -250,7 +250,7 @@ export default function UeberUnsPage() {
                 <p className="mb-6 text-xs text-muted">
                   Quelle:{" "}
                   <SourceLink href="https://www.impp.de/blueprint-m2-examen.html">
-                    IMPP – Blueprint Zweites Staatsexamen Medizin
+                    IMPP: Blueprint Zweites Staatsexamen Medizin
                   </SourceLink>
                   . Werte sind laut IMPP Richtwerte, rechtlich nicht verbindlich.
                 </p>
@@ -258,7 +258,7 @@ export default function UeberUnsPage() {
                 <p className="mb-3 text-sm font-bold text-foreground">Vorklinik-Fälle: IMPP-Gegenstandskatalog 1 (GK1)</p>
                 <p className="mb-3 text-[13px] leading-relaxed text-muted">
                   Für das Physikum (M1) gibt es keinen numerischen Blueprint wie bei M2. Geprüft wird nach dem
-                  IMPP-Gegenstandskatalog 1, der in Spalte 4 &bdquo;Anwendungsbeispiele&ldquo; enthält — vom IMPP selbst
+                  IMPP-Gegenstandskatalog 1, der in Spalte 4 &bdquo;Anwendungsbeispiele&ldquo; enthält: vom IMPP selbst
                   markierte Themen mit hoher klinischer Relevanz. Genau diese nutzen wir als Grundlage für
                   unsere Fall-Vignetten, aus den drei praktisch übersetzbaren Teilkatalogen:
                 </p>
@@ -275,16 +275,16 @@ export default function UeberUnsPage() {
                 <p className="mb-6 text-xs text-muted">
                   Quelle:{" "}
                   <SourceLink href="https://www.impp.de/pruefungen/allgemein/gegenstandskataloge.html">
-                    IMPP – Gegenstandskataloge
+                    IMPP: Gegenstandskataloge
                   </SourceLink>
                   .
                 </p>
 
-                <p className="mb-3 text-sm font-bold text-foreground">Examen/PJ-Fälle: kein IMPP-M3-Blueprint — deshalb zwei andere Achsen</p>
+                <p className="mb-3 text-sm font-bold text-foreground">Examen/PJ-Fälle: kein IMPP-M3-Blueprint, deshalb zwei andere Achsen</p>
                 <p className="mb-3 text-[13px] leading-relaxed text-muted">
                   Geprüft (verifiziert direkt auf impp.de): Das IMPP führt ausschließlich die schriftlichen
                   Prüfungen M1 und M2 durch. Der Dritte Abschnitt (M3, nach dem Praktischen Jahr) ist eine
-                  mündlich-praktische Prüfung, lokal an den Universitäten abgenommen — kein bundesweiter
+                  mündlich-praktische Prüfung, lokal an den Universitäten abgenommen, kein bundesweiter
                   Blueprint, keine IMPP-Statistik dazu. Eine &bdquo;IMPP-M3-Häufigkeit&ldquo; existiert schlicht nicht, wir
                   erfinden hier keine. Stattdessen zwei reale Achsen: die GK2/M2-Gewichtung als inhaltliche
                   Grundlage (M3 prüft denselben Stoff, nur mündlich-praktisch) plus echte
@@ -293,7 +293,7 @@ export default function UeberUnsPage() {
                 <p className="text-[13px] leading-relaxed text-muted">
                   Quelle für Krankenhaushäufigkeit:{" "}
                   <SourceLink href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Krankenhauser/Publikationen/Downloads-Krankenhaeuser/statistischer-bericht-diagnosedaten-5231301237015.html">
-                    Destatis – Diagnosen der Krankenhauspatientinnen und -patienten
+                    Destatis: Diagnosen der Krankenhauspatientinnen und -patienten
                   </SourceLink>
                   , jährliche amtliche Statistik aller vollstationären ICD-10-Diagnosen in Deutschland.
                 </p>
@@ -305,9 +305,9 @@ export default function UeberUnsPage() {
                 <SectionLabel icon="ti-alert-triangle" id="cannot-miss">Cannot-miss</SectionLabel>
                 <p className="mb-4 text-[13px] leading-relaxed text-muted">
                   Häufigkeit allein reicht als Auswahlkriterium nicht. Manche Diagnosen sind selten, aber
-                  zeitkritisch und lebensbedrohlich — wer sie übersieht, riskiert den Patienten. Deshalb ist
+                  zeitkritisch und lebensbedrohlich: wer sie übersieht, riskiert den Patienten. Deshalb ist
                   &bdquo;cannot-miss&ldquo; keine Randnotiz, sondern eine eigene, dritte Auswahl-Achse neben
-                  Prüfungshäufigkeit und Prävalenz — gestützt durch den IMPP-Blueprint selbst: Achse 2 weist
+                  Prüfungshäufigkeit und Prävalenz, gestützt durch den IMPP-Blueprint selbst: Achse 2 weist
                   &bdquo;Notfallmaßnahmen&ldquo; mit 5–20 % einen eigenständigen, substanziellen Anteil zu,
                   nicht nur &bdquo;wenn Zeit bleibt&ldquo;.
                 </p>
@@ -315,7 +315,7 @@ export default function UeberUnsPage() {
                 <div className="mb-4 rounded-lg border-[1.5px] border-accent/25 bg-[#ecf0f9] p-4">
                   <p className="text-sm font-semibold text-accent">
                     <span className="text-xl font-extrabold">38</span> von 70 quellenbasierten Fällen (rund
-                    54 %) sind aktuell als cannot-miss markiert — bewusst kein kleiner Anteil.
+                    54 %) sind aktuell als cannot-miss markiert, bewusst kein kleiner Anteil.
                   </p>
                 </div>
 
@@ -437,14 +437,14 @@ export default function UeberUnsPage() {
                 </ul>
 
                 <p className="text-xs text-muted">
-                  Zahlen Stand dieser Seite. Die Fallbank wächst laufend — aktuelle Gesamtzahl siehe Startseite.
+                  Zahlen Stand dieser Seite. Die Fallbank wächst laufend, aktuelle Gesamtzahl siehe Startseite.
                 </p>
               </section>
 
               <Divider />
 
               <section className="max-w-[70ch]">
-                <SectionLabel icon="ti-shield-check" id="qualitaetssicherung">Qualitätssicherung — heute und geplant</SectionLabel>
+                <SectionLabel icon="ti-shield-check" id="qualitaetssicherung">Qualitätssicherung: heute und geplant</SectionLabel>
                 <div className="flex flex-col gap-4">
                   <div className="flex gap-3">
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#e7f6ec] text-[#15803d]">
@@ -453,7 +453,7 @@ export default function UeberUnsPage() {
                     <p className="text-[13px] leading-relaxed text-muted">
                       <strong className="text-foreground">&bdquo;Fall melden&ldquo;-Funktion ist live:</strong> Direkt im
                       Ergebnis-Screen kann jeder Fall gemeldet werden. Meldungen laufen intern zusammen und
-                      werden gesichtet — ein echter, sofort nutzbarer Feedback-Kanal, kein bloßes Versprechen.
+                      werden gesichtet, ein echter, sofort nutzbarer Feedback-Kanal, kein bloßes Versprechen.
                     </p>
                   </div>
                   <div className="flex gap-3">
@@ -462,7 +462,7 @@ export default function UeberUnsPage() {
                     </span>
                     <p className="text-[13px] leading-relaxed text-muted">
                       <strong className="text-foreground">Fachärztliches Review ist geplant, aber noch nicht erfolgt.</strong>{" "}
-                      Quellenangaben zeigen sauberes Recherchieren — sie ersetzen kein fachliches Review. Ein
+                      Quellenangaben zeigen sauberes Recherchieren; sie ersetzen kein fachliches Review. Ein
                       Review durch mindestens einen Assistenz- oder Facharzt ist die Voraussetzung, bevor wir
                       aktiv um ärztliche Aufmerksamkeit werben.
                     </p>
@@ -475,8 +475,7 @@ export default function UeberUnsPage() {
                       Fachlichen Fehler gefunden? Schreib uns direkt an{" "}
                       <a href="mailto:kontakt.medcase@gmail.com" className="text-accent underline underline-offset-2">
                         kontakt.medcase@gmail.com
-                      </a>{" "}
-                      — jeder konkrete Hinweis wird geprüft.
+                      </a>. Jeder konkrete Hinweis wird geprüft.
                     </p>
                   </div>
                 </div>
@@ -490,7 +489,7 @@ export default function UeberUnsPage() {
               <div className="card mt-4 flex flex-col items-center gap-3 p-8 text-center">
                 <p className="text-xl font-extrabold tracking-tight">Überzeugt? Probier&apos;s aus.</p>
                 <p className="max-w-md text-sm text-muted">
-                  Kostenlos, kein Account — dein erster Fall wartet.
+                  Kostenlos, kein Account, dein erster Fall wartet.
                 </p>
                 <Link
                   href="/"

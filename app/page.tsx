@@ -95,7 +95,7 @@ const MIN_SCORE = BASE_SCORE - 4 * INVESTIGATION_COST;
 // Zusätzlicher Versatz, mit dem die Diagnose-/Result-Insel unterhalb ihrer
 // eigentlichen Ankerlinie platziert wird — schafft mittig mehr Raum für
 // aufgedeckte Befunde, bevor die Insel beginnt.
-const ISLAND_TOP_GAP = 28;
+const ISLAND_TOP_GAP = 72;
 
 function hasImaging(c: Case): boolean {
   return typeof c.imaging === "string" && c.imaging.trim().length > 0;
@@ -181,7 +181,7 @@ export default function Home() {
   const [postFeedback, setPostFeedback] = useState<null | "doctor" | "student">(null);
   const [activeCase, setActiveCase] = useState<Case | null>(null);
   const [revealed, setRevealed] = useState<Revealed>({
-    history: false,
+    history: true, // Anamnese ist gratis (immer vorgelegt)
     examination: false,
     imaging: false,
     labs: false,
@@ -256,7 +256,7 @@ export default function Home() {
     if (selectedDiscipline) setDiscipline(selectedDiscipline);
     setPhase("loading");
     setRevealed({
-      history: false,
+      history: true, // Anamnese gratis
       examination: false,
       imaging: false,
       labs: false,
@@ -306,8 +306,9 @@ export default function Home() {
     }
   }
 
-  function revealCount(r: Revealed) {
-    return Object.values(r).filter(Boolean).length;
+  // Anamnese ist gratis — nur Untersuchung/Bildgebung/Labor kosten Punkte.
+  function paidRevealCount(r: Revealed) {
+    return [r.examination, r.imaging, r.labs].filter(Boolean).length;
   }
 
   function submitDiagnosis(option: string) {
@@ -317,7 +318,7 @@ export default function Home() {
     const correct = option === activeCase.correctDiagnosis;
     const earned = correct
       ? Math.max(
-          BASE_SCORE - revealCount(revealed) * INVESTIGATION_COST,
+          BASE_SCORE - paidRevealCount(revealed) * INVESTIGATION_COST,
           MIN_SCORE
         )
       : 0;
@@ -342,7 +343,7 @@ export default function Home() {
     track("fall_abgeschlossen", {
       correct,
       score: earned,
-      befunde_angefordert: revealCount(revealed),
+      befunde_angefordert: paidRevealCount(revealed),
       difficulty: activeCase.difficulty,
       discipline,
       duration_seconds: durationSeconds,
@@ -1884,7 +1885,7 @@ function RevealButton({
             ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/40"
             : locked
             ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/50"
-            : "border-card-border/20 bg-card hover:border-accent"
+            : "border-accent/30 bg-accent/[0.05] text-accent hover:border-accent hover:bg-accent/10"
         }`}
       >
         {done && <span>×</span>}
@@ -2093,9 +2094,7 @@ function FindingCard({ title, icon, text, expanded, onToggle }: { title: string;
         {expanded && (
           <>
             <div className="border-t border-card-border/10" />
-            <div className="max-h-[40vh] overflow-y-auto overscroll-contain">
-              <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{text}</p>
-            </div>
+            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{text}</p>
           </>
         )}
       </div>
@@ -2130,9 +2129,7 @@ function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expande
         {expanded && (
           <>
             <div className="border-t border-card-border/10" />
-            <div className="max-h-[40vh] overflow-y-auto overscroll-contain">
-              <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{imaging}</p>
-            </div>
+            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{imaging}</p>
           </>
         )}
       </div>
@@ -2694,14 +2691,17 @@ function DiagnosisIsland({
         </span>
       </div>
       <div className="grid grid-cols-2 gap-2.5">
-        {options.map((opt) => (
+        {options.map((opt, i) => (
           <button
             key={opt}
             onClick={() => onSubmit(opt)}
             disabled={!!selectedDiagnosis}
-            className="rounded-xl border-[1.5px] border-card-border/20 bg-foreground/[0.015] px-3 py-[9px] text-center text-sm font-semibold leading-snug transition-colors hover:border-accent hover:bg-accent/5 disabled:cursor-not-allowed"
+            className="group flex items-center gap-2.5 rounded-xl border-[1.5px] border-accent/20 bg-card px-3 py-[9px] text-left text-sm font-semibold leading-snug transition-colors hover:border-accent hover:bg-accent/[0.06] disabled:cursor-not-allowed"
           >
-            {opt}
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-[11px] font-extrabold text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+              {String.fromCharCode(65 + i)}
+            </span>
+            <span className="flex-1">{opt}</span>
           </button>
         ))}
       </div>
@@ -3023,13 +3023,16 @@ function StatusPanel({
         <div className="mt-2 flex flex-col gap-2">
           {checklist.map((item) => {
             const done = revealed[item.key];
-            const costCharged = phase === "result" ? revealedAtSubmit[item.key] : done;
+            const free = item.key === "history"; // Anamnese gratis
+            const costCharged = !free && (phase === "result" ? revealedAtSubmit[item.key] : done);
             return (
               <div key={item.key} className="flex items-center gap-2.5 text-[13px]">
                 <span
                   className="h-[14px] w-[14px] shrink-0 rounded-full border-[1.5px]"
                   style={
-                    done
+                    free
+                      ? { background: "var(--accent)", borderColor: "var(--accent)" }
+                      : costCharged
                       ? { background: "#dc2626", borderColor: "#dc2626" }
                       : { borderColor: "color-mix(in srgb, var(--card-border) 25%, transparent)" }
                   }
@@ -3037,8 +3040,8 @@ function StatusPanel({
                 <span className={`flex-1 ${done ? "text-foreground" : "text-muted"}`}>
                   {item.label}
                 </span>
-                <span className={`font-mono text-[11.5px] font-bold ${costCharged ? "text-[#dc2626]" : "text-muted/50"}`}>
-                  {costCharged ? "−10" : "—"}
+                <span className={`font-mono text-[11.5px] font-bold ${free ? "text-accent" : costCharged ? "text-[#dc2626]" : "text-muted/50"}`}>
+                  {free ? "inkl." : costCharged ? "−10" : "—"}
                 </span>
               </div>
             );
@@ -3059,6 +3062,11 @@ function StatusPanel({
 
       {/* Card: Fall melden */}
       <ReportCaseCard caseId={caseId} difficulty={difficulty} anchorRef={anchorRef} />
+
+      <p className="flex items-center gap-1 px-1 text-[10px] leading-snug text-muted/60">
+        <i className="ti ti-shield-check text-[10px] shrink-0" />
+        Fiktiver Übungsfall — kein ärztlicher Rat.
+      </p>
     </>
   );
 }
@@ -3106,8 +3114,10 @@ function GameScreen({
     DISCIPLINES.find((d) => d.id === discipline)?.label ?? "Zufällig";
   const color = avatarColorForCase(caseData.id);
   const revealCount = Object.values(revealed).filter(Boolean).length;
+  // Anamnese ist gratis — nur Untersuchung/Bildgebung/Labor kosten Punkte.
+  const paidCount = [revealed.examination, revealed.imaging, revealed.labs].filter(Boolean).length;
   const possiblePoints = Math.max(
-    BASE_SCORE - revealCount * INVESTIGATION_COST,
+    BASE_SCORE - paidCount * INVESTIGATION_COST,
     MIN_SCORE
   );
   const isResult = phase === "result";
@@ -3178,11 +3188,9 @@ function GameScreen({
       const lineY = anchorRect.bottom - colRect.top + ISLAND_TOP_GAP;
       setDiagnosisTop(lineY);
 
-      // Pad the scroll container so the last content line can be scrolled above the island.
-      // Needed padding = distance from island-top to column-bottom (not just island height).
+      // Insel ist jetzt sticky im Fluss (bottom-0) — kein Extra-Padding nötig.
       if (contentScrollRef.current) {
-        const needed = colRect.height - lineY + 16;
-        contentScrollRef.current.style.paddingBottom = `${Math.max(needed, 16)}px`;
+        contentScrollRef.current.style.paddingBottom = "";
       }
     }
 
@@ -3293,41 +3301,51 @@ function GameScreen({
         </div>
       </header>
 
-      {/* Desktop header — volle Breite, linksbündig (Logo + Pfad links,
-          Punktestand rechts), statt kompakter zentrierter Pill. */}
-      <header className="sticky top-0 z-30 mb-4 -mt-5 hidden pb-2 pt-4 sm:block">
-        <div className="flex w-full items-center gap-2.5 rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-2.5 py-2 backdrop-blur-md">
-          <button
-            onClick={onGoHome}
-            className="flex shrink-0 items-center overflow-hidden pl-1 transition-opacity hover:opacity-80"
-          >
-            <Logo size={28} />
-          </button>
-          <div className="h-5 w-px shrink-0 bg-card-border/15" />
-
-          <button
-            onClick={onGoHome}
-            className="flex shrink-0 items-center gap-1.5 rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.02] px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:border-accent/30 hover:text-accent"
-          >
-            <i className="ti ti-arrow-left text-[13px]" />
-            Zurück
-          </button>
-
-          {/* Status-Chips statt Navigations-Pfad: zeigen klar, in welcher
-              Schwierigkeit + Disziplin man gerade spielt (rein informativ). */}
-          <div className="flex min-w-0 items-center gap-1.5">
-            <span className="shrink-0 rounded-full bg-accent/10 px-2.5 py-1 text-xs font-bold text-accent">
-              {difficultyLabel}
-            </span>
-            <span className="truncate rounded-full bg-foreground/[0.04] px-2.5 py-1 text-xs font-semibold text-muted">
-              {disciplineLabel}
-            </span>
-          </div>
-
-          <div className="ml-auto flex shrink-0 items-center gap-2 pr-1">
+      {/* Desktop header — Voll-Cerulean-Band (füllt den ganzen Streifen, eckig,
+          bis zum Seitenrand) mit weißer, abgerundeter Nav-Bar + Home-Nav-Links. */}
+      <header className="sticky top-0 z-30 mb-4 -mt-5 hidden sm:block">
+        <div className="-mx-4 bg-accent px-4 py-2.5 md:-mx-10 md:px-10">
+          <div className="flex w-full items-center gap-1.5 rounded-2xl bg-card px-3 py-2 shadow-[0_6px_18px_-10px_rgba(23,94,143,0.55)]">
+            <button
+              onClick={onGoHome}
+              className="flex shrink-0 items-center overflow-hidden px-1 transition-opacity hover:opacity-80"
+              aria-label="Zur Startseite"
+            >
+              <Logo size={28} />
+            </button>
             <div className="h-5 w-px shrink-0 bg-card-border/15" />
-            <StatPill label="PUNKTE" value={score} variant="score" />
-            <StatPill label="GELÖST" value={`${solved}/${played}`} />
+
+            {/* Navigation wie im Home-Bereich */}
+            <nav className="flex items-center gap-0.5">
+              <Link href="/" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
+                <i className="ti ti-home text-sm" />
+                Home
+              </Link>
+              <Link href="/ueber-uns" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
+                <i className="ti ti-info-circle text-sm" />
+                Über uns
+              </Link>
+              <Link href="/statistik" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
+                <i className="ti ti-chart-bar text-sm" />
+                Statistik
+              </Link>
+              <Link href="/qa" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
+                <i className="ti ti-help-circle text-sm" />
+                Q&amp;A
+              </Link>
+            </nav>
+
+            <div className="ml-auto flex shrink-0 items-center gap-2 pr-0.5">
+              {/* Pfad: Schwierigkeit › Disziplin */}
+              <div className="hidden items-center gap-1.5 rounded-full bg-accent/[0.08] px-2.5 py-1 lg:flex">
+                <span className="text-xs font-bold text-accent">{difficultyLabel}</span>
+                <i className="ti ti-chevron-right text-[10px] text-muted/50" />
+                <span className="max-w-[130px] truncate text-xs font-semibold text-muted">{disciplineLabel}</span>
+              </div>
+              <div className="h-5 w-px shrink-0 bg-card-border/15" />
+              <StatPill label="PUNKTE" value={score} variant="score" />
+              <StatPill label="GELÖST" value={`${solved}/${played}`} />
+            </div>
           </div>
         </div>
       </header>
@@ -3344,32 +3362,38 @@ function GameScreen({
             }}
           />
           <div ref={contentScrollRef} data-content-scroll="" className="flex flex-col gap-2.5 flex-1 min-h-0 overflow-y-auto">
-          <div ref={patientCardRef} className="card flex gap-3 p-3.5">
-            <div
-              className="avatar-circle h-11 w-11 shrink-0 text-sm"
-              style={{ backgroundColor: color }}
-            >
-              {initials(caseData.patientName)}
+          <div ref={patientCardRef} key={`head-${caseData.id}`} className="card case-head-enter p-4">
+            {/* Kopf: Avatar + Name + Beschwerde (klein) */}
+            <div className="flex gap-3">
+              <div
+                className="avatar-circle h-11 w-11 shrink-0 text-sm"
+                style={{ backgroundColor: color }}
+              >
+                {initials(caseData.patientName)}
+              </div>
+              <div className="min-w-0">
+                <h2 className="text-[15px] font-bold leading-tight">
+                  {caseData.patientName},{" "}
+                  {caseData.age === 0 ? "Neugeboren" : `${caseData.age} Jahre`}
+                  <span className="ml-1.5 font-normal text-muted">
+                    {caseData.gender === "male" ? "· Männlich" : "· Weiblich"}
+                  </span>
+                </h2>
+                <blockquote className="mt-1 border-l-[1.5px] border-accent pl-2.5 text-[13.5px] italic text-foreground/85">
+                  „{caseData.chiefComplaint}{'"'}
+                </blockquote>
+              </div>
             </div>
-            <div>
-              <h2 className="text-[15px] font-bold leading-tight">
-                {caseData.patientName},{" "}
-                {caseData.age === 0 ? "Neugeboren" : `${caseData.age} Jahre`}
-                <span className="ml-1.5 font-normal text-muted">
-                  {caseData.gender === "male" ? "· Männlich" : "· Weiblich"}
-                </span>
-              </h2>
-              <blockquote className="mt-1.5 border-l-[1.5px] border-accent pl-3 italic">
-                „{caseData.chiefComplaint}{'"'}
-              </blockquote>
-              <p className="mt-2 flex items-center gap-1 text-[10.5px] text-muted/70">
-                <i className="ti ti-shield-check text-[10px]" />
-                Fiktiver Übungsfall — kein ärztlicher Rat.
+            {/* Anamnese — gratis, direkt vorgelegt (zum Einlesen), im Kartenkörper scrollbar */}
+            <div className="mt-3 border-t border-card-border/10 pt-3">
+              <p className="mb-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
+                Anamnese
               </p>
+              <p className="text-[14px] leading-relaxed text-foreground/90">{caseData.history}</p>
             </div>
           </div>
 
-          <div ref={befundeRef}>
+          <div ref={befundeRef} key={`tools-${caseData.id}`} className="case-tools-enter">
             {findingsHelpOpen && (
               <div
                 className="fixed inset-0 z-40"
@@ -3416,14 +3440,7 @@ function GameScreen({
               </span>
             </div>
             <div className="flex flex-wrap gap-2">
-              <RevealButton
-                label="Anamnese"
-                done={revealed.history}
-                showCost={!isResult || revealedAtSubmit.history}
-                onClick={() =>
-                  setRevealed((r) => ({ ...r, history: true }))
-                }
-              />
+              {/* Anamnese ist gratis und wird direkt vorgelegt — kein Button. */}
               <RevealButton
                 label="Untersuchung"
                 done={revealed.examination}
@@ -3455,8 +3472,7 @@ function GameScreen({
           {/* Empty State: solange kein Befund aufgedeckt ist, füllt eine
               zentrierte Aufforderung die Fläche (statt Leerraum) und
               verstärkt das USP-Prinzip "du entscheidest, welche Befunde". */}
-          {!revealed.history &&
-            !revealed.examination &&
+          {!revealed.examination &&
             !revealed.imaging &&
             !revealed.labs &&
             !isResult && (
@@ -3475,7 +3491,7 @@ function GameScreen({
           {/* Befund-Karten im 2-Spalten-Raster (nebeneinander) — nutzt die
               Breite, halbiert die Höhe; zuletzt angeforderter Befund zuerst. */}
           <div className="mt-2 grid grid-cols-1 items-start gap-3 md:grid-cols-2">
-          {orderedFindingKeys.map((k) => {
+          {orderedFindingKeys.filter((k) => k !== "history").map((k) => {
             if (k === "history") {
               return (
                 <FindingCard
@@ -3523,12 +3539,8 @@ function GameScreen({
 
           </div>
           <div
-            className="relative z-10 md:absolute md:left-0 md:right-0"
+            className="sticky bottom-0 z-10 bg-background pb-1 pt-3"
             data-island-wrapper=""
-            style={{
-              top: diagnosisTop != null ? `${diagnosisTop}px` : undefined,
-              minHeight: isResult && islandMinHeightRef.current > 0 ? islandMinHeightRef.current : undefined,
-            }}
           >
             {phase !== "result" ? (
               <DiagnosisIsland

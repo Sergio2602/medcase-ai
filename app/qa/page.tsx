@@ -4,7 +4,7 @@ import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
 
 export const metadata = {
-  title: "Fragen & Antworten — Medcase",
+  title: "Fragen & Antworten · Medcase",
   description:
     "Wofür Medcase gedacht ist, wie die Fälle entstehen und was du sonst noch wissen solltest.",
 };
@@ -97,7 +97,7 @@ export default function QAPage() {
                   Fragen &amp; Antworten
                 </h1>
                 <p className="mb-8 text-sm text-muted">
-                  Die wichtigsten Fragen zu Medcase — kurz und ehrlich beantwortet.
+                  Die wichtigsten Fragen zu Medcase, kurz und ehrlich beantwortet.
                 </p>
 
                 <section className="mb-6 max-w-[70ch]">
@@ -107,7 +107,7 @@ export default function QAPage() {
                   <p className="text-sm leading-relaxed text-foreground/90">
                     Um dich vor einer Famulatur oder Klausur auf die häufigsten klinischen
                     Fälle vorzubereiten: Du forderst Anamnese, Untersuchung und Labor selbst an
-                    und lernst so, welche Befundkombination zu welcher Diagnose passt —
+                    und lernst so, welche Befundkombination zu welcher Diagnose passt,
                     unabhängig von Anki-Karten.
                   </p>
                 </section>
@@ -119,7 +119,7 @@ export default function QAPage() {
                     Ist Medcase kostenlos und brauche ich einen Account?
                   </SectionLabel>
                   <p className="text-sm leading-relaxed text-foreground/90">
-                    Ja, komplett kostenlos und ohne Account — du kannst direkt loslegen.
+                    Ja, komplett kostenlos und ohne Account, du kannst direkt loslegen.
                     Aktuell stehen 5 Fälle pro Tag zur Verfügung.
                   </p>
                 </section>
@@ -131,8 +131,8 @@ export default function QAPage() {
                     Für welches Semester ist Medcase geeignet?
                   </SectionLabel>
                   <p className="text-sm leading-relaxed text-foreground/90">
-                    Drei Schwierigkeitsstufen — Vorklinik, Klinik und Examen/PJ — mit aktuell
-                    70 Fällen insgesamt (15 Vorklinik, 40 Klinik — Innere + Allgemeinmedizin, 15 Examen/PJ).
+                    Drei Schwierigkeitsstufen (Vorklinik, Klinik und Examen/PJ) mit aktuell
+                    70 Fällen insgesamt (15 Vorklinik, 40 Klinik: Innere + Allgemeinmedizin, 15 Examen/PJ).
                   </p>
                 </section>
               </div>
@@ -150,13 +150,13 @@ export default function QAPage() {
 
                 <section className="mb-6 max-w-[70ch]">
                   <SectionLabel icon="ti-robot" id="ki-faelle">
-                    Wie entstehen die Fälle — ist das seriös?
+                    Wie entstehen die Fälle, und ist das seriös?
                   </SectionLabel>
                   <p className="text-sm leading-relaxed text-foreground/90">
                     KI-generiert, aber jeder Fall wird gegen AWMF-Leitlinien,
                     IMPP-Gegenstandskataloge und offizielle Versorgungsdaten geprüft, nicht
                     frei erfunden. Ein unabhängiges fachärztliches Review ist geplant, hat aber
-                    noch nicht stattgefunden — die Quellenangaben ersetzen kein fachliches
+                    noch nicht stattgefunden, die Quellenangaben ersetzen kein fachliches
                     Urteil.{" "}
                     <Link
                       href="/ueber-uns#methodik"
@@ -190,15 +190,15 @@ export default function QAPage() {
                   Feedback
                 </h2>
                 <p className="mb-8 text-sm text-muted">
-                  Fehler passieren — so meldest du sie.
+                  Fehler passieren, so meldest du sie.
                 </p>
 
                 <section className="max-w-[70ch]">
                   <SectionLabel icon="ti-flag" id="fehler-melden">
-                    Ich finde einen Fall fehlerhaft — was jetzt?
+                    Ich finde einen Fall fehlerhaft, was jetzt?
                   </SectionLabel>
                   <p className="text-sm leading-relaxed text-foreground/90">
-                    Direkt im Ergebnis-Screen über die &bdquo;Fall melden&ldquo;-Funktion — ein
+                    Direkt im Ergebnis-Screen über die &bdquo;Fall melden&ldquo;-Funktion, ein
                     echter Feedback-Kanal, kein leeres Versprechen. Alternativ per Mail an{" "}
                     <a
                       href="mailto:kontakt.medcase@gmail.com"
@@ -218,7 +218,7 @@ export default function QAPage() {
               <div className="card mt-4 flex flex-col items-center gap-3 p-8 text-center">
                 <p className="text-xl font-extrabold tracking-tight">Bereit, es auszuprobieren?</p>
                 <p className="max-w-md text-sm text-muted">
-                  Kostenlos, kein Account — dein erster Fall wartet.
+                  Kostenlos, kein Account, dein erster Fall wartet.
                 </p>
                 <Link
                   href="/"

@@ -28,7 +28,7 @@ export function CenteredNav({
   }, []);
 
   const linkClass = (isActive: boolean) =>
-    `flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+    `flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[15px] font-semibold transition-colors ${
       isActive ? "bg-accent text-accent-foreground" : "text-muted hover:text-accent"
     }`;
 
@@ -43,16 +43,16 @@ export function CenteredNav({
 
   return (
     <div
-      className={`sticky top-3 z-50 mx-auto mb-6 flex w-fit items-center gap-1.5 rounded-full px-3 py-2 transition-all duration-300 ${
+      className={`sticky top-3 z-50 mx-auto mb-6 flex w-fit items-center gap-2 rounded-full px-4 py-2.5 transition-all duration-300 ${
         scrolled
-          ? "border-[1.5px] border-card-border/10 bg-card/65 shadow-sm backdrop-blur-lg"
-          : "border-[1.5px] border-card-border/8 bg-card/40 backdrop-blur-sm"
+          ? "border-[1.5px] border-card-border/10 bg-card/80 shadow-md backdrop-blur-lg"
+          : "border-[1.5px] border-card-border/10 bg-card/70 shadow-sm backdrop-blur-md"
       }`}
     >
       <span className="flex items-center pl-2 pr-1.5">
-        <Logo size={34} />
+        <Logo size={40} />
       </span>
-      <div className="h-5 w-px shrink-0 bg-card-border/15" />
+      <div className="h-6 w-px shrink-0 bg-card-border/15" />
       {items.map((item) =>
         active === item.key ? (
           <span key={item.key} className={linkClass(true)}>

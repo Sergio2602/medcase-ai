@@ -25,9 +25,11 @@ function corsHeaders(origin: string | null): Record<string, string> {
   return headers;
 }
 
-// Fixed-window in-memory rate limiter: max 10 requests per IP per minute.
-// Per-instance only (no shared store, no new dependencies).
-const RATE_LIMIT_MAX = 10;
+// Fixed-window in-memory rate limiter. Der Endpoint liefert nur statisches
+// JSON (~5 KB, keine KI-Kosten mehr), daher ist das Limit bewusst großzügig:
+// zügiges Durchklicken/Testen soll nie blockiert werden, es dient nur als
+// grober Missbrauchs-Dämpfer. Per-instance only (kein shared store).
+const RATE_LIMIT_MAX = 60;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const rateLimitStore = new Map<string, { count: number; windowStart: number }>();
 

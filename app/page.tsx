@@ -616,25 +616,27 @@ function TickingNumber({
   );
 }
 
-function RotatingPatientPreview() {
-  const [caseIndex, setCaseIndex] = useState(0);
+// Cursor über alle Hero-Fälle: bei jedem erneuten Anzeigen des Gameplay-Slides
+// wird ein anderer Fall gespielt (Abwechslung ohne harte Wiederholung).
+let heroCaseCursor = 0;
+
+// Slide „Diagnosen üben": spielt EINEN Fall wie im echten Spiel durch
+// (Befunde aufdecken → Diagnose → richtige Antwort leuchtet grün auf) und
+// meldet sich per onComplete fertig, damit der HeroSlider weiterrollt.
+function GameplayDemo({ onComplete }: { onComplete: () => void }) {
+  const caseRef = useRef(PATIENT_PREVIEWS[heroCaseCursor % PATIENT_PREVIEWS.length]);
+  useEffect(() => {
+    heroCaseCursor = (heroCaseCursor + 1) % PATIENT_PREVIEWS.length;
+  }, []);
+  const currentCase = caseRef.current;
+
   const [stepIndex, setStepIndex] = useState(0);
   const [pointCount, setPointCount] = useState(0);
-  // "revealing" = Befunde werden Schritt für Schritt getippt, "diagnosis" =
-  // die 4 Diagnose-Buttons erscheinen, "result" = die richtige Antwort
-  // blitzt kurz grün auf — spiegelt den echten Spielablauf im Mini-Format.
   const [uiPhase, setUiPhase] = useState<"revealing" | "diagnosis" | "result">("revealing");
-  const [visible, setVisible] = useState(true);
-  const autoRef = useRef(true);
+  const doneRef = useRef(false);
 
-  const currentCase = PATIENT_PREVIEWS[caseIndex];
   const currentStep = currentCase.steps[stepIndex];
 
-  // Eine einzige zeitgesteuerte Kette statt mehrerer Intervalle: solange
-  // noch nicht alle Punkte der aktuellen Kategorie "getippt" sind, wird
-  // alle ~550ms ein weiterer Punkt eingeblendet. Sind alle sichtbar, wird
-  // nach einer Lesepause zur nächsten Kategorie (oder zum nächsten Fall)
-  // gewechselt — simuliert das echte Aufdecken von Befunden im Spiel.
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -647,7 +649,6 @@ function RotatingPatientPreview() {
         const t = setTimeout(() => setPointCount((c) => c + 1), 320);
         return () => clearTimeout(t);
       }
-      if (!autoRef.current) return;
       const isLastStep = stepIndex === currentCase.steps.length - 1;
       const t = setTimeout(() => {
         if (isLastStep) {
@@ -661,228 +662,271 @@ function RotatingPatientPreview() {
     }
 
     if (uiPhase === "diagnosis") {
-      if (!autoRef.current) return;
       const t = setTimeout(() => setUiPhase("result"), reduced ? 300 : 450);
       return () => clearTimeout(t);
     }
 
-    // uiPhase === "result"
-    if (!autoRef.current) return;
+    // uiPhase === "result": kurz halten, dann den Slider weiterrollen lassen.
     const t = setTimeout(() => {
-      setVisible(false);
-      setTimeout(() => {
-        setCaseIndex((i) => (i + 1) % PATIENT_PREVIEWS.length);
-        setStepIndex(0);
-        setPointCount(0);
-        setUiPhase("revealing");
-        setVisible(true);
-      }, 250);
-    }, reduced ? 300 : 1000);
+      if (!doneRef.current) {
+        doneRef.current = true;
+        onComplete();
+      }
+    }, reduced ? 700 : 1600);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pointCount, stepIndex, caseIndex, uiPhase]);
-
-  // Sobald der Nutzer selbst durchklickt (Pfeil oder Dot), übernimmt er die
-  // Kontrolle — die Auto-Rotation pausiert dauerhaft, statt mitten in der
-  // Interaktion wieder dazwischenzuspringen.
-  function goTo(i: number) {
-    autoRef.current = false;
-    setVisible(false);
-    setTimeout(() => {
-      setCaseIndex(i);
-      setStepIndex(0);
-      setPointCount(0);
-      setUiPhase("revealing");
-      setVisible(true);
-    }, 200);
-  }
-  function next() {
-    goTo((caseIndex + 1) % PATIENT_PREVIEWS.length);
-  }
-  function prev() {
-    goTo((caseIndex - 1 + PATIENT_PREVIEWS.length) % PATIENT_PREVIEWS.length);
-  }
+  }, [pointCount, stepIndex, uiPhase]);
 
   const possiblePoints = 100 - (stepIndex + 1) * 10;
   const stillTyping = uiPhase === "revealing" && pointCount < currentStep.points.length;
   const totalFindings = currentCase.steps.reduce((sum, s) => sum + s.points.length, 0);
 
   return (
-    <div className="relative">
-      <div className="card p-5 sm:p-6">
-        {/* Card header — always visible */}
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block h-2.5 w-2.5 rounded-full bg-[#175e8f]"
-              style={{ animation: "pulse-soft 2s ease-in-out infinite" }}
-            />
-            <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
-              Laufender Fall
-            </span>
+    <>
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-block h-2.5 w-2.5 rounded-full bg-[#175e8f]"
+            style={{ animation: "pulse-soft 2s ease-in-out infinite" }}
+          />
+          <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
+            Laufender Fall
+          </span>
+        </div>
+        <span className="font-mono text-xs text-muted/60">{currentCase.caseId}</span>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-[0.9fr_1fr_0.95fr]">
+        {/* Spalte 1: Patient */}
+        <div className="flex h-[240px] flex-col justify-center">
+          <div className="mb-4 flex items-center gap-3.5">
+            <div
+              className="avatar-circle h-12 w-12 text-base"
+              style={{ backgroundColor: currentCase.color }}
+            >
+              {currentCase.initials}
+            </div>
+            <div>
+              <p className="text-base font-bold">{currentCase.name}</p>
+              <p className="text-sm text-muted">{currentCase.meta}</p>
+            </div>
           </div>
-          <span className="font-mono text-xs text-muted/60">{currentCase.caseId}</span>
+          <p className="border-l-[1.5px] border-card-border/20 pl-3 text-base italic text-foreground/80">
+            „{currentCase.quote}{'"'}
+          </p>
         </div>
 
-        {/* Wieder dreigeteilt (Patient / Befunde / Punkte+Diagnose), aber mit
-            fixer Höhe je Spalte — die Karte darf beim Aufdecken nicht mehr in
-            der Höhe springen. Farbcodierung je Kategorie macht klar, was
-            gerade erhoben wird. */}
+        {/* Spalte 2: Befunde */}
         <div
-          className="grid gap-6 transition-opacity duration-300 sm:grid-cols-[0.9fr_1fr_0.95fr]"
-          style={{ opacity: visible ? 1 : 0 }}
+          key={stepIndex}
+          className="flex h-[240px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0"
         >
-          {/* Spalte 1: Patient */}
-          <div className="flex h-[184px] flex-col justify-center">
-            <div className="mb-4 flex items-center gap-3.5">
-              <div
-                className="avatar-circle h-12 w-12 text-base"
-                style={{ backgroundColor: currentCase.color }}
-              >
-                {currentCase.initials}
-              </div>
-              <div>
-                <p className="text-base font-bold">{currentCase.name}</p>
-                <p className="text-sm text-muted">{currentCase.meta}</p>
-              </div>
-            </div>
-            <p className="border-l-[1.5px] border-card-border/20 pl-3 text-base italic text-foreground/80">
-              „{currentCase.quote}{'"'}
-            </p>
-          </div>
-
-          {/* Spalte 2: Befunde — farblich je Kategorie, feste Höhe egal
-              wie viele Punkte gerade sichtbar sind. Kategorie-Wechsel wird
-              per key-Remount neu eingeblendet (line-pop). */}
-          <div
-            key={`${caseIndex}-${stepIndex}`}
-            className="flex h-[184px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0"
+          <span
+            className="line-pop mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.065em]"
+            style={{ color: CATEGORY_STYLES[currentStep.category]?.text, backgroundColor: CATEGORY_STYLES[currentStep.category]?.bg }}
           >
-            <span
-              className="line-pop mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.065em]"
-              style={{ color: CATEGORY_STYLES[currentStep.category]?.text, backgroundColor: CATEGORY_STYLES[currentStep.category]?.bg }}
-            >
-              <i className={`ti ${currentStep.icon} text-xs`} />
-              {currentStep.category} wird erhoben
-            </span>
-            <div className="flex flex-1 flex-col gap-2.5">
-              {currentStep.points.slice(0, pointCount).map((point) => (
-                <div
-                  key={point}
-                  className="line-pop flex items-center gap-2 text-[14px] font-semibold"
-                  style={{ color: CATEGORY_STYLES[currentStep.category]?.text }}
-                >
-                  <i className="ti ti-check text-xs shrink-0" />
-                  <span>{point}</span>
-                </div>
-              ))}
-              {stillTyping && (
-                <span
-                  className="ml-[19px] inline-block h-3.5 w-[2px]"
-                  style={{
-                    backgroundColor: CATEGORY_STYLES[currentStep.category]?.text,
-                    animation: "pulse-soft 0.9s ease-in-out infinite",
-                  }}
-                  aria-hidden="true"
-                />
-              )}
-            </div>
-            <span className="text-[11px] text-muted">{totalFindings} Befunde in diesem Fall</span>
-          </div>
-
-          {/* Spalte 3: Punktestand + Diagnose — immer sichtbar, Diagnose
-              aktiviert sich erst am Ende ("Extrainfos" statt leerer Fläche).
-              Die Punktezahl zählt animiert hoch/runter bei jeder Änderung.
-              Die Diagnose-Optionen sind von Anfang an normal les-/wählbar
-              (kein grau-deaktivierter Zustand) — nur die richtige Antwort
-              bekommt im Result einen Scale-Bounce mit grünem Glow. */}
-          <div className="flex h-[184px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
-            <div className="mb-3 flex items-baseline justify-between">
-              <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
-                {uiPhase === "result" ? "Erreicht" : "Noch möglich"}
-              </span>
-              <span className="flex items-baseline gap-1.5">
-                <TickingNumber
-                  value={possiblePoints}
-                  prefix={uiPhase === "result" ? "+" : ""}
-                  color={uiPhase === "result" ? "#15803d" : "#285dd2"}
-                />
-                <span className="text-[11px] font-bold uppercase tracking-[0.065em] text-muted">
-                  Punkte
-                </span>
-              </span>
-            </div>
-            <div className="mt-1.5 grid grid-cols-2 gap-1.5 border-t border-card-border/10 pt-3.5">
-              {currentCase.options.map((opt) => {
-                const isCorrect = opt === currentCase.diagnosis;
-                const showResult = uiPhase === "result";
-                return (
-                  <span
-                    key={opt}
-                    className={`flex items-center justify-center rounded-lg border-[1.5px] px-1.5 py-[7px] text-center text-[10px] font-semibold leading-snug transition-colors ${
-                      showResult && isCorrect
-                        ? "correct-pop border-[#16a34a] bg-[#e7f6ec] text-[#15803d]"
-                        : showResult
-                        ? "border-card-border/10 text-muted/40"
-                        : "border-card-border/8 text-foreground/80"
-                    }`}
-                  >
-                    {showResult && isCorrect && <i className="ti ti-check mr-1 text-[9px] shrink-0" />}
-                    {opt}
-                  </span>
-                );
-              })}
-            </div>
-
-            {/* Kurze Begründung — zeigt, dass es dazu Informationen gibt,
-                sobald die Diagnose steht. Hellblau statt Amber (Info, keine
-                Warnung), mit Line-Pop-Einblendung. */}
-            {uiPhase === "result" && (
+            <i className={`ti ${currentStep.icon} text-xs`} />
+            {currentStep.category} wird erhoben
+          </span>
+          <div className="flex flex-1 flex-col gap-2.5">
+            {currentStep.points.slice(0, pointCount).map((point) => (
               <div
-                key={`insight-${caseIndex}`}
-                className="line-pop mt-2 flex items-start gap-1.5 rounded-md border-[1.5px] border-accent/20 bg-[#ecf0f9] px-2 py-1.5"
-                style={{ animationDelay: "180ms" }}
+                key={point}
+                className="line-pop flex items-center gap-2 text-[14px] font-semibold"
+                style={{ color: CATEGORY_STYLES[currentStep.category]?.text }}
               >
-                <i className="ti ti-info-circle mt-[1px] shrink-0 text-[11px] text-accent" />
-                <p className="text-[10px] leading-snug text-accent">{currentCase.insight}</p>
+                <i className="ti ti-check text-xs shrink-0" />
+                <span>{point}</span>
               </div>
+            ))}
+            {stillTyping && (
+              <span
+                className="ml-[19px] inline-block h-3.5 w-[2px]"
+                style={{
+                  backgroundColor: CATEGORY_STYLES[currentStep.category]?.text,
+                  animation: "pulse-soft 0.9s ease-in-out infinite",
+                }}
+                aria-hidden="true"
+              />
             )}
           </div>
+          <span className="text-[11px] text-muted">{totalFindings} Befunde in diesem Fall</span>
         </div>
 
-        {/* Kompakte Fall-Navigation: Pfeile flankieren die Dots direkt unter
-            dem Inhalt — sichtbar als EIN Bedienelement statt schwebender
-            Pfeile im Nichts an den Kartenrändern. */}
-        <div className="mt-3 flex items-center justify-center gap-3">
+        {/* Spalte 3: Punktestand + Diagnose */}
+        <div className="flex h-[240px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
+          <div className="mb-3 flex items-baseline justify-between">
+            <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
+              {uiPhase === "result" ? "Erreicht" : "Noch möglich"}
+            </span>
+            <span className="flex items-baseline gap-1.5">
+              <TickingNumber
+                value={possiblePoints}
+                prefix={uiPhase === "result" ? "+" : ""}
+                color={uiPhase === "result" ? "#15803d" : "#175e8f"}
+              />
+              <span className="text-[11px] font-bold uppercase tracking-[0.065em] text-muted">
+                Punkte
+              </span>
+            </span>
+          </div>
+          <div className="mt-1.5 grid grid-cols-2 gap-1.5 border-t border-card-border/10 pt-3.5">
+            {currentCase.options.map((opt) => {
+              const isCorrect = opt === currentCase.diagnosis;
+              const showResult = uiPhase === "result";
+              return (
+                <span
+                  key={opt}
+                  className={`flex items-center justify-center rounded-lg border-[1.5px] px-1.5 py-[7px] text-center text-[10px] font-semibold leading-snug transition-colors ${
+                    showResult && isCorrect
+                      ? "correct-pop border-[#16a34a] bg-[#e7f6ec] text-[#15803d]"
+                      : showResult
+                      ? "border-card-border/10 text-muted/40"
+                      : "border-card-border/8 text-foreground/80"
+                  }`}
+                >
+                  {showResult && isCorrect && <i className="ti ti-check mr-1 text-[9px] shrink-0" />}
+                  {opt}
+                </span>
+              );
+            })}
+          </div>
+
+          {uiPhase === "result" && (
+            <div
+              key="insight"
+              className="line-pop mt-2 flex items-start gap-1.5 rounded-md border-[1.5px] border-accent/20 bg-[#ecf0f9] px-2 py-1.5"
+              style={{ animationDelay: "180ms" }}
+            >
+              <i className="ti ti-info-circle mt-[1px] shrink-0 text-[11px] text-accent" />
+              <p className="text-[10px] leading-snug text-accent">{currentCase.insight}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// Teaser-Slide (Basics / Sprache): großes Icon, Titel, Text und "Bald"-Badge.
+// Meldet sich nach einer Anzeigedauer per onDone fertig.
+function TeaserSlide({
+  icon,
+  accent,
+  tag,
+  title,
+  body,
+  soon,
+  onDone,
+}: {
+  icon: string;
+  accent: string;
+  tag: string;
+  title: string;
+  body: string;
+  soon?: boolean;
+  onDone: () => void;
+}) {
+  useEffect(() => {
+    const t = setTimeout(onDone, 6000);
+    return () => clearTimeout(t);
+  }, [onDone]);
+
+  return (
+    <div className="flex min-h-[268px] flex-col justify-center py-2">
+      <div className="mb-4 flex items-center gap-3">
+        <span
+          className="flex h-14 w-14 items-center justify-center rounded-2xl"
+          style={{ color: accent, backgroundColor: `${accent}1a` }}
+        >
+          <i className={`ti ${icon} text-3xl`} />
+        </span>
+        {soon && (
+          <span className="rounded-full bg-[#2f6fb0]/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.06em] text-[#2f6fb0]">
+            Bald
+          </span>
+        )}
+      </div>
+      <p className="text-xs font-bold uppercase tracking-[0.07em]" style={{ color: accent }}>
+        {tag}
+      </p>
+      <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
+        {title}
+      </h3>
+      <p className="mt-2 max-w-xl text-base leading-relaxed text-muted">{body}</p>
+    </div>
+  );
+}
+
+// Hero-Slider: rollt endlos vorwärts durch 3 Slides — der spielbare Fall
+// (Diagnosen üben) plus zwei Teaser (Basics, Sprache). Jeder Slide-Wechsel
+// rollt von rechts herein (.case-roll, per key neu getriggert); nie zurück.
+function HeroSlider() {
+  const [slide, setSlide] = useState(0);
+  const COUNT = 3;
+  const advance = () => setSlide((s) => (s + 1) % COUNT);
+  const go = (n: number) => setSlide((n + COUNT) % COUNT);
+
+  return (
+    <div className="relative">
+      <div className="card p-6 sm:p-8">
+        <div key={slide} className="case-roll min-h-[280px]">
+          {slide === 0 && <GameplayDemo onComplete={advance} />}
+          {slide === 1 && (
+            <TeaserSlide
+              icon="ti-checklist"
+              accent="#7c3aed"
+              tag="Lerne die Basics"
+              title="Die Praxis, auf die dich keiner vorbereitet"
+              body="Verhalten im OP, Blutabnahme, Röhrchen-Reihenfolge, was in eine Anamnese gehört, als Schritt-für-Schritt-Szenario."
+              soon
+              onDone={advance}
+            />
+          )}
+          {slide === 2 && (
+            <TeaserSlide
+              icon="ti-language"
+              accent="#175e8f"
+              tag="In deiner Sprache"
+              title="Fachsprache für Erasmus & Ausland"
+              body="Klinische Fälle auf Muttersprachen-Niveau: Deutsch, Englisch, Spanisch und mehr, mit Vokabel-Umschaltung."
+              soon
+              onDone={advance}
+            />
+          )}
+        </div>
+
+        {/* Bidirektionale Steuerung: Pfeile flankieren die Punkte (vor/zurück) */}
+        <div className="mt-4 flex items-center justify-center gap-3">
           <button
             type="button"
-            onClick={prev}
-            aria-label="Vorheriger Fall"
+            onClick={() => go(slide - 1)}
+            aria-label="Vorheriger Slide"
             className="flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-card-border/15 text-muted transition-colors hover:border-accent/40 hover:text-accent"
           >
             <i className="ti ti-chevron-left text-base" />
           </button>
           <div className="flex items-center gap-2">
-            {PATIENT_PREVIEWS.map((_, i) => (
+            {[0, 1, 2].map((i) => (
               <button
                 key={i}
                 type="button"
-                onClick={() => goTo(i)}
-                aria-label={`Fall ${i + 1} anzeigen`}
+                onClick={() => setSlide(i)}
+                aria-label={`Slide ${i + 1} anzeigen`}
                 className="transition-all duration-300"
                 style={{
-                  backgroundColor: i === caseIndex ? "#285dd2" : "#a8a69c",
-                  width: i === caseIndex ? 22 : 8,
+                  backgroundColor: i === slide ? "#175e8f" : "#a8a69c",
+                  width: i === slide ? 22 : 8,
                   height: 8,
-                  borderRadius: i === caseIndex ? 4 : 9999,
+                  borderRadius: i === slide ? 4 : 9999,
                 }}
               />
             ))}
           </div>
           <button
             type="button"
-            onClick={next}
-            aria-label="Nächster Fall"
+            onClick={() => go(slide + 1)}
+            aria-label="Nächster Slide"
             className="flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-card-border/15 text-muted transition-colors hover:border-accent/40 hover:text-accent"
           >
             <i className="ti ti-chevron-right text-base" />
@@ -1655,23 +1699,26 @@ function StartScreen({
       </div>
       <CenteredNav active="home" />
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-accent bg-[#e6eef4] px-4 py-1.5 text-sm font-bold text-accent">
+        <span className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/70 bg-[#e6eef4] px-3 py-1 text-xs font-bold text-accent">
           Für Medizinstudierende · Deutschland
         </span>
-        <h1 className="mt-3 text-5xl font-extrabold leading-[1.03] tracking-tight md:text-7xl">
-          Klinisch neu denken.
+        <h1
+          className="mt-4 text-4xl font-extrabold leading-[1.04] tracking-tight md:text-5xl"
+          style={{ color: "#1b3a5c" }}
+        >
+          Lerne klinisch zu denken
         </h1>
-        <p className="mt-3 max-w-lg text-lg leading-relaxed text-muted">
-          Realistische Patientenfälle für Vorklinik, Klinik und PJ — du
-          entscheidest, welche Befunde du anforderst.
+        <p className="mt-3 max-w-lg text-base leading-relaxed text-muted">
+          Diagnostik und Befunde verstehen und sinnvoll kombinieren. Von
+          Studierenden für Studierende.
         </p>
       </div>
 
-      <div className="mx-auto mt-5 w-full max-w-6xl">
-        <RotatingPatientPreview />
+      <div className="mx-auto mt-6 w-full max-w-6xl">
+        <HeroSlider />
       </div>
 
-      <div className="mx-auto mt-4 flex flex-col items-center gap-2">
+      <div className="mx-auto mt-8 flex flex-col items-center gap-2">
         <button
           onClick={openPicker}
           className="group relative overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
@@ -1694,14 +1741,16 @@ function StartScreen({
           Kostenlos · Kein Account nötig
         </p>
 
-        {/* Sekundärer CTA — kleiner als der primäre Button */}
+        {/* Scroll-Hinweis statt Button: dezent, borderlos, sanft wippender
+            Chevron — lädt zum Weiterscrollen ein, ohne wie ein zweiter CTA
+            zu konkurrieren. */}
         <button
           type="button"
           onClick={() => slowScrollTo("konzept")}
-          className="group mt-2 flex items-center gap-1.5 rounded-lg border-[1.5px] border-accent/30 px-5 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent/5"
+          className="group mt-5 flex flex-col items-center gap-0.5 text-xs font-semibold text-muted/70 transition-colors hover:text-accent"
         >
           Erfahre mehr über unser Konzept
-          <i className="ti ti-chevron-down text-base transition-transform duration-200 group-hover:translate-y-0.5" />
+          <i className="ti ti-chevron-down text-lg motion-safe:animate-bounce" />
         </button>
       </div>
 

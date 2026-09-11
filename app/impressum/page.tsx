@@ -50,6 +50,7 @@ const TOC = [
       { id: "verantwortlicher", label: "Verantwortlicher" },
       { id: "cookies", label: "Cookies" },
       { id: "localstorage", label: "Lokaler Speicher" },
+      { id: "posthog", label: "Produktanalyse (PostHog)" },
       { id: "email-benachrichtigungen", label: "E-Mail-Benachrichtigungen" },
       { id: "hosting", label: "Hosting" },
       { id: "upstash", label: "Upstash Redis" },
@@ -289,6 +290,32 @@ export default function ImpressumPage() {
                   Browserdaten entfernen.
                 </p>
                 <LegalBasis text="Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bereitstellung der Lernfortschritts-Funktion)." />
+              </section>
+
+              <Divider />
+
+              <section className="mb-6 max-w-[70ch]">
+                <SectionLabel icon="ti-chart-dots" id="posthog">Produktanalyse (PostHog)</SectionLabel>
+                <p className="leading-relaxed text-muted">
+                  Wir nutzen PostHog (EU-Cloud-Instanz) zur anonymisierten Produktanalyse, um zu
+                  verstehen, welche Funktionen genutzt werden und die App zu verbessern.
+                  PostHog speichert dabei keine Cookies, sondern eine zufällige Kennung in{" "}
+                  <span className="clinical-data">localStorage</span> deines Browsers. Erfasst
+                  werden anonyme Nutzungsereignisse (z. B. Seitenaufruf, gestartete/abgeschlossene
+                  Fälle) — keine Bildschirmaufzeichnung, kein automatisches Klick-Tracking. Die
+                  &bdquo;Do Not Track&ldquo;-Einstellung deines Browsers wird respektiert. Anbieter:
+                  PostHog Inc. (EU-Server). Weitere Informationen:{" "}
+                  <a
+                    href="https://posthog.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent underline underline-offset-2"
+                  >
+                    PostHog Privacy Policy
+                  </a>
+                  .
+                </p>
+                <LegalBasis text="Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Produktverbesserung)." />
               </section>
 
               <Divider />

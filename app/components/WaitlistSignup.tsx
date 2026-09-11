@@ -15,11 +15,12 @@ export function WaitlistForm({
   onDone?: () => void;
 }) {
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [state, setState] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
   async function submit() {
     const clean = email.trim().toLowerCase();
-    if (!clean.includes("@") || state === "sending") return;
+    if (!clean.includes("@") || !consent || state === "sending") return;
     setState("sending");
     track("waitlist_signup", { source });
     try {
@@ -62,12 +63,28 @@ export function WaitlistForm({
         />
         <button
           onClick={submit}
-          disabled={!email.includes("@") || state === "sending"}
+          disabled={!email.includes("@") || !consent || state === "sending"}
           className="shrink-0 rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-accent-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
         >
           {state === "sending" ? "…" : "Bescheid geben"}
         </button>
       </div>
+      <label className="mt-2 flex items-start gap-1.5 text-[12px] leading-snug text-muted">
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-[2px] h-3.5 w-3.5 shrink-0 accent-accent"
+        />
+        <span>
+          Ich bin einverstanden, dass meine E-Mail für die Launch-Benachrichtigung gespeichert
+          wird (siehe{" "}
+          <a href="/impressum#datenschutz" className="underline underline-offset-2 hover:text-accent">
+            Datenschutzerklärung
+          </a>
+          ). Jederzeit abbestellbar.
+        </span>
+      </label>
       {state === "error" && (
         <p className="mt-1.5 text-[12.5px] text-[#b3524f]">Hat nicht geklappt, bitte nochmal.</p>
       )}

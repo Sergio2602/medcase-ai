@@ -19,9 +19,9 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500", "700"],
 });
 
-const TITLE = "Medcase — Klinisches Denken trainieren";
+const TITLE = "Casolvo — Klinische Fälle üben";
 const DESCRIPTION =
-  "Medcase trainiert klinisches Denken anhand realistischer Patientenfälle für Vorklinik, Klinik und PJ.";
+  "Casolvo trainiert klinisches Denken anhand realistischer Patientenfälle für Vorklinik, Klinik und PJ.";
 
 export const metadata: Metadata = {
   title: TITLE,

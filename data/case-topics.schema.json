@@ -1,0 +1,27 @@
+{
+  "_comment": "Stufe 0 der Pipeline v2: Themenauswahl. MUSS von Sergio gepflegt werden, nicht vom Modell — das ist der dokumentierte menschliche Schöpfungsbeitrag (siehe docs/uebergabe-fallgenerierung-v2.md, Stufe 0). Diese Datei ist das SCHEMA/BEISPIEL, nicht die echte Liste. Die echte Liste kommt nach data/case-topics.json, sobald Sergio den Entwurf (Task #4) freigegeben/editiert hat.",
+  "example": [
+    {
+      "id": "zoeliakie-1",
+      "diagnosis": "Zöliakie",
+      "difficulty": "klinik",
+      "category": "haeufig",
+      "setting": "Hausarztpraxis, junge Erwachsene mit unspezifischen GI-Beschwerden",
+      "lernziel": "Anti-tTG-IgA als Diagnostik-Standard, Abgrenzung Reizdarm",
+      "selectedBy": "human",
+      "rationale": "IMPP-Blueprint Achse Verdauungssystem, hohe Prävalenz (Destatis)",
+      "status": "pending"
+    }
+  ],
+  "fields": {
+    "id": "eindeutiger Slug, wird zu caseId im Provenienz-Record",
+    "diagnosis": "Zieldiagnose, Klartext",
+    "difficulty": "vorklinik | klinik | examen",
+    "category": "haeufig | cannot-miss",
+    "setting": "grober Rahmen (Ort, Patientengruppe) — KEINE fertige Fallgeschichte, nur Ausgangspunkt für Stufe 1/2",
+    "lernziel": "was der Fall didaktisch vermitteln soll",
+    "selectedBy": "MUSS 'human' sein",
+    "rationale": "warum dieses Thema — IMPP-Blueprint / Destatis-Häufigkeit / Cannot-miss-Kriterium",
+    "status": "pending | factsheet-done | constructed | reviewed | released"
+  }
+}

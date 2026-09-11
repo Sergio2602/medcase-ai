@@ -9,9 +9,6 @@ import { FadeInUp } from "./components/FadeInUp";
 import { generateShareCard } from "@/lib/generateShareCard";
 import { recordCaseResult, readCaseResults } from "@/lib/stats";
 import { track } from "@/lib/analytics";
-import { getReviewMode, endReviewMode, type ReviewSession } from "@/lib/reviewMode";
-import { ReviewModeBar } from "./components/ReviewModeBar";
-import { SessionFeedbackModal } from "./components/SessionFeedbackModal";
 import { PostCaseFeedback } from "./components/PostCaseFeedback";
 import { LaunchIntentPrompt } from "./components/LaunchIntentPrompt";
 import { HomeWaitlistCard } from "./components/WaitlistSignup";
@@ -173,12 +170,8 @@ export default function Home() {
   const [phase, setPhase] = useState<Phase>("start");
   const [difficulty, setDifficulty] = useState<Difficulty>("klinik");
   const [discipline, setDiscipline] = useState<Discipline>("zufaellig");
-  // Review-Modus (Experten, von /review gestartet) — steuert das Experten-
-  // Review am Ergebnis-Screen + die Feedback-Leiste.
-  const [reviewSession, setReviewSession] = useState<ReviewSession | null>(null);
-  const [showSessionFeedback, setShowSessionFeedback] = useState(false);
-  // Post-Case-Overlay: "doctor" (Review-Modus) oder "student" (Micro-Survey).
-  const [postFeedback, setPostFeedback] = useState<null | "doctor" | "student">(null);
+  // Post-Case-Overlay: Studenten-Micro-Survey (meilensteinbasiert).
+  const [postFeedback, setPostFeedback] = useState<null | "student">(null);
   const [activeCase, setActiveCase] = useState<Case | null>(null);
   const [revealed, setRevealed] = useState<Revealed>({
     history: true, // Anamnese ist gratis (immer vorgelegt)
@@ -229,11 +222,6 @@ export default function Home() {
     setScore(results.reduce((sum, r) => sum + r.score, 0));
     setSolved(results.filter((r) => r.correct).length);
     setPlayed(results.length);
-  }, []);
-
-  // Review-Modus beim Laden erkennen (von /review gesetzt).
-  useEffect(() => {
-    setReviewSession(getReviewMode());
   }, []);
 
   // Tages-Zähler + E-Mail-Unlock laden (Zähler setzt sich täglich zurück).
@@ -350,13 +338,6 @@ export default function Home() {
     });
     setPhase("result");
 
-    // Post-Case-Feedback als Overlay (nicht mehr eingebettet):
-    // Review-Modus → Arzt-Urteil direkt nach jedem Fall. Die Studenten-Survey
-    // kommt NICHT hier, sondern erst beim "Nächster Patient"-Klick (siehe
-    // nextCase) — so kann das Ergebnis erst in Ruhe gelesen werden.
-    if (reviewSession) {
-      setPostFeedback("doctor");
-    }
     // Launch-Nudge und Studenten-Survey laufen meilensteinbasiert über nextCase
     // (siehe dort), nicht hier.
   }
@@ -367,22 +348,20 @@ export default function Home() {
     // sitzungsübergreifend stimmen. Exakte Gleichheit = automatisch je 3× gedeckelt.
     //  - Launch-Nudge (nicht-blockierend): 15 / 35 / 55, nie wenn schon eingetragen.
     //  - Studenten-Survey (blockierendes Modal): 25 / 50 / 75.
-    if (!reviewSession) {
-      try {
-        const n = Number(localStorage.getItem("medcase:casesDone") ?? "0") + 1;
-        localStorage.setItem("medcase:casesDone", String(n));
-        if (n === 25 || n === 50 || n === 75) {
-          setPostFeedback("student");
-          return; // nächster Fall startet erst nach dem Schließen der Survey
-        }
-        if (
-          (n === 15 || n === 35 || n === 55) &&
-          !localStorage.getItem("medcase:waitlistJoined")
-        ) {
-          setShowIntent(true); // nicht-blockierend: weiterspielen wird nicht gestoppt
-        }
-      } catch {}
-    }
+    try {
+      const n = Number(localStorage.getItem("medcase:casesDone") ?? "0") + 1;
+      localStorage.setItem("medcase:casesDone", String(n));
+      if (n === 25 || n === 50 || n === 75) {
+        setPostFeedback("student");
+        return; // nächster Fall startet erst nach dem Schließen der Survey
+      }
+      if (
+        (n === 15 || n === 35 || n === 55) &&
+        !localStorage.getItem("medcase:waitlistJoined")
+      ) {
+        setShowIntent(true); // nicht-blockierend: weiterspielen wird nicht gestoppt
+      }
+    } catch {}
     setPostFeedback(null);
     startCase(difficulty);
   }
@@ -394,27 +373,10 @@ export default function Home() {
   return (
     <div className={`min-h-screen px-4 pt-5 md:px-10 ${phase === "playing" || phase === "result" ? "" : "pb-8"}`}>
       <div className="mx-auto max-w-[1560px]">
-        {reviewSession && (
-          <ReviewModeBar
-            session={reviewSession}
-            onFeedback={() => setShowSessionFeedback(true)}
-            onEnd={() => {
-              endReviewMode();
-              setReviewSession(null);
-            }}
-          />
-        )}
-        {reviewSession && showSessionFeedback && (
-          <SessionFeedbackModal
-            session={reviewSession}
-            onClose={() => setShowSessionFeedback(false)}
-          />
-        )}
         {postFeedback && activeCase && (
           <PostCaseFeedback
             kind={postFeedback}
             caseData={activeCase}
-            session={reviewSession}
             onClose={() => {
               const wasStudent = postFeedback === "student";
               setPostFeedback(null);

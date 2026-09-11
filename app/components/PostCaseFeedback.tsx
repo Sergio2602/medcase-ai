@@ -2,20 +2,15 @@
 
 import { useState } from "react";
 import { track } from "@/lib/analytics";
-import type { ReviewSession } from "@/lib/reviewMode";
 
-// Overlay NACH einem Fall (nicht mehr eingebettet). Zwei Varianten:
-//  - "doctor":  fachliches Urteil zum Fall (Review-Modus) → Redis + Discord
-//  - "student": Micro-Survey (nutzt du's zusätzlich? / Preis) → Redis + PostHog
+// Overlay NACH einem Fall (nicht mehr eingebettet): Studenten-Micro-Survey
+// (nutzt du's zusätzlich? / Preis) → Redis + PostHog. Das frühere
+// Experten-Review ("doctor"-Variante, /review-Einstieg) wurde entfernt.
 export function PostCaseFeedback({
-  kind,
-  caseData,
-  session,
   onClose,
 }: {
-  kind: "doctor" | "student";
+  kind: "student";
   caseData: { id: string; difficulty: string; correctDiagnosis: string };
-  session: ReviewSession | null;
   onClose: () => void;
 }) {
   return (
@@ -24,102 +19,10 @@ export function PostCaseFeedback({
       onClick={onClose}
     >
       <div
-        className={`w-full rounded-t-[20px] border-[1.5px] border-card-border/15 bg-card p-6 sm:rounded-2xl ${
-          kind === "student" ? "sm:max-w-xl sm:p-9" : "sm:max-w-md"
-        }`}
+        className="w-full rounded-t-[20px] border-[1.5px] border-card-border/15 bg-card p-6 sm:max-w-xl sm:rounded-2xl sm:p-9"
         onClick={(e) => e.stopPropagation()}
       >
-        {kind === "doctor" && session ? (
-          <DoctorCase caseData={caseData} session={session} onClose={onClose} />
-        ) : (
-          <StudentSurvey onClose={onClose} />
-        )}
-      </div>
-    </div>
-  );
-}
-
-function DoctorCase({
-  caseData,
-  session,
-  onClose,
-}: {
-  caseData: { id: string; difficulty: string; correctDiagnosis: string };
-  session: ReviewSession;
-  onClose: () => void;
-}) {
-  const [plausibel, setPlausibel] = useState("");
-  const [anmerkung, setAnmerkung] = useState("");
-  const [state, setState] = useState<"idle" | "sending" | "ok" | "error">("idle");
-
-  async function submit() {
-    if (!plausibel || state === "sending") return;
-    setState("sending");
-    try {
-      const res = await fetch("/api/submit-review", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          kind: "case",
-          caseId: caseData.id,
-          difficulty: caseData.difficulty,
-          diagnosis: caseData.correctDiagnosis,
-          plausibel,
-          anmerkung,
-          reviewer: session.reviewer,
-          accessKey: session.accessKey,
-        }),
-      });
-      if (!res.ok) throw new Error();
-      setState("ok");
-      setTimeout(onClose, 700);
-    } catch {
-      setState("error");
-    }
-  }
-
-  return (
-    <div>
-      <p className="text-base font-extrabold">Dein fachliches Urteil zu diesem Fall</p>
-      <p className="mb-3 text-[13px] text-muted">{caseData.correctDiagnosis}</p>
-      <div className="flex flex-wrap gap-2">
-        {[
-          { v: "ja", label: "Plausibel", cls: "border-[#1b5e20] bg-[#e8f5e9] text-[#1b5e20]" },
-          { v: "teils", label: "Geht so", cls: "border-[#b45309] bg-[#fef4e3] text-[#b45309]" },
-          { v: "nein", label: "Nicht plausibel", cls: "border-[#b3524f] bg-[#fdf2f1] text-[#b3524f]" },
-        ].map((o) => (
-          <button
-            key={o.v}
-            onClick={() => setPlausibel(o.v)}
-            className={`rounded-lg border-[1.5px] px-3 py-1.5 text-[13px] font-semibold transition-colors ${
-              plausibel === o.v ? o.cls : "border-card-border/20 text-muted hover:border-accent"
-            }`}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
-      {(plausibel === "teils" || plausibel === "nein") && (
-        <textarea
-          value={anmerkung}
-          onChange={(e) => setAnmerkung(e.target.value)}
-          rows={2}
-          placeholder="Was genau stimmt nicht? (Korrektur / Quelle)…"
-          className="mt-2 w-full rounded-lg border-[1.5px] border-card-border/20 px-3 py-2 text-[13px] outline-none focus:border-accent"
-        />
-      )}
-      <div className="mt-3 flex items-center gap-3">
-        <button
-          onClick={submit}
-          disabled={!plausibel || state === "sending"}
-          className="rounded-lg bg-accent px-4 py-2 text-[13px] font-bold text-accent-foreground disabled:opacity-40"
-        >
-          {state === "ok" ? "Gespeichert" : state === "sending" ? "Sende…" : "Urteil speichern"}
-        </button>
-        <button onClick={onClose} className="text-[13px] font-semibold text-muted hover:text-accent">
-          Überspringen
-        </button>
-        {state === "error" && <span className="text-[13px] text-[#b3524f]">Fehlgeschlagen.</span>}
+        <StudentSurvey onClose={onClose} />
       </div>
     </div>
   );

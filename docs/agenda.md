@@ -18,7 +18,7 @@ neue Module sind Post-Validierung.
 - **Sprachmodul** — Sprachauswahl auf Home → lokal gespeichert → nur Fälle der Sprachschiene, UI schaltet komplett um; eigene Datei pro Sprache; Übersetzung = Build-Werkzeug → Term-Review → JSON; bilingualer Toggle/Glossar; Sequenz DE→EN→romanisch; Engpass = Review pro Sprache.
 - **Notfall-/Management-Modus (+ Therapie-Option zusammengelegt)** — untersuchen → Diagnose → Maßnahme; höchstes medico-legales Risiko; erst Teaser + Interesse-Vote vor Bau.
 - **Case-Generator-Agent (Deutsch zuerst)** nach `CASE_SCHEMA` — generate → Staging → Discord → Review → publish; Themen-Ledger + Dedup + Difficulty-Balance; Doppelnutzen (Content-Skalierung + Basis fürs Sprachmodul).
-- **Review-System technisch durchtesten** — end-to-end prüfen: Token-Gate, Discord-Notify, `/review`-Spielmodus, `/review/uebersicht` + Export funktionieren.
+- **Double-Opt-in für Waitlist (Casolvo V2)** — aktuell nur Checkbox-Einwilligung beim Eintrag (2026-09-11 als Rechts-Fix ergänzt); für V2 richtige Bestätigungsmail (E-Mail-Versand-Service wie Resend) einplanen, DSGVO-sauberer als reine Checkbox.
 - **Fachärztliches Review durchführen (kritischer Pfad)** — Reviewer:innen gewinnen: Assistenzärzte zuerst, warmer Kontakt VOR Mail; Ask klein (5 Fälle, ~30 Min, Checkliste); Fokus Cannot-miss-Fälle; mit Einverständnis auf `/ueber-uns` nennen. Blocker für Massen-Launch.
 - **Cross-Model-Check** — anderes Modell (z. B. Opus) prüft Sonnet-generierte Fälle als 2., dekorrelierte algorithmische Schicht. Billig, vor menschlichem Review.
 - **Prüf-Tabelle (Excel pro Fach)** für Reviewer erstellen.
@@ -32,13 +32,13 @@ neue Module sind Post-Validierung.
 - **Monetarisierung testen (Phase 3)** — Freemium / Examens-Paket 15–30 €; erst nach Review + D7 ≥ 20 % + einige hundert WAU. Keine Ads.
 - **Bernstein-Akzent nur Score-Ebene** (~#b0791f für Punkte); offene Entscheidung: nur Header-Score vs. ganze Punkte-Ökonomie.
 - **Casolvo-Rebrand committen/pushen** — Rebrand + jüngste Änderungen lokal/uncommitted; dabei `layout.tsx` angleichen (Titel „Medcase" → Casolvo, `themeColor` #285dd2 → Cerulean).
-- **Sergios eigene To-dos** — Domain kaufen; `REVIEW_ACCESS_KEY` in Vercel setzen; Gratis-Monat nur bei feststehendem Paid-Tier.
+- **Sergios eigene To-dos** — Domain kaufen; Gratis-Monat nur bei feststehendem Paid-Tier.
 
 ## Erledigt
 
 - Analytics (PostHog, cookieless, EU) eingebaut + live verifiziert; Events fließen.
 - Landing/Content-Politur, `/statistik`-Metadata, Auswahl-Modal (Smart Default, localStorage), GameScreen-Ladezeit 1,8→0,8 s.
-- Review-System end-to-end gebaut: API (Redis + Discord), `/review` als Spielmodus, Session-Feedback, `/review/uebersicht` + Export, Besucher-Rating am Ergebnis-Screen. (→ noch: technisch durchtesten + tatsächlich Reviewer einsetzen.)
+- Review-System (`/review`, Session-Feedback, `/review/uebersicht`) 2026-09-11 wieder komplett entfernt (Legal-Fix): `REVIEW_ACCESS_KEY`-Gate war ungeschützt, wenn nicht in Vercel gesetzt, und wurde nie von echten Reviewern genutzt. Fachärztliches Review braucht bei Bedarf einen neuen, sauberen Ansatz.
 - Über-uns- + Q&A-Seiten poliert.
 - Marken-/Domain-Recherche → „Casolvo" (sauber), Farbe Cerulean #175e8f, Casolvo-Wortmarke im Header.
 - Gameplay-Umbau: Anamnese gratis, 2-Spalten-Befunde, Scroll-Fix (sticky Insel), farbige Akzente (A/B/C-Badges), Header-Cerulean-Band (Desktop), Entrance-Animation.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { Logo } from "./components/Logo";
 import { KontaktPopover } from "./components/KontaktPopover";
@@ -89,10 +89,6 @@ type Revealed = {
 const BASE_SCORE = 100;
 const INVESTIGATION_COST = 10;
 const MIN_SCORE = BASE_SCORE - 4 * INVESTIGATION_COST;
-// Zusätzlicher Versatz, mit dem die Diagnose-/Result-Insel unterhalb ihrer
-// eigentlichen Ankerlinie platziert wird — schafft mittig mehr Raum für
-// aufgedeckte Befunde, bevor die Insel beginnt.
-const ISLAND_TOP_GAP = 72;
 
 function hasImaging(c: Case): boolean {
   return typeof c.imaging === "string" && c.imaging.trim().length > 0;
@@ -133,33 +129,6 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-// Eigener, spürbar langsamer Scroll statt des nativen (recht kurzen)
-// `scrollIntoView({behavior:"smooth"})` — für den "Mehr erfahren"-Cue auf
-// der Startseite, der bewusst ruhig/gleitend wirken soll.
-function slowScrollTo(id: string, duration = 900) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const startY = window.scrollY;
-  const targetY = startY + el.getBoundingClientRect().top;
-  if (reduced) {
-    window.scrollTo({ top: targetY, behavior: "instant" as ScrollBehavior });
-    return;
-  }
-  const start = performance.now();
-  function tick(now: number) {
-    const progress = Math.min((now - start) / duration, 1);
-    // Ease-out statt ease-in-out: startet sofort spürbar, statt erst
-    // "laggy" langsam anzulaufen — wird gegen Ende trotzdem sanft ruhiger.
-    const eased = 1 - Math.pow(1 - progress, 3);
-    // behavior: "instant" verhindert, dass die globale CSS
-    // scroll-behavior:smooth-Regel zusätzlich zu unserer eigenen
-    // rAF-Animation eine zweite (konkurrierende) Glättung anwendet.
-    window.scrollTo({ top: startY + (targetY - startY) * eased, behavior: "instant" as ScrollBehavior });
-    if (progress < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
 
 const DIFFICULTIES: { id: Difficulty; label: string }[] = [
   { id: "vorklinik", label: "Vorklinik" },
@@ -420,484 +389,6 @@ export default function Home() {
   );
 }
 
-// Jeder Fall hat mehrere Kategorien (Anamnese/Untersuchung/Labor) mit echten
-// Beispiel-Befunden statt nur einem Label — die Preview "tippt" diese
-// Punkte nacheinander, bevor sie zur nächsten Kategorie/zum nächsten Fall
-// wechselt. Simuliert das echte Spielgefühl statt eines statischen Screenshots.
-const PATIENT_PREVIEWS = [
-  {
-    caseId: "FALL-0127",
-    initials: "KM",
-    color: "#90caf9",
-    name: "Klaus M.",
-    meta: "58 J. · männlich",
-    quote: "Starke Brustschmerzen seit heute Morgen …",
-    diagnosis: "NSTEMI",
-    options: ["NSTEMI", "Stabile Angina pectoris", "Akute Perikarditis", "Aortendissektion Typ A"],
-    insight: "Retrosternaler Schmerz + Troponin-Erhöhung ohne ST-Hebung = klassisches NSTEMI-Bild.",
-    steps: [
-      {
-        category: "Anamnese",
-        icon: "ti-message-circle",
-        points: [
-          "Schmerzbeginn vor 45 Minuten, retrosternal",
-          "Ausstrahlung in den linken Arm",
-          "Bekannter Hypertonus, Raucher (20 py)",
-        ],
-      },
-      {
-        category: "Labor",
-        icon: "ti-flask",
-        points: [
-          "Troponin I: 0,8 ng/ml (↑)",
-          "CK-MB: erhöht",
-          "D-Dimer: unauffällig",
-        ],
-      },
-    ],
-  },
-  {
-    caseId: "FALL-0084",
-    initials: "SF",
-    color: "#a5d6a7",
-    name: "Sabine F.",
-    meta: "34 J. · weiblich",
-    quote: "Seit drei Tagen Fieber und Husten, jetzt auch Atemnot …",
-    diagnosis: "Ambulant erworbene Pneumonie",
-    options: ["Ambulant erworbene Pneumonie", "Akute Bronchitis", "Akute Lungenembolie", "Exazerbierte COPD"],
-    insight: "Fieber, produktiver Husten, erhöhtes CRP und Hypoxie erfüllen die klinischen Pneumonie-Kriterien.",
-    steps: [
-      {
-        category: "Anamnese",
-        icon: "ti-message-circle",
-        points: [
-          "Fieber bis 39,2 °C seit 3 Tagen",
-          "Produktiver Husten, gelblicher Auswurf",
-          "Zunehmende Atemnot seit heute",
-        ],
-      },
-      {
-        category: "Labor",
-        icon: "ti-flask",
-        points: [
-          "CRP: 145 mg/l (↑↑)",
-          "Leukozyten: 14.200/µl",
-          "SpO₂: 91 % unter Raumluft",
-        ],
-      },
-    ],
-  },
-  {
-    caseId: "FALL-0211",
-    initials: "TR",
-    color: "#ffd54f",
-    name: "Thomas R.",
-    meta: "45 J. · männlich",
-    quote: "Plötzlich einseitige Schwäche im Arm, Sprache verwaschen …",
-    diagnosis: "Ischämischer Mediainfarkt",
-    options: ["Ischämischer Mediainfarkt", "Transitorische ischämische Attacke", "Migräne mit Aura", "Hypoglykämie"],
-    insight: "Akute halbseitige Schwäche + Sprachstörung + hoher NIHSS = typisches Mediastromgebiet-Muster.",
-    steps: [
-      {
-        category: "Anamnese",
-        icon: "ti-message-circle",
-        points: [
-          "Plötzliche linksseitige Schwäche",
-          "Sprachstörung seit ca. 20 Minuten",
-          "Keine bekannten Vorerkrankungen",
-        ],
-      },
-      {
-        category: "Untersuchung",
-        icon: "ti-stethoscope",
-        points: [
-          "Kraftgrad Arm links 2/5",
-          "NIHSS: 8 Punkte",
-          "Faziale Asymmetrie links",
-        ],
-      },
-    ],
-  },
-];
-
-// Farbcodierung je Befund-Kategorie — macht auf einen Blick klar, welche Art
-// von Befund gerade in der mittleren Spalte erhoben wird.
-const CATEGORY_STYLES: Record<string, { text: string; bg: string }> = {
-  Anamnese: { text: "#175e8f", bg: "#e6eef4" },
-  Untersuchung: { text: "#7c3aed", bg: "#f3ecfd" },
-  Labor: { text: "#0e7490", bg: "#e2eef3" },
-};
-
-// Zählt animiert vom aktuell angezeigten zum neuen Wert hoch/runter, statt
-// abrupt umzuspringen — die einzige Animation, die auf der Diagnose-Seite
-// der Karte übrig bleiben soll.
-function TickingNumber({
-  value,
-  color,
-  prefix = "",
-}: {
-  value: number;
-  color: string;
-  prefix?: string;
-}) {
-  const [display, setDisplay] = useState(value);
-  const prevRef = useRef(value);
-
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setDisplay(value);
-      prevRef.current = value;
-      return;
-    }
-    const from = prevRef.current;
-    const to = value;
-    if (from === to) return;
-    const duration = 320;
-    const start = performance.now();
-    let raf: number;
-    function tick(now: number) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.round(from + (to - from) * eased));
-      if (progress < 1) {
-        raf = requestAnimationFrame(tick);
-      } else {
-        prevRef.current = to;
-      }
-    }
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [value]);
-
-  return (
-    <span className="font-mono text-[28px] font-extrabold leading-none" style={{ color }}>
-      {prefix}
-      {display}
-    </span>
-  );
-}
-
-// Cursor über alle Hero-Fälle: bei jedem erneuten Anzeigen des Gameplay-Slides
-// wird ein anderer Fall gespielt (Abwechslung ohne harte Wiederholung).
-let heroCaseCursor = 0;
-
-// Slide „Diagnosen üben": spielt EINEN Fall wie im echten Spiel durch
-// (Befunde aufdecken → Diagnose → richtige Antwort leuchtet grün auf) und
-// meldet sich per onComplete fertig, damit der HeroSlider weiterrollt.
-function GameplayDemo({ onComplete }: { onComplete: () => void }) {
-  const caseRef = useRef(PATIENT_PREVIEWS[heroCaseCursor % PATIENT_PREVIEWS.length]);
-  useEffect(() => {
-    heroCaseCursor = (heroCaseCursor + 1) % PATIENT_PREVIEWS.length;
-  }, []);
-  const currentCase = caseRef.current;
-
-  const [stepIndex, setStepIndex] = useState(0);
-  const [pointCount, setPointCount] = useState(0);
-  const [uiPhase, setUiPhase] = useState<"revealing" | "diagnosis" | "result">("revealing");
-  const doneRef = useRef(false);
-
-  const currentStep = currentCase.steps[stepIndex];
-
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (uiPhase === "revealing") {
-      if (reduced) {
-        setPointCount(currentStep.points.length);
-        return;
-      }
-      if (pointCount < currentStep.points.length) {
-        const t = setTimeout(() => setPointCount((c) => c + 1), 320);
-        return () => clearTimeout(t);
-      }
-      const isLastStep = stepIndex === currentCase.steps.length - 1;
-      const t = setTimeout(() => {
-        if (isLastStep) {
-          setUiPhase("diagnosis");
-        } else {
-          setStepIndex((i) => i + 1);
-          setPointCount(0);
-        }
-      }, 650);
-      return () => clearTimeout(t);
-    }
-
-    if (uiPhase === "diagnosis") {
-      const t = setTimeout(() => setUiPhase("result"), reduced ? 300 : 450);
-      return () => clearTimeout(t);
-    }
-
-    // uiPhase === "result": kurz halten, dann den Slider weiterrollen lassen.
-    const t = setTimeout(() => {
-      if (!doneRef.current) {
-        doneRef.current = true;
-        onComplete();
-      }
-    }, reduced ? 700 : 1600);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pointCount, stepIndex, uiPhase]);
-
-  const possiblePoints = 100 - (stepIndex + 1) * 10;
-  const stillTyping = uiPhase === "revealing" && pointCount < currentStep.points.length;
-  const totalFindings = currentCase.steps.reduce((sum, s) => sum + s.points.length, 0);
-
-  return (
-    <>
-      <div className="mb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-2.5 w-2.5 rounded-full bg-[#175e8f]"
-            style={{ animation: "pulse-soft 2s ease-in-out infinite" }}
-          />
-          <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
-            Laufender Fall
-          </span>
-        </div>
-        <span className="font-mono text-xs text-muted/60">{currentCase.caseId}</span>
-      </div>
-
-      <div className="grid gap-6 sm:grid-cols-[0.9fr_1fr_0.95fr]">
-        {/* Spalte 1: Patient */}
-        <div className="flex h-[240px] flex-col justify-center">
-          <div className="mb-4 flex items-center gap-3.5">
-            <div
-              className="avatar-circle h-12 w-12 text-base"
-              style={{ backgroundColor: currentCase.color }}
-            >
-              {currentCase.initials}
-            </div>
-            <div>
-              <p className="text-base font-bold">{currentCase.name}</p>
-              <p className="text-sm text-muted">{currentCase.meta}</p>
-            </div>
-          </div>
-          <p className="border-l-[1.5px] border-card-border/20 pl-3 text-base italic text-foreground/80">
-            „{currentCase.quote}{'"'}
-          </p>
-        </div>
-
-        {/* Spalte 2: Befunde */}
-        <div
-          key={stepIndex}
-          className="flex h-[240px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0"
-        >
-          <span
-            className="line-pop mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.065em]"
-            style={{ color: CATEGORY_STYLES[currentStep.category]?.text, backgroundColor: CATEGORY_STYLES[currentStep.category]?.bg }}
-          >
-            <i className={`ti ${currentStep.icon} text-xs`} />
-            {currentStep.category} wird erhoben
-          </span>
-          <div className="flex flex-1 flex-col gap-2.5">
-            {currentStep.points.slice(0, pointCount).map((point) => (
-              <div
-                key={point}
-                className="line-pop flex items-center gap-2 text-[14px] font-semibold"
-                style={{ color: CATEGORY_STYLES[currentStep.category]?.text }}
-              >
-                <i className="ti ti-check text-xs shrink-0" />
-                <span>{point}</span>
-              </div>
-            ))}
-            {stillTyping && (
-              <span
-                className="ml-[19px] inline-block h-3.5 w-[2px]"
-                style={{
-                  backgroundColor: CATEGORY_STYLES[currentStep.category]?.text,
-                  animation: "pulse-soft 0.9s ease-in-out infinite",
-                }}
-                aria-hidden="true"
-              />
-            )}
-          </div>
-          <span className="text-[11px] text-muted">{totalFindings} Befunde in diesem Fall</span>
-        </div>
-
-        {/* Spalte 3: Punktestand + Diagnose */}
-        <div className="flex h-[240px] flex-col border-t border-card-border/10 pt-5 sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
-          <div className="mb-3 flex items-baseline justify-between">
-            <span className="text-xs font-bold uppercase tracking-[0.065em] text-muted">
-              {uiPhase === "result" ? "Erreicht" : "Noch möglich"}
-            </span>
-            <span className="flex items-baseline gap-1.5">
-              <TickingNumber
-                value={possiblePoints}
-                prefix={uiPhase === "result" ? "+" : ""}
-                color={uiPhase === "result" ? "#15803d" : "#175e8f"}
-              />
-              <span className="text-[11px] font-bold uppercase tracking-[0.065em] text-muted">
-                Punkte
-              </span>
-            </span>
-          </div>
-          <div className="mt-1.5 grid grid-cols-2 gap-1.5 border-t border-card-border/10 pt-3.5">
-            {currentCase.options.map((opt) => {
-              const isCorrect = opt === currentCase.diagnosis;
-              const showResult = uiPhase === "result";
-              return (
-                <span
-                  key={opt}
-                  className={`flex items-center justify-center rounded-lg border-[1.5px] px-1.5 py-[7px] text-center text-[10px] font-semibold leading-snug transition-colors ${
-                    showResult && isCorrect
-                      ? "correct-pop border-[#16a34a] bg-[#e7f6ec] text-[#15803d]"
-                      : showResult
-                      ? "border-card-border/10 text-muted/40"
-                      : "border-card-border/8 text-foreground/80"
-                  }`}
-                >
-                  {showResult && isCorrect && <i className="ti ti-check mr-1 text-[9px] shrink-0" />}
-                  {opt}
-                </span>
-              );
-            })}
-          </div>
-
-          {uiPhase === "result" && (
-            <div
-              key="insight"
-              className="line-pop mt-2 flex items-start gap-1.5 rounded-md border-[1.5px] border-accent/20 bg-[#ecf0f9] px-2 py-1.5"
-              style={{ animationDelay: "180ms" }}
-            >
-              <i className="ti ti-info-circle mt-[1px] shrink-0 text-[11px] text-accent" />
-              <p className="text-[10px] leading-snug text-accent">{currentCase.insight}</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </>
-  );
-}
-
-// Teaser-Slide (Basics / Sprache): großes Icon, Titel, Text und "Bald"-Badge.
-// Meldet sich nach einer Anzeigedauer per onDone fertig.
-function TeaserSlide({
-  icon,
-  accent,
-  tag,
-  title,
-  body,
-  soon,
-  onDone,
-}: {
-  icon: string;
-  accent: string;
-  tag: string;
-  title: string;
-  body: string;
-  soon?: boolean;
-  onDone: () => void;
-}) {
-  useEffect(() => {
-    const t = setTimeout(onDone, 6000);
-    return () => clearTimeout(t);
-  }, [onDone]);
-
-  return (
-    <div className="flex min-h-[268px] flex-col justify-center py-2">
-      <div className="mb-4 flex items-center gap-3">
-        <span
-          className="flex h-14 w-14 items-center justify-center rounded-2xl"
-          style={{ color: accent, backgroundColor: `${accent}1a` }}
-        >
-          <i className={`ti ${icon} text-3xl`} />
-        </span>
-        {soon && (
-          <span className="rounded-full bg-[#2f6fb0]/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.06em] text-[#2f6fb0]">
-            Bald
-          </span>
-        )}
-      </div>
-      <p className="text-xs font-bold uppercase tracking-[0.07em]" style={{ color: accent }}>
-        {tag}
-      </p>
-      <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
-        {title}
-      </h3>
-      <p className="mt-2 max-w-xl text-base leading-relaxed text-muted">{body}</p>
-    </div>
-  );
-}
-
-// Hero-Slider: rollt endlos vorwärts durch 3 Slides — der spielbare Fall
-// (Diagnosen üben) plus zwei Teaser (Basics, Sprache). Jeder Slide-Wechsel
-// rollt von rechts herein (.case-roll, per key neu getriggert); nie zurück.
-function HeroSlider() {
-  const [slide, setSlide] = useState(0);
-  const COUNT = 3;
-  const advance = () => setSlide((s) => (s + 1) % COUNT);
-  const go = (n: number) => setSlide((n + COUNT) % COUNT);
-
-  return (
-    <div className="relative">
-      <div className="card p-6 sm:p-8">
-        <div key={slide} className="case-roll min-h-[280px]">
-          {slide === 0 && <GameplayDemo onComplete={advance} />}
-          {slide === 1 && (
-            <TeaserSlide
-              icon="ti-checklist"
-              accent="#7c3aed"
-              tag="Lerne die Basics"
-              title="Die Praxis, auf die dich keiner vorbereitet"
-              body="Verhalten im OP, Blutabnahme, Röhrchen-Reihenfolge, was in eine Anamnese gehört, als Schritt-für-Schritt-Szenario."
-              soon
-              onDone={advance}
-            />
-          )}
-          {slide === 2 && (
-            <TeaserSlide
-              icon="ti-language"
-              accent="#175e8f"
-              tag="In deiner Sprache"
-              title="Fachsprache für Erasmus & Ausland"
-              body="Klinische Fälle auf Muttersprachen-Niveau: Deutsch, Englisch, Spanisch und mehr, mit Vokabel-Umschaltung."
-              soon
-              onDone={advance}
-            />
-          )}
-        </div>
-
-        {/* Bidirektionale Steuerung: Pfeile flankieren die Punkte (vor/zurück) */}
-        <div className="mt-4 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => go(slide - 1)}
-            aria-label="Vorheriger Slide"
-            className="flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-card-border/15 text-muted transition-colors hover:border-accent/40 hover:text-accent"
-          >
-            <i className="ti ti-chevron-left text-base" />
-          </button>
-          <div className="flex items-center gap-2">
-            {[0, 1, 2].map((i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setSlide(i)}
-                aria-label={`Slide ${i + 1} anzeigen`}
-                className="transition-all duration-300"
-                style={{
-                  backgroundColor: i === slide ? "#175e8f" : "#a8a69c",
-                  width: i === slide ? 22 : 8,
-                  height: 8,
-                  borderRadius: i === slide ? 4 : 9999,
-                }}
-              />
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={() => go(slide + 1)}
-            aria-label="Nächster Slide"
-            className="flex h-8 w-8 items-center justify-center rounded-full border-[1.5px] border-card-border/15 text-muted transition-colors hover:border-accent/40 hover:text-accent"
-          >
-            <i className="ti ti-chevron-right text-base" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 const DIFFICULTY_INFO: Record<
   Difficulty,
@@ -1251,7 +742,7 @@ function WelcomeNote() {
           Fälle vorbereiten – und hab gemerkt, was im Studium fehlt:
           Anamnesen liest man nur in Textform, statt sie selbst zu erheben.
           Und wenn im Unterricht Laborwerte gezeigt werden, hat man die
-          typischen Befundkombinationen selten im Kopf. Medcase trainiert
+          typischen Befundkombinationen selten im Kopf. Casolvo trainiert
           genau das, unabhängig von Anki-Karten: Du forderst die Befunde
           selbst an und lernst durch eigenes Denken, welche Kombination zu
           welcher Diagnose gehört – als eigene Vorbereitung oder Ergänzung
@@ -1307,7 +798,7 @@ function StatBox({ value, label }: { value: number; label: string }) {
   );
 }
 
-// Evidenz-Block: belegt mit Primärquellen, dass das Defizit, das Medcase
+// Evidenz-Block: belegt mit Primärquellen, dass das Defizit, das Casolvo
 // trainiert, in der Ausbildungsforschung dokumentiert ist. Nur verifizierte
 // Aussagen (direkt an der GMS-Originalquelle geprüft) — konsistent mit dem
 // Quellen-USP der Seite. Dient doppelt: Social-Proof-Ersatz für Besucher
@@ -1344,7 +835,7 @@ function EvidenceCard() {
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
         Dabei gilt klinisches Denken laut NKLM als ärztliche Kernkompetenz für
         Patientensicherheit und den gezielten Einsatz von Diagnostik. Genau
-        diese Lücke trainiert Medcase: Befunde bewusst anfordern, statt alles
+        diese Lücke trainiert Casolvo: Befunde bewusst anfordern, statt alles
         vorgelegt zu bekommen.
       </p>
       <p className="mt-2 text-[11px] text-muted">
@@ -1632,6 +1123,14 @@ function QualitaetPreviewCard() {
   );
 }
 
+// „heute" / „gestern" / „vor N Tagen" — bewusst kein Streak, nur Kontext.
+function relativeDays(ts: number): string {
+  const days = Math.floor((Date.now() - ts) / 86_400_000);
+  if (days <= 0) return "zuletzt heute";
+  if (days === 1) return "zuletzt gestern";
+  return `zuletzt vor ${days} Tagen`;
+}
+
 function StartScreen({
   onStart,
 }: {
@@ -1645,74 +1144,173 @@ function StartScreen({
     setShowPicker(true);
   }
 
+  // Niveau direkt im Hero wählbar — kein Zwischen-Dialog vor dem ersten Fall.
+  // Vorauswahl aus dem letzten Besuch wird erst nach dem Mount gelesen
+  // (localStorage), damit Server- und Client-Markup identisch bleiben.
+  const [level, setLevel] = useState<Difficulty>("klinik");
+  const [disc, setDisc] = useState<Discipline>("zufaellig");
+  // Wiederkehrer: nur lokaler Zustand (gelöste Fälle aus lib/stats), keine ID,
+  // nichts wird gesendet. Erstbesucher sehen exakt denselben Hero — es ändern
+  // sich nur Kopfzeile, Button-Verb und eine Kontextzeile im Start-Panel.
+  const [returning, setReturning] = useState<{ played: number; solved: number; lastAt: number } | null>(null);
+  useEffect(() => {
+    const last = loadLastChoice();
+    setLevel(last.difficulty);
+    setDisc(last.discipline);
+    const results = readCaseResults();
+    if (results.length > 0) {
+      setReturning({
+        played: results.length,
+        solved: results.filter((r) => r.correct).length,
+        lastAt: Math.max(...results.map((r) => r.timestamp)),
+      });
+    }
+  }, []);
+
+  function startNow() {
+    const chosen: Discipline = level === "klinik" ? disc : "zufaellig";
+    saveLastChoice(level, chosen);
+    onStart(level, chosen);
+  }
+
   return (
-    <div className="relative flex min-h-[calc(100vh-64px)] flex-col pb-4">
-      {/* Dezente Hintergrund-Deko hinter dem Hero — gegen die "leere" Wirkung
-          auf breiten Screens. Kein overflow-hidden auf dem Root-Element,
-          damit die sticky Nav weiter funktioniert. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[920px]" aria-hidden="true">
-        {/* Sanft driftender Blauton-Verlauf statt statischer Flecken — deutet
-            "frisch, KI-generiert" an, ohne aufdringlich zu wirken. Läuft jetzt
-            bis über die Fallkarte hinaus weiter, statt abrupt nach dem Hero
-            zu enden. */}
-        <div className="hero-blob-a absolute left-[6%] top-6 h-72 w-72 rounded-full bg-accent/[0.09] blur-3xl" />
-        <div className="hero-blob-b absolute right-[8%] top-32 h-80 w-80 rounded-full bg-[#38bdf8]/[0.08] blur-3xl" />
-        <div className="hero-blob-c absolute left-[22%] top-[640px] h-72 w-72 rounded-full bg-accent/[0.06] blur-3xl" />
-      </div>
+    <div className="relative flex flex-col pb-4">
       <CenteredNav active="home" />
-      <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-        <span className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/70 bg-[#e6eef4] px-3 py-1 text-xs font-bold text-accent">
-          Für Medizinstudierende · Deutschland
-        </span>
-        <h1
-          className="mt-4 text-4xl font-extrabold leading-[1.04] tracking-tight md:text-5xl"
-          style={{ color: "#1b3a5c" }}
-        >
-          Lerne klinisch zu denken
-        </h1>
-        <p className="mt-3 max-w-lg text-base leading-relaxed text-muted">
-          Diagnostik und Befunde verstehen und sinnvoll kombinieren. Von
-          Studierenden für Studierende.
-        </p>
-      </div>
 
-      <div className="mx-auto mt-6 w-full max-w-6xl">
-        <HeroSlider />
-      </div>
+      {/* Hero füllt die erste Bildschirmhöhe (dvh: mobile Browserleisten
+          eingerechnet); zwei gleich schwere Objekte — Start-Panel links,
+          Produktbild rechts — auf einer gemeinsamen Grundlinie. */}
+      <div className="flex min-h-[calc(100dvh-140px)] flex-col">
+        <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 py-6 md:grid-cols-[0.95fr_1.05fr] md:gap-12 md:py-8">
+          <div>
+            <h1
+              className="text-[38px] font-extrabold leading-[1.04] tracking-tight md:text-[46px]"
+              style={{ color: "#1b3a5c" }}
+            >
+              Klinische Fälle üben.
+            </h1>
+            <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-muted">
+              <span className="font-semibold text-foreground">Nicht kreuzen, sondern entscheiden:</span>{" "}
+              Du forderst nur die Befunde an, die du wirklich brauchst — jeder
+              kostet Punkte — und stellst dann die Diagnose.
+            </p>
 
-      <div className="mx-auto mt-8 flex flex-col items-center gap-2">
-        <button
-          onClick={openPicker}
-          className="group relative overflow-hidden rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
-        >
-          Ersten Fall ausprobieren{" "}
-          <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-2 group-active:translate-x-2">
-            →
-          </span>
-          <span
-            className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-accent to-transparent"
-            aria-hidden="true"
-          />
-          {/* Periodisch durchlaufender Glanz-Streifen — soll Lust aufs Klicken machen */}
-          <span
-            className="cta-shine pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-            aria-hidden="true"
-          />
-        </button>
-        <p className="text-sm text-muted">
-          Kostenlos · Kein Account nötig
-        </p>
+            {/* Start-Panel: Niveau → Fach (nur Klinik) → Start. Feste Zeilenhöhe
+                für die Fach-Zeile, damit der Wechsel des Niveaus nichts springen lässt. */}
+            <div className="card mt-6 overflow-hidden">
+              <div className="flex items-baseline justify-between border-b border-card-border/10 px-5 py-3">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.07em] text-muted">
+                  {returning ? "Weiter üben" : "Fall starten"}
+                </span>
+                <span className="text-[11.5px] text-muted">
+                  {returning
+                    ? `${returning.solved} von ${returning.played} ${returning.played === 1 ? "Fall" : "Fällen"} gelöst · ${relativeDays(returning.lastAt)}`
+                    : "Kostenlos · ohne Account"}
+                </span>
+              </div>
 
-        {/* Scroll-Hinweis statt Button: dezent, borderlos, sanft wippender
-            Chevron — lädt zum Weiterscrollen ein, ohne wie ein zweiter CTA
-            zu konkurrieren. */}
+              <div className="px-5 pb-5 pt-4">
+                <div
+                  className="flex w-full rounded-xl border-[1.5px] border-card-border/15 bg-background p-1"
+                  role="radiogroup"
+                  aria-label="Niveau wählen"
+                >
+                  {(["vorklinik", "klinik", "examen"] as Difficulty[]).map((id) => {
+                    const on = level === id;
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        role="radio"
+                        aria-checked={on}
+                        onClick={() => setLevel(id)}
+                        className={`flex flex-1 items-center justify-center gap-1.5 rounded-[9px] px-2 py-2 text-[13.5px] font-bold transition-colors ${
+                          on ? "bg-accent text-accent-foreground" : "text-muted hover:text-foreground"
+                        }`}
+                      >
+                        <i className={`ti ${DIFFICULTY_ICONS[id]} text-[15px]`} />
+                        {DIFFICULTY_INFO[id].label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="mt-2 flex items-baseline justify-between gap-3 text-[12.5px] text-muted" aria-live="polite">
+                  <span>{DIFFICULTY_INFO[level].description}</span>
+                  <span className="shrink-0 text-[11px] text-muted/80">wird auf diesem Gerät gemerkt</span>
+                </p>
+
+                {/* Fach-Zeile: bei Klinik wählbar, sonst fächerübergreifend — gleiche Höhe */}
+                <div className="mt-4 flex min-h-[34px] flex-wrap items-center gap-1.5">
+                  <span className="mr-1 text-[10.5px] font-bold uppercase tracking-[0.07em] text-muted">
+                    Fach
+                  </span>
+                  {level === "klinik" ? (
+                    DISCIPLINES.filter((d) => !d.locked).map((d) => {
+                      const on = disc === d.id;
+                      return (
+                        <button
+                          key={d.id}
+                          type="button"
+                          role="radio"
+                          aria-checked={on}
+                          onClick={() => setDisc(d.id)}
+                          className={`rounded-full border-[1.5px] px-3 py-1 text-[12.5px] font-semibold transition-colors ${
+                            on
+                              ? "border-accent bg-accent/[0.08] text-accent"
+                              : "border-card-border/15 bg-card text-muted hover:border-accent/40 hover:text-foreground"
+                          }`}
+                        >
+                          {d.label}
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <span className="text-[12.5px] text-muted">Fächerübergreifend</span>
+                  )}
+                </div>
+
+                <button
+                  onClick={startNow}
+                  className="mt-4 w-full rounded-[12px] bg-accent px-6 py-3.5 text-[16px] font-bold text-accent-foreground shadow-[0_12px_24px_-12px_rgba(23,94,143,0.6)] transition-transform duration-[80ms] active:scale-[0.98]"
+                >
+                  {returning ? (
+                    <>
+                      Nächster Fall →{" "}
+                      <span className="font-semibold opacity-80">
+                        {DIFFICULTY_INFO[level].label}
+                        {level === "klinik" && disc !== "zufaellig"
+                          ? ` · ${DISCIPLINES.find((d) => d.id === disc)?.label ?? ""}`
+                          : ""}
+                      </span>
+                    </>
+                  ) : (
+                    "Jetzt ausprobieren →"
+                  )}
+                </button>
+              </div>
+
+              {/* So läuft ein Fall — dieselben drei Schritte, dieselben Farben wie in der App */}
+              <div className="border-t border-card-border/10 bg-background/60 px-5 py-3.5">
+                <div className="grid gap-2 text-[13px]">
+                  <div className="flex items-center gap-2.5"><StepDot tone="s1" small>1</StepDot><span className="font-semibold">Anamnese lesen</span><span className="clinical-data ml-auto text-xs font-bold text-[var(--step-1)]">inkl.</span></div>
+                  <div className="flex items-center gap-2.5"><StepDot tone="s2" small>2</StepDot><span className="font-semibold">Befunde anfordern</span><span className="text-muted">— nur, was du brauchst</span><span className="clinical-data ml-auto text-xs font-bold text-[var(--step-2)]">je −10</span></div>
+                  <div className="flex items-center gap-2.5"><StepDot tone="s3" small>3</StepDot><span className="font-semibold">Diagnose stellen</span><span className="text-muted">— mit Begründung</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <HeroDemo />
+        </div>
+
+        {/* Ruhiger Hinweis auf die Methodik — text-muted (5,6:1) statt /70 (AA-Fail) */}
         <button
           type="button"
-          onClick={() => slowScrollTo("konzept")}
-          className="group mt-5 flex flex-col items-center gap-0.5 text-xs font-semibold text-muted/70 transition-colors hover:text-accent"
+          onClick={() => document.getElementById("konzept")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          className="group mx-auto mb-2 flex flex-col items-center gap-0.5 text-xs font-semibold text-muted transition-colors hover:text-accent"
         >
-          Erfahre mehr über unser Konzept
-          <i className="ti ti-chevron-down text-lg motion-safe:animate-bounce" />
+          Mehr über unsere Methodik
+          <i className="ti ti-chevron-down text-lg" />
         </button>
       </div>
 
@@ -1768,7 +1366,7 @@ function StartScreen({
           className="mt-3 flex items-center justify-between border-t border-card-border/15 pt-3"
           style={{ fontSize: 11, color: "#5f5e5a" }}
         >
-          <span>© 2026 Medcase</span>
+          <span>© 2026 Casolvo</span>
           <div className="flex items-center gap-4">
             <Link href="/news" className="hover:underline">News</Link>
             <Link href="/impressum" className="hover:underline">Impressum</Link>
@@ -1833,482 +1431,6 @@ function LoadingScreen() {
         </div>
       </div>
     </div>
-  );
-}
-
-function StatPill({
-  label,
-  value,
-  variant,
-}: {
-  label: string;
-  value: string | number;
-  variant?: "score";
-}) {
-  if (variant === "score") {
-    return (
-      <span className="flex items-baseline gap-[6px] whitespace-nowrap rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.03] px-[16px] py-[7px]">
-        <span className="text-[11px] font-semibold text-muted">{label}</span>
-        <span className="tabular-nums text-[19px] font-extrabold text-accent">{value}</span>
-      </span>
-    );
-  }
-  return (
-    <span className="rounded-full border-[1.5px] border-card-border/10 bg-foreground/[0.03] px-3 py-1.5 text-sm font-semibold">
-      <span className="mr-1 text-muted">{label}</span>
-      <span className="text-accent">{value}</span>
-    </span>
-  );
-}
-
-function RevealButton({
-  label,
-  done,
-  locked,
-  unavailable,
-  tooltip,
-  onClick,
-  showCost = true,
-}: {
-  label: string;
-  done: boolean;
-  locked?: boolean;
-  unavailable?: boolean;
-  tooltip?: string;
-  onClick: () => void;
-  showCost?: boolean;
-}) {
-  const [tipVisible, setTipVisible] = useState(false);
-
-  return (
-    <div
-      className="relative"
-      onMouseEnter={() => tooltip && setTipVisible(true)}
-      onMouseLeave={() => setTipVisible(false)}
-    >
-      <button
-        onClick={onClick}
-        disabled={done || locked || unavailable}
-        className={`inline-flex items-center gap-[6px] rounded-[18px] border-[1.5px] px-[14px] py-[7px] text-[13px] font-semibold transition-colors ${
-          done
-            ? "border-card-border/20 bg-[#f4f3ee] text-muted"
-            : unavailable
-            ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/40"
-            : locked
-            ? "cursor-not-allowed border-card-border/15 bg-foreground/[0.02] text-muted/50"
-            : "border-accent/30 bg-accent/[0.05] text-accent hover:border-accent hover:bg-accent/10"
-        }`}
-      >
-        {done && <span>×</span>}
-        {label}
-        {done && showCost && (
-          <span className="text-[11px] font-bold text-[#dc2626]">−10P</span>
-        )}
-      </button>
-      {tipVisible && tooltip && (
-        <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-lg border-[1.5px] border-card-border/20 bg-card px-2.5 py-1.5 text-xs text-foreground/80 shadow-sm">
-          {tooltip}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function CollapseToggle({ expanded, onToggle }: { expanded: boolean; onToggle: () => void }) {
-  return (
-    <button
-      onClick={onToggle}
-      className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-foreground/5"
-      aria-label={expanded ? "Einklappen" : "Ausklappen"}
-    >
-      <i className={`text-[15px] ${expanded ? "ti ti-chevron-up" : "ti ti-chevron-down"}`} />
-    </button>
-  );
-}
-
-function MaximizeButton({ onClick, ariaLabel }: { onClick: () => void; ariaLabel: string }) {
-  return (
-    <button
-      onClick={onClick}
-      aria-label={ariaLabel}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 32,
-        height: 32,
-        border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
-        borderRadius: 8,
-        background: "var(--card)",
-        cursor: "pointer",
-      }}
-    >
-      <i className="ti ti-arrows-maximize" style={{ fontSize: 16 }} />
-    </button>
-  );
-}
-
-function FindingOverlay({
-  open,
-  onClose,
-  title,
-  children,
-  maxWidth = 640,
-}: {
-  open: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  maxWidth?: number;
-}) {
-  const [mounted, setMounted] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const reducedMotionRef = useRef(false);
-
-  useEffect(() => {
-    reducedMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-
-  useEffect(() => {
-    if (open) {
-      setMounted(true);
-      const rafId = requestAnimationFrame(() => {
-        requestAnimationFrame(() => setVisible(true));
-      });
-      return () => cancelAnimationFrame(rafId);
-    } else {
-      setVisible(false);
-      const delay = reducedMotionRef.current ? 0 : 150;
-      const id = setTimeout(() => setMounted(false), delay);
-      return () => clearTimeout(id);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    document.body.style.overflow = "hidden";
-    function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-    }
-    window.addEventListener("keydown", handleKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKey);
-    };
-  }, [open, onClose]);
-
-  if (!mounted) return null;
-
-  const reduced = reducedMotionRef.current;
-
-  return (
-    <div
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(15,15,15,0.45)",
-        zIndex: 70,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 24,
-      }}
-    >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={`${title} vollständig`}
-        style={{
-          background: "var(--card)",
-          border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
-          borderRadius: 14,
-          padding: 28,
-          maxWidth,
-          width: "100%",
-          maxHeight: "80vh",
-          overflowY: "auto",
-          opacity: reduced ? 1 : visible ? 1 : 0,
-          transform: reduced ? "none" : visible ? "scale(1)" : "scale(0.97)",
-          transition: reduced
-            ? "none"
-            : visible
-            ? "opacity 200ms ease-out, transform 200ms ease-out"
-            : "opacity 150ms ease-in, transform 150ms ease-in",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 20,
-          }}
-        >
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--muted)",
-            }}
-          >
-            {title}
-          </p>
-          <button
-            onClick={onClose}
-            aria-label="Overlay schließen"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 32,
-              height: 32,
-              border: "1.5px solid color-mix(in srgb, var(--card-border) 15%, transparent)",
-              borderRadius: 8,
-              background: "var(--card)",
-              cursor: "pointer",
-            }}
-          >
-            <i className="ti ti-x" style={{ fontSize: 16 }} />
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function FindingCard({ title, icon, text, expanded, onToggle }: { title: string; icon: string; text: string; expanded: boolean; onToggle: () => void }) {
-  const [overlayOpen, setOverlayOpen] = useState(false);
-  return (
-    <>
-      <div className="card">
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <i className={`ti ${icon} text-accent text-[13px]`} />
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-              {title}
-            </p>
-          </div>
-          <div className="flex items-center gap-1">
-            <MaximizeButton
-              onClick={() => setOverlayOpen(true)}
-              ariaLabel={`${title} vollständig anzeigen`}
-            />
-            <CollapseToggle expanded={expanded} onToggle={onToggle} />
-          </div>
-        </div>
-        {expanded && (
-          <>
-            <div className="border-t border-card-border/10" />
-            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{text}</p>
-          </>
-        )}
-      </div>
-      <FindingOverlay open={overlayOpen} onClose={() => setOverlayOpen(false)} title={title}>
-        <p style={{ fontSize: 16, lineHeight: 1.7 }}>{text}</p>
-      </FindingOverlay>
-    </>
-  );
-}
-
-function ImagingCard({ imaging, expanded, onToggle }: { imaging: string; expanded: boolean; onToggle: () => void }) {
-  const [overlayOpen, setOverlayOpen] = useState(false);
-  if (!imaging) return null;
-  return (
-    <>
-      <div className="card">
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <i className="ti ti-scan text-accent text-[13px]" />
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-              Bildgebung
-            </p>
-          </div>
-          <div className="flex items-center gap-1">
-            <MaximizeButton
-              onClick={() => setOverlayOpen(true)}
-              ariaLabel="Bildgebung vollständig anzeigen"
-            />
-            <CollapseToggle expanded={expanded} onToggle={onToggle} />
-          </div>
-        </div>
-        {expanded && (
-          <>
-            <div className="border-t border-card-border/10" />
-            <p className="max-w-[68ch] px-5 py-4 leading-relaxed">{imaging}</p>
-          </>
-        )}
-      </div>
-      <FindingOverlay open={overlayOpen} onClose={() => setOverlayOpen(false)} title="Bildgebung">
-        <p style={{ fontSize: 16, lineHeight: 1.7 }}>{imaging}</p>
-      </FindingOverlay>
-    </>
-  );
-}
-
-function LaborOverlay({
-  open,
-  onClose,
-  categories,
-}: {
-  open: boolean;
-  onClose: () => void;
-  categories: LabCategory[];
-}) {
-  return (
-    <FindingOverlay open={open} onClose={onClose} title="Labor" maxWidth={660}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        {categories.map((cat) => (
-          <div key={cat.category}>
-            <p className="mb-2 text-sm font-semibold">{cat.category}</p>
-            <table className="clinical-data w-full" style={{ fontSize: 12 }}>
-              <thead>
-                <tr
-                  className="border-b border-card-border/15 text-left uppercase text-muted"
-                  style={{ fontSize: 10 }}
-                >
-                  <th className="pb-1 pr-3">Parameter</th>
-                  <th className="pb-1 pr-3">Wert</th>
-                  <th className="pb-1 pr-3">Einheit</th>
-                  <th className="pb-1">Referenz</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(cat.values ?? []).map((v) => {
-                  const flagged = v.flag === "high" || v.flag === "low";
-                  return (
-                    <tr
-                      key={v.name}
-                      className={`border-b border-card-border/10 last:border-0 ${flagged ? "bg-[#dc2626]/[0.04]" : ""}`}
-                    >
-                      <td style={{ paddingTop: 5, paddingBottom: 5, paddingRight: 12 }}>{v.name}</td>
-                      <td
-                        className={`font-semibold ${
-                          v.flag === "high"
-                            ? "text-[#dc2626]"
-                            : v.flag === "low"
-                            ? "text-[#2563eb]"
-                            : ""
-                        }`}
-                        style={{ paddingTop: 5, paddingBottom: 5, paddingRight: 12 }}
-                      >
-                        {v.value}
-                        {v.flag === "high" && <span className="ml-1 font-extrabold">↑</span>}
-                        {v.flag === "low" && <span className="ml-1 font-extrabold">↓</span>}
-                      </td>
-                      <td className="text-muted" style={{ paddingTop: 5, paddingBottom: 5, paddingRight: 12 }}>{v.unit}</td>
-                      <td
-                        className={flagged ? "font-medium text-foreground/70" : "text-muted"}
-                        style={{ paddingTop: 5, paddingBottom: 5, fontSize: 11 }}
-                      >
-                        {v.reference}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        ))}
-      </div>
-    </FindingOverlay>
-  );
-}
-
-function LabCard({ labs, expanded, onToggle }: { labs: LabCategory[]; expanded: boolean; onToggle: () => void }) {
-  const [overlayOpen, setOverlayOpen] = useState(false);
-  return (
-    <>
-      <div className="card">
-        <div className="flex items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <i className="ti ti-microscope text-accent text-[13px]" />
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-              Labor
-            </p>
-          </div>
-          <div className="flex items-center gap-1">
-            <MaximizeButton
-              onClick={() => setOverlayOpen(true)}
-              ariaLabel="Labor vollständig anzeigen"
-            />
-            <CollapseToggle expanded={expanded} onToggle={onToggle} />
-          </div>
-        </div>
-        {expanded && (
-          <>
-            <div className="border-t border-card-border/10" />
-            <div className="px-5 py-4">
-        {labs.map((cat) => (
-          <div key={cat.category} className="mb-4 last:mb-0">
-            <p className="mb-2 text-sm font-semibold">{cat.category}</p>
-            <table className="clinical-data w-full text-sm">
-              <thead>
-                <tr className="border-b border-card-border/15 text-left text-xs uppercase text-muted">
-                  <th className="pb-1 pr-4">Parameter</th>
-                  <th className="pb-1 pr-4">Wert</th>
-                  <th className="pb-1 pr-4">Einheit</th>
-                  <th className="pb-1">Referenz</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(cat.values ?? []).map((v) => {
-                  const flagged = v.flag === "high" || v.flag === "low";
-                  return (
-                    <tr
-                      key={v.name}
-                      className={`border-b border-card-border/10 last:border-0 ${
-                        flagged ? "bg-[#dc2626]/[0.04]" : ""
-                      }`}
-                    >
-                      <td className="py-1.5 pr-4">{v.name}</td>
-                      <td
-                        className={`py-1.5 pr-4 font-semibold ${
-                          v.flag === "high"
-                            ? "text-[#dc2626]"
-                            : v.flag === "low"
-                            ? "text-[#2563eb]"
-                            : ""
-                        }`}
-                      >
-                        {v.value}
-                        {v.flag === "high" && (
-                          <span className="ml-1 font-extrabold">↑</span>
-                        )}
-                        {v.flag === "low" && (
-                          <span className="ml-1 font-extrabold">↓</span>
-                        )}
-                      </td>
-                      <td className="py-1.5 pr-4 text-muted">{v.unit}</td>
-                      <td
-                        className={`py-1.5 ${
-                          flagged ? "font-medium text-foreground/70" : "text-muted"
-                        }`}
-                      >
-                        {v.reference}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        ))}
-            </div>
-          </>
-        )}
-      </div>
-      <LaborOverlay
-        open={overlayOpen}
-        onClose={() => setOverlayOpen(false)}
-        categories={labs}
-      />
-    </>
   );
 }
 
@@ -2416,14 +1538,14 @@ function ResultIsland({
         totalCategories: 4,
         isCorrect: lastResultCorrect,
       });
-      const file = new File([blob], "medcase-ergebnis.png", { type: "image/png" });
+      const file = new File([blob], "casolvo-ergebnis.png", { type: "image/png" });
       if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], title: "Mein Medcase-Ergebnis" });
+        await navigator.share({ files: [file], title: "Mein Casolvo-Ergebnis" });
       } else {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "medcase-ergebnis.png";
+        a.download = "casolvo-ergebnis.png";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -2443,7 +1565,7 @@ function ResultIsland({
   return (
     <div
       ref={islandRef}
-      className="absolute bottom-0 left-0 right-0 rounded-xl border-[1.5px] flex flex-col"
+      className="relative rounded-[14px] border-[1.5px] flex flex-col"
       style={{ borderColor, backgroundColor: bgColor }}
     >
       {/* Always-visible header */}
@@ -2671,55 +1793,6 @@ function ResultIsland({
   );
 }
 
-function DiagnosisIsland({
-  caseData,
-  options,
-  selectedDiagnosis,
-  onSubmit,
-  possiblePoints,
-  diagnosisIslandRef,
-}: {
-  caseData: Case;
-  options: string[];
-  selectedDiagnosis: string | null;
-  onSubmit: (option: string) => void;
-  possiblePoints: number;
-  diagnosisIslandRef?: RefObject<HTMLDivElement | null>;
-}) {
-  return (
-    <div ref={diagnosisIslandRef} className="w-full rounded-2xl border-[1.5px] border-card-border/15 bg-card px-4 py-[14px] shadow-[0_16px_40px_-8px_rgba(15,15,15,0.18)]">
-      <div className="mb-3 flex items-center justify-between px-0.5">
-        <span className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-          <i className="ti ti-stethoscope text-accent text-[11px]" />
-          Diagnose stellen
-        </span>
-        <span className="text-xs font-medium text-muted">
-          Noch{" "}
-          <span className="font-mono font-bold text-accent">
-            {possiblePoints}
-          </span>{" "}
-          Punkte möglich
-        </span>
-      </div>
-      <div className="grid grid-cols-2 gap-2.5">
-        {options.map((opt, i) => (
-          <button
-            key={opt}
-            onClick={() => onSubmit(opt)}
-            disabled={!!selectedDiagnosis}
-            className="group flex items-center gap-2.5 rounded-xl border-[1.5px] border-accent/20 bg-card px-3 py-[9px] text-left text-sm font-semibold leading-snug transition-colors hover:border-accent hover:bg-accent/[0.06] disabled:cursor-not-allowed"
-          >
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10 text-[11px] font-extrabold text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-              {String.fromCharCode(65 + i)}
-            </span>
-            <span className="flex-1">{opt}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 type ReportState = "idle" | "open" | "loading" | "success" | "error";
 
 function ReportCaseCard({
@@ -2860,225 +1933,282 @@ function ReportCaseCard({
   return <div className="card p-4">{inner}</div>;
 }
 
-function MobileSidebar({
-  open,
-  onClose,
-  onGoHome,
-  difficultyLabel,
-  disciplineLabel,
-  caseId,
-  difficulty,
-  dailyUsed,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onGoHome: () => void;
-  difficultyLabel: string;
-  disciplineLabel: string;
-  caseId: string;
-  difficulty: Difficulty;
-  dailyUsed: number;
-}) {
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
-
-  useEffect(() => {
-    if (!open || !sidebarRef.current) return;
-    const el = sidebarRef.current;
-    const focusable = Array.from(
-      el.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      )
-    );
-    focusable[0]?.focus();
-    function trapTab(e: KeyboardEvent) {
-      if (e.key !== "Tab" || focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    }
-    document.addEventListener("keydown", trapTab);
-    return () => document.removeEventListener("keydown", trapTab);
-  }, [open]);
-
+// ---------------------------------------------------------------------------
+// Hero-Demo: der Fall spielt sich beim Laden einmal selbst ab (Patient →
+// Anamnese → Befunde anfordern → aufgedeckt → Diagnose) und bleibt dann als
+// Endbild stehen. ↻ spielt erneut. Bei prefers-reduced-motion sofort Endbild.
+// ---------------------------------------------------------------------------
+// Hero-Beispiel: ein abgeschlossener Fall als Akte, statisch. Drei Zeilen
+// genügen, um die Mechanik zu zeigen: Anamnese ist inklusive, ein Befund
+// wurde angefordert und kostet, einer bewusst nicht — und die Diagnose stimmt
+// trotzdem. Bewusst ohne Animation: das Bild soll in Sekunden lesbar sein,
+// nicht erst nach einem Ablauf.
+function HeroDemo() {
   return (
-    <div className={`fixed inset-0 z-50 sm:hidden ${!open ? "pointer-events-none" : ""}`}>
-      <div
-        className={`absolute inset-0 transition-opacity duration-300 ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-        style={{ backgroundColor: "rgba(15,15,15,0.5)" }}
-        onClick={onClose}
-      />
-      <div
-        ref={sidebarRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation"
-        tabIndex={-1}
-        className={`absolute inset-y-0 left-0 flex w-72 flex-col bg-card shadow-xl outline-none transition-transform duration-300 ${
-          open ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{ borderRight: "1.5px solid #d8d6cd" }}
-      >
-        <div className="flex items-center justify-between border-b border-card-border/15 px-5 py-4">
-          <Logo size={28} />
-          <button
-            onClick={onClose}
-            aria-label="Menü schließen"
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-foreground/5"
-          >
-            <i className="ti ti-x text-base" />
-          </button>
-        </div>
-        <div className="flex flex-col gap-4 overflow-y-auto p-5">
-          <button
-            onClick={() => { onClose(); onGoHome(); }}
-            className="flex items-center gap-2 rounded-xl border-[1.5px] border-card-border/20 bg-card px-4 py-2.5 text-sm font-semibold transition-colors hover:border-accent"
-          >
-            <i className="ti ti-home text-sm" />
-            Home
-          </button>
-          <div className="flex items-center gap-1.5 text-sm">
-            <span className="font-semibold text-foreground">{difficultyLabel}</span>
-            <span className="text-muted/50">→</span>
-            <span className="font-semibold text-accent">{disciplineLabel}</span>
-          </div>
-          <div className="rounded-xl border-[1.5px] border-card-border/20 bg-card p-4">
-            <p className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-            <i className="ti ti-calendar text-accent text-[11px]" />
-            Fortschritt heute
+    <div
+      className="card flex min-h-[360px] flex-col px-6 py-5 shadow-[0_30px_60px_-40px_rgba(23,94,143,0.5)] sm:px-7"
+      aria-label="Beispiel: ein gelöster Fall mit zwei angeforderten Befunden"
+    >
+      {/* Patient + Ergebnispunkte */}
+      <div className="flex items-start gap-3">
+        <div className="avatar-circle h-11 w-11 shrink-0 text-sm" style={{ backgroundColor: "#ffab73" }}>T</div>
+        <div className="min-w-0 flex-1">
+          <p className="text-[15px] font-bold leading-tight">
+            Thomas, 38 Jahre <span className="font-normal text-muted">· männlich</span>
           </p>
-            <p className="mt-2 text-2xl font-extrabold">
-              {dailyUsed}
-              <span className="text-base font-semibold text-muted"> {dailyUsed === 1 ? "Fall" : "Fälle"}</span>
-            </p>
-            <p className="mt-2 text-xs text-muted">heute gespielt · unbegrenzt</p>
-          </div>
-          <ReportCaseCard caseId={caseId} difficulty={difficulty} />
+          <p className="mt-0.5 text-[13px] italic leading-snug text-muted">
+            „Ich huste seit einer Woche wie ein Kettenraucher – dabei rauche ich gar nicht.“
+          </p>
         </div>
+        <div className="shrink-0 text-right">
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.07em] text-muted">Punkte</p>
+          <p className="clinical-data text-[22px] font-extrabold leading-none text-accent">90</p>
+        </div>
+      </div>
+
+      {/* Drei Entscheidungen — inklusive / angefordert / bewusst ausgelassen */}
+      <ol className="relative mt-6 flex flex-1 flex-col gap-5 border-l-[1.5px] border-card-border/15 pl-5">
+        <TimelineRow tone="s1" title="Anamnese" right="inkl." rightTone="s1">
+          Seit 7 Tagen Husten, initial Fieber bis 38,2 °C, seither afebril. Weißlicher Auswurf, keine Dyspnoe. Nichtraucher.
+        </TimelineRow>
+        <TimelineRow tone="s2" title="Labor angefordert" right="−10" rightTone="s2">
+          <span className="clinical-data">
+            CRP <b className="text-[#b91c1c]">0,8 ↑</b> <span className="text-muted">(&lt; 0,5 mg/dl)</span> · Leukozyten 7,2 · PCT &lt; 0,1
+          </span>
+        </TimelineRow>
+        <TimelineRow tone="skip" title="Bildgebung nicht angefordert" right="gespart" rightTone="muted">
+          Kein Hinweis auf Pneumonie — ein Röntgen-Thorax hätte hier nichts geändert.
+        </TimelineRow>
+      </ol>
+
+      {/* Ergebnis */}
+      <div className="mt-6 flex items-center justify-between border-t-[1.5px] border-card-border/10 pt-3.5 text-[13px]">
+        <span className="flex items-center gap-2 font-semibold" style={{ color: "var(--correct)" }}>
+          <i className="ti ti-check" />
+          Richtig — mit einem Befund
+        </span>
+        <span className="clinical-data text-[15px] font-extrabold" style={{ color: "var(--correct)" }}>
+          90 / 100
+        </span>
       </div>
     </div>
   );
 }
 
-function StatusPanel({
-  dailyUsed,
-  possiblePoints,
-  revealed,
-  revealedAtSubmit,
-  phase,
-  caseId,
-  difficulty,
-  anchorRef,
+function TimelineRow({
+  tone,
+  title,
+  right,
+  rightTone,
+  children,
 }: {
-  dailyUsed: number;
-  possiblePoints: number;
-  revealed: Revealed;
-  revealedAtSubmit: Revealed;
-  phase: Phase;
-  caseId: string;
-  difficulty: Difficulty;
-  anchorRef?: RefObject<HTMLDivElement | null>;
+  tone: "s1" | "s2" | "s3" | "skip";
+  title: string;
+  right?: string;
+  rightTone?: "s1" | "s2" | "muted";
+  children: React.ReactNode;
 }) {
-  const checklist: { key: keyof Revealed; label: string }[] = [
-    { key: "history", label: "Anamnese" },
-    { key: "examination", label: "Untersuchung" },
-    { key: "imaging", label: "Bildgebung" },
-    { key: "labs", label: "Labor" },
-  ];
+  const dot =
+    tone === "skip"
+      ? "border-[1.5px] border-dashed border-card-border/30 bg-card"
+      : tone === "s1"
+      ? "bg-[var(--step-1)]"
+      : tone === "s2"
+      ? "bg-[var(--step-2)]"
+      : "bg-[var(--step-3)]";
+  const rightColor =
+    rightTone === "s1" ? "text-[var(--step-1)]" : rightTone === "s2" ? "text-[var(--step-2)]" : "text-muted";
+  return (
+    <li className="relative">
+      <span className={`absolute -left-[26px] top-[5px] h-3 w-3 rounded-full ${dot}`} aria-hidden="true" />
+      <div className="flex items-baseline gap-3">
+        <p className={`text-[13.5px] font-bold ${tone === "skip" ? "text-muted" : "text-foreground"}`}>{title}</p>
+        {right && <span className={`clinical-data ml-auto text-xs font-bold ${rightColor}`}>{right}</span>}
+      </div>
+      <div className={`mt-1 text-[12.5px] leading-snug ${tone === "skip" ? "text-muted/80" : "text-foreground/80"}`}>{children}</div>
+    </li>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Schritt-Marker: eine Farbe pro Schritt, überall identisch.
+// s1 Anamnese = Blau (inklusive) · s2 Befunde = Amber (kostet) · s3 Diagnose = Grün
+// ---------------------------------------------------------------------------
+function StepDot({
+  tone,
+  small,
+  idle,
+  children,
+}: {
+  tone: "s1" | "s2" | "s3";
+  small?: boolean;
+  idle?: boolean;
+  children: React.ReactNode;
+}) {
+  const size = small ? "h-4 w-4 text-[9px]" : "h-[22px] w-[22px] text-[11px]";
+  const bg = idle
+    ? "border-[1.5px] border-card-border/25 text-muted"
+    : tone === "s1"
+    ? "bg-[var(--step-1)] text-white"
+    : tone === "s2"
+    ? "bg-[var(--step-2)] text-white"
+    : "bg-[var(--step-3)] text-white";
+  return (
+    <span className={`clinical-data inline-flex shrink-0 items-center justify-center rounded-full font-bold ${size} ${bg}`}>
+      {children}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Spielscreen „Akte“: Header = Statusleiste (Kontext · Schritte · Punkte),
+// links Patient + Anforderungsliste/Punkterechnung (eine Karte), rechts die
+// Befunde in fester klinischer Reihenfolge, unten die Diagnose. Normaler
+// Seitenscroll, keine innere Scrollfläche, keine schwebende Insel.
+// ---------------------------------------------------------------------------
+type FindingKey = "examination" | "imaging" | "labs";
+
+function LabTable({ labs }: { labs: LabCategory[] }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {labs.map((cat) => (
+        <div key={cat.category}>
+          <p className="mb-1.5 text-[13px] font-bold">{cat.category}</p>
+          <table className="clinical-data w-full text-[13px]">
+            <thead>
+              <tr className="border-b border-card-border/15 text-left text-[10px] uppercase tracking-[0.07em] text-muted">
+                <th className="pb-1 pr-4 font-bold">Parameter</th>
+                <th className="pb-1 pr-4 font-bold">Wert</th>
+                <th className="pb-1 pr-4 font-bold">Einheit</th>
+                <th className="pb-1 font-bold">Referenz</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(cat.values ?? []).map((v) => (
+                <tr key={v.name} className="border-b border-card-border/[0.07] last:border-0">
+                  <td className="py-1.5 pr-4 font-sans font-medium">{v.name}</td>
+                  <td
+                    className={`whitespace-nowrap py-1.5 pr-4 font-semibold ${
+                      v.flag === "high" ? "text-[#b91c1c]" : v.flag === "low" ? "text-[#1d4ed8]" : ""
+                    }`}
+                  >
+                    {v.value}
+                    {v.flag === "high" && <span className="ml-1 font-extrabold">↑</span>}
+                    {v.flag === "low" && <span className="ml-1 font-extrabold">↓</span>}
+                  </td>
+                  <td className="py-1.5 pr-4 text-muted">{v.unit}</td>
+                  <td className="py-1.5 text-muted">{v.reference}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AkteSection({
+  tone,
+  number,
+  title,
+  state,
+  cost,
+  onRequest,
+  children,
+}: {
+  tone: "s1" | "s2";
+  number: string;
+  title: string;
+  state: "open" | "locked" | "unavailable";
+  cost: "inkl" | "charged" | "free";
+  onRequest?: () => void;
+  children?: React.ReactNode;
+}) {
+  const open = state === "open";
+  const clickable = state === "locked" && !!onRequest;
+  const paid = cost !== "free";
+
+  // Kopfzeile: identischer Aufbau in allen Zustaenden. Im anforderbaren
+  // Zustand ist die GANZE Zeile das Klickziel (Fitts) — der Preis rechts ist
+  // nur noch Text, kein separater Button mehr.
+  const head = (
+    <>
+      {clickable ? (
+        <span
+          className={`flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] text-[13px] transition-colors ${
+            paid
+              ? "border-[var(--step-2)] text-[var(--step-2)] group-hover:bg-[var(--step-2)] group-hover:text-white"
+              : "border-card-border/30 text-muted group-hover:border-accent group-hover:text-accent"
+          }`}
+          aria-hidden="true"
+        >
+          <i className="ti ti-plus" />
+        </span>
+      ) : (
+        <StepDot tone={tone} idle={!open}>
+          {number}
+        </StepDot>
+      )}
+      <span className={clickable ? "transition-colors group-hover:text-foreground" : undefined}>
+        {title}
+        {clickable && <span className="font-semibold text-muted"> anfordern</span>}
+      </span>
+      <span className="ml-auto flex items-center">
+        {open && cost === "inkl" && <span className="clinical-data text-xs font-bold text-[var(--step-1)]">inkl.</span>}
+        {open && cost === "charged" && <span className="clinical-data text-xs font-bold text-[var(--step-2)]">−10</span>}
+        {open && cost === "free" && <span className="text-xs font-medium text-muted">nachträglich eingesehen</span>}
+        {state === "unavailable" && (
+          <span className="text-xs font-medium text-muted/70">für diesen Fall nicht verfügbar</span>
+        )}
+        {clickable && (
+          <span
+            className={`clinical-data text-xs font-bold ${
+              paid ? "text-[var(--step-2)]" : "text-muted"
+            }`}
+          >
+            {paid ? "−10" : "kostenlos"}
+          </span>
+        )}
+      </span>
+    </>
+  );
+
+  if (clickable) {
+    return (
+      <button
+        type="button"
+        onClick={onRequest}
+        className={`group flex w-full items-center gap-2.5 rounded-[14px] border-[1.5px] border-dashed px-4 py-[11px] text-left text-[13.5px] font-bold text-muted transition-colors ${
+          paid
+            ? "border-card-border/25 hover:border-[var(--step-2)] hover:bg-[var(--step-2-tint)]"
+            : "border-card-border/25 hover:border-accent hover:bg-accent/[0.05]"
+        }`}
+      >
+        {head}
+      </button>
+    );
+  }
 
   return (
-    <>
-      {/* Card: Fortschritt heute */}
-      <div className="card p-[18px]">
-        <p className="mb-[10px] flex items-center justify-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-          <i className="ti ti-calendar text-accent text-[11px]" />
-          Fortschritt heute
-        </p>
-        <p className="text-center text-[30px] font-extrabold leading-none">
-          {dailyUsed}
-          <small className="text-[15px] font-semibold text-muted"> {dailyUsed === 1 ? "Fall" : "Fälle"}</small>
-        </p>
-        <p className="mt-[10px] text-center text-[11.5px] text-muted">
-          heute gespielt · unbegrenzt
-        </p>
+    <section
+      className={`overflow-hidden rounded-[14px] border-[1.5px] ${
+        open ? "border-card-border/12 bg-card" : "border-dashed border-card-border/20 bg-transparent"
+      } ${state === "unavailable" ? "opacity-55" : ""}`}
+    >
+      <div
+        className={`flex items-center gap-2.5 px-4 py-[11px] text-[13.5px] font-bold ${
+          open ? "border-b-[1.5px] border-card-border/10" : "text-muted"
+        }`}
+      >
+        {head}
       </div>
-
-      {/* Card: Punktestand · dieser Fall (merged) */}
-      <div className="card p-[18px]">
-        <p className="mb-3 flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-          <i className="ti ti-chart-bar text-accent text-[11px]" />
-          Punktestand · dieser Fall
-        </p>
-
-        {/* Basis row */}
-        <div className="flex items-center justify-between text-[13px]">
-          <span className="text-muted">Basis</span>
-          <span className="font-mono font-bold text-foreground">{BASE_SCORE}</span>
+      {open && (
+        <div className="whitespace-pre-line px-4 py-4 text-[14px] leading-relaxed text-foreground/90 md:pl-12">
+          {children}
         </div>
-
-        {/* Per-finding rows */}
-        <div className="mt-2 flex flex-col gap-2">
-          {checklist.map((item) => {
-            const done = revealed[item.key];
-            const free = item.key === "history"; // Anamnese gratis
-            const costCharged = !free && (phase === "result" ? revealedAtSubmit[item.key] : done);
-            return (
-              <div key={item.key} className="flex items-center gap-2.5 text-[13px]">
-                <span
-                  className="h-[14px] w-[14px] shrink-0 rounded-full border-[1.5px]"
-                  style={
-                    free
-                      ? { background: "var(--accent)", borderColor: "var(--accent)" }
-                      : costCharged
-                      ? { background: "#dc2626", borderColor: "#dc2626" }
-                      : { borderColor: "color-mix(in srgb, var(--card-border) 25%, transparent)" }
-                  }
-                />
-                <span className={`flex-1 ${done ? "text-foreground" : "text-muted"}`}>
-                  {item.label}
-                </span>
-                <span className={`font-mono text-[11.5px] font-bold ${free ? "text-accent" : costCharged ? "text-[#dc2626]" : "text-muted/50"}`}>
-                  {free ? "inkl." : costCharged ? "−10" : "—"}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="my-3 border-t border-card-border/10" />
-
-        {/* Möglich sum row */}
-        <div className="flex items-baseline justify-between">
-          <span className="text-[11.5px] font-semibold text-muted">Möglich</span>
-          <span className="font-mono text-[26px] font-extrabold leading-none text-accent">
-            {possiblePoints}
-          </span>
-        </div>
-        <p className="mt-1 text-[11px] text-muted">Minimum bei richtiger Diagnose: 70</p>
-      </div>
-
-      {/* Card: Fall melden */}
-      <ReportCaseCard caseId={caseId} difficulty={difficulty} anchorRef={anchorRef} />
-
-      <p className="flex items-center gap-1 px-1 text-[10px] leading-snug text-muted/60">
-        <i className="ti ti-shield-check text-[10px] shrink-0" />
-        Fiktiver Übungsfall — kein ärztlicher Rat.
-      </p>
-    </>
+      )}
+    </section>
   );
 }
 
@@ -3099,7 +2229,6 @@ function GameScreen({
   lastScoreEarned,
   onNext,
   onGoHome,
-  dailyUsed,
 }: {
   caseData: Case;
   difficulty: Difficulty;
@@ -3119,452 +2248,385 @@ function GameScreen({
   onGoHome: () => void;
   dailyUsed: number;
 }) {
-  const difficultyLabel =
-    DIFFICULTIES.find((d) => d.id === difficulty)?.label ?? difficulty;
-  const disciplineLabel =
-    DISCIPLINES.find((d) => d.id === discipline)?.label ?? "Zufällig";
+  const difficultyLabel = DIFFICULTIES.find((d) => d.id === difficulty)?.label ?? difficulty;
+  const disciplineLabel = DISCIPLINES.find((d) => d.id === discipline)?.label ?? "Zufällig";
   const color = avatarColorForCase(caseData.id);
-  const revealCount = Object.values(revealed).filter(Boolean).length;
-  // Anamnese ist gratis — nur Untersuchung/Bildgebung/Labor kosten Punkte.
-  const paidCount = [revealed.examination, revealed.imaging, revealed.labs].filter(Boolean).length;
-  const possiblePoints = Math.max(
-    BASE_SCORE - paidCount * INVESTIGATION_COST,
-    MIN_SCORE
-  );
   const isResult = phase === "result";
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [findingsHelpOpen, setFindingsHelpOpen] = useState(false);
-  const helpBtnRef = useRef<HTMLButtonElement>(null);
-  const helpTooltipPos = useRef<{ top: number; left: number }>({ top: 0, left: 0 });
-  const [cardExpanded, setCardExpanded] = useState({ history: true, examination: true, imaging: true, labs: true });
+  const revealCount = Object.values(revealed).filter(Boolean).length;
+  const paidCount = [revealed.examination, revealed.imaging, revealed.labs].filter(Boolean).length;
+  const possiblePoints = Math.max(BASE_SCORE - paidCount * INVESTIGATION_COST, MIN_SCORE);
+  const imagingAvailable = hasImaging(caseData);
+
+  const [pending, setPending] = useState<string | null>(null);
+  // Vorstellung: Der Patient stellt sich zuerst nur mit seiner Beschwerde vor.
+  // Erst danach öffnet sich die Akte — so beginnt jeder Fall wie am Bett mit
+  // dem Leitsymptom statt mit zwei Textblöcken gleichzeitig.
+  const [intro, setIntro] = useState(true);
+  // Diagnose-Insel: auf schmalen Screens eingeklappt (sonst frisst sie die
+  // halbe Höhe), auf dem Desktop offen.
+  const [diagOpen, setDiagOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setCardExpanded({ history: true, examination: true, imaging: true, labs: true });
-  }, [caseData.id]);
-
-  const patientCardRef = useRef<HTMLDivElement>(null);
-  const befundeRef = useRef<HTMLDivElement>(null);
-  const diagnosisIslandRef = useRef<HTMLDivElement>(null);
-  const contentScrollRef = useRef<HTMLDivElement>(null);
-  const [contentScrolled, setContentScrolled] = useState(false);
-
-  const reportAnchorRef = useRef<HTMLDivElement>(null);
-  const leftColumnRef = useRef<HTMLDivElement>(null);
-  const [diagnosisTop, setDiagnosisTop] = useState<number | null>(null);
-
-  // Reihenfolge, in der Befunde aufgedeckt wurden — der zuletzt angeforderte
-  // Befund wird oben angezeigt (der Nutzer liest einen Befund, fordert den
-  // nächsten an und will ihn sofort sehen, ohne zu scrollen). Deterministisch
-  // aus `revealed` abgeleitet, deshalb idempotent (React-StrictMode-sicher).
-  const revealOrderRef = useRef<string[]>([]);
-  revealOrderRef.current = revealOrderRef.current.filter(
-    (k) => revealed[k as keyof Revealed]
-  );
-  for (const k of ["history", "examination", "imaging", "labs"] as const) {
-    if (revealed[k] && !revealOrderRef.current.includes(k)) {
-      revealOrderRef.current.push(k);
-    }
-  }
-  const orderedFindingKeys = [...revealOrderRef.current].reverse();
-  const islandMinHeightRef = useRef<number>(0);
-
-  useLayoutEffect(() => {
-    let rafId: number;
-
-    function computeOffsets() {
-      const col = leftColumnRef.current;
-      if (!col) return;
-      const colRect = col.getBoundingClientRect();
-      if (colRect.height === 0) {
-        rafId = requestAnimationFrame(computeOffsets);
-        return;
-      }
-      if (window.innerWidth < 768) {
-        setDiagnosisTop(null);
-        return;
-      }
-
-      const anchor = reportAnchorRef.current;
-      if (!anchor) return;
-      const anchorRect = anchor.getBoundingClientRect();
-      // Guard: anchor not yet laid out (first frame after mount, sidebar still
-      // display:none, etc.) — zero rect means layout isn't settled, retry next frame.
-      if (anchorRect.width === 0 && anchorRect.height === 0) {
-        rafId = requestAnimationFrame(computeOffsets);
-        return;
-      }
-
-      // Extra Abstand nach unten versetzt: gibt der Mitte mehr Platz für
-      // aufgedeckte Befunde, bevor die Diagnoseinsel beginnt.
-      const lineY = anchorRect.bottom - colRect.top + ISLAND_TOP_GAP;
-      setDiagnosisTop(lineY);
-
-      // Insel ist jetzt sticky im Fluss (bottom-0) — kein Extra-Padding nötig.
-      if (contentScrollRef.current) {
-        contentScrollRef.current.style.paddingBottom = "";
-      }
-    }
-
-    // Wait one frame so layout (including sticky sidebar) is fully settled
-    // before measuring. Dependency is caseData.id only (not phase) so the
-    // 4-card-sidebar measurement stays valid through the playing→result transition.
-    rafId = requestAnimationFrame(computeOffsets);
-    window.addEventListener("resize", computeOffsets);
-    window.visualViewport?.addEventListener("resize", computeOffsets);
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", computeOffsets);
-      window.visualViewport?.removeEventListener("resize", computeOffsets);
-    };
+    setPending(null);
+    setMenuOpen(false);
+    setIntro(true);
+    setDiagOpen(window.innerWidth >= 768);
+    window.scrollTo({ top: 0 });
   }, [caseData.id]);
 
   useEffect(() => {
-    if (!findingsHelpOpen) return;
+    if (!menuOpen) return;
+    function onDown(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setFindingsHelpOpen(false);
+      if (e.key === "Escape") setMenuOpen(false);
     }
+    document.addEventListener("mousedown", onDown);
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [findingsHelpOpen]);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
-  useEffect(() => {
-    // Re-runs on phase change too: DiagnosisIsland and ResultIsland are two
-    // different DOM nodes sharing this ref (only one mounted at a time), so
-    // switching phase swaps which node is observed. Without this, the
-    // observer stayed attached to the (now-unmounted) DiagnosisIsland after
-    // submitting, freezing the scroll padding at its height — if the result
-    // island (with explanation, diagnosis grid, notes) rendered taller, its
-    // bottom content got clipped and was unreachable by scrolling.
-    const island = diagnosisIslandRef.current;
-    const content = contentScrollRef.current;
-    const col = leftColumnRef.current;
-    if (!island || !content || !col) return;
-    const ro = new ResizeObserver(() => {
-      if (!island.isConnected) return;
-      const colRect = col.getBoundingClientRect();
-      const islandRect = island.getBoundingClientRect();
-      islandMinHeightRef.current = Math.round(islandRect.height);
-      const islandTopInCol = islandRect.top - colRect.top;
-      const needed = colRect.height - islandTopInCol + 16;
-      content.style.paddingBottom = `${Math.max(needed, 16)}px`;
-    });
-    ro.observe(island);
-    return () => ro.disconnect();
-  }, [caseData.id, phase]);
+  function reveal(key: FindingKey) {
+    setRevealed((r) => ({ ...r, [key]: true }));
+  }
 
-  useEffect(() => {
-    const el = contentScrollRef.current;
-    if (!el) return;
-    function handleScroll() {
-      setContentScrolled(el!.scrollTop > 2);
-    }
-    handleScroll();
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Kosten-Logik für eine Befundzeile: vor dem Abgeben kostet jeder Befund,
+  // danach ist Einsehen kostenlos — berechnet wurde nur, was bei Abgabe offen war.
+  function costOf(key: FindingKey): "charged" | "free" {
+    if (isResult) return revealedAtSubmit[key] ? "charged" : "free";
+    return "charged";
+  }
+  function stateOf(key: FindingKey): "open" | "locked" | "unavailable" {
+    if (key === "imaging" && !imagingAvailable) return "unavailable";
+    return revealed[key] ? "open" : "locked";
+  }
 
-  useEffect(() => {
-    setContentScrolled(false);
-    const el = contentScrollRef.current;
-    if (el) el.scrollTop = 0;
-  }, [caseData.id]);
+  const step2Done = isResult || paidCount > 0;
+  const step3Now = !isResult && pending !== null;
 
+  const rows: { key: FindingKey; label: string }[] = [
+    { key: "examination", label: "Untersuchung" },
+    { key: "imaging", label: "Bildgebung" },
+    { key: "labs", label: "Labor" },
+  ];
 
   return (
     <div>
-      <MobileSidebar
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        onGoHome={onGoHome}
-        difficultyLabel={difficultyLabel}
-        disciplineLabel={disciplineLabel}
-        caseId={caseData.id}
-        difficulty={difficulty}
-        dailyUsed={dailyUsed}
-      />
-
-      {/* Mobile header */}
-      <header className="sticky top-0 z-30 mb-6 -mt-5 pb-2 pt-4 sm:hidden">
-        <div className="flex items-center justify-between gap-3 rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-4 py-2.5 backdrop-blur-md">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Menü öffnen"
-              className="flex h-8 w-8 items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-foreground/5"
-            >
-              <i className="ti ti-menu-2 text-lg" />
-            </button>
-            <button onClick={onGoHome} className="flex items-center transition-opacity hover:opacity-80">
+      {/* Header = Statusleiste */}
+      <header className="sticky top-0 z-30 -mx-4 -mt-5 border-b-[1.5px] border-card-border/10 bg-card/95 px-4 backdrop-blur-md md:-mx-10 md:px-10">
+        <div className="mx-auto grid h-14 max-w-[1560px] grid-cols-[auto_1fr_auto] items-center gap-3 md:grid-cols-[1fr_auto_1fr]">
+          <div className="flex items-center gap-3">
+            <button onClick={onGoHome} className="flex items-center transition-opacity hover:opacity-80" aria-label="Zur Startseite">
               <Logo size={28} />
             </button>
-          </div>
-          <div className="flex items-center gap-2">
-            <StatPill label="Pkt." value={score} />
-            <StatPill label="Gel." value={`${solved}/${played}`} />
-          </div>
-        </div>
-        <div
-          className="mt-1.5 flex items-center justify-between rounded-full border-[1.5px] border-card-border/10 bg-card/90 px-4 py-1.5 backdrop-blur-md"
-          style={{ visibility: isResult ? "hidden" : undefined }}
-        >
-          <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">Mögliche Punkte</span>
-          <span className="clinical-data text-sm font-extrabold text-accent">{possiblePoints} / {BASE_SCORE}</span>
-        </div>
-      </header>
-
-      {/* Desktop header — Voll-Cerulean-Band (füllt den ganzen Streifen, eckig,
-          bis zum Seitenrand) mit weißer, abgerundeter Nav-Bar + Home-Nav-Links. */}
-      <header className="sticky top-0 z-30 mb-4 -mt-5 hidden sm:block">
-        <div className="-mx-4 bg-accent px-4 py-2.5 md:-mx-10 md:px-10">
-          <div className="flex w-full items-center gap-1.5 rounded-2xl bg-card px-3 py-2 shadow-[0_6px_18px_-10px_rgba(23,94,143,0.55)]">
-            <button
-              onClick={onGoHome}
-              className="flex shrink-0 items-center overflow-hidden px-1 transition-opacity hover:opacity-80"
-              aria-label="Zur Startseite"
-            >
-              <Logo size={28} />
-            </button>
-            <div className="h-5 w-px shrink-0 bg-card-border/15" />
-
-            {/* Navigation wie im Home-Bereich */}
-            <nav className="flex items-center gap-0.5">
-              <Link href="/" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
-                <i className="ti ti-home text-sm" />
-                Home
-              </Link>
-              <Link href="/ueber-uns" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
-                <i className="ti ti-info-circle text-sm" />
-                Über uns
-              </Link>
-              <Link href="/statistik" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
-                <i className="ti ti-chart-bar text-sm" />
-                Statistik
-              </Link>
-              <Link href="/qa" className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-accent">
-                <i className="ti ti-help-circle text-sm" />
-                Q&amp;A
-              </Link>
-            </nav>
-
-            <div className="ml-auto flex shrink-0 items-center gap-2 pr-0.5">
-              {/* Pfad: Schwierigkeit › Disziplin */}
-              <div className="hidden items-center gap-1.5 rounded-full bg-accent/[0.08] px-2.5 py-1 lg:flex">
-                <span className="text-xs font-bold text-accent">{difficultyLabel}</span>
-                <i className="ti ti-chevron-right text-[10px] text-muted/50" />
-                <span className="max-w-[130px] truncate text-xs font-semibold text-muted">{disciplineLabel}</span>
-              </div>
-              <div className="h-5 w-px shrink-0 bg-card-border/15" />
-              <StatPill label="PUNKTE" value={score} variant="score" />
-              <StatPill label="GELÖST" value={`${solved}/${played}`} />
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="grid gap-6 md:grid-cols-[1fr_280px]">
-        <div ref={leftColumnRef} data-left-column="" className="relative flex h-[calc(100dvh-9rem)] flex-col sm:h-[calc(100dvh-7rem)]">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-0 right-0 top-0 z-[5] h-4"
-            style={{
-              background: "linear-gradient(to bottom, var(--background), transparent)",
-              opacity: contentScrolled ? 1 : 0,
-              transition: "opacity 200ms ease-out",
-            }}
-          />
-          <div ref={contentScrollRef} data-content-scroll="" className="flex flex-col gap-2.5 flex-1 min-h-0 overflow-y-auto">
-          <div ref={patientCardRef} key={`head-${caseData.id}`} className="card case-head-enter p-4">
-            {/* Kopf: Avatar + Name + Beschwerde (klein) */}
-            <div className="flex gap-3">
-              <div
-                className="avatar-circle h-11 w-11 shrink-0 text-sm"
-                style={{ backgroundColor: color }}
-              >
-                {initials(caseData.patientName)}
-              </div>
-              <div className="min-w-0">
-                <h2 className="text-[15px] font-bold leading-tight">
-                  {caseData.patientName},{" "}
-                  {caseData.age === 0 ? "Neugeboren" : `${caseData.age} Jahre`}
-                  <span className="ml-1.5 font-normal text-muted">
-                    {caseData.gender === "male" ? "· Männlich" : "· Weiblich"}
-                  </span>
-                </h2>
-                <blockquote className="mt-1 border-l-[1.5px] border-accent pl-2.5 text-[13.5px] italic text-foreground/85">
-                  „{caseData.chiefComplaint}{'"'}
-                </blockquote>
-              </div>
-            </div>
-            {/* Anamnese — gratis, direkt vorgelegt (zum Einlesen), im Kartenkörper scrollbar */}
-            <div className="mt-3 border-t border-card-border/10 pt-3">
-              <p className="mb-1.5 text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-                Anamnese
-              </p>
-              <p className="text-[14px] leading-relaxed text-foreground/90">{caseData.history}</p>
-            </div>
+            <span className="hidden text-xs text-muted md:inline">
+              <span className="font-semibold text-foreground">{difficultyLabel}</span> · {disciplineLabel}
+            </span>
           </div>
 
-          <div ref={befundeRef} key={`tools-${caseData.id}`} className="case-tools-enter">
-            {findingsHelpOpen && (
-              <div
-                className="fixed inset-0 z-40"
-                onClick={() => setFindingsHelpOpen(false)}
-              />
-            )}
-            {findingsHelpOpen && (
-              <div
-                className="fixed z-50 w-[260px] rounded-[9px] border-[1.5px] border-foreground/20 bg-white p-3 shadow-lg text-foreground/80"
-                style={{ top: helpTooltipPos.current.top, left: helpTooltipPos.current.left, fontSize: "12.5px", lineHeight: 1.5 }}
-              >
-                Hier kannst du zusätzliche Befunde anfordern, um die Diagnose zu stellen. Jeder Befund kostet Punkte — weniger Befunde bedeuten mehr Punkte.
-              </div>
-            )}
-            <div className="mb-2 flex items-center justify-between gap-1.5">
-              <div className="flex items-center gap-1.5">
-                <button
-                  ref={helpBtnRef}
-                  onClick={() => {
-                    if (!findingsHelpOpen && helpBtnRef.current) {
-                      const r = helpBtnRef.current.getBoundingClientRect();
-                      helpTooltipPos.current = { top: r.bottom + 6, left: r.left };
-                    }
-                    setFindingsHelpOpen((v) => !v);
-                  }}
-                  className="flex items-center justify-center text-accent"
-                  aria-label="Hinweis zu Befunden anfordern"
-                >
-                  <i className="ti ti-help-circle" />
-                </button>
-                <span className="text-[10.5px] font-bold uppercase tracking-[0.065em] text-muted">
-                  Befunde anfordern
+          <div className="flex items-center justify-center">
+            <HeaderStep tone="s1" label="Anamnese" state={intro ? "now" : "done"} />
+            <span className={`mx-1.5 h-px w-4 md:mx-3 md:w-10 ${intro ? "bg-card-border/15" : "bg-[var(--step-1)]"}`} />
+            <HeaderStep tone="s2" label="Befunde" state={intro ? "idle" : step2Done ? "done" : "now"} />
+            <span className={`mx-1.5 h-px w-4 md:mx-3 md:w-10 ${isResult ? "bg-[var(--step-3)]" : "bg-card-border/15"}`} />
+            <HeaderStep tone="s3" label="Diagnose" state={isResult ? "done" : step3Now ? "now" : "idle"} />
+          </div>
+
+          <div className="flex items-center justify-end gap-3 md:gap-4">
+            {/* Punktestand des laufenden Falls steht in der Seitenleiste —
+                hier oben nur die Tagesbilanz, dafür deutlich sichtbar. */}
+            <div className="flex items-stretch gap-2">
+              <div className="flex items-center gap-2 rounded-lg bg-[var(--correct-tint)] px-3 py-1.5">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-muted">Richtig</span>
+                <span className="clinical-data text-[17px] font-extrabold leading-none" style={{ color: "var(--correct)" }}>
+                  {solved}
+                  <span className="text-[13px] font-bold text-muted">/{played}</span>
                 </span>
               </div>
-              <span className="text-xs text-muted">
-                {isResult ? (
-                  "Befunde jetzt kostenlos einsehbar."
-                ) : (
-                  <>
-                    Jeder Befund kostet{" "}
-                    <span className="font-semibold text-accent">−10 Punkte</span>
-                  </>
-                )}
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {/* Anamnese ist gratis und wird direkt vorgelegt — kein Button. */}
-              <RevealButton
-                label="Untersuchung"
-                done={revealed.examination}
-                showCost={!isResult || revealedAtSubmit.examination}
-                onClick={() =>
-                  setRevealed((r) => ({ ...r, examination: true }))
-                }
-              />
-              <RevealButton
-                label="Bildgebung"
-                done={revealed.imaging}
-                unavailable={!hasImaging(caseData)}
-                showCost={!isResult || revealedAtSubmit.imaging}
-                tooltip={!hasImaging(caseData) && !isResult ? "Keine Bildgebung für diesen Fall verfügbar" : undefined}
-                onClick={() => {
-                  if (!hasImaging(caseData)) return;
-                  setRevealed((r) => ({ ...r, imaging: true }));
-                }}
-              />
-              <RevealButton
-                label="Labor"
-                done={revealed.labs}
-                showCost={!isResult || revealedAtSubmit.labs}
-                onClick={() => setRevealed((r) => ({ ...r, labs: true }))}
-              />
-            </div>
-          </div>
-
-          {/* Empty State: solange kein Befund aufgedeckt ist, füllt eine
-              zentrierte Aufforderung die Fläche (statt Leerraum) und
-              verstärkt das USP-Prinzip "du entscheidest, welche Befunde". */}
-          {!revealed.examination &&
-            !revealed.imaging &&
-            !revealed.labs &&
-            !isResult && (
-              <div className="flex flex-1 flex-col items-center justify-center rounded-xl border-[1.5px] border-dashed border-card-border/15 p-8 text-center">
-                <i className="ti ti-stethoscope text-3xl text-accent/40" />
-                <p className="mt-3 max-w-xs text-sm font-semibold text-foreground/70">
-                  Was brauchst du, um zur Diagnose zu kommen?
-                </p>
-                <p className="mt-1 max-w-xs text-xs text-muted">
-                  Fordere oben Anamnese, Untersuchung, Bildgebung oder Labor an —
-                  jeder Befund kostet Punkte, also nur was du wirklich brauchst.
-                </p>
+              <div className="flex items-center gap-2 rounded-lg bg-accent/[0.09] px-3 py-1.5">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.06em] text-muted">Punkte</span>
+                <span className="clinical-data text-[17px] font-extrabold leading-none text-accent">{score}</span>
               </div>
-            )}
-
-          {/* Befund-Karten im 2-Spalten-Raster (nebeneinander) — nutzt die
-              Breite, halbiert die Höhe; zuletzt angeforderter Befund zuerst. */}
-          <div className="mt-2 grid grid-cols-1 items-start gap-3 md:grid-cols-2">
-          {orderedFindingKeys.filter((k) => k !== "history").map((k) => {
-            if (k === "history") {
-              return (
-                <FindingCard
-                  key="history"
-                  title="Anamnese"
-                  icon="ti-notes"
-                  text={caseData.history}
-                  expanded={cardExpanded.history}
-                  onToggle={() => setCardExpanded((e) => ({ ...e, history: !e.history }))}
-                />
-              );
-            }
-            if (k === "examination") {
-              return (
-                <FindingCard
-                  key="examination"
-                  title="Körperliche Untersuchung"
-                  icon="ti-stethoscope"
-                  text={caseData.examination}
-                  expanded={cardExpanded.examination}
-                  onToggle={() => setCardExpanded((e) => ({ ...e, examination: !e.examination }))}
-                />
-              );
-            }
-            if (k === "imaging") {
-              return (
-                <ImagingCard
-                  key="imaging"
-                  imaging={caseData.imaging}
-                  expanded={cardExpanded.imaging}
-                  onToggle={() => setCardExpanded((e) => ({ ...e, imaging: !e.imaging }))}
-                />
-              );
-            }
-            return (
-              <LabCard
-                key="labs"
-                labs={caseData.labs}
-                expanded={cardExpanded.labs}
-                onToggle={() => setCardExpanded((e) => ({ ...e, labs: !e.labs }))}
-              />
-            );
-          })}
+            </div>
+            <div ref={menuRef} className="relative">
+              <button
+                onClick={() => setMenuOpen((v) => !v)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg border-[1.5px] border-card-border/15 text-muted transition-colors hover:border-accent hover:text-accent"
+                aria-label="Menü"
+                aria-expanded={menuOpen}
+              >
+                <i className="ti ti-dots text-base" />
+              </button>
+              {menuOpen && (
+                <div className="absolute right-0 top-10 z-40 w-56 overflow-hidden rounded-xl border-[1.5px] border-card-border/15 bg-card py-1.5 shadow-[0_16px_40px_-16px_rgba(15,15,15,0.3)]">
+                  <button onClick={onGoHome} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-sm font-semibold text-foreground hover:bg-accent/[0.06]">
+                    <i className="ti ti-home text-muted" /> Startseite
+                  </button>
+                  <Link href="/statistik" className="flex items-center gap-2.5 px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent/[0.06]">
+                    <i className="ti ti-chart-bar text-muted" /> Statistik
+                  </Link>
+                  <Link href="/ueber-uns" className="flex items-center gap-2.5 px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent/[0.06]">
+                    <i className="ti ti-info-circle text-muted" /> Über uns
+                  </Link>
+                  <Link href="/qa" className="flex items-center gap-2.5 px-3.5 py-2 text-sm font-semibold text-foreground hover:bg-accent/[0.06]">
+                    <i className="ti ti-help-circle text-muted" /> Q&amp;A
+                  </Link>
+                  <p className="border-t border-card-border/10 px-3.5 pb-1 pt-2 text-[11px] leading-snug text-muted/70">
+                    Fiktiver Übungsfall – kein ärztlicher Rat.
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
+        </div>
+      </header>
 
+      {intro && (
+        <div
+          key={`intro-${caseData.id}`}
+          className="case-head-enter mx-auto flex min-h-[calc(100dvh-10rem)] w-full max-w-[620px] flex-col justify-center py-8"
+        >
+          <div className="card overflow-hidden">
+            <div className="flex items-baseline justify-between border-b border-card-border/10 px-5 py-3">
+              <span className="text-[10.5px] font-bold uppercase tracking-[0.07em] text-muted">
+                Aufnahme
+              </span>
+              <span className="text-[11.5px] text-muted">{difficultyLabel}</span>
+            </div>
+
+            <div className="px-5 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6">
+              <div className="flex items-center gap-3.5">
+                <div className="avatar-circle h-12 w-12 shrink-0 text-base" style={{ backgroundColor: color }}>
+                  {initials(caseData.patientName)}
+                </div>
+                <div>
+                  <p className="text-[17px] font-bold leading-tight">
+                    {caseData.patientName},{" "}
+                    {caseData.age === 0 ? "Neugeboren" : `${caseData.age} Jahre`}
+                  </p>
+                  <p className="text-[13.5px] text-muted">
+                    {caseData.gender === "male" ? "männlich" : "weiblich"}
+                  </p>
+                </div>
+              </div>
+
+              <p className="mt-6 text-[10.5px] font-bold uppercase tracking-[0.07em] text-muted">
+                Vorstellungsgrund
+              </p>
+              <blockquote className="mt-2 border-l-2 border-[var(--step-1)] pl-4 text-[19px] font-medium italic leading-[1.5] text-foreground sm:text-[21px]">
+                „{caseData.chiefComplaint}“
+              </blockquote>
+            </div>
+
+            <div className="border-t border-card-border/10 bg-[var(--step-1-tint)]/40 px-5 py-4 sm:px-7">
+              <button
+                onClick={() => setIntro(false)}
+                className="w-full rounded-[12px] bg-accent px-7 py-3.5 text-[15px] font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
+              >
+                Anamnese erheben →
+              </button>
+              <p className="mt-2.5 text-center text-xs text-muted">
+                Kostenlos — danach entscheidest du, welche Befunde du anforderst.
+                Jeder kostet <span className="clinical-data font-bold text-[var(--step-2)]">−10</span>.
+              </p>
+            </div>
           </div>
-          <div
-            className="sticky bottom-0 z-10 bg-background pb-1 pt-3"
-            data-island-wrapper=""
+        </div>
+      )}
+
+      {!intro && (
+      <div className="grid gap-4 pb-8 pt-5 md:grid-cols-[300px_1fr] md:gap-5 md:pb-5">
+        {/* Eine Karte: Patient · Befunde · Punkte · Melden — kein Leerraum dazwischen */}
+        <aside className="md:sticky md:top-[72px] md:self-start">
+          <div key={`pat-${caseData.id}`} className="card">
+            <div className="flex items-center gap-3 px-4 pt-4">
+              <div className="avatar-circle h-10 w-10 shrink-0 text-sm" style={{ backgroundColor: color }}>
+                {initials(caseData.patientName)}
+              </div>
+              <h2 className="text-[15px] font-bold leading-tight">
+                {caseData.patientName}, {caseData.age === 0 ? "Neugeboren" : `${caseData.age} Jahre`}
+                <span className="block text-sm font-normal text-muted">
+                  {caseData.gender === "male" ? "männlich" : "weiblich"}
+                </span>
+              </h2>
+            </div>
+            <blockquote className="mx-4 mt-3 border-l-[1.5px] border-[var(--step-1)] pl-2.5 text-[13.5px] italic leading-snug text-foreground/85">
+              „{caseData.chiefComplaint}“
+            </blockquote>
+
+            <div className="mt-4 border-t border-card-border/10 px-4 pb-4 pt-3">
+              {/* Anamnese ist keine Aktion — nur eine Zeile, kein Button */}
+              <div className="mb-1 flex items-baseline justify-between">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.07em] text-muted">
+                  Befunde
+                </span>
+                <span className="text-[11.5px] text-muted">
+                  Anamnese <span className="clinical-data font-bold text-[var(--step-1)]">inkl.</span>
+                </span>
+              </div>
+              {rows.map((row) => {
+                const st = stateOf(row.key);
+                const cost = costOf(row.key);
+                const charged = st === "open" && cost === "charged";
+                return (
+                  <div
+                    key={row.key}
+                    className={`flex items-center gap-2.5 border-b border-card-border/[0.07] py-2 text-[13.5px] font-semibold last:border-0 ${
+                      st === "unavailable" ? "text-muted/60" : ""
+                    }`}
+                  >
+                    <span
+                      className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-[10px] text-white ${
+                        charged ? "bg-[var(--step-2)]" : st === "open" ? "bg-card-border/30" : "border-[1.5px] border-card-border/25"
+                      }`}
+                    >
+                      {st === "open" && <i className="ti ti-check" />}
+                    </span>
+                    {row.label}
+                    <span className="ml-auto flex items-center">
+                      {st === "unavailable" && <span className="text-xs font-medium text-muted/60">nicht verfügbar</span>}
+                      {charged && <span className="clinical-data text-xs font-bold text-[var(--step-2)]">−10</span>}
+                      {st === "open" && !charged && <span className="text-xs font-medium text-muted">angefordert</span>}
+                      {st === "locked" && (
+                        // Reine Statusanzeige - angefordert wird in der Akte,
+                        // damit es nicht zwei Buttons fuer dieselbe Aktion gibt.
+                        <span className="text-xs font-medium text-muted/70">noch nicht angefordert</span>
+                      )}
+                    </span>
+                  </div>
+                );
+              })}
+              <div className="mt-2 flex items-baseline justify-between border-t-[1.5px] border-card-border/10 pt-3">
+                <span className="text-[11.5px] text-muted">{isResult ? "Erhalten" : "Punkte möglich"}</span>
+                <span
+                  className="clinical-data text-[26px] font-extrabold leading-none"
+                  style={{ color: isResult ? (lastResultCorrect ? "var(--correct)" : "var(--wrong)") : "var(--accent)" }}
+                >
+                  {isResult ? lastScoreEarned : possiblePoints}
+                </span>
+              </div>
+              <ReportCaseCard caseId={caseData.id} difficulty={difficulty} embedded />
+            </div>
+          </div>
+        </aside>
+
+        {/* Akte */}
+        <main
+          key={`akte-${caseData.id}`}
+          className="flex flex-col gap-3 md:min-h-[calc(100dvh-6rem)]"
+        >
+          <AkteSection tone="s1" number="1" title="Anamnese" state="open" cost="inkl">
+            {caseData.history}
+          </AkteSection>
+          <AkteSection
+            tone="s2"
+            number="2"
+            title="Körperliche Untersuchung"
+            state={stateOf("examination")}
+            cost={costOf("examination")}
+            onRequest={() => reveal("examination")}
           >
-            {phase !== "result" ? (
-              <DiagnosisIsland
-                caseData={caseData}
-                options={caseData.diagnosisOptions}
-                selectedDiagnosis={selectedDiagnosis}
-                onSubmit={onSubmitDiagnosis}
-                possiblePoints={possiblePoints}
-                diagnosisIslandRef={diagnosisIslandRef}
-              />
-            ) : (
+            {caseData.examination}
+          </AkteSection>
+          <AkteSection
+            tone="s2"
+            number="2"
+            title="Bildgebung"
+            state={stateOf("imaging")}
+            cost={costOf("imaging")}
+            onRequest={() => reveal("imaging")}
+          >
+            {caseData.imaging}
+          </AkteSection>
+          <AkteSection
+            tone="s2"
+            number="2"
+            title="Labor"
+            state={stateOf("labs")}
+            cost={costOf("labs")}
+            onRequest={() => reveal("labs")}
+          >
+            <LabTable labs={caseData.labs} />
+          </AkteSection>
+
+          {!isResult && (
+            <section className="sticky bottom-5 z-20 mt-auto rounded-[14px] border-[1.5px] border-card-border/15 bg-card p-3.5 shadow-[0_-10px_30px_-16px_rgba(15,15,15,0.3)] md:p-4">
+              <button
+                type="button"
+                onClick={() => {
+                  // Einklappen nur auf schmalen Screens — auf dem Desktop bleibt
+                  // die Insel offen, dort kostet sie kaum Höhe.
+                  if (window.innerWidth < 768) setDiagOpen((v) => !v);
+                }}
+                aria-expanded={diagOpen}
+                className="flex w-full items-center gap-2.5 text-left text-[13.5px] font-bold md:cursor-default"
+              >
+                <i className="ti ti-clipboard-text text-[17px] text-accent" aria-hidden="true" />
+                Diagnose stellen
+                <span className="ml-auto flex items-center gap-2 text-xs font-medium text-muted">
+                  <span className="hidden sm:inline">Noch</span>
+                  <b className="clinical-data text-[15px] text-accent">{possiblePoints}</b>
+                  <span className="hidden sm:inline">Punkte möglich</span>
+                  <i className={`ti ${diagOpen ? "ti-chevron-down" : "ti-chevron-up"} text-base text-muted/70 md:hidden`} />
+                </span>
+              </button>
+              {diagOpen && (
+                <>
+                  <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2">
+                    {caseData.diagnosisOptions.map((opt, i) => {
+                      const sel = pending === opt;
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => setPending(sel ? null : opt)}
+                          disabled={!!selectedDiagnosis}
+                          aria-pressed={sel}
+                          className={`flex items-center gap-2.5 rounded-xl border-[1.5px] px-3 py-2.5 text-left text-sm font-semibold leading-snug transition-colors ${
+                            sel
+                              ? "border-accent bg-accent/[0.07]"
+                              : "border-card-border/20 bg-card hover:border-accent/60"
+                          }`}
+                        >
+                          <span
+                            className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold ${
+                              sel ? "bg-accent text-accent-foreground" : "bg-foreground/[0.06] text-muted"
+                            }`}
+                          >
+                            {String.fromCharCode(65 + i)}
+                          </span>
+                          <span className="flex-1">{opt}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-3 flex items-center justify-between gap-3 md:justify-end md:gap-4">
+                    <span className="text-xs text-muted">Falsch = 0 Punkte</span>
+                    <button
+                      onClick={() => pending && onSubmitDiagnosis(pending)}
+                      disabled={!pending || !!selectedDiagnosis}
+                      className="rounded-[10px] bg-accent px-5 py-2.5 text-sm font-bold text-accent-foreground transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Antwort abgeben
+                    </button>
+                  </div>
+                </>
+              )}
+            </section>
+          )}
+
+          {isResult && (
+            <div
+              ref={resultRef}
+              className="sticky bottom-5 z-20 mt-auto max-h-[calc(100dvh-96px)] overflow-y-auto rounded-[14px] shadow-[0_-10px_30px_-16px_rgba(15,15,15,0.3)]"
+            >
               <ResultIsland
-                islandRef={diagnosisIslandRef}
                 lastResultCorrect={lastResultCorrect}
                 lastScoreEarned={lastScoreEarned}
                 selectedDiagnosis={selectedDiagnosis}
@@ -3572,35 +2634,30 @@ function GameScreen({
                 onNext={onNext}
                 revealedCount={revealCount}
               />
-            )}
-          </div>
-        </div>
-
-        <aside className="hidden flex-col gap-4 md:sticky md:top-24 md:flex md:self-start">
-          <StatusPanel
-            dailyUsed={dailyUsed}
-            possiblePoints={possiblePoints}
-            revealed={revealed}
-            revealedAtSubmit={revealedAtSubmit}
-            phase={phase}
-            caseId={caseData.id}
-            difficulty={difficulty}
-            anchorRef={reportAnchorRef}
-          />
-        </aside>
-
-        <div className="hidden flex-col gap-4 sm:flex md:hidden">
-          <StatusPanel
-            dailyUsed={dailyUsed}
-            possiblePoints={possiblePoints}
-            revealed={revealed}
-            revealedAtSubmit={revealedAtSubmit}
-            phase={phase}
-            caseId={caseData.id}
-            difficulty={difficulty}
-          />
-        </div>
+            </div>
+          )}
+        </main>
       </div>
+      )}
     </div>
+  );
+}
+
+function HeaderStep({
+  tone,
+  label,
+  state,
+}: {
+  tone: "s1" | "s2" | "s3";
+  label: string;
+  state: "done" | "now" | "idle";
+}) {
+  return (
+    <span className={`flex items-center gap-2 text-[12.5px] font-semibold ${state === "idle" ? "text-muted" : "text-foreground"}`}>
+      <StepDot tone={tone} idle={state === "idle"}>
+        {state === "done" ? <i className="ti ti-check text-[10px]" /> : tone === "s1" ? "1" : tone === "s2" ? "2" : "3"}
+      </StepDot>
+      <span className="hidden sm:inline">{label}</span>
+    </span>
   );
 }

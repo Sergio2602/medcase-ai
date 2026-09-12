@@ -21,6 +21,22 @@
   --avatar-6: #ffab73; /* Pfirsich */
   --avatar-text: #0f0f0f;
 
+  /* Schrittfarben folgen dem, was ein Schritt den Nutzer kostet:
+     1 Anamnese = neutral (ist da, kostet nichts)
+     2 Befunde  = Amber   (kostet Punkte)
+     3 Diagnose = Cerulean (hier entscheidest du)
+     Grün/Rot sind ausschließlich Ergebnisfarben — nie vor dem Abgeben. */
+  --step-1: #15202b;
+  --step-1-tint: #edeae3;
+  --step-2: #b45309;
+  --step-2-tint: #fbf1e3;
+  --step-3: #175e8f;
+  --step-3-tint: #e8f0f7;
+
+  --correct: #15803d;
+  --correct-tint: #e7f4eb;
+  --wrong: #b91c1c;
+
   /* Status colors (lab flags, correct/incorrect) */
   --flag-high: #dc2626;
   --flag-low: #2563eb;
@@ -52,33 +68,18 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Fall-Einstieg: Kopf (Beschwerde + Anamnese) blendet zuerst ein, dann fahren
-   die Befund-Tools mit kurzer Verzögerung sanft von unten hoch — kurze
-   "Einlese"-Geste vor dem Anfordern. Per key={caseData.id} pro Fall neu. */
+/* Fall-Einstieg: Die Vorstellung (Patient + Vorstellungsgrund) blendet einmal
+   kurz ein. Danach erscheint die Akte ohne Verzögerung — dort wartet der
+   Nutzer bereits auf Inhalt. */
 @keyframes caseHeadIn {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: none; }
 }
-.case-head-enter { animation: caseHeadIn 380ms ease both; }
-@keyframes caseToolsIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: none; }
-}
-.case-tools-enter { animation: caseToolsIn 520ms cubic-bezier(0.2, 0.8, 0.25, 1) 620ms both; }
+.case-head-enter { animation: caseHeadIn 280ms ease both; }
 @media (prefers-reduced-motion: reduce) {
-  .case-head-enter, .case-tools-enter { animation: none; }
+  .case-head-enter { animation: none; }
 }
 
-/* Hero-Fallvorschau: jeder neue Fall rollt von rechts herein (endlose
-   Vorwärts-Rolle, nie zurück). Per key={caseIndex} pro Fall neu ausgelöst. */
-@keyframes caseRollIn {
-  from { opacity: 0; transform: translateX(48px); }
-  to { opacity: 1; transform: none; }
-}
-.case-roll { animation: caseRollIn 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both; }
-@media (prefers-reduced-motion: reduce) {
-  .case-roll { animation: none; }
-}
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -217,40 +218,18 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Sanft driftender Blauton-Verlauf hinter dem Hero — soll "frisch, KI-generiert"
-   andeuten, ohne aufdringlich zu wirken. Zwei Blobs, leicht versetzte Dauer/
-   Delay, damit sich die Überlappung organisch verschiebt statt synchron zu pulsen. */
-@keyframes drift-glow {
-  0%, 100% { opacity: 0.55; transform: translate3d(0, 0, 0) scale(1); }
-  50% { opacity: 1; transform: translate3d(12px, -16px, 0) scale(1.1); }
-}
-.hero-blob-a {
-  animation: drift-glow 9s ease-in-out infinite;
-}
-.hero-blob-b {
-  animation: drift-glow 11s ease-in-out infinite 1.8s;
-}
-.hero-blob-c {
-  animation: drift-glow 13s ease-in-out infinite 0.9s;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-blob-a,
-  .hero-blob-b,
-  .hero-blob-c {
-    animation: none;
-  }
-}
 
-/* Seitenwechsel: neuer Seiteninhalt gleitet leicht horizontal + fadet ein,
-   statt hart zu wechseln. Läuft über PageTransition (per usePathname()
-   remounted), gilt für jede interne Navigation via next/link. */
-@keyframes page-slide-in {
-  0% { opacity: 0; transform: translateX(60px); }
-  20% { opacity: 1; }
-  100% { opacity: 1; transform: translateX(0); }
+/* Seitenwechsel: reines Ein-Fade, keine horizontale Verschiebung.
+   Ein translateX bleibt Teil des Scroll-Bereichs und erzeugte 60 px
+   Horizontal-Overflow (auf 360 px = 17 % der Breite, mobil seitlich
+   wegwischbar). Außerdem waren 1500 ms als Wartezeit bei jedem
+   Navigationsklick spürbar. */
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 .page-transition {
-  animation: page-slide-in 1500ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: page-fade-in 220ms ease-out;
 }
 @media (prefers-reduced-motion: reduce) {
   .page-transition {

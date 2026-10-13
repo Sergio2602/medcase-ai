@@ -7,10 +7,9 @@ export const metadata = {
   title: "Impressum & Datenschutz — Medcase",
 };
 
-function SectionLabel({ icon, id, children }: { icon: string; id?: string; children: React.ReactNode }) {
+function SectionLabel({ id, children }: { icon: string; id?: string; children: React.ReactNode }) {
   return (
-    <p id={id} className="mb-3 scroll-mt-24 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
-      <i className={`ti ${icon} text-sm`} />
+    <p id={id} className="mb-3 scroll-mt-24 text-xs font-bold uppercase tracking-wide text-muted">
       {children}
     </p>
   );
@@ -19,7 +18,6 @@ function SectionLabel({ icon, id, children }: { icon: string; id?: string; child
 function LegalBasis({ text }: { text: string }) {
   return (
     <p className="mt-3 flex items-start gap-1.5 text-xs text-muted">
-      <i className="ti ti-scale mt-[1px] shrink-0 text-[11px]" />
       {text}
     </p>
   );
@@ -93,8 +91,8 @@ function TocSidebar() {
 
 export default function ImpressumPage() {
   return (
-    <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1560px]">
+    <div className="site-page min-h-screen px-4 pt-8 pb-8 md:px-10">
+      <div className="mx-auto max-w-[1240px]">
         <CenteredNav active={null} />
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
@@ -250,7 +248,6 @@ export default function ImpressumPage() {
                 <div className="mt-4 flex flex-col gap-3">
                   <div className="rounded-lg border-[1.5px] border-card-border/15 p-4">
                     <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold">
-                      <i className="ti ti-cookie text-xs text-muted" />
                       disclaimerSeen
                     </p>
                     <p className="text-sm leading-relaxed text-muted">
@@ -260,7 +257,6 @@ export default function ImpressumPage() {
                   </div>
                   <div className="rounded-lg border-[1.5px] border-card-border/15 p-4">
                     <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold">
-                      <i className="ti ti-cookie text-xs text-muted" />
                       medcase_onboarding_seen
                     </p>
                     <p className="text-sm leading-relaxed text-muted">

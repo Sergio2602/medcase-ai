@@ -516,7 +516,7 @@ This is for a medical diagnosis game played by German medical students preparing
 // File helpers — incremental save + resume
 // ---------------------------------------------------------------------------
 
-const OUTPUT_DIR = join(PROJECT_ROOT, "public", "cases");
+const OUTPUT_DIR = join(PROJECT_ROOT, "content", "cases");
 
 function loadExisting(file: string): GeneratedCase[] {
   const path = join(OUTPUT_DIR, file);
@@ -606,7 +606,7 @@ async function main(): Promise<void> {
     console.log(
       `  → ${results.filter(Boolean).length}/${
         category.diagnoses.length
-      } gespeichert in public/cases/${category.file}`
+      } gespeichert in content/cases/${category.file}`
     );
   }
 

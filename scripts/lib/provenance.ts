@@ -61,6 +61,42 @@ export interface DetectionResult {
   verdict: "clean" | "flagged" | "rewritten-and-clean";
 }
 
+// Stufe 3.5 — medizinische Gegenprüfung (verify.ts). Hier steht die KURZFASSUNG; der
+// vollständige Bericht mit allen Einzelbehauptungen liegt unter
+// provenance/verify/<caseId>.json. Grund für die Trennung: der Record soll lesbar bleiben,
+// der Bericht vollständig — beides in einer Datei geht nicht gut aus.
+export interface VerifySummaryRecord {
+  runId: string;
+  runAt: string;
+  model: string;
+  // true = Prüf- und Konstruktionsmodell sind identisch. Kein Ausschlussgrund, aber ein
+  // dokumentierter Schwachpunkt: gleiche Trainingsdaten, gleiche Blindstellen.
+  sameModelAsConstruct: boolean;
+  promptFile: string;
+  promptSha256: string;
+  // Hash des geprüften Fall-Textes. Bindet den Prüflauf an genau diese Fassung — nach jeder
+  // Korrekturschleife durch Stufe 2 passt der Hash nicht mehr und die Prüfung muss neu laufen.
+  caseTextSha256: string;
+  verdict: "pass" | "revise" | "reject";
+  blockingCount: number;
+  claimsTotal: number;
+  unresolvedCritical: number;
+  openQuestions: number;
+  sourcesConsulted: string[];
+  antiCopyStatus: "passed" | "flagged" | "mechanical-only";
+  reportPath: string;
+}
+
+// Kalibrierung des Prüfschritts (canary.ts). Steht im Record des Fall-Laufs, bei dem der
+// Canary mitlief — nicht im Record des Canary-Falls selbst, den gibt es nie.
+export interface CanaryRecord {
+  runAt: string;
+  mutationId: string;
+  detected: boolean;
+  actualVerdict: "pass" | "revise" | "reject";
+  matchedSignals: string[];
+}
+
 export interface ReviewRecord {
   status: "pending" | "approved" | "rejected";
   reviewedBy: string; // Klarname, für Art. 50 KI-VO editorial-responsibility-Nachweis
@@ -83,7 +119,11 @@ export interface ProvenanceRecord {
     apiTier: "commercial"; // MUSS "commercial" sein — Chat-generierte Fälle bekommen keinen Record in diesem Schema
     promptFactsheet: { file: string; sha256: string };
     promptConstruct: { file: string; sha256: string };
-    seeds: { patient: number; labs: number };
+    // diagnosisOrder ergänzt 2026-09-15 (siehe DECISION_LOG.md): ohne diesen Seed wäre die
+    // Mischung der Antwortoptionen (construct.ts: orderDiagnosisOptions()) nicht reproduzierbar
+    // dokumentiert — beim Nachvollziehen eines Falls müsste man sonst raten, warum die
+    // korrekte Diagnose an Position 3 steht.
+    seeds: { patient: number; labs: number; diagnosisOrder: number };
   };
 
   topic: {
@@ -97,7 +137,9 @@ export interface ProvenanceRecord {
   sources: ProvenanceSource[];
   modelKnowledge: ModelKnowledgeClaim[];
   componentAttribution: ComponentAttribution;
+  verify: VerifySummaryRecord; // Stufe 3.5 — vor der Detektion, vor dem Menschen
   detection: DetectionResult;
+  canary?: CanaryRecord; // nur bei jedem CANARY_RATE-ten Lauf gesetzt
   review: ReviewRecord;
   riskClass: RiskClass;
   release: { approved: boolean; approvedAt?: string };
@@ -105,7 +147,10 @@ export interface ProvenanceRecord {
 
 // Harte Validierung vor jeder Freigabe (Stufe 5→6 Übergang). Wirft, statt still durchzulassen —
 // ein Record, der diese Checks nicht besteht, darf nie in provenance/ landen.
-export function assertReleasable(record: ProvenanceRecord): void {
+export function assertReleasable(
+  record: ProvenanceRecord,
+  opts?: { caseTextSha256?: string }
+): void {
   const errors: string[] = [];
 
   if (record.generator.apiTier !== "commercial") {
@@ -114,6 +159,29 @@ export function assertReleasable(record: ProvenanceRecord): void {
   if (record.topic.selectedBy !== "human") {
     errors.push("topic.selectedBy muss 'human' sein (Stufe 0 ist Sergios Aufgabe).");
   }
+  // Stufe 3.5 — drei getrennte Gründe, deshalb drei getrennte Meldungen.
+  if (!record.verify) {
+    errors.push("verify fehlt — Stufe 3.5 (medizinische Gegenprüfung) ist nicht gelaufen.");
+  } else {
+    if (record.verify.verdict !== "pass") {
+      errors.push(`verify.verdict ist '${record.verify.verdict}' — nur 'pass' ist freigabefähig.`);
+    }
+    if (record.verify.blockingCount > 0) {
+      errors.push(`verify.blockingCount ist ${record.verify.blockingCount} — blockierende Befunde offen.`);
+    }
+    if (record.verify.antiCopyStatus === "flagged") {
+      errors.push("verify.antiCopyStatus ist 'flagged' — der Prüflauf selbst enthält Übernahme-Indikatoren.");
+    }
+    // Der Prüflauf muss zu DIESER Fassung gehören. Ohne diese Bindung könnte ein Fall nach
+    // einer Korrekturschleife mit dem Freigabe-Stempel seiner alten Fassung durchgehen.
+    if (opts?.caseTextSha256 && record.verify.caseTextSha256 !== opts.caseTextSha256) {
+      errors.push(
+        "verify.caseTextSha256 passt nicht zum aktuellen Fall-Text — der Fall wurde nach der " +
+          "Prüfung geändert. Stufe 3.5 und Stufe 4 müssen erneut laufen."
+      );
+    }
+  }
+
   if (record.detection.verdict === "flagged") {
     errors.push("detection.verdict ist 'flagged' — muss vor Freigabe zu 'clean' oder 'rewritten-and-clean' werden.");
   }
@@ -131,4 +199,40 @@ export function assertReleasable(record: ProvenanceRecord): void {
   if (errors.length > 0) {
     throw new Error(`Provenance-Record für '${record.caseId}' nicht freigabefähig:\n- ${errors.join("\n- ")}`);
   }
+}
+
+// Nicht-blockierende Auffälligkeiten. Bewusst getrennt von assertReleasable(): das hier
+// verhindert keine Freigabe, sondern lenkt die Aufmerksamkeit des Menschen in Stufe 5 auf
+// die Stellen, an denen der Automat schwach ist. Eine Freigabe-Maske, die nur grüne Haken
+// zeigt, trainiert das Durchwinken an.
+export function collectReleaseWarnings(record: ProvenanceRecord): string[] {
+  const warnings: string[] = [];
+  if (record.verify?.sameModelAsConstruct) {
+    warnings.push(
+      `Prüf- und Konstruktionsmodell identisch (${record.verify.model}) — korrelierte Fehler ` +
+        `möglich, dieser Fall verdient beim menschlichen Review mehr Zeit.`
+    );
+  }
+  if (record.verify?.antiCopyStatus === "mechanical-only") {
+    warnings.push(
+      "Anti-Copy-Prüfung der Notizen lief nur mechanisch (kein Web-Abgleich) — " +
+        "aktiviert sich mit detect.ts (Stufe 4)."
+    );
+  }
+  if (record.verify && record.verify.openQuestions > 0) {
+    warnings.push(
+      `${record.verify.openQuestions} Punkt(e) waren in Stufe 1 belegt, wurden in Stufe 3.5 ` +
+        `aber nicht wiedergefunden.`
+    );
+  }
+  if (record.canary && !record.canary.detected) {
+    warnings.push(
+      `Canary '${record.canary.mutationId}' wurde NICHT erkannt (Urteil: ${record.canary.actualVerdict}) — ` +
+        `die Prüfstufe hat in diesem Lauf einen bekannten Fehler übersehen.`
+    );
+  }
+  if (record.modelKnowledge.length > 0) {
+    warnings.push(`${record.modelKnowledge.length} Fakt(en) stammen aus Modellwissen ohne Quelle.`);
+  }
+  return warnings;
 }

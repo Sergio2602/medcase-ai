@@ -1,7 +1,7 @@
 /**
  * backfill-keytakeaway.ts — Add a `keyTakeaway` field to every existing case.
  *
- * Standalone, idempotent backfill that walks public/cases/{pj,vorklinik,innere}.json
+ * Standalone, idempotent backfill that walks content/cases/{pj,vorklinik,innere}.json
  * and adds ONE new field `keyTakeaway` to each case. For every case it makes a single
  * Claude call (claude-sonnet-4-6, same Anthropic SDK instance style as generate-cases.ts)
  * that receives ONLY the existing `explanation` and `correctDiagnosis` — it does NOT
@@ -224,7 +224,7 @@ Destilliere daraus den einen Kernsatz und gib ihn über das Tool present_takeawa
 // File helpers
 // ---------------------------------------------------------------------------
 
-const OUTPUT_DIR = join(PROJECT_ROOT, "public", "cases");
+const OUTPUT_DIR = join(PROJECT_ROOT, "content", "cases");
 const FILES = ["pj.json", "vorklinik.json", "innere.json"];
 
 function loadCases(file: string): ClinicalCase[] {

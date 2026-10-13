@@ -1,0 +1,259 @@
+{
+  "_comment": "Referenzbereiche für labs.ts (Stufe 3). Grobe, gängige Erwachsenen-Referenzbereiche als Orientierung — Laborwerte sind Fakten, keine geschützte Quelle, aber Grenzwerte variieren leicht je nach Labor/Methode. VOR Produktivbetrieb von Sergio fachlich gegenlesen. Werte hier als Dezimalzahl mit Punkt (Berechnung); labs.ts formatiert die Ausgabe in deutsche Schreibweise mit Komma. pathHigh*/pathLow* sind grobe Plausibilitätsgrenzen für 'wie pathologisch darf der gewürfelte Wert sein', keine harte klinische Obergrenze. Startset, nicht erschöpfend — bei fehlendem Parameter wirft labs.ts bewusst einen Fehler statt zu raten.",
+  "parameters": {
+    "Haemoglobin_male": {
+      "displayName": "Hämoglobin",
+      "category": "Hämatologie",
+      "unit": "g/dl",
+      "normalLow": 14.0,
+      "normalHigh": 17.5,
+      "pathLowLow": 6.0,
+      "pathLowHigh": 13.5,
+      "decimals": 1,
+      "gender": "male"
+    },
+    "Haemoglobin_female": {
+      "displayName": "Hämoglobin",
+      "category": "Hämatologie",
+      "unit": "g/dl",
+      "normalLow": 12.0,
+      "normalHigh": 15.5,
+      "pathLowLow": 6.0,
+      "pathLowHigh": 11.5,
+      "decimals": 1,
+      "gender": "female"
+    },
+    "Leukozyten": {
+      "displayName": "Leukozyten",
+      "category": "Hämatologie",
+      "unit": "/nl",
+      "normalLow": 4.0,
+      "normalHigh": 10.0,
+      "pathHighLow": 11.0,
+      "pathHighHigh": 25.0,
+      "pathLowLow": 1.0,
+      "pathLowHigh": 3.5,
+      "decimals": 1
+    },
+    "Thrombozyten": {
+      "displayName": "Thrombozyten",
+      "category": "Hämatologie",
+      "unit": "/nl",
+      "normalLow": 150,
+      "normalHigh": 400,
+      "pathHighLow": 450,
+      "pathHighHigh": 900,
+      "pathLowLow": 20,
+      "pathLowHigh": 120,
+      "decimals": 0
+    },
+    "CRP": {
+      "displayName": "CRP",
+      "category": "Entzündung",
+      "unit": "mg/l",
+      "normalLow": 0,
+      "normalHigh": 5,
+      "pathHighLow": 10,
+      "pathHighHigh": 250,
+      "decimals": 1
+    },
+    "Procalcitonin": {
+      "displayName": "Procalcitonin",
+      "category": "Entzündung",
+      "unit": "ng/ml",
+      "normalLow": 0,
+      "normalHigh": 0.5,
+      "pathHighLow": 1.0,
+      "pathHighHigh": 20.0,
+      "decimals": 2
+    },
+    "Kreatinin": {
+      "displayName": "Kreatinin",
+      "category": "Nierenwerte",
+      "unit": "mg/dl",
+      "normalLow": 0.7,
+      "normalHigh": 1.2,
+      "pathHighLow": 1.5,
+      "pathHighHigh": 6.0,
+      "decimals": 2
+    },
+    "Harnstoff": {
+      "displayName": "Harnstoff",
+      "category": "Nierenwerte",
+      "unit": "mg/dl",
+      "normalLow": 17,
+      "normalHigh": 43,
+      "pathHighLow": 50,
+      "pathHighHigh": 180,
+      "decimals": 0
+    },
+    "Natrium": {
+      "displayName": "Natrium",
+      "category": "Elektrolyte",
+      "unit": "mmol/l",
+      "normalLow": 135,
+      "normalHigh": 145,
+      "pathHighLow": 147,
+      "pathHighHigh": 160,
+      "pathLowLow": 110,
+      "pathLowHigh": 132,
+      "decimals": 0
+    },
+    "Kalium": {
+      "displayName": "Kalium",
+      "category": "Elektrolyte",
+      "unit": "mmol/l",
+      "normalLow": 3.6,
+      "normalHigh": 5.0,
+      "pathHighLow": 5.5,
+      "pathHighHigh": 7.5,
+      "pathLowLow": 2.2,
+      "pathLowHigh": 3.3,
+      "decimals": 1
+    },
+    "ALT_GPT": {
+      "displayName": "ALT (GPT)",
+      "category": "Leberwerte",
+      "unit": "U/l",
+      "normalLow": 0,
+      "normalHigh": 45,
+      "pathHighLow": 60,
+      "pathHighHigh": 800,
+      "decimals": 0
+    },
+    "AST_GOT": {
+      "displayName": "AST (GOT)",
+      "category": "Leberwerte",
+      "unit": "U/l",
+      "normalLow": 0,
+      "normalHigh": 35,
+      "pathHighLow": 50,
+      "pathHighHigh": 700,
+      "decimals": 0
+    },
+    "GGT": {
+      "displayName": "GGT",
+      "category": "Leberwerte",
+      "unit": "U/l",
+      "normalLow": 0,
+      "normalHigh": 60,
+      "pathHighLow": 80,
+      "pathHighHigh": 500,
+      "decimals": 0
+    },
+    "Bilirubin_gesamt": {
+      "displayName": "Bilirubin gesamt",
+      "category": "Leberwerte",
+      "unit": "mg/dl",
+      "normalLow": 0.2,
+      "normalHigh": 1.2,
+      "pathHighLow": 1.5,
+      "pathHighHigh": 15.0,
+      "decimals": 1
+    },
+    "Troponin_T_hs": {
+      "displayName": "Troponin T (hs)",
+      "category": "Herzmarker",
+      "unit": "ng/l",
+      "normalLow": 0,
+      "normalHigh": 14,
+      "pathHighLow": 30,
+      "pathHighHigh": 5000,
+      "decimals": 0
+    },
+    "NT_proBNP": {
+      "displayName": "NT-proBNP",
+      "category": "Herzmarker",
+      "unit": "pg/ml",
+      "normalLow": 0,
+      "normalHigh": 125,
+      "pathHighLow": 450,
+      "pathHighHigh": 9000,
+      "decimals": 0
+    },
+    "CK_MB": {
+      "displayName": "CK-MB",
+      "category": "Herzmarker",
+      "unit": "U/l",
+      "normalLow": 0,
+      "normalHigh": 24,
+      "pathHighLow": 30,
+      "pathHighHigh": 300,
+      "decimals": 0
+    },
+    "INR": {
+      "displayName": "INR",
+      "category": "Gerinnung",
+      "unit": "",
+      "normalLow": 0.8,
+      "normalHigh": 1.2,
+      "pathHighLow": 1.5,
+      "pathHighHigh": 6.0,
+      "decimals": 1
+    },
+    "D_Dimer": {
+      "displayName": "D-Dimer",
+      "category": "Gerinnung",
+      "unit": "µg/l FEU",
+      "normalLow": 0,
+      "normalHigh": 500,
+      "pathHighLow": 600,
+      "pathHighHigh": 8000,
+      "decimals": 0
+    },
+    "TSH": {
+      "displayName": "TSH",
+      "category": "Schilddrüse",
+      "unit": "mU/l",
+      "normalLow": 0.4,
+      "normalHigh": 4.0,
+      "pathHighLow": 5.0,
+      "pathHighHigh": 80.0,
+      "pathLowLow": 0.005,
+      "pathLowHigh": 0.2,
+      "decimals": 2
+    },
+    "Glukose_nuechtern": {
+      "displayName": "Glukose (nüchtern)",
+      "category": "Klinische Chemie",
+      "unit": "mg/dl",
+      "normalLow": 70,
+      "normalHigh": 100,
+      "pathHighLow": 126,
+      "pathHighHigh": 400,
+      "pathLowLow": 30,
+      "pathLowHigh": 60,
+      "decimals": 0
+    },
+    "HbA1c": {
+      "displayName": "HbA1c",
+      "category": "Klinische Chemie",
+      "unit": "%",
+      "normalLow": 4.0,
+      "normalHigh": 5.6,
+      "pathHighLow": 6.5,
+      "pathHighHigh": 13.0,
+      "decimals": 1
+    },
+    "Lipase": {
+      "displayName": "Lipase",
+      "category": "Klinische Chemie",
+      "unit": "U/l",
+      "normalLow": 0,
+      "normalHigh": 60,
+      "pathHighLow": 180,
+      "pathHighHigh": 2000,
+      "decimals": 0
+    },
+    "Anti_tTG_IgA": {
+      "displayName": "Anti-tTG-IgA",
+      "category": "Serologie",
+      "unit": "U/ml",
+      "normalLow": 0,
+      "normalHigh": 10,
+      "pathHighLow": 15,
+      "pathHighHigh": 200,
+      "decimals": 1
+    }
+  }
+}

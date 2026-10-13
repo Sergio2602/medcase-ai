@@ -44,7 +44,6 @@ export function WaitlistForm({
   if (state === "ok") {
     return (
       <div className="flex items-center gap-2.5 rounded-xl bg-[#e8f5e9] px-3.5 py-3 text-[#1b5e20]">
-        <i className="ti ti-check text-lg" />
         <p className="text-sm font-semibold">Notiert. Wir melden uns zum Launch.</p>
       </div>
     );

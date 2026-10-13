@@ -194,8 +194,7 @@ function GroupTable({
 }) {
   return (
     <div className="card p-4">
-      <p className="mb-2.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
-        <i className={`ti ${icon} text-sm`} />
+      <p className="mb-2.5 text-xs font-bold uppercase tracking-wide text-muted">
         {title}
       </p>
       <div className="flex flex-col gap-1.5">
@@ -214,9 +213,6 @@ function GroupTable({
             >
               <div className="mb-1.5 flex items-center justify-between gap-2">
                 <span className="flex min-w-0 items-center gap-1.5 text-[13px] font-semibold">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
-                    <i className={`ti ${iconFor(icons, g.id)} text-xs`} />
-                  </span>
                   <span className="truncate">{labelFor(labels, g.id)}</span>
                 </span>
                 <span className="shrink-0 text-[11px] text-muted">
@@ -253,12 +249,6 @@ function SummaryCard({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <div
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-        style={{ backgroundColor: `${color}1a`, color }}
-      >
-        <i className={`ti ${icon} text-lg`} />
-      </div>
       <div>
         <p className="text-xs font-semibold uppercase tracking-wide text-muted">{label}</p>
         <p className="text-xl font-semibold" style={{ color }}>
@@ -309,8 +299,8 @@ export default function StatistikPage() {
   }
 
   return (
-    <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1560px]">
+    <div className="site-page min-h-screen px-4 pt-8 pb-8 md:px-10">
+      <div className="mx-auto max-w-[1240px]">
         <CenteredNav active="statistik" />
 
         <div>
@@ -416,13 +406,11 @@ export default function StatistikPage() {
                   Scroll-Animation. */}
               <div className="card flex flex-col p-6 lg:h-[50vh]">
                 <p className="mb-4 flex shrink-0 items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
-                  <i className="ti ti-history text-sm" />
                   Zuletzt gelöst
                 </p>
                 <div className="flex flex-col gap-1.5 lg:flex-1 lg:overflow-y-auto lg:pr-1">
                   {recent.length === 0 && (
                     <div className="flex flex-1 flex-col items-center justify-center gap-1.5 py-8 text-center">
-                      <i className="ti ti-notebook text-2xl text-muted" />
                       <p className="text-sm font-semibold">Noch keine Fälle gelöst.</p>
                       <p className="text-xs text-muted">
                         Löse deinen ersten Fall — deine Statistik füllt sich automatisch.
@@ -467,7 +455,6 @@ export default function StatistikPage() {
                   href="/"
                   className="flex items-center gap-1.5 rounded-lg border-[1.5px] border-card-border/15 px-3.5 py-1.5 text-xs font-semibold text-muted transition-colors hover:border-accent/40 hover:text-accent"
                 >
-                  <i className="ti ti-arrow-left text-[12px]" />
                   Zurück
                 </Link>
               </div>

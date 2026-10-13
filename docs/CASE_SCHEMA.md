@@ -2,12 +2,12 @@
 
 Verbindliches Schema zur Erstellung neuer klinischer Fälle. Grundlage jeder
 manuellen oder automatisierten Generierung. Abgeleitet direkt aus dem
-bestehenden Bestand (`public/cases/*.json`, Stand: 70 Fälle, alle Felder
+bestehenden Bestand (`content/cases/*.json`, Stand: 70 Fälle, alle Felder
 konsistent). Bei Konflikt gilt dieses Dokument.
 
 ## Ablage & Dateien
 
-- Ein JSON-**Array** pro Disziplin unter `public/cases/{disziplin}.json`.
+- Ein JSON-**Array** pro Disziplin unter `content/cases/{disziplin}.json`.
 - Aktuell: `innere.json` (40), `vorklinik.json` (15), `pj.json` (15).
 - Neue Disziplinen = neue Datei nach demselben Muster (z.B. `chirurgie.json`,
   `paediatrie.json`, `dermatologie.json`, `neurologie.json`, `gynaekologie.json`).

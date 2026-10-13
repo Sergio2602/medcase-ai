@@ -4,15 +4,14 @@ import { CenteredNav } from "@/app/components/CenteredNav";
 import { FadeInUp } from "@/app/components/FadeInUp";
 
 export const metadata = {
-  title: "Über uns & Methodik · Medcase",
+  title: "Über uns & Methodik · Casolvo",
   description:
-    "Wer hinter Medcase steht, wie Fälle recherchiert werden und woran sich die Auswahl orientiert.",
+    "Wer hinter Casolvo steht, wie Fälle entstehen und woran sich die Auswahl orientiert.",
 };
 
-function SectionLabel({ icon, id, children }: { icon: string; id?: string; children: React.ReactNode }) {
+function SectionLabel({ id, children }: { icon: string; id?: string; children: React.ReactNode }) {
   return (
-    <p id={id} className="mb-3 scroll-mt-24 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
-      <i className={`ti ${icon} text-sm`} />
+    <p id={id} className="mb-3 scroll-mt-24 text-xs font-bold uppercase tracking-wide text-muted">
       {children}
     </p>
   );
@@ -54,12 +53,9 @@ function RangeBar({ label, min, max, max100 = 30 }: { label: string; min: number
   );
 }
 
-function StepChip({ n, icon, title, text }: { n: number; icon: string; title: string; text: string }) {
+function StepChip({ n, title, text }: { n: number; icon: string; title: string; text: string }) {
   return (
     <div className="flex gap-3 rounded-lg border-[1.5px] border-card-border/10 p-4">
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
-        <i className={`ti ${icon} text-[15px]`} />
-      </div>
       <div>
         <p className="mb-0.5 text-[13px] font-bold text-foreground">
           {n}. {title}
@@ -73,7 +69,7 @@ function StepChip({ n, icon, title, text }: { n: number; icon: string; title: st
 const TOC = [
   {
     id: "ueber-medcase",
-    label: "Über Medcase",
+    label: "Über Casolvo",
     items: [
       { id: "team-hintergrund", label: "Team & Hintergrund" },
       { id: "wie-ein-fall-entsteht", label: "Wie ein Fall entsteht" },
@@ -130,8 +126,8 @@ function TocSidebar() {
 
 export default function UeberUnsPage() {
   return (
-    <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1560px]">
+    <div className="site-page min-h-screen px-4 pt-8 pb-8 md:px-10">
+      <div className="mx-auto max-w-[1240px]">
         <CenteredNav active="ueber-uns" />
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
@@ -145,15 +141,15 @@ export default function UeberUnsPage() {
                 Über uns &amp; Methodik
               </h1>
               <p className="mb-8 text-sm text-muted">
-                Wer Medcase baut, wie Fälle entstehen und woran sich die Auswahl orientiert.
+                Wer Casolvo baut, wie Fälle entstehen und woran sich die Auswahl orientiert.
               </p>
 
               <section className="mb-6 max-w-[70ch]">
                 <SectionLabel icon="ti-users" id="team-hintergrund">Team &amp; Hintergrund</SectionLabel>
                 <p className="mb-4 leading-relaxed">
-                  Medcase ist ein Projekt mit medizinischem Hintergrund: Wir entwickeln KI-gestützte,
-                  quellenbasierte Klinikfälle, mit denen Medizinstudierende klinisches Denken trainieren
-                  können: echte diagnostische Situationen statt reiner Auswendiglern-Karteikarten.
+                  Casolvo ist ein Projekt mit medizinischem Hintergrund: Ich entwickle quellenbasierte
+                  Klinikfälle, mit denen Medizinstudierende klinisches Denken trainieren können: echte
+                  diagnostische Situationen statt reiner Auswendiglern-Karteikarten.
                 </p>
                 <p className="mb-4 leading-relaxed">
                   Ich bin Sergio Jacinto Hein, Medizinstudent in Mainz, bereits im klinischen
@@ -169,8 +165,8 @@ export default function UeberUnsPage() {
               <section className="max-w-[70ch]">
                 <SectionLabel icon="ti-route" id="wie-ein-fall-entsteht">Wie ein Fall entsteht</SectionLabel>
                 <p className="mb-4 text-sm leading-relaxed text-muted">
-                  Kein Fall wird &bdquo;einfach so&ldquo; von einer KI ausgegeben. Jeder quellenbasierte Fall
-                  durchläuft denselben festen Prozess:
+                  Kein Fall wird von einer KI geschrieben und einfach übernommen. Jeder neue Fall
+                  durchläuft denselben festen Prozess, den ich selbst begleite und am Ende freigebe:
                 </p>
                 <div className="grid gap-2.5 sm:grid-cols-2">
                   <StepChip
@@ -181,33 +177,21 @@ export default function UeberUnsPage() {
                   />
                   <StepChip
                     n={2}
-                    icon="ti-books"
-                    title="Recherche"
-                    text="Nur Primärquellen: AWMF-Leitlinien, ESC, RKI, Onkopedia, IMPP, PubMed, leitlinien.de. Bewusst kein Amboss oder UpToDate."
+                    icon="ti-pencil"
+                    title="Fallerstellung"
+                    text="Ein KI-Chat schreibt Anamnese, Untersuchung, Labor/Bildgebung und Differenzialdiagnosen Abschnitt für Abschnitt, mit Selbstcheck direkt beim Schreiben: keine Diagnose wird vorab verraten, nur Primärquellen (AWMF-Leitlinien, RKI, PubMed, je nach Fall Onkopedia/WHO/Cochrane). Bewusst kein Amboss oder UpToDate als Beleg."
                   />
                   <StepChip
                     n={3}
-                    icon="ti-pencil"
-                    title="Fall schreiben"
-                    text="Anamnese, Untersuchung, Labor/Bildgebung, 4 Antwortoptionen mit plausiblen Differenzialdiagnosen."
+                    icon="ti-checkup-list"
+                    title="Gegencheck"
+                    text="Ein zweiter, unabhängiger Chat prüft danach jede einzelne Aussage noch einmal gegen die Primärquellen und rechnet Laborwerte nach (Blutgase, Anionenlücke, Osmolalität). Zu starke oder nicht belegte Aussagen werden korrigiert oder gestrichen."
                   />
                   <StepChip
                     n={4}
-                    icon="ti-checkup-list"
-                    title="Konsistenz-Check"
-                    text="Passen alle Laborwerte, Demografie und Bildgebung physiologisch zueinander? Größte Fehlerquelle bei KI-Fällen."
-                  />
-                  <StepChip
-                    n={5}
                     icon="ti-shield-check"
-                    title="Strukturvalidierung"
-                    text="Automatisiertes Skript prüft Pflichtfelder, Antwortoptionen und Datenformat vor Veröffentlichung."
-                  />
-                  <StepChip
-                    n={6}
-                    icon="ti-quote"
-                    title="Quellen dokumentieren"
-                    text="Jede Diagnosekriterien-Quelle wird vermerkt, auch wenn die Quellenlage dünn ist, statt eine Quelle zu erfinden."
+                    title="Meine eigene Freigabe"
+                    text="Ich lese jeden Fall vor der Veröffentlichung selbst komplett durch und bestätige ihn persönlich. Ohne diese Freigabe geht kein Fall live."
                   />
                 </div>
               </section>
@@ -255,48 +239,58 @@ export default function UeberUnsPage() {
                   . Werte sind laut IMPP Richtwerte, rechtlich nicht verbindlich.
                 </p>
 
-                <p className="mb-3 text-sm font-bold text-foreground">Vorklinik-Fälle: IMPP-Gegenstandskatalog 1 (GK1)</p>
-                <p className="mb-3 text-[13px] leading-relaxed text-muted">
-                  Für das Physikum (M1) gibt es keinen numerischen Blueprint wie bei M2. Geprüft wird nach dem
-                  IMPP-Gegenstandskatalog 1, der in Spalte 4 &bdquo;Anwendungsbeispiele&ldquo; enthält: vom IMPP selbst
-                  markierte Themen mit hoher klinischer Relevanz. Genau diese nutzen wir als Grundlage für
-                  unsere Fall-Vignetten, aus den drei praktisch übersetzbaren Teilkatalogen:
-                </p>
-                <div className="mb-2 flex flex-wrap gap-2">
-                  {["Anatomie · 5 Fälle", "Physiologie · 5 Fälle", "Biochemie/Stoffwechsel · 5 Fälle"].map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full bg-[#ecf0f9] px-3 py-1 text-xs font-semibold text-accent"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <p className="mb-6 text-xs text-muted">
-                  Quelle:{" "}
-                  <SourceLink href="https://www.impp.de/pruefungen/allgemein/gegenstandskataloge.html">
-                    IMPP: Gegenstandskataloge
-                  </SourceLink>
-                  .
-                </p>
+                <div className="mt-6 rounded-lg border-[1.5px] border-[#92400e]/20 bg-[#fef3e2]/40 p-4">
+                  <p className="mb-3 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-[#92400e]">
+                    Geplant: Vorklinik &amp; Examen/PJ
+                  </p>
+                  <p className="mb-4 text-[13px] leading-relaxed text-muted">
+                    Live ist aktuell nur Klinik. Für die beiden anderen Niveaus steht die Auswahl-Methodik
+                    schon fest, nur die Fälle selbst fehlen noch:
+                  </p>
 
-                <p className="mb-3 text-sm font-bold text-foreground">Examen/PJ-Fälle: kein IMPP-M3-Blueprint, deshalb zwei andere Achsen</p>
-                <p className="mb-3 text-[13px] leading-relaxed text-muted">
-                  Geprüft (verifiziert direkt auf impp.de): Das IMPP führt ausschließlich die schriftlichen
-                  Prüfungen M1 und M2 durch. Der Dritte Abschnitt (M3, nach dem Praktischen Jahr) ist eine
-                  mündlich-praktische Prüfung, lokal an den Universitäten abgenommen, kein bundesweiter
-                  Blueprint, keine IMPP-Statistik dazu. Eine &bdquo;IMPP-M3-Häufigkeit&ldquo; existiert schlicht nicht, wir
-                  erfinden hier keine. Stattdessen zwei reale Achsen: die GK2/M2-Gewichtung als inhaltliche
-                  Grundlage (M3 prüft denselben Stoff, nur mündlich-praktisch) plus echte
-                  Krankenhaushäufigkeit nach Destatis.
-                </p>
-                <p className="text-[13px] leading-relaxed text-muted">
-                  Quelle für Krankenhaushäufigkeit:{" "}
-                  <SourceLink href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Krankenhauser/Publikationen/Downloads-Krankenhaeuser/statistischer-bericht-diagnosedaten-5231301237015.html">
-                    Destatis: Diagnosen der Krankenhauspatientinnen und -patienten
-                  </SourceLink>
-                  , jährliche amtliche Statistik aller vollstationären ICD-10-Diagnosen in Deutschland.
-                </p>
+                  <p className="mb-3 text-sm font-bold text-foreground">Vorklinik: IMPP-Gegenstandskatalog 1 (GK1)</p>
+                  <p className="mb-3 text-[13px] leading-relaxed text-muted">
+                    Für das Physikum (M1) gibt es keinen numerischen Blueprint wie bei M2. Geprüft wird nach dem
+                    IMPP-Gegenstandskatalog 1, der in Spalte 4 &bdquo;Anwendungsbeispiele&ldquo; enthält: vom IMPP selbst
+                    markierte Themen mit hoher klinischer Relevanz. Genau diese sollen die Grundlage für
+                    künftige Vorklinik-Fälle werden, aus den drei praktisch übersetzbaren Teilkatalogen:
+                  </p>
+                  <div className="mb-2 flex flex-wrap gap-2">
+                    {["Anatomie", "Physiologie", "Biochemie/Stoffwechsel"].map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-[#ecf0f9] px-3 py-1 text-xs font-semibold text-accent"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mb-6 text-xs text-muted">
+                    Quelle:{" "}
+                    <SourceLink href="https://www.impp.de/pruefungen/allgemein/gegenstandskataloge.html">
+                      IMPP: Gegenstandskataloge
+                    </SourceLink>
+                    .
+                  </p>
+
+                  <p className="mb-3 text-sm font-bold text-foreground">Examen/PJ: kein IMPP-M3-Blueprint, deshalb zwei andere Achsen</p>
+                  <p className="mb-3 text-[13px] leading-relaxed text-muted">
+                    Geprüft (verifiziert direkt auf impp.de): Das IMPP führt ausschließlich die schriftlichen
+                    Prüfungen M1 und M2 durch. Der Dritte Abschnitt (M3, nach dem Praktischen Jahr) ist eine
+                    mündlich-praktische Prüfung, lokal an den Universitäten abgenommen, kein bundesweiter
+                    Blueprint, keine IMPP-Statistik dazu. Eine &bdquo;IMPP-M3-Häufigkeit&ldquo; existiert schlicht nicht, wir
+                    erfinden hier keine. Geplant sind stattdessen zwei reale Achsen: die GK2/M2-Gewichtung als
+                    inhaltliche Grundlage (M3 prüft denselben Stoff, nur mündlich-praktisch) plus echte
+                    Krankenhaushäufigkeit nach Destatis.
+                  </p>
+                  <p className="text-[13px] leading-relaxed text-muted">
+                    Quelle für Krankenhaushäufigkeit:{" "}
+                    <SourceLink href="https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Krankenhauser/Publikationen/Downloads-Krankenhaeuser/statistischer-bericht-diagnosedaten-5231301237015.html">
+                      Destatis: Diagnosen der Krankenhauspatientinnen und -patienten
+                    </SourceLink>
+                    , jährliche amtliche Statistik aller vollstationären ICD-10-Diagnosen in Deutschland.
+                  </p>
+                </div>
               </section>
 
               <Divider />
@@ -314,61 +308,9 @@ export default function UeberUnsPage() {
 
                 <div className="mb-4 rounded-lg border-[1.5px] border-accent/25 bg-[#ecf0f9] p-4">
                   <p className="text-sm font-semibold text-accent">
-                    <span className="text-xl font-extrabold">38</span> von 70 quellenbasierten Fällen (rund
-                    54 %) sind aktuell als cannot-miss markiert, bewusst kein kleiner Anteil.
+                    Ein spürbarer Teil der Fallbank ist bewusst als cannot-miss ausgewählt, nicht nur
+                    &bdquo;wenn Zeit bleibt&ldquo;.
                   </p>
-                </div>
-
-                <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Alle aktuell live</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {[
-                    "Akute Appendizitis",
-                    "Zentraler Diabetes insipidus",
-                    "Status asthmaticus (resp. Azidose)",
-                    "Phenylketonurie",
-                    "AB0-Transfusionsreaktion",
-                    "NSTEMI",
-                    "Akute Lungenembolie",
-                    "Obere GI-Blutung",
-                    "Diabetische Ketoazidose",
-                    "Riesenzellarteriitis",
-                    "Sigmadivertikulitis mit Perforation",
-                    "Aortendissektion Typ A",
-                    "Kompartmentsyndrom",
-                    "Ischämischer Mediainfarkt",
-                    "Status epilepticus",
-                    "Urosepsis / septischer Schock",
-                    "Thyreotoxische Krise",
-                    "Rupturierte Extrauteringravidität",
-                    "HELLP-Syndrom",
-                    "Invagination (Kleinkind)",
-                    "Alkoholentzugsdelir",
-                    "Anaphylaktischer Schock",
-                    "Cauda-equina-Syndrom",
-                    "Akute Pyelonephritis (Hausarzt)",
-                    "Bronchialkarzinom (Hausarzt-Erstdiagnose)",
-                    "TIA (Hausarztpraxis)",
-                    "Kolonkarzinom bei Eisenmangelanämie",
-                    "Akute Appendizitis (Hausarzt-Erstpräsentation)",
-                    "Instabile Angina pectoris (Hausarztpraxis)",
-                    "Perikardtamponade (maligner Perikarderguss)",
-                    "Infektiöse Endokarditis (Trikuspidalklappe)",
-                    "Primärer Spontanpneumothorax",
-                    "Dekompensierte Leberzirrhose mit hepatischer Enzephalopathie",
-                    "Akute Cholangitis",
-                    "Nephrotisches Syndrom",
-                    "Hyperosmolares hyperglykämisches Syndrom (HHS)",
-                    "Addison-Krise",
-                    "Akute myeloische Leukämie (AML)",
-                  ].map((d) => (
-                    <span
-                      key={d}
-                      className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-accent/25 bg-[#ecf0f9] px-2.5 py-1 text-[11.5px] font-semibold text-accent"
-                    >
-                      <i className="ti ti-alert-triangle text-[9px]" />
-                      {d}
-                    </span>
-                  ))}
                 </div>
               </section>
             </div>
@@ -387,58 +329,28 @@ export default function UeberUnsPage() {
               <section className="mb-6 max-w-[70ch]">
                 <SectionLabel icon="ti-clipboard-check" id="arbeitsaufwand">Arbeitsaufwand</SectionLabel>
                 <p className="mb-5 text-sm leading-relaxed text-muted">
-                  Wir zeigen hier keine runde, geschönte Zahl, sondern genau, welcher Teil der Fallbank auf
-                  welchem Qualitätsniveau ist:
+                  Wir zeigen hier bewusst keine runde Gesamtzahl: Jeder aktuell live sichtbare Fall stammt
+                  entweder bereits aus dem oben beschriebenen Prozess (Fallerstellung, unabhängiger
+                  Gegencheck gegen Primärquellen, meine eigene Freigabe) oder wird gerade schrittweise
+                  dadurch ersetzt. Die alte, ungeprüfte Fallbank bleibt nicht bestehen, sie wird komplett
+                  verworfen und durch neu erstellte Fälle ersetzt.
                 </p>
 
-                <div className="mb-5 grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
-                    <p className="text-2xl font-extrabold text-[#15803d]">15</p>
-                    <p className="text-xs font-semibold text-[#15803d]">Vorklinik-Fälle</p>
-                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]">
-                      Vollständig quellenbasiert, mit individuellen Quellenangaben pro Fall.
-                    </p>
-                  </div>
-                  <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
-                    <p className="text-2xl font-extrabold text-[#15803d]">40</p>
-                    <p className="text-xs font-semibold text-[#15803d]">Klinik-Fälle</p>
-                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]">
-                      Innere + Allgemeinmedizin, vollständig quellenbasiert mit individuellen Quellenangaben pro Fall.
-                    </p>
-                  </div>
-                  <div className="rounded-lg border-[1.5px] border-[#15803d]/25 bg-[#e7f6ec] p-4">
-                    <p className="text-2xl font-extrabold text-[#15803d]">15</p>
-                    <p className="text-xs font-semibold text-[#15803d]">Examen/PJ-Fälle</p>
-                    <p className="mt-1 text-[11px] leading-snug text-[#15803d]">
-                      Vollständig neu erstellt, quellenbasiert (AWMF/Destatis), ersetzt die alte ungeprüfte
-                      40-Fälle-Bank vollständig.
-                    </p>
-                  </div>
-                </div>
-
                 <p className="mb-2 text-[13px] leading-relaxed text-muted">
-                  Alle 70 Fälle (Vorklinik + Klinik + Examen/PJ) sind mittlerweile quellenbasiert. Jeder
-                  Fall enthält zusätzlich:
+                  Ein nach dem neuen Prozess erstellter Fall enthält:
                 </p>
                 <ul className="mb-3 flex flex-col gap-1.5 text-[13px] leading-relaxed text-muted">
                   <li className="flex items-start gap-2">
-                    <i className="ti ti-point mt-1 shrink-0 text-[8px] text-accent" />
                     Eine begründete Auswahl (Kategorie &bdquo;häufig&ldquo; oder &bdquo;cannot-miss&ldquo;) mit Quellenbeleg.
                   </li>
                   <li className="flex items-start gap-2">
-                    <i className="ti ti-point mt-1 shrink-0 text-[8px] text-accent" />
                     Bis zu drei plausible Differenzialdiagnosen mit individueller Ausschluss-Begründung.
                   </li>
                   <li className="flex items-start gap-2">
-                    <i className="ti ti-point mt-1 shrink-0 text-[8px] text-accent" />
                     Anti-Giveaway-Prinzipien: kein plakativer Leitbefund im ersten Satz, verteilte
                     Ausschlussbefunde, ein medizinisch stimmiger Red Herring pro Fall.
                   </li>
                 </ul>
-
-                <p className="text-xs text-muted">
-                  Zahlen Stand dieser Seite. Die Fallbank wächst laufend, aktuelle Gesamtzahl siehe Startseite.
-                </p>
               </section>
 
               <Divider />
@@ -454,28 +366,6 @@ export default function UeberUnsPage() {
                       <strong className="text-foreground">&bdquo;Fall melden&ldquo;-Funktion ist live:</strong> Direkt im
                       Ergebnis-Screen kann jeder Fall gemeldet werden. Meldungen laufen intern zusammen und
                       werden gesichtet, ein echter, sofort nutzbarer Feedback-Kanal, kein bloßes Versprechen.
-                    </p>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#fef3e2] text-[#92400e]">
-                      <i className="ti ti-clock text-[13px]" />
-                    </span>
-                    <p className="text-[13px] leading-relaxed text-muted">
-                      <strong className="text-foreground">Fachärztliches Review ist geplant, aber noch nicht erfolgt.</strong>{" "}
-                      Quellenangaben zeigen sauberes Recherchieren; sie ersetzen kein fachliches Review. Ein
-                      Review durch mindestens einen Assistenz- oder Facharzt ist die Voraussetzung, bevor wir
-                      aktiv um ärztliche Aufmerksamkeit werben.
-                    </p>
-                  </div>
-                  <div className="flex gap-3">
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
-                      <i className="ti ti-mail" style={{ fontSize: 13 }} />
-                    </span>
-                    <p className="text-[13px] leading-relaxed text-muted">
-                      Fachlichen Fehler gefunden? Schreib uns direkt an{" "}
-                      <a href="mailto:kontakt.medcase@gmail.com" className="text-accent underline underline-offset-2">
-                        kontakt.medcase@gmail.com
-                      </a>. Jeder konkrete Hinweis wird geprüft.
                     </p>
                   </div>
                 </div>
@@ -496,7 +386,6 @@ export default function UeberUnsPage() {
                   className="group mt-1 inline-flex items-center gap-1.5 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
                 >
                   Ersten Fall lösen
-                  <i className="ti ti-arrow-right transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </div>
             </FadeInUp>
@@ -506,7 +395,7 @@ export default function UeberUnsPage() {
               className="mt-4 flex items-center justify-between border-t border-card-border/15 pt-3"
               style={{ fontSize: 11, color: "#5f5e5a" }}
             >
-              <span>© 2026 Medcase</span>
+              <span>© 2026 Casolvo</span>
               <div className="flex items-center gap-4">
                 <Link href="/news" className="hover:underline">
                   News

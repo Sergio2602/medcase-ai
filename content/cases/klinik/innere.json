@@ -1,0 +1,670 @@
+[
+  {
+    "id": "innere-klinik-0001",
+    "difficulty": "klinik",
+    "discipline": "innere",
+    "niveau": "einfach",
+    "cannotMiss": true,
+    "patientName": "Linus",
+    "age": 23,
+    "gender": "male",
+    "occupation": {
+      "de": "Student der Geoinformatik",
+      "en": "Geoinformatics student"
+    },
+    "chiefComplaint": {
+      "de": "Seit zwei Tagen Übelkeit, wiederholtes Erbrechen und Bauchschmerzen; heute kaum wach zu bekommen und auffällig tiefes, schnelles Atmen.",
+      "en": "Nausea, repeated vomiting and abdominal pain for two days; today hard to rouse and breathing noticeably deep and fast."
+    },
+    "history": {
+      "de": "Der 23-Jährige wird vom Rettungsdienst gebracht, nachdem sein Mitbewohner ihn am Vormittag schwer erweckbar im Bett gefunden hat. Auf Nachfrage berichtet er verlangsamt, er habe seit etwa drei Wochen ständig Durst, trinke fünf bis sechs Liter am Tag (vor allem Wasser und Apfelschorle) und müsse auch nachts mehrmals zur Toilette. Obwohl er normal oder eher mehr gegessen habe, sei ihm die Hose zu weit geworden; er schätzt, dass er sechs bis sieben Kilo abgenommen hat. Die wachsende Müdigkeit habe er auf die Prüfungsphase geschoben. Vor rund vier Wochen hatte er einen fieberhaften Schnupfen, der ohne Folgen abgeheilt ist. Seit zwei Tagen ist ihm übel, er hat mehrmals erbrochen (weder Blut noch kaffeesatzartiges Material) und spürt einen dumpfen, schlecht lokalisierbaren Schmerz um den Nabel. Kein Durchfall, kein Fieber, kein Husten, kein Brennen beim Wasserlassen. Drogenkonsum verneint er; vor sechs Tagen habe er am Wochenende zwei bis drei Bier getrunken, seitdem keinen Alkohol. Außer seiner Schilddrüsentablette nimmt er keine Medikamente.",
+      "en": "The 23-year-old is brought in by ambulance after his flatmate found him barely rousable in bed this morning. When asked, he answers slowly that for about three weeks he has been constantly thirsty, drinking five to six litres a day (mainly water and apple spritzer), and getting up several times at night to pass urine. Although he has been eating normally or even more than usual, his trousers have become loose; he estimates a loss of six to seven kilograms. He put the increasing tiredness down to his exam period. Around four weeks ago he had a feverish cold that cleared up completely. For two days he has felt sick, has vomited several times (no blood, no coffee-ground material) and has a dull, poorly localised ache around the navel. No diarrhoea, no fever, no cough, no burning on passing urine. He denies drug use; six days ago, at the weekend, he drank two or three beers and has had no alcohol since. Apart from his thyroid tablet he takes no medication."
+    },
+    "vorerkrankungen": [
+      {
+        "text": {
+          "de": "Autoimmune Schilddrüsenentzündung (Hashimoto), seit zwei Jahren bekannt, unter L-Thyroxin stabil normale Schilddrüsenwerte",
+          "en": "Autoimmune thyroiditis (Hashimoto), known for two years, thyroid function stably normal on levothyroxine"
+        },
+        "relevance": "stuetzend",
+        "category": "vorerkrankung"
+      },
+      {
+        "text": {
+          "de": "Saisonale Gräserpollen-Allergie mit Fließschnupfen im Frühsommer, bei Bedarf Antihistaminikum",
+          "en": "Seasonal grass-pollen allergy with runny nose in early summer, antihistamine as needed"
+        },
+        "relevance": "meist_irrelevant",
+        "category": "allergie"
+      },
+      {
+        "text": {
+          "de": "Außenbandverletzung am rechten Sprunggelenk vor drei Jahren, konservativ ausgeheilt",
+          "en": "Lateral ligament injury of the right ankle three years ago, healed with conservative treatment"
+        },
+        "relevance": "meist_irrelevant",
+        "category": "vorerkrankung"
+      },
+      {
+        "text": {
+          "de": "Alkohol nur gelegentlich am Wochenende (zwei bis drei Bier), Nichtraucher, keine Drogen",
+          "en": "Alcohol only occasionally at weekends (two to three beers), non-smoker, no drugs"
+        },
+        "relevance": "abgrenzend",
+        "category": "alkohol_drogen"
+      }
+    ],
+    "untersuchung": {
+      "unlockCost": 10,
+      "findings": [
+        {
+          "label": {
+            "de": "Bewusstsein und Allgemeinzustand",
+            "en": "Consciousness and general condition"
+          },
+          "text": {
+            "de": "Somnolent, auf Ansprache erweckbar, zur Person orientiert, zu Ort und Zeit unsicher, antwortet verzögert. GCS 13 (Augen 3, verbal 4, motorisch 6). Schlanker, blass wirkender junger Mann in reduziertem Allgemeinzustand.",
+            "en": "Drowsy, rousable to voice, oriented to person but unsure of place and time, slow to answer. GCS 13 (eyes 3, verbal 4, motor 6). Slim, pale-looking young man in reduced general condition."
+          },
+          "relevance": "stuetzend"
+        },
+        {
+          "label": {
+            "de": "Vitalparameter",
+            "en": "Vital signs"
+          },
+          "text": {
+            "de": "Blutdruck 104/62 mmHg, Puls 118/min regelmäßig, Atemfrequenz 30/min, Sauerstoffsättigung 98 % ohne Sauerstoffgabe, Körpertemperatur 36,8 °C (tympanal).",
+            "en": "Blood pressure 104/62 mmHg, pulse 118/min regular, respiratory rate 30/min, oxygen saturation 98 % on room air, body temperature 36.8 °C (tympanic)."
+          },
+          "relevance": "stuetzend"
+        },
+        {
+          "label": {
+            "de": "Atmung und Atemgeruch",
+            "en": "Breathing pattern and breath odour"
+          },
+          "text": {
+            "de": "Auffallend tiefe, gleichmäßige und beschleunigte Atemzüge ohne Pausen, ohne Einziehungen und ohne Einsatz der Atemhilfsmuskulatur. Die Ausatemluft riecht süßlich-fruchtig, ähnlich wie Nagellackentferner.",
+            "en": "Strikingly deep, even and rapid breaths without pauses, without recession and without use of accessory muscles. The exhaled air smells sweet and fruity, similar to nail-polish remover."
+          },
+          "relevance": "tragend"
+        },
+        {
+          "label": {
+            "de": "Haut und Schleimhäute",
+            "en": "Skin and mucous membranes"
+          },
+          "text": {
+            "de": "Zunge und Mundschleimhaut trocken, Hautfalten am Handrücken bleiben stehen, Augäpfel wirken eingesunken. Rekapillarisierungszeit am Nagelbett 3 Sekunden. Keine Zyanose, kein Ikterus, keine Exantheme.",
+            "en": "Tongue and oral mucosa dry, skin folds on the back of the hand remain tented, eyes appear sunken. Capillary refill at the nail bed 3 seconds. No cyanosis, no jaundice, no rash."
+          },
+          "relevance": "stuetzend"
+        },
+        {
+          "label": {
+            "de": "Abdomen",
+            "en": "Abdomen"
+          },
+          "text": {
+            "de": "Bauchdecke weich, diffuser Druckschmerz periumbilikal und im Oberbauch ohne klaren Schmerzschwerpunkt, keine Abwehrspannung, kein Loslassschmerz. Leber und Milz nicht vergrößert tastbar, keine Resistenzen. Darmgeräusche spärlich, aber vorhanden. Nierenlager beidseits nicht klopfschmerzhaft.",
+            "en": "Abdominal wall soft, diffuse tenderness around the navel and in the upper abdomen without a clear point of maximum pain, no guarding, no rebound tenderness. Liver and spleen not palpably enlarged, no masses. Bowel sounds sparse but present. No tenderness on percussion over either flank."
+          },
+          "relevance": "stuetzend"
+        },
+        {
+          "label": {
+            "de": "Körpermaße",
+            "en": "Body measurements"
+          },
+          "text": {
+            "de": "Größe 1,82 m, aktuelles Gewicht 64 kg (BMI 19,3 kg/m²). Beim Hausarzt wurden vor zwei Monaten noch 71 kg dokumentiert.",
+            "en": "Height 1.82 m, current weight 64 kg (BMI 19.3 kg/m²). His GP recorded 71 kg two months ago."
+          },
+          "relevance": "stuetzend"
+        },
+        {
+          "label": {
+            "de": "Rachen und Hals",
+            "en": "Throat and neck"
+          },
+          "text": {
+            "de": "Rachenring trocken, aber nicht gerötet, Tonsillen nicht vergrößert und ohne Beläge. Keine vergrößerten Halslymphknoten. Schilddrüse nicht vergrößert, schluckverschieblich, keine Knoten tastbar.",
+            "en": "Pharynx dry but not reddened, tonsils not enlarged and without exudate. No enlarged cervical lymph nodes. Thyroid not enlarged, moves on swallowing, no palpable nodules."
+          },
+          "relevance": "meist_irrelevant"
+        },
+        {
+          "label": {
+            "de": "Orientierende Neurologie",
+            "en": "Brief neurological examination"
+          },
+          "text": {
+            "de": "Pupillen mittelweit, seitengleich und prompt lichtreagibel. Alle vier Extremitäten werden seitengleich kräftig bewegt, keine Lähmungen, Muskeleigenreflexe seitengleich mittellebhaft. Kein Meningismus.",
+            "en": "Pupils mid-sized, equal and briskly reactive to light. All four limbs moved with equal strength, no paralysis, tendon reflexes equal and normal. No meningism."
+          },
+          "relevance": "meist_irrelevant"
+        }
+      ]
+    },
+    "auskultation": {
+      "text": {
+        "de": "Herz: rhythmische, tachykarde Herztöne, erster und zweiter Herzton gut abgrenzbar, keine Herzgeräusche, kein Perikardreiben. Lunge: beidseits vesikuläres Atemgeräusch bis in die Basen, keine Rasselgeräusche, kein Giemen oder Brummen; auffallend tiefe Atemexkursionen.",
+        "en": "Heart: regular, tachycardic heart sounds, first and second heart sounds clearly distinguishable, no murmurs, no pericardial rub. Lungs: vesicular breath sounds on both sides down to the bases, no crackles, no wheeze; strikingly deep respiratory excursions."
+      },
+      "relevance": "meist_irrelevant"
+    },
+    "labs": [
+      {
+        "category": {
+          "de": "Blutgasanalyse (venös)",
+          "en": "Blood gas analysis (venous)"
+        },
+        "relevance": "tragend",
+        "values": [
+          {
+            "name": {
+              "de": "pH",
+              "en": "pH"
+            },
+            "value": "7,20",
+            "reference": "7,31–7,41"
+          },
+          {
+            "name": {
+              "de": "pCO₂",
+              "en": "pCO₂"
+            },
+            "value": "29 mmHg",
+            "reference": "41–51 mmHg"
+          },
+          {
+            "name": {
+              "de": "Bikarbonat (HCO₃⁻)",
+              "en": "Bicarbonate (HCO₃⁻)"
+            },
+            "value": "11 mmol/l",
+            "reference": "22–26 mmol/l"
+          },
+          {
+            "name": {
+              "de": "Basenüberschuss (BE)",
+              "en": "Base excess (BE)"
+            },
+            "value": "−15 mmol/l",
+            "reference": "−2 bis +2 mmol/l"
+          },
+          {
+            "name": {
+              "de": "Laktat",
+              "en": "Lactate"
+            },
+            "value": "1,7 mmol/l",
+            "reference": "0,5–2,2 mmol/l"
+          }
+        ]
+      },
+      {
+        "category": {
+          "de": "Klinische Chemie",
+          "en": "Clinical chemistry"
+        },
+        "relevance": "tragend",
+        "values": [
+          {
+            "name": {
+              "de": "Glukose (Plasma)",
+              "en": "Glucose (plasma)"
+            },
+            "value": "512 mg/dl (28,4 mmol/l)",
+            "reference": "70–140 mg/dl (nicht nüchtern)"
+          },
+          {
+            "name": {
+              "de": "Natrium",
+              "en": "Sodium"
+            },
+            "value": "131 mmol/l",
+            "reference": "135–145 mmol/l"
+          },
+          {
+            "name": {
+              "de": "Kalium",
+              "en": "Potassium"
+            },
+            "value": "5,6 mmol/l",
+            "reference": "3,5–5,1 mmol/l"
+          },
+          {
+            "name": {
+              "de": "Chlorid",
+              "en": "Chloride"
+            },
+            "value": "97 mmol/l",
+            "reference": "98–107 mmol/l"
+          },
+          {
+            "name": {
+              "de": "Anionenlücke (berechnet)",
+              "en": "Anion gap (calculated)"
+            },
+            "value": "23 mmol/l",
+            "reference": "8–12 mmol/l"
+          },
+          {
+            "name": {
+              "de": "β-Hydroxybutyrat",
+              "en": "β-hydroxybutyrate"
+            },
+            "value": "5,4 mmol/l",
+            "reference": "< 0,6 mmol/l"
+          },
+          {
+            "name": {
+              "de": "Kreatinin",
+              "en": "Creatinine"
+            },
+            "value": "1,38 mg/dl",
+            "reference": "0,7–1,2 mg/dl"
+          },
+          {
+            "name": {
+              "de": "Harnstoff",
+              "en": "Urea"
+            },
+            "value": "61 mg/dl",
+            "reference": "17–43 mg/dl"
+          },
+          {
+            "name": {
+              "de": "Serum-Osmolalität (gemessen)",
+              "en": "Serum osmolality (measured)"
+            },
+            "value": "302 mosmol/kg",
+            "reference": "275–295 mosmol/kg"
+          },
+          {
+            "name": {
+              "de": "HbA1c",
+              "en": "HbA1c"
+            },
+            "value": "11,6 % (103 mmol/mol)",
+            "reference": "< 5,7 % (< 39 mmol/mol)"
+          },
+          {
+            "name": {
+              "de": "Ethanol (Serum)",
+              "en": "Ethanol (serum)"
+            },
+            "value": "nicht nachweisbar",
+            "reference": "nicht nachweisbar"
+          }
+        ]
+      },
+      {
+        "category": {
+          "de": "Blutbild und Entzündungswerte",
+          "en": "Blood count and inflammatory markers"
+        },
+        "relevance": "stuetzend",
+        "values": [
+          {
+            "name": {
+              "de": "Leukozyten",
+              "en": "Leukocytes"
+            },
+            "value": "15,6 /nl",
+            "reference": "3,9–10,2 /nl"
+          },
+          {
+            "name": {
+              "de": "Hämoglobin",
+              "en": "Haemoglobin"
+            },
+            "value": "16,5 g/dl",
+            "reference": "13,5–17,2 g/dl"
+          },
+          {
+            "name": {
+              "de": "Hämatokrit",
+              "en": "Haematocrit"
+            },
+            "value": "52 %",
+            "reference": "40–51 %"
+          },
+          {
+            "name": {
+              "de": "Thrombozyten",
+              "en": "Platelets"
+            },
+            "value": "318 /nl",
+            "reference": "150–370 /nl"
+          },
+          {
+            "name": {
+              "de": "CRP",
+              "en": "CRP"
+            },
+            "value": "4 mg/l",
+            "reference": "< 5 mg/l"
+          },
+          {
+            "name": {
+              "de": "Procalcitonin",
+              "en": "Procalcitonin"
+            },
+            "value": "0,08 ng/ml",
+            "reference": "< 0,5 ng/ml"
+          }
+        ]
+      },
+      {
+        "category": {
+          "de": "Pankreas- und Leberwerte",
+          "en": "Pancreatic and liver enzymes"
+        },
+        "relevance": "abgrenzend",
+        "values": [
+          {
+            "name": {
+              "de": "Lipase",
+              "en": "Lipase"
+            },
+            "value": "92 U/l",
+            "reference": "13–60 U/l"
+          },
+          {
+            "name": {
+              "de": "GOT (AST)",
+              "en": "AST"
+            },
+            "value": "26 U/l",
+            "reference": "< 50 U/l"
+          },
+          {
+            "name": {
+              "de": "GPT (ALT)",
+              "en": "ALT"
+            },
+            "value": "33 U/l",
+            "reference": "< 50 U/l"
+          },
+          {
+            "name": {
+              "de": "γ-GT",
+              "en": "GGT"
+            },
+            "value": "21 U/l",
+            "reference": "< 60 U/l"
+          },
+          {
+            "name": {
+              "de": "Bilirubin gesamt",
+              "en": "Total bilirubin"
+            },
+            "value": "0,9 mg/dl",
+            "reference": "< 1,2 mg/dl"
+          }
+        ]
+      },
+      {
+        "category": {
+          "de": "Urinstatus (Teststreifen)",
+          "en": "Urinalysis (dipstick)"
+        },
+        "relevance": "stuetzend",
+        "values": [
+          {
+            "name": {
+              "de": "Glukose",
+              "en": "Glucose"
+            },
+            "value": "+++",
+            "reference": "negativ"
+          },
+          {
+            "name": {
+              "de": "Acetacetat",
+              "en": "Acetoacetate"
+            },
+            "value": "+++",
+            "reference": "negativ"
+          },
+          {
+            "name": {
+              "de": "Spezifisches Gewicht",
+              "en": "Specific gravity"
+            },
+            "value": "1,032",
+            "reference": "1,005–1,030"
+          },
+          {
+            "name": {
+              "de": "Leukozyten",
+              "en": "Leukocytes"
+            },
+            "value": "negativ",
+            "reference": "negativ"
+          },
+          {
+            "name": {
+              "de": "Nitrit",
+              "en": "Nitrite"
+            },
+            "value": "negativ",
+            "reference": "negativ"
+          },
+          {
+            "name": {
+              "de": "Erythrozyten",
+              "en": "Erythrocytes"
+            },
+            "value": "negativ",
+            "reference": "negativ"
+          }
+        ]
+      }
+    ],
+    "ekg": {
+      "text": {
+        "de": "12-Kanal-Ruhe-EKG: Sinusrhythmus mit 116/min, Steiltyp. PQ-Zeit 150 ms, QRS-Komplex schmal (90 ms), frequenzkorrigierte QT-Zeit 420 ms. In V2 bis V4 fallen hohe, schmalbasige und spitz zulaufende T-Wellen auf. Keine ST-Hebungen oder -Senkungen, keine pathologischen Q-Zacken, regelrechte R-Progression, keine Extrasystolen während der Aufzeichnung.",
+        "en": "12-lead resting ECG: sinus rhythm at 116/min, vertical axis. PR interval 150 ms, narrow QRS complex (90 ms), rate-corrected QT interval 420 ms. Tall, narrow-based, pointed T waves stand out in V2 to V4. No ST elevation or depression, no pathological Q waves, normal R-wave progression, no ectopic beats during the recording."
+      },
+      "relevance": "stuetzend"
+    },
+    "eeg": {
+      "text": {
+        "de": "Nicht abgeleitet: kein beobachtetes Krampfereignis, keine fokal-neurologischen Ausfälle, in der Akutsituation keine Indikation.",
+        "en": "Not recorded: no witnessed seizure, no focal neurological deficits, no indication in the acute setting."
+      },
+      "relevance": "meist_irrelevant"
+    },
+    "imaging": {
+      "text": {
+        "de": "Sonographie des Abdomens in der Notaufnahme: Die Bauchspeicheldrüse ist in Kopf, Körper und Schwanz vollständig einsehbar, normal groß, gleichmäßig strukturiert und glatt begrenzt; kein Flüssigkeitssaum um das Organ, keine Pseudozysten. Die Leber ist normal groß mit homogenem Binnenmuster. Die Gallenblase ist dünnwandig und frei von Steinen oder Sludge, die Gallenwege sind nicht erweitert. Beide Nieren sind normal groß mit gut abgrenzbarer Rinde, das Nierenbecken ist beidseits nicht gestaut. Keine freie Flüssigkeit im Bauchraum oder im kleinen Becken. Die untere Hohlvene ist schmal (unter 1 cm) und kollabiert beim Einatmen fast vollständig. Röntgen-Thorax im Liegen (a.p.): Lungenfelder beidseits frei belüftet, keine Verschattungen oder Ergüsse, Herz normal groß, kein Anhalt für freie Luft unter dem Zwerchfell.",
+        "en": "Abdominal ultrasound in the emergency department: the pancreas is fully visible in head, body and tail, normal in size, evenly textured and smoothly outlined; no rim of fluid around the organ, no pseudocysts. The liver is normal in size with a homogeneous echo pattern. The gallbladder is thin-walled and free of stones or sludge, the bile ducts are not dilated. Both kidneys are normal in size with a well-defined cortex, with no dilatation of the renal pelvis on either side. No free fluid in the abdomen or pelvis. The inferior vena cava is narrow (under 1 cm) and collapses almost completely on inspiration. Supine chest X-ray (AP): both lung fields clear, no opacities or effusions, normal heart size, no sign of free air under the diaphragm."
+      },
+      "relevance": "abgrenzend"
+    },
+    "konsil": {
+      "text": {
+        "de": "Chirurgisches Konsil in der Notaufnahme: Bauchdecke bei Palpation weich, diffuse Druckempfindlichkeit um den Nabel und im Oberbauch ohne umschriebenen Schmerzpunkt, keine Abwehrspannung, kein Loslassschmerz, keine tastbare Resistenz. Bruchpforten geschlossen, McBurney- und Murphy-Zeichen negativ. Darmgeräusche spärlich, aber vorhanden. Digital-rektal leere Ampulle, kein Blut am Handschuh. Aktuell kein Befund, der eine operative Intervention nahelegt; erneute Vorstellung bei Befundänderung erbeten.",
+        "en": "Surgical consultation in the emergency department: abdominal wall soft on palpation, diffuse tenderness around the navel and in the upper abdomen without a circumscribed pain point, no guarding, no rebound tenderness, no palpable mass. Hernial orifices closed, McBurney and Murphy signs negative. Bowel sounds sparse but present. Digital rectal examination: empty rectum, no blood on the glove. No finding at present that suggests surgical intervention; please re-refer if the findings change."
+      },
+      "relevance": "meist_irrelevant"
+    },
+    "correctDiagnosis": {
+      "de": "Diabetische Ketoazidose",
+      "en": "Diabetic ketoacidosis"
+    },
+    "diagnosisOptions": [
+      {
+        "de": "Hyperglykämes hyperosmolares Syndrom",
+        "en": "Hyperglycaemic hyperosmolar state"
+      },
+      {
+        "de": "Akute Pankreatitis",
+        "en": "Acute pancreatitis"
+      },
+      {
+        "de": "Diabetische Ketoazidose",
+        "en": "Diabetic ketoacidosis"
+      },
+      {
+        "de": "Alkoholische Ketoazidose",
+        "en": "Alcoholic ketoacidosis"
+      }
+    ],
+    "differentialNotes": [
+      {
+        "option": {
+          "de": "Hyperglykämes hyperosmolares Syndrom",
+          "en": "Hyperglycaemic hyperosmolar state"
+        },
+        "whyNotFindingRef": "labs.blutgasanalyse",
+        "whyNot": {
+          "de": "Hyperglykämie, Austrocknung und Bewusstseinstrübung passen zwar auch dazu. Beim hyperosmolaren Bild fehlt aber eine relevante Übersäuerung: Der pH bleibt bei 7,30 oder darüber und das Bikarbonat bei mindestens 18 mmol/l, während die Serumosmolalität über 320 mosmol/kg ansteigt. Hier zeigt die venöse Blutgasanalyse dagegen einen pH von 7,20, ein Bikarbonat von 11 mmol/l und einen Basenüberschuss von −15 mmol/l, bei nur leicht erhöhter Osmolalität von 302 mosmol/kg.",
+          "en": "Hyperglycaemia, dehydration and clouded consciousness would fit as well. In the hyperosmolar picture, however, a relevant acidaemia is absent: pH stays at 7.30 or higher and bicarbonate at 18 mmol/l or more, while serum osmolality climbs beyond 320 mosmol/kg. Here, by contrast, the venous blood gas shows a pH of 7.20, bicarbonate of 11 mmol/l and a base excess of −15 mmol/l, with osmolality only mildly raised at 302 mosmol/kg."
+        }
+      },
+      {
+        "option": {
+          "de": "Alkoholische Ketoazidose",
+          "en": "Alcoholic ketoacidosis"
+        },
+        "whyNotFindingRef": "labs.klinische-chemie",
+        "whyNot": {
+          "de": "Erbrechen, erhöhtes β-Hydroxybutyrat und eine vergrößerte Anionenlücke kämen auch hier vor. Dieses Bild setzt aber einen chronischen Alkoholkonsum mit einem kurz zurückliegenden Trinkexzess voraus, auf den Erbrechen und Hungern folgen; der Blutzucker kann dabei normal oder auch erhöht sein und entscheidet allein nichts. Ausschlaggebend ist in der klinischen Chemie das HbA1c von 11,6 %: Es belegt eine seit Wochen bestehende Hyperglykämie, die eine alkoholbedingte Ketose nicht erklärt; dazu passt die Plasmaglukose von 512 mg/dl. Zudem wurde nur wenig und zuletzt vor sechs Tagen getrunken.",
+          "en": "Vomiting, raised β-hydroxybutyrate and a widened anion gap could occur here too. This picture, however, requires chronic alcohol use with a recent binge followed by vomiting and starvation; blood glucose may be normal or even raised and does not settle the question on its own. The deciding value in clinical chemistry is the HbA1c of 11.6 %: it documents hyperglycaemia present for weeks, which an alcohol-related ketosis does not explain; the plasma glucose of 512 mg/dl fits with this. Moreover, only a small amount was drunk, most recently six days ago."
+        }
+      },
+      {
+        "option": {
+          "de": "Akute Pankreatitis",
+          "en": "Acute pancreatitis"
+        },
+        "whyNotFindingRef": "imaging",
+        "whyNot": {
+          "de": "Oberbauchschmerz, Erbrechen und eine leicht erhöhte Lipase lenken den Blick auf die Bauchspeicheldrüse. Als gesichert gilt eine akute Entzündung aber erst, wenn zwei von drei Kriterien vorliegen: ein typischer, plötzlich beginnender und anhaltender Oberbauchschmerz, der oft gürtelförmig zum Rücken zieht, eine Lipase ab dem Dreifachen des oberen Referenzwerts und charakteristische Bildbefunde. Hier ist allenfalls das Schmerzkriterium ansatzweise erfüllt: Die Lipase liegt mit 92 U/l nur beim etwa Anderthalbfachen – ein Anstieg in dieser Größenordnung kann unspezifisch sein –, und die Sonographie zeigt ein normal großes, homogenes, glatt begrenztes Organ ohne Flüssigkeitssaum oder Pseudozysten.",
+          "en": "Upper abdominal pain, vomiting and a mildly raised lipase draw attention to the pancreas. An acute inflammation, however, is only considered established when two of three criteria are met: typical upper abdominal pain of sudden onset that persists and often radiates like a belt to the back, a lipase of three times the upper reference limit or more, and characteristic imaging findings. Here at most the pain criterion is partly met: at 92 U/l, lipase is only about one and a half times the limit – a rise of this size can be non-specific –, and ultrasound shows a normal-sized, homogeneous, smoothly outlined organ without a fluid rim or pseudocysts."
+        }
+      }
+    ],
+    "explanation": {
+      "de": "Ausgangspunkt ist ein absoluter Insulinmangel. Ohne Insulin können Muskel- und Fettgewebe kaum Glukose aufnehmen, gleichzeitig steigern Glukagon und Stresshormone die Glukoseproduktion der Leber. Der Blutzucker steigt weit über die Nierenschwelle, Glukose wird mit dem Urin ausgeschieden und zieht Wasser mit: daher wochenlanger Durst, nächtliches Wasserlassen, Gewichtsverlust trotz normalen Essens, ein hohes spezifisches Uringewicht und am Ende der Volumenmangel mit Tachykardie, trockenen Schleimhäuten, kollabierender Hohlvene, Hämokonzentration und prärenal erhöhtem Kreatinin. Zugleich wird ungebremst Fett abgebaut; die Leber wandelt die freien Fettsäuren in β-Hydroxybutyrat und Acetacetat um. Diese Säuren verbrauchen Bikarbonat, es entsteht eine metabolische Azidose mit vergrößerter Anionenlücke (hier 23 mmol/l). Die Lunge kompensiert durch tiefes, schnelles Atmen (Kussmaul-Atmung) und senkt so den venösen pCO₂ auf 29 mmHg; das abgeatmete Aceton erklärt den fruchtigen Geruch. Das Kalium im Serum ist trotz Gesamtkörperdefizit hoch, weil Insulinmangel und Azidose es aus den Zellen in den Extrazellulärraum verschieben – passend dazu die spitzen T-Wellen. Das leicht erniedrigte Natrium ist ein Verdünnungseffekt durch den osmotischen Wasserzug. Die Diagnose stützt sich auf drei gleichzeitig erfüllte Kriterien: Glukose ab 200 mg/dl (11,1 mmol/l) oder bekannter Diabetes, β-Hydroxybutyrat ab 3,0 mmol/l und pH unter 7,30 bzw. Bikarbonat unter 18 mmol/l. Mit pH 7,20, Bikarbonat 11 mmol/l und Somnolenz liegt ein mittelschwerer Verlauf vor. Das HbA1c von 11,6 % zeigt, dass die Hyperglykämie schon seit Wochen besteht – hier als Erstmanifestation eines Typ-1-Diabetes; die begleitende Autoimmunthyreoiditis passt zur autoimmunen Veranlagung. Zur Standard-Abklärung bei diesem Bild gehören eine Blutgasanalyse mit berechneter Anionenlücke, die Messung von Glukose und β-Hydroxybutyrat im Blut, Elektrolyte mit besonderem Blick auf Kalium, Nierenwerte und Osmolalität, Blutbild, Urinstatus und ein EKG sowie die gezielte Suche nach einem Auslöser wie Infekt oder Herzinfarkt. Bei Erstmanifestation werden im Verlauf Autoantikörper gegen Inselzell-Antigene (bei Erwachsenen z.B. GAD65, IA-2, ZnT8) bestimmt, um den Typ-1-Diabetes serologisch zu sichern. Eine erhöhte Leukozytenzahl findet sich bei dieser Entgleisung häufig; CRP und Procalcitonin sind hier normal.",
+      "en": "The starting point is an absolute lack of insulin. Without insulin, muscle and fat tissue can hardly take up glucose, while glucagon and stress hormones boost hepatic glucose output. Blood glucose rises far above the renal threshold, glucose spills into the urine and drags water with it: hence weeks of thirst, passing urine at night, weight loss despite normal eating, a high urine specific gravity and ultimately volume depletion with tachycardia, dry mucosa, a collapsing vena cava, haemoconcentration and prerenal creatinine elevation. At the same time fat is broken down unchecked; the liver converts the free fatty acids into β-hydroxybutyrate and acetoacetate. These acids consume bicarbonate, producing a metabolic acidosis with a widened anion gap (23 mmol/l here). The lungs compensate with deep, rapid breathing (Kussmaul respiration), lowering venous pCO₂ to 29 mmHg; exhaled acetone explains the fruity smell. Serum potassium is high despite a whole-body deficit because insulin deficiency and acidosis shift it out of the cells into the extracellular space – consistent with the peaked T waves. The slightly low sodium is a dilution effect of the osmotic water shift. The diagnosis rests on three criteria met at the same time: glucose of 200 mg/dl (11.1 mmol/l) or more, or known diabetes; β-hydroxybutyrate of 3.0 mmol/l or more; and pH below 7.30 or bicarbonate below 18 mmol/l. With a pH of 7.20, bicarbonate of 11 mmol/l and drowsiness, this is a moderate episode. The HbA1c of 11.6 % shows that hyperglycaemia has been present for weeks – here as the first presentation of type 1 diabetes; the coexisting autoimmune thyroiditis fits an autoimmune predisposition. The standard work-up for this picture includes a blood gas with calculated anion gap, blood glucose and β-hydroxybutyrate, electrolytes with particular attention to potassium, renal function and osmolality, full blood count, urinalysis and an ECG, plus a targeted search for a trigger such as infection or myocardial infarction. At first presentation, autoantibodies against islet-cell antigens (in adults e.g. GAD65, IA-2, ZnT8) are measured later on to confirm type 1 diabetes serologically. A raised leukocyte count is common in this derangement; CRP and procalcitonin are normal here."
+    },
+    "keyTakeaway": {
+      "de": "Junger Mensch mit wochenlangem Durst, viel Wasserlassen und Gewichtsverlust, der jetzt erbricht, über Bauchschmerz klagt und tief und schnell atmet: sofort Blutgasanalyse mit Anionenlücke, Glukose und β-Hydroxybutyrat. Hyperglykämie, Ketonämie und metabolische Azidose zusammen sichern die Diagnose – nicht selten ist sie das erste Zeichen eines bislang unbekannten Typ-1-Diabetes.",
+      "en": "A young person with weeks of thirst, frequent urination and weight loss who now vomits, complains of abdominal pain and breathes deeply and rapidly: get a blood gas with anion gap, glucose and β-hydroxybutyrate at once. Hyperglycaemia, ketonaemia and metabolic acidosis together establish the diagnosis – not uncommonly it is the first sign of previously unknown type 1 diabetes."
+    },
+    "caseContext": {
+      "category": "haeufig",
+      "note": {
+        "de": "Schwierigkeit: Med-Student (häufig, leicht zu erkennen). Cannot-miss: ja. Die ketoazidotische Entgleisung ist die typische hyperglykämische Krise bei jüngeren Menschen mit Typ-1-Diabetes; bei rund 6 bis 21 % der Erwachsenen, deren Typ-1-Diabetes neu entdeckt wird, ist sie das erste Krankheitszeichen. Unerkannt oder verzögert behandelt drohen Schock, schwere Kaliumverschiebungen mit Rhythmusstörungen, akutes Nierenversagen und Koma – deshalb gehört sie zu den Diagnosen, die in keiner Notaufnahme übersehen werden dürfen.",
+        "en": "Difficulty: medical student (common, easy to recognise). Cannot-miss: yes. Ketoacidotic derangement is the characteristic hyperglycaemic crisis in younger patients with type 1 diabetes; in roughly 6 to 21 % of adults whose type 1 diabetes is newly found, it is the first sign of the disease. If missed or treated late, shock, severe potassium shifts with arrhythmias, acute kidney injury and coma may follow – which is why it belongs to the diagnoses no emergency department may overlook."
+      }
+    },
+    "sourceNotes": {
+      "de": "Diagnosekriterien und Schweregradeinteilung, die Abgrenzungswerte des hyperosmolaren Bildes, der Mechanismus der initialen Kaliumverschiebung, die Abgrenzung der alkoholbedingten Ketoazidose, der Anteil der Ketoazidose als Erstmanifestation bei Erwachsenen, typische Zeichen (vertiefte Atmung, Acetongeruch, Bauchschmerz), die empfohlene Erstdiagnostik und die Komplikationsrisiken stützen sich auf einen frei zugänglichen internationalen Konsensusbericht zu hyperglykämen Krisen bei Erwachsenen (PubMed Central). Die Diagnosekriterien der akuten Pankreatitis stammen aus der deutschen S3-Leitlinie zur Pankreatitis (DGVS, AWMF-Register). Die serologischen Marker zur Sicherung eines Typ-1-Diabetes stammen aus der deutschen S3-Leitlinie zur Therapie des Typ-1-Diabetes (AWMF-Register). Die häufig erhöhte Leukozytenzahl bei der Entgleisung stützt sich auf eine frei zugängliche Vergleichsstudie (PubMed Central). Die Unspezifität gering erhöhter Lipasewerte bei dieser Entgleisung stützt sich auf eine in PubMed gelistete Studie; das gehäufte Auftreten weiterer Autoimmunerkrankungen, besonders der Schilddrüse, bei Typ-1-Diabetes auf die genannte S3-Leitlinie zum Typ-1-Diabetes. Alle Formulierungen, Patientendaten und Messwerte sind eigenständig erstellt bzw. frei erfunden.",
+      "en": "Diagnostic criteria and severity grading, the thresholds separating the hyperosmolar picture, the mechanism of the initial potassium shift, the distinction from alcohol-related ketoacidosis, the proportion of ketoacidosis as first presentation in adults, typical signs (deep breathing, acetone odour, abdominal pain), the recommended initial work-up and the complication risks are based on an open-access international consensus report on hyperglycaemic crises in adults (PubMed Central). The diagnostic criteria for acute pancreatitis come from the German S3 guideline on pancreatitis (DGVS, AWMF register). The serological markers confirming type 1 diabetes come from the German S3 guideline on the treatment of type 1 diabetes (AWMF register). The frequently raised leukocyte count in this derangement is based on an open-access comparative study (PubMed Central). The non-specificity of mildly raised lipase in this derangement is based on a study listed in PubMed; the clustering of further autoimmune diseases, especially of the thyroid, in type 1 diabetes on the S3 guideline on type 1 diabetes mentioned above. All wording, patient data and measured values are original or entirely fictitious."
+    },
+    "sources": [
+      {
+        "domain": "pmc.ncbi.nlm.nih.gov",
+        "sourceClass": "nur-fakten",
+        "caseReportDerived": false,
+        "ref": "PMC11343900 – Konsensusbericht Hyperglycaemic Crises in Adults with Diabetes (Diabetologia 2024)",
+        "claims": [
+          "DKA-Kriterien und Schweregrad",
+          "HHS-Grenzwerte",
+          "Kaliumverschiebung",
+          "Alkoholische Ketoazidose",
+          "Anteil DKA bei Erstdiagnose Erwachsener (6–21 %)",
+          "Symptome, Erstdiagnostik, Komplikationen"
+        ],
+        "humanVerified": false,
+        "verifiedBy": "Claude (automatisierte Gegenprüfung)",
+        "verifiedAt": "2026-09-30",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11343900/"
+      },
+      {
+        "domain": "dgvs.de",
+        "sourceClass": "nur-fakten",
+        "caseReportDerived": false,
+        "ref": "DGVS S3-Leitlinie Pankreatitis (AWMF 021-003), Empfehlung 3.14",
+        "claims": [
+          "Pankreatitis: 2 von 3 Kriterien"
+        ],
+        "humanVerified": false,
+        "verifiedBy": "Claude (automatisierte Gegenprüfung)",
+        "verifiedAt": "2026-09-30",
+        "url": "https://www.dgvs.de/leitlinien/leber-galle-pankreas/pankreatitis/"
+      },
+      {
+        "domain": "register.awmf.org",
+        "sourceClass": "nur-fakten",
+        "caseReportDerived": false,
+        "ref": "AWMF S3-Leitlinie Therapie des Typ-1-Diabetes (057-013), Langfassung Stand 09/2023, Abschnitt serologische Diagnostik",
+        "claims": [
+          "Autoantikörper GAD65, IA-2, ZnT8 (IAA nur Kinder/Jugendliche)"
+        ],
+        "humanVerified": true,
+        "verifiedBy": "Sergio",
+        "verifiedAt": "2026-09-30",
+        "url": "https://register.awmf.org/assets/guidelines/057-013l_S3-Therapie-Typ-1-Diabetes_2023-09_1.pdf"
+      },
+      {
+        "domain": "pmc.ncbi.nlm.nih.gov",
+        "sourceClass": "nur-fakten",
+        "caseReportDerived": false,
+        "ref": "PMC3638300 – Int J Med Sci 2013;10(6):758–765 (Leukozyten bei hyperglykämen Notfällen)",
+        "claims": [
+          "Leukozytenzahl bei DKA häufig erhöht"
+        ],
+        "humanVerified": true,
+        "verifiedBy": "Sergio",
+        "verifiedAt": "2026-09-30",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3638300/"
+      },
+      {
+        "domain": "pubmed.ncbi.nlm.nih.gov",
+        "sourceClass": "nur-fakten",
+        "caseReportDerived": false,
+        "ref": "PMID 11095328 – Nonspecific hyperamylasemia and hyperlipasemia in diabetic ketoacidosis: incidence and correlation with biochemical abnormalities",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/11095328/",
+        "claims": [
+          "Lipase bis 3-fach unspezifisch"
+        ],
+        "humanVerified": true,
+        "verifiedBy": "Sergio",
+        "verifiedAt": "2026-09-30"
+      },
+      {
+        "domain": "register.awmf.org",
+        "sourceClass": "nur-fakten",
+        "caseReportDerived": false,
+        "ref": "AWMF S3-Leitlinie Therapie des Typ-1-Diabetes (057-013), Langfassung Stand 09/2023, assoziierte Autoimmunerkrankungen",
+        "url": "https://register.awmf.org/assets/guidelines/057-013l_S3-Therapie-Typ-1-Diabetes_2023-09_1.pdf",
+        "claims": [
+          "Assoziation Autoimmunthyreoiditis – Typ-1-Diabetes"
+        ],
+        "humanVerified": true,
+        "verifiedBy": "Sergio",
+        "verifiedAt": "2026-09-30"
+      }
+    ],
+    "wissensstand": "AWMF S3-Leitlinie Therapie des Typ-1-Diabetes (057-013), Stand 09/2023; DGVS S3-Leitlinie Pankreatitis (AWMF 021-003), Version 2.0, Stand 09/2021; Internationaler Konsensusbericht Hyperglycaemic Crises in Adults with Diabetes (ADA/EASD/JBDS/AACE/DTS), 2024",
+    "oberarztTipp": {
+      "de": "Schau dir nicht nur an, dass der Patient schnell atmet, sondern wie – tief und gleichmäßig ohne Atemnot kann eine Antwort der Lunge auf ein Problem im Blut sein. Überleg dann, welche einzelne schnelle Messung Blutgase, Elektrolyte und Glukose auf einmal liefert. Und nimm die drei Wochen vor dem Erbrechen ernst: Durst, Wasserlassen und Gewicht erzählen hier die halbe Geschichte.",
+      "en": "Don't just note that the patient breathes fast, but how – deep and even without breathlessness can be the lungs answering a problem in the blood. Then consider which single quick measurement gives you blood gases, electrolytes and glucose all at once. And take the three weeks before the vomiting seriously: thirst, urination and weight tell half the story here."
+    },
+    "verify": {
+      "status": "pass",
+      "reasons": [],
+      "humanApproved": true,
+      "approvedBy": "Sergio",
+      "approvedAt": "2026-09-30"
+    }
+  }
+]

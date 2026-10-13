@@ -40,7 +40,6 @@ export function WofuerPopover({ className }: { className?: string }) {
         }`}
         aria-expanded={open}
       >
-        <i className="ti ti-help-circle text-sm" />
         Wofür?
       </button>
       {open && (
@@ -49,8 +48,7 @@ export function WofuerPopover({ className }: { className?: string }) {
           style={{ borderColor: "#d8d6cd" }}
         >
           <p className="mb-1.5 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
-            <i className="ti ti-bulb text-sm text-accent" />
-            Wofür soll ich Medcase nutzen?
+            Wofür soll ich Casolvo nutzen?
           </p>
           <p className="text-sm leading-relaxed text-muted">
             Um dich vor einer Famulatur oder Klausur auf die häufigsten

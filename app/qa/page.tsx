@@ -9,12 +9,9 @@ export const metadata = {
     "Wofür Medcase gedacht ist, wie die Fälle entstehen und was du sonst noch wissen solltest.",
 };
 
-function SectionLabel({ icon, id, children }: { icon: string; id?: string; children: React.ReactNode }) {
+function SectionLabel({ id, children }: { icon: string; id?: string; children: React.ReactNode }) {
   return (
-    <p id={id} className="mb-2 scroll-mt-24 flex items-center gap-1.5 text-[15px] font-bold text-foreground">
-      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
-        <i className={`ti ${icon} text-[13px]`} />
-      </span>
+    <p id={id} className="mb-2 scroll-mt-24 text-[15px] font-bold text-foreground">
       {children}
     </p>
   );
@@ -82,8 +79,8 @@ function TocSidebar() {
 
 export default function QAPage() {
   return (
-    <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1560px]">
+    <div className="site-page min-h-screen px-4 pt-8 pb-8 md:px-10">
+      <div className="mx-auto max-w-[1240px]">
         <CenteredNav active="qa" />
 
         <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
@@ -225,7 +222,6 @@ export default function QAPage() {
                   className="group mt-1 inline-flex items-center gap-1.5 rounded-xl bg-accent px-8 py-4 text-lg font-bold text-accent-foreground transition-transform duration-[80ms] active:scale-[0.98]"
                 >
                   Ersten Fall lösen
-                  <i className="ti ti-arrow-right transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </div>
             </FadeInUp>

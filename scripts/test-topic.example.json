@@ -1,0 +1,11 @@
+{
+  "_comment": "Wegwerf-Fixture für den technischen Smoke-Test von factsheet.ts — KEINE Stufe-0-Freigabe, kein Teil der echten Themenliste (data/case-topics.json). Diagnose frei austauschbar.",
+  "id": "test-zoeliakie-1",
+  "diagnosis": "Zöliakie",
+  "difficulty": "klinik",
+  "category": "haeufig",
+  "setting": "Hausarztpraxis, junge Erwachsene mit unspezifischen GI-Beschwerden",
+  "lernziel": "Anti-tTG-IgA als Diagnostik-Standard, Abgrenzung Reizdarm",
+  "selectedBy": "human",
+  "rationale": "Technischer Testlauf Stufe 1, Diagnose aus dem Schema-Beispiel übernommen."
+}

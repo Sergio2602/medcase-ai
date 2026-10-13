@@ -50,8 +50,8 @@ export default function NewsPage() {
   const [featured, ...rest] = NEWS_ITEMS;
 
   return (
-    <div className="min-h-screen px-4 pt-5 pb-8 md:px-10">
-      <div className="mx-auto max-w-[1560px]">
+    <div className="site-page min-h-screen px-4 pt-8 pb-8 md:px-10">
+      <div className="mx-auto max-w-[1240px]">
         <CenteredNav active={null} />
 
         <div className="mx-auto max-w-[820px]">
@@ -74,9 +74,6 @@ export default function NewsPage() {
                 </span>
               </div>
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
-                  <i className={`ti ${featured.icon} text-xl`} />
-                </div>
                 <div className="min-w-0">
                   <p className="mb-1.5 text-xl font-extrabold leading-snug tracking-tight text-foreground sm:text-2xl">
                     {featured.title}
@@ -96,10 +93,7 @@ export default function NewsPage() {
                 <div className="card flex h-full flex-col gap-3 p-5">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2.5">
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ecf0f9] text-accent">
-                        <i className={`ti ${item.icon} text-sm`} />
-                      </div>
-                      <Tag delay={i * 90}>{item.tag}</Tag>
+                        <Tag delay={i * 90}>{item.tag}</Tag>
                     </div>
                   </div>
                   <p className="text-[15px] font-bold leading-snug text-foreground">{item.title}</p>

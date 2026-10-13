@@ -26,10 +26,13 @@
      2 Befunde  = Amber   (kostet Punkte)
      3 Diagnose = Cerulean (hier entscheidest du)
      Grün/Rot sind ausschließlich Ergebnisfarben — nie vor dem Abgeben. */
-  --step-1: #15202b;
-  --step-1-tint: #edeae3;
+  --step-1: #3f86bd;
+  --step-1-tint: #e6f0f8;
   --step-2: #b45309;
   --step-2-tint: #fbf1e3;
+  /* Befunde-Flächen (Punkte, Häkchen, Hover) neutral; Amber nur noch für den Preis (−10). */
+  --step-2-dot: #5f7387;
+  --step-2-dot-tint: #eef1f4;
   --step-3: #175e8f;
   --step-3-tint: #e8f0f7;
 
@@ -88,12 +91,9 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at 12% 8%, rgba(23,94,143,0.05), transparent 45%),
-    radial-gradient(circle at 88% 78%, rgba(23,94,143,0.045), transparent 50%),
-    repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
-    repeating-linear-gradient(90deg, rgba(0,0,0,0.012) 0 1px, transparent 1px 12px),
-    var(--background);
+  /* Update 13.10.2026 (Local-Test 1): einheitlicher Stein-Hintergrund wie auf
+     der Startseite statt Raster-Muster. */
+  background: #ecebe6;
   color: var(--foreground);
   font-family: var(--font-sans);
 }
@@ -112,10 +112,23 @@ h1, h2, h3, h4 {
 
 /* Card primitive: border not shadow, 12–14px radius */
 .card {
-  background-color: var(--card);
-  border: 1.5px solid color-mix(in srgb, var(--card-border) 12%, transparent);
-  border-radius: 14px;
-  box-shadow: none;
+  /* Update 13.10.2026 (Local-Test 1): Papier-Blatt wie die Karussell-Blätter
+     der Startseite. */
+  background-color: #fffefa;
+  border: 1px solid rgba(26, 49, 82, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px -40px rgba(15, 23, 42, 0.35), 0 2px 6px -2px rgba(15, 23, 42, 0.06);
+}
+
+/* Unterseiten: Seitentitel in der Serifen-Schrift der Startseite */
+.site-page h1 {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: #1a3152;
+  font-size: 32px;
+  line-height: 1.15;
 }
 
 /* Avatar initials circle */
@@ -282,3 +295,4 @@ h1, h2, h3, h4 {
     animation: none;
   }
 }
+

@@ -53,7 +53,6 @@ export function KontaktPopover({ className }: { className?: string }) {
           style={{ borderColor: "#d8d6cd" }}
         >
           <p className="mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-muted">
-            <i className="ti ti-mail text-sm" />
             Kontakt
           </p>
           <a
